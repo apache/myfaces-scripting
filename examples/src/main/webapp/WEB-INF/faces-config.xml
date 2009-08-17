@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+
+<faces-config version="1.2"
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xi="http://www.w3.org/2001/XInclude"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+
+    <!-- managed beans of the simple hello world app -->
+    <managed-bean>
+        <managed-bean-name>helloWorld</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.blank.HelloWorldController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>testbean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.groovyloader.test.TestBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+     <factory>
+        <!--
+            all these factories are replacements for the normal ones
+            issue is we have to make a codeweaving for every bean created
+         -->
+        <application-factory>
+            org.apache.myfaces.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
+        </application-factory>
+        <faces-context-factory>
+            org.apache.myfaces.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
+        </faces-context-factory>
+        <lifecycle-factory>
+            org.apache.myfaces.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
+        </lifecycle-factory>
+        <render-kit-factory>
+            org.apache.myfaces.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
+        </render-kit-factory>
+         
+    </factory>
+    <application>
+        <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+        <navigation-handler>
+            org.apache.myfaces.groovyloader.test.TestNavigationHandler
+        </navigation-handler>
+
+    </application>
+
+
+    <lifecycle>
+
+        <phase-listener>
+            org.apache.myfaces.groovyloader.test.TestPhaseListener
+        </phase-listener>
+    </lifecycle>
+
+
+    <!-- navigation rules for helloWorld.jsp -->
+    <navigation-rule>
+        <from-view-id>/helloWorld.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/page2.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- navigation rules for page2.jsp -->
+    <navigation-rule>
+        <from-view-id>/page2.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/helloWorld.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+
+    <validator>
+        <validator-id>org.apache.myfaces.groovyloader.test.TestValidator</validator-id>
+        <validator-class>org.apache.myfaces.groovyloader.test.TestValidator</validator-class>
+    </validator>
+    <converter>
+        <converter-id>org.apache.myfaces.groovyloader.test.TestConverter</converter-id>
+        <converter-class>org.apache.myfaces.groovyloader.test.TestConverter</converter-class>
+    </converter>
+
+    <component>
+        <component-type>org.apache.myfaces.groovyloader.test.TestComponent</component-type>
+        <component-class>org.apache.myfaces.groovyloader.test.TestComponent</component-class>
+    </component>
+    <render-kit>
+        <renderer>
+            <component-family>javax.faces.Input</component-family>
+            <renderer-type>org.apache.myfaces.groovyloader.test.Test</renderer-type>
+            <renderer-class>org.apache.myfaces.groovyloader.test.TestRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+</faces-config>
