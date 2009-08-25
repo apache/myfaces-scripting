@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.myfaces.scripting.core.util.DynamicClassIdentifier;
+import org.apache.myfaces.groovyloader.core.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
@@ -49,7 +49,7 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
     public void addPhaseListener(PhaseListener phaseListener) {
         weaveDelegate();
         /*we can put our object weaving code into the add here*/
-        if (DynamicClassIdentifier.isDynamic(phaseListener.getClass()))
+        if (ProxyUtils.isDynamic(phaseListener.getClass()))
             phaseListener = (PhaseListener)  ProxyUtils.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class);
 
         _delegate.addPhaseListener(phaseListener);

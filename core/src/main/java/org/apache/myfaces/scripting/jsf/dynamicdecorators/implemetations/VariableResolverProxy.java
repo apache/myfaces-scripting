@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.myfaces.scripting.core.util.DynamicClassIdentifier;
+import org.apache.myfaces.groovyloader.core.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
@@ -43,7 +43,7 @@ public class VariableResolverProxy extends VariableResolver implements Decorated
 
     public Object resolveVariable(FacesContext facesContext, String s) throws EvaluationException {
         Object variable = _delegate.resolveVariable(facesContext, s);
-        if (DynamicClassIdentifier.isDynamic(variable.getClass()))
+        if (ProxyUtils.isDynamic(variable.getClass()))
             variable = ProxyUtils.getWeaver().reloadScriptingInstance(variable);
         return variable;
     }

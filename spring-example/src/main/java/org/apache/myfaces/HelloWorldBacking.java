@@ -16,33 +16,43 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.test
-
-import javax.faces.application.NavigationHandler
-import javax.faces.context.FacesContext
+package org.apache.myfaces;
 
 /**
- * @author Werner Punz
+ * A typical simple backing bean, that is backed to <code>helloworld.jsp</code>
+ * 
+ * @author <a href="mailto:matzew@apache.org">Matthias We�endorf</a> 
  */
-class TestNavigationHandler extends NavigationHandler {
-    NavigationHandler _delegate = null;
+public class HelloWorldBacking
+{
 
-    public TestNavigationHandler() {
-        super();
+    //properties
+    private String name;
 
+    /**
+     * default empty constructor
+     */
+    public HelloWorldBacking()
+    {
     }
 
-    public TestNavigationHandler(NavigationHandler delegate) {
-        super();
-        _delegate = delegate
+    //-------------------getter & setter
+    public String getName()
+    {
+        return name;
     }
 
-
-
-    public void handleNavigation(FacesContext facesContext, String s, String s1) {
-        // if(delegate != null)
-        _delegate.handleNavigation(facesContext, s, s1)
-        print " handle navigation"
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
+    /**
+     * Method that is backed to a submit button of a form.
+     */
+    public String send()
+    {
+        //do real logic
+        return ("success");
+    }
 }

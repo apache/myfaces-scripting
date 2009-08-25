@@ -18,10 +18,10 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.myfaces.scripting.core.util.DynamicClassIdentifier;
+import org.apache.myfaces.groovyloader.core.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
-import org.apache.myfaces.scripting.jsf.ScriptingConst;
 
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
@@ -67,7 +67,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public void addRenderer(String s, String s1, Renderer renderer) {
         weaveDelegate();
-        if(DynamicClassIdentifier.isDynamic(renderer.getClass()) && !alreadyWovenInRequest(renderer.toString())) {
+        if(ProxyUtils.isDynamic(renderer.getClass()) && !alreadyWovenInRequest(renderer.toString())) {
             renderer = (Renderer) ProxyUtils.getWeaver().reloadScriptingInstance(renderer);
             alreadyWovenInRequest(renderer.toString());
         }
@@ -79,7 +79,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         Renderer retVal = _delegate.getRenderer(s, s1);
 
-        if (retVal != null && DynamicClassIdentifier.isDynamic(retVal.getClass())&& !alreadyWovenInRequest(retVal.toString())) {
+        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())&& !alreadyWovenInRequest(retVal.toString())) {
             retVal = (Renderer) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
             alreadyWovenInRequest(retVal.toString());
             _delegate.addRenderer(s,s1,retVal);

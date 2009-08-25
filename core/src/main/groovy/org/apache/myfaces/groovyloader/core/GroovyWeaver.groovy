@@ -16,15 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.myfaces.groovyloader.core
 
-import org.codehaus.groovy.runtime.InvokerHelper
-import org.apache.myfaces.groovyloader.core.ReloadingMetadata
-import org.apache.myfaces.groovyloader.core.Groovy2GroovyObjectReloadingProxy
-import org.apache.commons.logging.LogFactory
+import org.apache.myfaces.scripting.refresh.*;
 import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
+import org.apache.myfaces.groovyloader.core.Groovy2GroovyObjectReloadingProxy
 import org.apache.myfaces.scripting.api.ScriptingWeaver
+import org.codehaus.groovy.runtime.InvokerHelper
+import org.apache.myfaces.scripting.api.ScriptingConst
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon
+
 
 /**
  * Weaver  which does dynamic class reloading
@@ -44,14 +46,15 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver
 public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
     static def gcl = null
-    static Map classMap = Collections.synchronizedMap([:])
-
+    static Map classMap = Collections.synchronizedMap(new java.util.HashMap())
     static Log log = LogFactory.getLog(GroovyWeaver.class)
+    static def scriptPath = []
+
 
     public GroovyWeaver() {
     }
 
-    /*
+  /*
     * we set a deamon to enable webapp artefact change tainting
     * this should speed up operations because we do not have
     * to check on the filesystem for every reload access
@@ -65,14 +68,15 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
     private synchronized void startThread() {
         if (changeWatcher == null) {
-            changeWatcher = new FileChangedDaemon(classMap)
+            changeWatcher = FileChangedDaemon.instance
+            classMap = changeWatcher.getClassMap()
         }
-        changeWatcher.start()
+
     }
 
     private void stopThread() {
         if (changeWatcher != null) {
-            changeWatcher.stop()
+            changeWatcher.running = false
         }
     }
 
@@ -133,10 +137,9 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
     /**
      * condition which marks a metadata as reload candidate
      */
-    private boolean isReloadCandidate(reloadMeta) {
-        return reloadMeta != null && reloadMeta.taintedOnce
+    private boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
+        return (reloadMeta?.scriptingEngine == ScriptingConst.ENGINE_TYPE_GROOVY) && reloadMeta?.taintedOnce  
     }
-
 
     /**
      * central algorithm which determines which property values are overwritten and which are not
@@ -149,13 +152,13 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
             try {
                 if (target.properties.containsKey(property.key)
-                    && !property.key.equals("metaClass")        //the class information and meta class information cannot be changed
-                    && !property.key.equals("class")            //otherwise we will get following error
-                                                                // java.lang.IllegalArgumentException: object is not an instance of declaring class
-                    && !(
-                    target.properties.containsKey(property.key + "_changed") //||
-                    //nothing further needed the phases take care of that
-                    )) {
+                        && !property.key.equals("metaClass")        //the class information and meta class information cannot be changed
+                        && !property.key.equals("class")            //otherwise we will get following error
+                        // java.lang.IllegalArgumentException: object is not an instance of declaring class
+                        && !(
+                target.properties.containsKey(property.key + "_changed") //||
+                //nothing further needed the phases take care of that
+                )) {
                     target.setProperty(property.key, property.value)
                 }
             } catch (Exception e) {
@@ -182,12 +185,37 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
         return loadScriptingClassFromFile(metadata.getFileName())
     }
 
+    public Class loadScriptingClassFromName(String className) {
+        ReloadingMetadata metadata = classMap[className]
+        if (metadata == null) {
+            String groovyClass = className.replaceAll("\\.", System.getProperty("file.separator")) + ".groovy";
 
+            //TODO this code can probably be replaced by the functionality
+            //already given in the Groovy classloader, this needs further testing
+            for (String pathEntry in scriptPath) {
+                File classFile = new File(pathEntry + groovyClass);
 
+                if (classFile.exists()) /*we check the groovy subdir for our class*/
+                    return (Class) loadScriptingClassFromFile(pathEntry + groovyClass);
+            }
 
+        } else {
+            return reloadScriptingClass(metadata.aClass)
+        }
+        return null
+    }
 
-    public Class loadScriptingClassFromFile(String file) {
-        log.info("reloading $file")
+    public void appendCustomScriptPath(String singlePath) {
+
+        singlePath = singlePath.trim();
+        if (!singlePath.endsWith("/") && !singlePath.endsWith("\\"))
+            singlePath += "/";
+        scriptPath << singlePath
+
+    }
+
+    protected Class loadScriptingClassFromFile(String file) {
+        log.info("Loading groovy file $file")
 
         File currentClassFile = new File(file)
 
@@ -198,19 +226,23 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
                     return;
                 }
                 gcl = new GroovyClassLoader(Thread.currentThread().contextClassLoader);
+                //we have to add the script path so that groovy can work out the kinks of other source files added
+                scriptPath.each {
+                    gcl.addClasspath(it)
+                }
             }
         }
 
-        def aclass = gcl.parseClass(new FileInputStream(currentClassFile))
+        Class aclass = gcl.parseClass(new FileInputStream(currentClassFile))
 
         weaveGroovyReloadingCode(aclass)
         ReloadingMetadata reloadingMetaData = new ReloadingMetadata()
-
 
         reloadingMetaData.aClass = aclass;
         reloadingMetaData.fileName = file;
         reloadingMetaData.timestamp = currentClassFile.lastModified();
         reloadingMetaData.tainted = false;
+        reloadingMetaData.scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
 
         classMap.put(aclass.name, reloadingMetaData)
         /*we start our thread as late as possible due to groovy bugs*/

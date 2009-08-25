@@ -32,20 +32,31 @@
             Attention: You do not need to put /WEB-INF/faces-config.xml in here.
         </description>
         <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>/WEB-INF/examples-config.xml</param-value>
+        <param-value>/WEB-INF/faces-config.xml</param-value>
     </context-param-->
 
-<!-- clean method working for myfaces 1.2.8+ -->
 
     <context-param>
-         <description>
-             Initializes the plugins for our groovy handlers
-         </description>
-         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
-     </context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    <!-- clean method working for myfaces 1.2.8+ -->
 
-   <!--
+    <context-param>
+        <description>
+            Initializes the plugins for our groovy handlers
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+    </context-param>
+
+    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
         of the deployment dir</description>
@@ -63,10 +74,10 @@
     </context-param>
 
     <context-param>
-		<param-name>facelets.LIBRARIES</param-name>
-		<param-value>/WEB-INF/tomahawk.taglib.xml;/WEB-INF/groovy-taglib.xml</param-value>
-	</context-param>
-    
+        <param-name>facelets.LIBRARIES</param-name>
+        <param-value>/WEB-INF/tomahawk.taglib.xml;/WEB-INF/groovy-taglib.xml</param-value>
+    </context-param>
+
 
     <context-param>
         <description>Only applicable if state saving method is "server" (= default).
@@ -258,7 +269,7 @@
             <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
         </listener>
     -->
- 
+
 
     <!-- Faces Servlet -->
     <servlet>

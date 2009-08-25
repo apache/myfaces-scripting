@@ -1,10 +1,26 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.myfaces.scripting.core.util;
 
-
-import org.apache.myfaces.groovyloader.core.DelegatingGroovyClassloader;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.MethodLevelReloadingHandler;
+import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -30,7 +46,7 @@ public class ProxyUtils {
      * 
      */
     static ThreadLocal _weaverHolder = new ThreadLocal();
-
+    static ThreadLocal _identifierHolder = new ThreadLocal();
 
     public static void init() {
 
@@ -45,31 +61,10 @@ public class ProxyUtils {
     }
 
     public static boolean isScriptingEnabled() {
-        if (_weaverHolder.get() != null) {
-            return true;
-        } else {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            do {
-                if (loader instanceof DelegatingGroovyClassloader)
-                    return true;
-
-                loader = loader.getParent();
-            } while (loader != null);
-
-            return false;
-        }
+       return _weaverHolder.get() != null;
     }
 
     public static ScriptingWeaver getWeaver() {
-        if (_weaverHolder.get() == null) {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            while (loader != null && !(loader instanceof DelegatingGroovyClassloader)) {
-                loader = loader.getParent();
-            }
-            if (loader != null) {
-                _weaverHolder.set(((DelegatingGroovyClassloader) loader).getGroovyFactory());
-            }
-        }
         return (ScriptingWeaver) _weaverHolder.get();
     }
 
@@ -121,4 +116,18 @@ public class ProxyUtils {
         }
         return o;
     }
+
+
+    public static boolean isDynamic(Class clazz) {
+        //TODO open this for a chain of responsibility pattern
+        DynamicClassIdentifier identifier = (DynamicClassIdentifier) _identifierHolder.get();
+        if(identifier == null) {
+            identifier =  new DynamicClassIdentifierHolder();
+            _identifierHolder.set(identifier);
+        }
+        return identifier.isDynamic(clazz);
+    }
+
+    
+
 }

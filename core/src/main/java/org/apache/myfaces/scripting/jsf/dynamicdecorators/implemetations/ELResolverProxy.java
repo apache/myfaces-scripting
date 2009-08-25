@@ -18,14 +18,20 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.myfaces.scripting.core.util.DynamicClassIdentifier;
-import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
-
-import javax.el.*;
-
-import java.util.Iterator;
 import java.beans.FeatureDescriptor;
+import java.util.Iterator;
+
+import javax.el.ELContext;
+import javax.el.ELException;
+import javax.el.ELResolver;
+import javax.el.PropertyNotFoundException;
+import javax.el.PropertyNotWritableException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.groovyloader.core.DynamicClassIdentifier;
+import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 /**
  * EL Resolver which is scripting enabled
@@ -33,19 +39,22 @@ import java.beans.FeatureDescriptor;
  * @author Werner Punz
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
+    Log log = LogFactory.getLog(ELResolverProxy.class);
 
 
-    
     //Map reinstantiated = new HashMap();
 
 
-    public Object getValue(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
-        Object retVal = _delegate.getValue(elContext, o, o1);
-        if (retVal != null && DynamicClassIdentifier.isDynamic(retVal.getClass())) {
+    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
+        Object retVal = _delegate.getValue(elContext, base, property);
+
+        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
+            log.info("dynamically reloading bean");
+
             Object newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
-            if(newRetVal != retVal) {
-                _delegate.setValue(elContext, o, o1, newRetVal);
+            if (newRetVal != retVal) {
+                _delegate.setValue(elContext, base, property, newRetVal);
             }
             return newRetVal;
             //reinstantiated.put(retVal.getClass().getName(), retVal.getClass());
@@ -57,8 +66,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
-        if (retVal != null && DynamicClassIdentifier.isDynamic((Class)retVal)) {
-            return ProxyUtils.getWeaver().reloadScriptingClass((Class)retVal);
+        if (retVal != null && ProxyUtils.isDynamic((Class) retVal)) {
+            return ProxyUtils.getWeaver().reloadScriptingClass((Class) retVal);
         }
         return retVal;
     }
