@@ -18,9 +18,9 @@
  */
 package org.apache.myfaces.javaloader.core;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.myfaces.javaloader.core.jsr199.CompilerFacade;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -29,11 +29,11 @@ import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author werpu
@@ -48,6 +48,11 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
     DynamicCompiler compiler = new CompilerFacade();
 
 
+    /**
+     * add custom source lookup paths
+     *
+     * @param scriptPath the new path which has to be added
+     */
     public void appendCustomScriptPath(String scriptPath) {
         if (scriptPath.endsWith("/") || scriptPath.endsWith("\\/")) {
             scriptPath = scriptPath.substring(0, scriptPath.length() - 1);
@@ -55,6 +60,12 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
         scriptPaths.add(scriptPath);
     }
 
+    /**
+     * reloads a scripting instance object
+     *
+     * @param scriptingInstance the object which has to be reloaded
+     * @return the reloaded object with all properties transferred or the original object if no reloading was needed
+     */
     public Object reloadScriptingInstance(Object scriptingInstance) {
         Map<String, ReloadingMetadata> classMap = getClassMap();
         if (classMap.size() == 0) {
@@ -95,6 +106,12 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
 
     }
 
+    /**
+     * helper to map the properties wherever possible
+     *
+     * @param target
+     * @param src
+     */
     private void mapProperties(Object target, Object src) {
         try {
             BeanUtils.copyProperties(target, src);
@@ -130,6 +147,12 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
         return loadScriptingClassFromFile(metadata.getSourcePath(), metadata.getFileName());
     }
 
+    /**
+     * recompiles and loads a scripting class from a given classname
+     *
+     * @param className the classname including the package
+     * @return a valid class if the sources could be found null if nothing could be found
+     */
     public Class loadScriptingClassFromName(String className) {
         Map<String, ReloadingMetadata> classMap = getClassMap();
         ReloadingMetadata metadata = classMap.get(className);
@@ -152,10 +175,22 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
         return null;
     }
 
+    /**
+     * helper for accessing the reloading metadata map
+     *
+     * @return
+     */
     private Map<String, ReloadingMetadata> getClassMap() {
         return FileChangedDaemon.getInstance().getClassMap();
     }
 
+    /**
+     * loads a class from a given sourceroot and filename
+     *
+     * @param sourceRoot the source search lookup path
+     * @param file       the filename to be compiled and loaded
+     * @return a valid class if it could be found, null if none was found
+     */
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
         //we load the scripting class from the given className
         File currentClassFile = new File(sourceRoot + System.getProperty("file.separator") + file);
