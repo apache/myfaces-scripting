@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <parent>
-        <artifactId>myfaces-groovy</artifactId>
-        <groupId>org.apache.myfaces.extended</groupId>
+        <artifactId>root</artifactId>
+        <groupId>org.apache.myfaces.extension-scripting</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.myfaces.extended</groupId>
-    <artifactId>myfaces-groovy-examples</artifactId>
+    <groupId>org.apache.myfaces.extension-scripting</groupId>
+    <artifactId>examples</artifactId>
     <packaging>war</packaging>
     <name>A custom project using myfaces</name>
     <version>1.0-SNAPSHOT</version>
