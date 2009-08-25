@@ -31,6 +31,7 @@ public class ReloadingMetadata {
     boolean tainted = false;
     boolean taintedOnce = false;
     String fileName = "";
+    String sourcePath = "";
     Class aClass = null;
     long timestamp = 0l;
     int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
@@ -82,5 +83,13 @@ public class ReloadingMetadata {
 
     public void setScriptingEngine(int scriptingEngine) {
         this.scriptingEngine = scriptingEngine;
+    }
+
+    public String getSourcePath() {
+        return sourcePath;
+    }
+
+    public void setSourcePath(String sourcePath) {
+        this.sourcePath = sourcePath;
     }
 }

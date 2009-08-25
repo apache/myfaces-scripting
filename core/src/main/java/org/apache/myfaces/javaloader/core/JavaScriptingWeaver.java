@@ -18,28 +18,175 @@
  */
 package org.apache.myfaces.javaloader.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.myfaces.javaloader.core.jsr199.CompilerFacade;
+import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author werpu
- *
- * The Scripting Weaver for the java core which reloads the java scripts
- * dynamically upon change
+ *         <p/>
+ *         The Scripting Weaver for the java core which reloads the java scripts
+ *         dynamically upon change
  */
 public class JavaScriptingWeaver implements ScriptingWeaver {
-    public void appendCustomScriptPath(String scriptPaths) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+    List<String> scriptPaths = new LinkedList<String>();
+    Log log = LogFactory.getLog(JavaScriptingWeaver.class);
+    DynamicCompiler compiler = new CompilerFacade();
+
+
+    public void appendCustomScriptPath(String scriptPath) {
+        if (scriptPath.endsWith("/") || scriptPath.endsWith("\\/")) {
+            scriptPath = scriptPath.substring(0, scriptPath.length() - 1);
+        }
+        scriptPaths.add(scriptPath);
     }
 
-    public Object reloadScriptingInstance(Object o) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Object reloadScriptingInstance(Object scriptingInstance) {
+        Map<String, ReloadingMetadata> classMap = getClassMap();
+        if (classMap.size() == 0) {
+            return scriptingInstance;
+        }
+
+        ReloadingMetadata reloadMeta = classMap.get(scriptingInstance.getClass().getName());
+
+        //This gives a minor speedup because we jump out as soon as possible
+        //files never changed do not even have to be considered
+        //not tained even once == not even considered to be reloaded
+        if (isReloadCandidate(reloadMeta)) {
+
+            //reload the class to get new static content if needed
+            Class aclass = reloadScriptingClass(scriptingInstance.getClass());
+            if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
+                //class of this object has not changed although
+                // reload is enabled we can skip the rest now
+                return scriptingInstance;
+            }
+            log.info("possible reload for " + scriptingInstance.getClass().getName());
+            /*only recreation of empty constructor classes is possible*/
+            try {
+                //reload the object by instiating a new class and
+                // assigning the attributes properly
+                Object newObject = aclass.newInstance();
+
+                /*now we shuffle the properties between the objects*/
+                mapProperties(newObject, scriptingInstance);
+
+                return newObject;
+            } catch (Exception e) {
+                log.error(e);
+            }
+        }
+        return scriptingInstance;
+
+
     }
 
+    private void mapProperties(Object target, Object src) {
+        try {
+            BeanUtils.copyProperties(target, src);
+        } catch (IllegalAccessException e) {
+            log.debug(e);
+            //this is wanted
+        } catch (InvocationTargetException e) {
+            log.debug(e);
+            //this is wanted
+        }
+    }
+
+    /**
+     * condition which marks a metadata as reload candidate
+     */
+    private boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
+        return reloadMeta != null && reloadMeta.getScriptingEngine() == ScriptingConst.ENGINE_TYPE_GROOVY && reloadMeta.isTaintedOnce();
+    }
+
+
+    /**
+     * reweaving of an existing woven class
+     * by reloading its file contents and then reweaving it
+     */
     public Class reloadScriptingClass(Class aclass) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        ReloadingMetadata metadata = getClassMap().get(aclass.getName());
+        if (metadata == null)
+            return aclass;
+        if (!metadata.isTainted()) {
+            //if not tained then we can recycle the last class loaded
+            return metadata.getAClass();
+        }
+        return loadScriptingClassFromFile(metadata.getSourcePath(), metadata.getFileName());
     }
 
     public Class loadScriptingClassFromName(String className) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Map<String, ReloadingMetadata> classMap = getClassMap();
+        ReloadingMetadata metadata = classMap.get(className);
+        if (metadata == null) {
+            String fileName = className.replaceAll("\\.", System.getProperty("file.separator")) + ".java";
+
+            //TODO this code can probably be replaced by the functionality
+            //already given in the Groovy classloader, this needs further testing
+            for (String pathEntry : this.scriptPaths) {
+
+                Class retVal = (Class) loadScriptingClassFromFile(pathEntry, fileName);
+                if (retVal != null) {
+                    return retVal;
+                }
+            }
+
+        } else {
+            return reloadScriptingClass(metadata.getAClass());
+        }
+        return null;
+    }
+
+    private Map<String, ReloadingMetadata> getClassMap() {
+        return FileChangedDaemon.getInstance().getClassMap();
+    }
+
+    protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
+        //we load the scripting class from the given className
+        File currentClassFile = new File(sourceRoot + System.getProperty("file.separator") + file);
+        if (!currentClassFile.exists()) {
+            return null;
+        }
+        log.info("Loading java file:" + file);
+
+        Iterator<String> it = scriptPaths.iterator();
+
+        Class retVal = null;
+        //while(retVal == null && it.hasNext()) {
+        //    String currentPath = it.next();
+        try {
+            retVal = compiler.compileFile("", file);
+        } catch (ClassNotFoundException e) {
+            //can be safely ignored
+        }
+        //}
+        if (retVal != null) {
+            ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
+            reloadingMetaData.setAClass(retVal);
+
+            reloadingMetaData.setFileName(file);
+            reloadingMetaData.setSourcePath(sourceRoot);
+            reloadingMetaData.setTimestamp(currentClassFile.lastModified());
+            reloadingMetaData.setTainted(false);
+            reloadingMetaData.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JAVA);
+            getClassMap().put(retVal.getName(), reloadingMetaData);
+        }
+
+        return retVal;
     }
 }

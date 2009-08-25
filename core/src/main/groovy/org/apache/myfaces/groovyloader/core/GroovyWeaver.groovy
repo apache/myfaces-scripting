@@ -208,6 +208,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
     public void appendCustomScriptPath(String singlePath) {
 
         singlePath = singlePath.trim();
+        //TODO normalization here?
         if (!singlePath.endsWith("/") && !singlePath.endsWith("\\"))
             singlePath += "/";
         scriptPath << singlePath
@@ -215,7 +216,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
     }
 
     protected Class loadScriptingClassFromFile(String file) {
-        log.info("Loading groovy file $file")
+        log.info("Loading groovy file: $file")
 
         File currentClassFile = new File(file)
 
