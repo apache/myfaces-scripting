@@ -70,7 +70,7 @@ public class ScriptingWeaverHolder implements ScriptingWeaver {
     public Class loadScriptingClassFromName(String className) {
         //we try to load from the chain, we cannot determine the engine type upfront here
         Class retVal = this._groovyWeaver.loadScriptingClassFromName(className);
-        if (retVal != null) {
+        if (retVal == null) {
             return this._javaWeaver.loadScriptingClassFromName(className);
         }
         return retVal;
