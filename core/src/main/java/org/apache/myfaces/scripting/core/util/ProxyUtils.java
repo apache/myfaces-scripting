@@ -118,16 +118,24 @@ public class ProxyUtils {
     }
 
 
+    public static int getEngineType(Class clazz) {
+        DynamicClassIdentifier identifier = getDynamicClassIdentifier();
+        return identifier.getEngineType(clazz);
+    }
+
     public static boolean isDynamic(Class clazz) {
-        //TODO open this for a chain of responsibility pattern
+        DynamicClassIdentifier identifier = getDynamicClassIdentifier();
+        return identifier.isDynamic(clazz);
+    }
+
+    private static DynamicClassIdentifier getDynamicClassIdentifier() {
         DynamicClassIdentifier identifier = (DynamicClassIdentifier) _identifierHolder.get();
         if(identifier == null) {
             identifier =  new DynamicClassIdentifierHolder();
             _identifierHolder.set(identifier);
         }
-        return identifier.isDynamic(clazz);
+        return identifier;
     }
 
-    
 
 }

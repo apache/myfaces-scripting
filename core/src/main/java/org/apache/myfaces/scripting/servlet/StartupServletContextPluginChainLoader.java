@@ -45,7 +45,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);
-        servletContext.setAttribute("GroovyDynamicLoader", loader.getScriptingWeaver());
+        servletContext.setAttribute("MyFacesDynamicLoader", loader.getScriptingWeaver());
 
    }
 

@@ -42,7 +42,7 @@ public class ScriptingServletFilter implements Filter {
      }
 
      public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-         Object groovyDynamicLoader = context.getAttribute("GroovyDynamicLoader");
+         Object groovyDynamicLoader = context.getAttribute("MyFacesDynamicLoader");
          ProxyUtils.setWeaver(groovyDynamicLoader);
          filterChain.doFilter(servletRequest, servletResponse);
      }
