@@ -65,7 +65,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         //TODO end?
         scriptingRoot = contextRoot;
 
-        setupScriptingPatsh(servletContext, groovyWeaver, CUSTOM_JAVA_LOADER_PATHS);
+        setupScriptingPatsh(servletContext, groovyWeaver, CUSTOM_LOADER_PATHS);
 
         contextRoot = servletContext.getRealPath(JAVA_SOURCE_ROOT);
         contextRoot = contextRoot.trim();

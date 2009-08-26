@@ -50,8 +50,9 @@ public class ScriptingWeaverHolder implements ScriptingWeaver {
         switch (objectType) {
             case ScriptingConst.ENGINE_TYPE_GROOVY:
                 return this._groovyWeaver.reloadScriptingInstance(o);
-            default: //java
+            case ScriptingConst.ENGINE_TYPE_JAVA: //java
                 return this._javaWeaver.reloadScriptingInstance(o);
+            default: return o;
         }
     }
 
@@ -61,8 +62,9 @@ public class ScriptingWeaverHolder implements ScriptingWeaver {
         switch (objectType) {
             case ScriptingConst.ENGINE_TYPE_GROOVY:
                 return this._groovyWeaver.reloadScriptingClass(aclass);
-            default: //java
+            case ScriptingConst.ENGINE_TYPE_JAVA: //java
                 return this._javaWeaver.reloadScriptingClass(aclass);
+            default: return aclass;
         }
     }
 

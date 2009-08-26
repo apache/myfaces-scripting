@@ -45,6 +45,6 @@ class TestBean {
 
 
     public String getXxx() {
-        "ss Simple text you can change me on the fly"
+        "Simple text you can change me on the fly"
     }
 }

@@ -193,6 +193,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
             //TODO this code can probably be replaced by the functionality
             //already given in the Groovy classloader, this needs further testing
             for (String pathEntry in scriptPath) {
+                log.info("search for:"+pathEntry + groovyClass);
                 File classFile = new File(pathEntry + groovyClass);
 
                 if (classFile.exists()) /*we check the groovy subdir for our class*/
