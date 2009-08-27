@@ -19,7 +19,9 @@
 package org.apache.myfaces.scripting.servlet;
 
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.ScriptingWeaverHolder;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 
 import javax.servlet.*;
@@ -42,8 +44,8 @@ public class ScriptingServletFilter implements Filter {
      }
 
      public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-         Object groovyDynamicLoader = context.getAttribute("MyFacesDynamicLoader");
-         ProxyUtils.setWeaver(groovyDynamicLoader);
+
+         ProxyUtils.setWeaver(context.getAttribute("ScriptingWeaver"));
          filterChain.doFilter(servletRequest, servletResponse);
      }
 

@@ -16,35 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.test
+package org.apache.myfaces.scripting.core.util;
+
 /**
- * @author Werner Punz
+ * @author werpu
+ * helper class to bypass a groovy related bug
+ * 
  */
-class TestBean {
-    String helloworld = "hallo ist - die bean"
+public class ClassUtils {
 
-    //note you can add new atrtributes
-    //no setter or getter is needed
-    //and with a single request you will get the
-    //attribute be used in your page
-    //give it a try
-
-    //String newAttribute = "This is a new attribute"
-    //uncomment this and add a control to the page displaying it
-
-
-    public String getHelloworld() {
-        return helloworld
-    }
-
-
-    public String doit() {
-        print "doit called"
-        return null
-    }
-
-
-    public String getXxx() {
-        "Simple text you can change me on the fly"
+    /*this is mostly just a helper to bypass a groovy bug in a more
+    * complex delegation environemt. Groovy throws a classcast
+    * exeption wrongly, delegating the instantiation code to java
+    * fixes that
+    * */
+    public static Object newObject(Class clazz) throws IllegalAccessException, InstantiationException {
+        return clazz.newInstance();
     }
 }

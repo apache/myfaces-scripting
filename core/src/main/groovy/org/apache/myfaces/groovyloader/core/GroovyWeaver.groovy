@@ -18,15 +18,15 @@
  */
 package org.apache.myfaces.groovyloader.core
 
-import org.apache.myfaces.scripting.refresh.*;
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.myfaces.groovyloader.core.Groovy2GroovyObjectReloadingProxy
-import org.apache.myfaces.scripting.api.ScriptingWeaver
-import org.codehaus.groovy.runtime.InvokerHelper
 import org.apache.myfaces.scripting.api.ScriptingConst
+import org.apache.myfaces.scripting.api.ScriptingWeaver
+import org.apache.myfaces.scripting.core.util.ClassUtils
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon
-
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata
+import org.codehaus.groovy.runtime.InvokerHelper
 
 /**
  * Weaver  which does dynamic class reloading
@@ -45,7 +45,7 @@ import org.apache.myfaces.scripting.refresh.FileChangedDaemon
  */
 public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
-    static def gcl = null
+
     static Map classMap = Collections.synchronizedMap(new java.util.HashMap())
     static Log log = LogFactory.getLog(GroovyWeaver.class)
     static def scriptPath = []
@@ -54,7 +54,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
     public GroovyWeaver() {
     }
 
-  /*
+    /*
     * we set a deamon to enable webapp artefact change tainting
     * this should speed up operations because we do not have
     * to check on the filesystem for every reload access
@@ -110,23 +110,25 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
         if (isReloadCandidate(reloadMeta)) {
 
             //reload the class to get new static content if needed
-            def aclass = reloadScriptingClass(o.class)
-            if (aclass.hashCode().equals(o.class.hashCode())) {
+            def newClass = reloadScriptingClass(o.getClass())
+            if (newClass.hashCode().equals(o.getClass().hashCode())) {
                 //class of this object has not changed although
                 // reload is enabled we can skip the rest now
                 return o
             }
-            log.info("possible reload for ${o.class.name}")
+            log.info("possible reload for ${o.getClass().name}")
             /*only recreation of empty constructor classes is possible*/
             try {
                 //reload the object by instiating a new class and
                 // assigning the attributes properly
-                Object newObject = aclass.newInstance();
-
+                log.info("before instantiation")
+                //we do it that way due to a bug in groovy
+                Object retVal = ClassUtils.newObject(newClass);
+                log.info("before after")
                 /*now we shuffle the properties between the objects*/
-                mapProperties(newObject, o)
+                mapProperties(retVal, o)
 
-                return newObject
+                return retVal
             } catch (e) {
                 log.error(e)
             }
@@ -138,7 +140,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
      * condition which marks a metadata as reload candidate
      */
     private boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
-        return (reloadMeta?.scriptingEngine == ScriptingConst.ENGINE_TYPE_GROOVY) && reloadMeta?.taintedOnce  
+        return (reloadMeta?.scriptingEngine == ScriptingConst.ENGINE_TYPE_GROOVY) && reloadMeta?.taintedOnce
     }
 
     /**
@@ -188,12 +190,12 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
     public Class loadScriptingClassFromName(String className) {
         ReloadingMetadata metadata = classMap[className]
         if (metadata == null) {
-            String groovyClass = className.replaceAll("\\.", System.getProperty("file.separator")) + ".groovy";
+            String groovyClass = className.replaceAll("\\.", File.separator) + ".groovy";
 
             //TODO this code can probably be replaced by the functionality
             //already given in the Groovy classloader, this needs further testing
             for (String pathEntry in scriptPath) {
-                log.info("search for:"+pathEntry + groovyClass);
+                log.info("search for:" + pathEntry + groovyClass);
                 File classFile = new File(pathEntry + groovyClass);
 
                 if (classFile.exists()) /*we check the groovy subdir for our class*/
@@ -221,39 +223,47 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
         File currentClassFile = new File(file)
 
-        //lazy instantiation for the gcl to eliminate a method
-        if (gcl == null) {
-            synchronized (this.class) {
-                if (gcl != null) {
-                    return;
-                }
-                gcl = new GroovyClassLoader(Thread.currentThread().contextClassLoader);
-                //we have to add the script path so that groovy can work out the kinks of other source files added
-                scriptPath.each {
-                    gcl.addClasspath(it)
-                }
-            }
+        //lazy instantiation to avoid threading problems
+        //and locking related speed bumps
+
+        //TODO replace the classloader detection with the one from the myfaces utils class
+        GroovyClassLoader gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
+        //we have to add the script path so that groovy can work out the kinks of other source files added
+        scriptPath.each {
+            gcl.addClasspath(it)
         }
 
-        Class aclass = gcl.parseClass(new FileInputStream(currentClassFile))
+        Class newClass = gcl.parseClass(new FileInputStream(currentClassFile))
+        gcl = null;
 
-        weaveGroovyReloadingCode(aclass)
+        weaveGroovyReloadingCode(newClass)
         ReloadingMetadata reloadingMetaData = new ReloadingMetadata()
 
-        reloadingMetaData.aClass = aclass;
+        reloadingMetaData.aClass = newClass;
         reloadingMetaData.fileName = file;
         reloadingMetaData.timestamp = currentClassFile.lastModified();
         reloadingMetaData.tainted = false;
         reloadingMetaData.scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
 
-        classMap.put(aclass.name, reloadingMetaData)
+        classMap.put(newClass.name, reloadingMetaData)
         /*we start our thread as late as possible due to groovy bugs*/
 
         startThread()
-        return aclass
+        return newClass
 
     }
 
+
+
+    /**
+     * creates a proxy specify object reloading proxy
+     * this works very well in a groovy only specific
+     * context, unfortunately as soon as the object
+     * is pushed into java land the proxy is dropped
+     * nevertheless we add this behavior for a groovy
+     * only context, for now, in the long run we might
+     * have to drop it entirely 
+     */
     private final void weaveGroovyReloadingCode(Class aclass) {
         //TODO this only works in a groovy 2 groovy specific
         //surrounding lets check if this is not obsolete

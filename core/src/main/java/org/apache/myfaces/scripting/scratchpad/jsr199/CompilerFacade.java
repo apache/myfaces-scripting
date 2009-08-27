@@ -18,7 +18,7 @@ public class CompilerFacade implements DynamicCompiler {
     DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
     StandardJavaFileManager fileManager = null;
     private static File tempDir = null;
-    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    private static final String FILE_SEPARATOR = File.separator;
 
     public CompilerFacade() {
         super();

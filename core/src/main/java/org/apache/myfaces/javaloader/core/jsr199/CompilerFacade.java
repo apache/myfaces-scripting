@@ -18,7 +18,7 @@ public class CompilerFacade implements DynamicCompiler {
     DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
     StandardJavaFileManager fileManager = null;
     private static File tempDir = null;
-    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    private static final String FILE_SEPARATOR = File.separator;
 
     public CompilerFacade() {
         super();
@@ -44,12 +44,12 @@ public class CompilerFacade implements DynamicCompiler {
     }
 
 
-    class TargetClassLoader extends ClassLoader {
-        TargetClassLoader(ClassLoader classLoader) {
+    class RecompiledJavaClassloader extends ClassLoader {
+        RecompiledJavaClassloader(ClassLoader classLoader) {
             super(classLoader);
         }
 
-        TargetClassLoader() {
+        RecompiledJavaClassloader() {
         }
 
         @Override
@@ -89,15 +89,17 @@ public class CompilerFacade implements DynamicCompiler {
     public Class compileFile(String sourceRoot, String filePath) throws ClassNotFoundException {
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + filePath);
 
+        //TODO add the core jar from our lib dir
+        //the compiler otherwise cannot find the file
         String[] options = new String[]{"-d", tempDir.getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
         compiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         //TODO collect the diagnostics and if an error was issued dump it on the log
         //and throw an unmanaged exeption which routes later on into myfaces
 
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        if (!(oldClassLoader instanceof TargetClassLoader)) {
+        if (!(oldClassLoader instanceof RecompiledJavaClassloader)) {
             try {
-                TargetClassLoader classLoader = new TargetClassLoader(oldClassLoader);
+                RecompiledJavaClassloader classLoader = new RecompiledJavaClassloader(oldClassLoader);
                 Thread.currentThread().setContextClassLoader(classLoader);
                 String classFile = filePath.replaceAll("\\\\", ".").replaceAll("\\/", ".");
                 classFile = classFile.substring(0, classFile.lastIndexOf("."));

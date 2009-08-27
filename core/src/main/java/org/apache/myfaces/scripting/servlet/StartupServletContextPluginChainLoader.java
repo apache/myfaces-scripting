@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_impl.util.ClassUtils;
 import org.apache.myfaces.webapp.StartupListener;
+import org.apache.myfaces.scripting.core.util.ScriptingWeaverHolder;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
@@ -45,8 +46,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);
-        servletContext.setAttribute("MyFacesDynamicLoader", loader.getScriptingWeaver());
-
+        servletContext.setAttribute("ScriptingWeaver", loader.getScriptingWeaver());
    }
 
     public void postInit(ServletContextEvent evt) {

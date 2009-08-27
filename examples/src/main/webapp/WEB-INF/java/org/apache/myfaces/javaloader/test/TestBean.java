@@ -1,6 +1,8 @@
 package org.apache.myfaces.javaloader.test;
 
+import org.apache.myfaces.javaloader.core.ScriptingClass;
 
+@ScriptingClass
 public class TestBean {
     String sayHello = "hello world";
 

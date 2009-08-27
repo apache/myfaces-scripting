@@ -21,6 +21,8 @@ package org.apache.myfaces.scripting.core.util;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
+import java.io.Serializable;
+
 /**
  * @author werpu
  *
@@ -28,14 +30,14 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
  * and implements a chain of responsibility pattern
  * on them
  */
-public class ScriptingWeaverHolder implements ScriptingWeaver {
+public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
 
     ScriptingWeaver _groovyWeaver = null;
     ScriptingWeaver _javaWeaver = null;
 
-    public ScriptingWeaverHolder(ScriptingWeaver ... weavers) {
-        _groovyWeaver = weavers[0];
-        _javaWeaver = weavers[1];
+    public ScriptingWeaverHolder(ScriptingWeaver groovyWeaver, ScriptingWeaver javaWeaver) {
+        _groovyWeaver = groovyWeaver;
+        _javaWeaver = javaWeaver;
 
     }
 
@@ -77,4 +79,21 @@ public class ScriptingWeaverHolder implements ScriptingWeaver {
         }
         return retVal;
     }
+
+    public ScriptingWeaver get_groovyWeaver() {
+        return _groovyWeaver;
+    }
+
+    public void set_groovyWeaver(ScriptingWeaver _groovyWeaver) {
+        this._groovyWeaver = _groovyWeaver;
+    }
+
+    public ScriptingWeaver get_javaWeaver() {
+        return _javaWeaver;
+    }
+
+    public void set_javaWeaver(ScriptingWeaver _javaWeaver) {
+        this._javaWeaver = _javaWeaver;
+    }
 }
+

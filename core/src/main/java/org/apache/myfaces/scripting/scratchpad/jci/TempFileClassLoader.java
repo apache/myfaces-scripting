@@ -47,7 +47,7 @@ public class TempFileClassLoader extends ClassLoader {
 
     @Override
     public Class loadClass(String s) throws ClassNotFoundException {
-        String finalName = s.replaceAll("\\.", System.getProperty("file.separator"));
+        String finalName = s.replaceAll("\\.", File.separator);
         finalName = finalName + ".java";
 
         String[] toCompile = new String[1];

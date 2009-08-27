@@ -43,9 +43,12 @@ import java.util.Map;
  */
 public class JavaScriptingWeaver implements ScriptingWeaver {
 
+    /**
+     * only be set from the
+     * initialisation code so no thread safety needed
+     */
     List<String> scriptPaths = new LinkedList<String>();
     Log log = LogFactory.getLog(JavaScriptingWeaver.class);
-    DynamicCompiler compiler = new CompilerFacade();
 
 
     /**
@@ -57,6 +60,7 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
         if (scriptPath.endsWith("/") || scriptPath.endsWith("\\/")) {
             scriptPath = scriptPath.substring(0, scriptPath.length() - 1);
         }
+       
         scriptPaths.add(scriptPath);
     }
 
@@ -157,7 +161,7 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
         Map<String, ReloadingMetadata> classMap = getClassMap();
         ReloadingMetadata metadata = classMap.get(className);
         if (metadata == null) {
-            String fileName = className.replaceAll("\\.", System.getProperty("file.separator")) + ".java";
+            String fileName = className.replaceAll("\\.", File.separator) + ".java";
 
             //TODO this code can probably be replaced by the functionality
             //already given in the Groovy classloader, this needs further testing
@@ -193,7 +197,7 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
      */
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
         //we load the scripting class from the given className
-        File currentClassFile = new File(sourceRoot + System.getProperty("file.separator") + file);
+        File currentClassFile = new File(sourceRoot + File.separator + file);
         if (!currentClassFile.exists()) {
             return null;
         }
@@ -205,7 +209,10 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
         //while(retVal == null && it.hasNext()) {
         //    String currentPath = it.next();
         try {
-            retVal = compiler.compileFile("", file);
+            //we initialize the compiler lazy
+            //because the facade itself is lazy
+            DynamicCompiler compiler = new CompilerFacade();
+            retVal = compiler.compileFile(sourceRoot, file);
         } catch (ClassNotFoundException e) {
             //can be safely ignored
         }
