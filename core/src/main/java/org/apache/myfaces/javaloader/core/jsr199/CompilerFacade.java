@@ -1,11 +1,14 @@
 package org.apache.myfaces.javaloader.core.jsr199;
 
 import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import javax.tools.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * A compiler facade encapsulating the JSR 199
@@ -86,15 +89,29 @@ public class CompilerFacade implements DynamicCompiler {
     }
 
 
-    public Class compileFile(String sourceRoot, String filePath) throws ClassNotFoundException {
+    public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + filePath);
 
         //TODO add the core jar from our lib dir
         //the compiler otherwise cannot find the file
-        String[] options = new String[]{"-d", tempDir.getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
+        String[] options = new String[]{"-cp",classPath,"-d", tempDir.getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
         compiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         //TODO collect the diagnostics and if an error was issued dump it on the log
         //and throw an unmanaged exeption which routes later on into myfaces
+        if(diagnosticCollector.getDiagnostics().size() > 0) {
+            Log log = LogFactory.getLog(this.getClass());
+            StringBuilder errors = new StringBuilder();
+            for (Diagnostic diagnostic : diagnosticCollector.getDiagnostics())  {
+                String error = "Error on line" +
+                                  diagnostic.getMessage(Locale.getDefault())+"------"+
+                                  diagnostic.getLineNumber()+" File:"+
+                                  diagnostic.getSource().toString();
+                log.error(error);
+                errors.append(error);
+
+            }
+            throw new ClassNotFoundException("Compile error of java file:"+errors.toString());
+        }
 
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         if (!(oldClassLoader instanceof RecompiledJavaClassloader)) {

@@ -13,7 +13,7 @@ public class JavaReladingTest {
           // TempFileClassLoader classLoader = new TempFileClassLoader(Thread.currentThread().getContextClassLoader(), true, "/home/werpu/development/workspace/myfaces-groovy/core/src/main/java");
            DynamicCompiler compiler = new CompilerFacade();
            try {
-               Class clazz = compiler.compileFile("/home/werpu/development/workspace/myfaces-groovy/core/src/main/java","org/apache/myfaces/scripting/scratchpad/probes/TestClass.java");
+               Class clazz = compiler.compileFile("/home/werpu/development/workspace/myfaces-groovy/core/src/main/java","","org/apache/myfaces/scripting/scratchpad/probes/TestClass.java");
                ITestClass proxy = (ITestClass) clazz.newInstance();
                proxy.helloWorld();
                

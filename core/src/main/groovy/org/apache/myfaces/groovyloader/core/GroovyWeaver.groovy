@@ -189,6 +189,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
     public Class loadScriptingClassFromName(String className) {
         ReloadingMetadata metadata = classMap[className]
+
         if (metadata == null) {
             String groovyClass = className.replaceAll("\\.", File.separator) + ".groovy";
 
@@ -203,9 +204,11 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
             }
 
         } else {
+            if(metadata.scriptingEngine != ScriptingConst.ENGINE_TYPE_GROOVY) {
+                return null;
+            }
             return reloadScriptingClass(metadata.aClass)
         }
-        return null
     }
 
     public void appendCustomScriptPath(String singlePath) {

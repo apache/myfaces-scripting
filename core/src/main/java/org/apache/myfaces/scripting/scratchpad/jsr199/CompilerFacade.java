@@ -86,10 +86,10 @@ public class CompilerFacade implements DynamicCompiler {
     }
 
 
-    public Class compileFile(String sourceRoot, String filePath) throws ClassNotFoundException {
+    public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + filePath);
 
-        String[] options = new String[]{"-d", tempDir.getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
+        String[] options = new String[]{"-cp",classPath,"-d", tempDir.getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
         compiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         //TODO collect the diagnostics and if an error was issued dump it on the log
         //and throw an unmanaged exeption which routes later on into myfaces

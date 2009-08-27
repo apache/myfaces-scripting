@@ -28,7 +28,9 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
+import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -49,7 +51,54 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
      */
     List<String> scriptPaths = new LinkedList<String>();
     Log log = LogFactory.getLog(JavaScriptingWeaver.class);
+    String classPath = "";
 
+    /**
+         * helper to allow initial compiler classpath scanning
+         * @param servletContext
+         */
+    public JavaScriptingWeaver(ServletContext servletContext) {
+        super();
+        scanClasspath(servletContext);
+        //TODO move the directory scannint for the sources also in here
+    }
+
+    private void scanClasspath(ServletContext context) {
+        String webInf = context.getRealPath(File.separator+"WEB-INF");    
+        StringBuilder classPath = new StringBuilder(255);
+        File jarRoot = new File(webInf+File.separator+"lib");
+
+        classPath.append(webInf);
+        classPath.append(File.separator);
+        classPath.append("classes");
+        
+        if(jarRoot.exists()) {
+            log.info("Scanning paths for possible java compiler classpaths");
+            String [] fileNames = jarRoot.list(new FilenameFilter() {
+                public boolean accept(File dir,
+                      String name) {
+                      name = name.toLowerCase();
+                      name = name.trim();
+                      return name.endsWith(".jar") || name.endsWith(".zip");
+                }
+            });
+
+            for(String name: fileNames) {
+                classPath.append(File.pathSeparator);
+                classPath.append(webInf);
+                classPath.append(File.separator);
+                classPath.append("lib");
+                classPath.append(File.separator);
+                classPath.append(name);
+            }
+
+            this.classPath = classPath.toString();
+            //TODO also go one level up to scan for the lib dir of the ear container
+            //TODO add additional jar scan paths via configuration
+            //for now this should do it
+        }
+
+    }
 
     /**
      * add custom source lookup paths
@@ -132,7 +181,7 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
      * condition which marks a metadata as reload candidate
      */
     private boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
-        return reloadMeta != null && reloadMeta.getScriptingEngine() == ScriptingConst.ENGINE_TYPE_GROOVY && reloadMeta.isTaintedOnce();
+        return reloadMeta != null && reloadMeta.getScriptingEngine() == ScriptingConst.ENGINE_TYPE_JAVA && reloadMeta.isTaintedOnce();
     }
 
 
@@ -212,7 +261,7 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
             //we initialize the compiler lazy
             //because the facade itself is lazy
             DynamicCompiler compiler = new CompilerFacade();
-            retVal = compiler.compileFile(sourceRoot, file);
+            retVal = compiler.compileFile(sourceRoot, classPath, file);
         } catch (ClassNotFoundException e) {
             //can be safely ignored
         }

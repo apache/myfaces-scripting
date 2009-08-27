@@ -52,7 +52,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
 
     public CustomChainLoader(ServletContext servletContext) {
         ScriptingWeaver groovyWeaver = new GroovyWeaver();
-        ScriptingWeaver javaWeaver = new JavaScriptingWeaver();
+        ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
         //this.scriptingWeaver = new GroovyWeaver();
 
