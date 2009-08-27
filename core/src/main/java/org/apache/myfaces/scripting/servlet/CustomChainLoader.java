@@ -25,6 +25,8 @@ import org.apache.myfaces.scripting.core.util.ScriptingWeaverHolder;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.apache.myfaces.javaloader.core.JavaScriptingWeaver;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
 
@@ -50,29 +52,15 @@ public class CustomChainLoader extends ClassLoaderExtension {
     private static final String GROOVY_SOURCE_ROOT = "/WEB-INF/groovy/";
     private static final String JAVA_SOURCE_ROOT = "/WEB-INF/java/";
 
+    Log log = LogFactory.getLog(CustomChainLoader.class);
+
+
     public CustomChainLoader(ServletContext servletContext) {
         ScriptingWeaver groovyWeaver = new GroovyWeaver();
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
-        //this.scriptingWeaver = new GroovyWeaver();
-
-        String contextRoot = servletContext.getRealPath(GROOVY_SOURCE_ROOT);
-
-        contextRoot = contextRoot.trim();
-        //TODO still needed?
-        if (!contextRoot.endsWith("/") && !contextRoot.endsWith("\\"))
-            contextRoot += "/";
-        //TODO end?
-        scriptingRoot = contextRoot;
-
-        setupScriptingPatsh(servletContext, groovyWeaver, CUSTOM_LOADER_PATHS);
-
-        contextRoot = servletContext.getRealPath(JAVA_SOURCE_ROOT);
-        contextRoot = contextRoot.trim();
-
-        scriptingRoot = contextRoot;
-        setupScriptingPatsh(servletContext, javaWeaver, CUSTOM_JAVA_LOADER_PATHS);
-
+        setupScriptingPaths(servletContext, groovyWeaver,GROOVY_SOURCE_ROOT, CUSTOM_LOADER_PATHS);
+        setupScriptingPaths(servletContext, javaWeaver, JAVA_SOURCE_ROOT, CUSTOM_JAVA_LOADER_PATHS);
 
         this.scriptingWeaver = new ScriptingWeaverHolder(groovyWeaver, javaWeaver);
         //we have to store it because our filter
@@ -80,8 +68,14 @@ public class CustomChainLoader extends ClassLoaderExtension {
         ProxyUtils.setWeaver(this.scriptingWeaver);
     }
 
-    private void setupScriptingPatsh(ServletContext servletContext, ScriptingWeaver weaver, String initParams) {
+    private void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) {
         String additionalLoaderPaths;
+
+        String contextRoot = servletContext.getRealPath(contextRootKey);
+        contextRoot = contextRoot.trim();
+        scriptingRoot = contextRoot;
+
+
         additionalLoaderPaths = servletContext.getInitParameter(initParams);
         appendAdditionalPaths(additionalLoaderPaths, weaver);
         weaver.appendCustomScriptPath(scriptingRoot);
@@ -89,10 +83,10 @@ public class CustomChainLoader extends ClassLoaderExtension {
     }
 
     private void appendAdditionalPaths(String additionalLoaderPaths, ScriptingWeaver workWeaver) {
-        if(!StringUtils.isBlank(additionalLoaderPaths)) {
-            String [] additionalPaths = additionalLoaderPaths.split(",");
-            for(String path: additionalPaths) {
-                 workWeaver.appendCustomScriptPath(path);
+        if (!StringUtils.isBlank(additionalLoaderPaths)) {
+            String[] additionalPaths = additionalLoaderPaths.split(",");
+            for (String path : additionalPaths) {
+                workWeaver.appendCustomScriptPath(path);
             }
         }
     }

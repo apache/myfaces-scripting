@@ -266,6 +266,7 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
             //can be safely ignored
         }
         //}
+
         if (retVal != null) {
             ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
             reloadingMetaData.setAClass(retVal);
@@ -275,6 +276,9 @@ public class JavaScriptingWeaver implements ScriptingWeaver {
             reloadingMetaData.setTimestamp(currentClassFile.lastModified());
             reloadingMetaData.setTainted(false);
             reloadingMetaData.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JAVA);
+            //ReloadingMetadata oldMetadata = getClassMap().get(retVal.getName());
+            reloadingMetaData.setTaintedOnce(getClassMap().containsKey(retVal.getName()));    
+
             getClassMap().put(retVal.getName(), reloadingMetaData);
         }
 

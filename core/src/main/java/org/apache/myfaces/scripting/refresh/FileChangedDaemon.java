@@ -78,10 +78,11 @@ public class FileChangedDaemon extends Thread {
             for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
                 if (!it.getValue().isTainted()) {
 
-                    File proxyFile = new File(it.getValue().getFileName());
-                    it.getValue().tainted = (proxyFile.lastModified() != it.getValue().getTimestamp());
+                    File proxyFile = new File(it.getValue().getSourcePath()+File.separator+it.getValue().getFileName());
+                    it.getValue().setTainted(proxyFile.lastModified() != it.getValue().getTimestamp());
                     if (it.getValue().isTainted()) {
                         it.getValue().setTaintedOnce(true);
+                        log.info("comparing"+it.getKey()+"Dates:"+proxyFile.lastModified()+"-"+it.getValue().getTimestamp());
                         log.info("Tainting:"+it.getValue().getFileName());
                     }
                     it.getValue().setTimestamp(proxyFile.lastModified());

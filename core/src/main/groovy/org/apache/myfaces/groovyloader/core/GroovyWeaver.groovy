@@ -196,11 +196,11 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
             //TODO this code can probably be replaced by the functionality
             //already given in the Groovy classloader, this needs further testing
             for (String pathEntry in scriptPath) {
-                log.info("search for:" + pathEntry + groovyClass);
-                File classFile = new File(pathEntry + groovyClass);
+                log.info("search for:" + pathEntry  + File.separator + groovyClass);
+                File classFile = new File(pathEntry + File.separator + groovyClass);
 
                 if (classFile.exists()) /*we check the groovy subdir for our class*/
-                    return (Class) loadScriptingClassFromFile(pathEntry + groovyClass);
+                    return (Class) loadScriptingClassFromFile(pathEntry  + File.separator + groovyClass);
             }
 
         } else {
@@ -215,8 +215,8 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
 
         singlePath = singlePath.trim();
         //TODO normalization here?
-        if (!singlePath.endsWith("/") && !singlePath.endsWith("\\"))
-            singlePath += "/";
+        if (singlePath.endsWith(File.separator) || singlePath.endsWith("/") || singlePath.endsWith("\\"))
+            singlePath = singlePath.substring(0, singlePath.length() - 1);
         scriptPath << singlePath
 
     }
@@ -246,6 +246,7 @@ public class GroovyWeaver implements Serializable, ScriptingWeaver {
         reloadingMetaData.fileName = file;
         reloadingMetaData.timestamp = currentClassFile.lastModified();
         reloadingMetaData.tainted = false;
+        reloadingMetaData.taintedOnce = getClassMap().containsKey(newClass.name)
         reloadingMetaData.scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
 
         classMap.put(newClass.name, reloadingMetaData)
