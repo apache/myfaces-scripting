@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.javaloader.core;
 
-import org.apache.myfaces.javaloader.core.ScriptingClass;
+import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 
 /**
  * @author werpu

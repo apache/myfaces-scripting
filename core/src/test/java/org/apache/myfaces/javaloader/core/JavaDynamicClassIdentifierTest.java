@@ -23,6 +23,7 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 import org.apache.myfaces.scripting.core.DynamicClassIdentifierHolder;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.loaders.java.DynamicClassIdentifier;
 
 /**
  * @author werpu

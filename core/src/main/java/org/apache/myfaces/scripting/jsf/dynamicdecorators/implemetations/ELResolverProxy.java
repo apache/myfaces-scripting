@@ -30,7 +30,6 @@ import javax.el.PropertyNotWritableException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.groovyloader.core.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 /**

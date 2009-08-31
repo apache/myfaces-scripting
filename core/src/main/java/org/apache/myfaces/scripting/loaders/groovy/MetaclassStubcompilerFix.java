@@ -16,19 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.core;
+package org.apache.myfaces.scripting.loaders.groovy;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import groovy.lang.DelegatingMetaClass;
+import groovy.lang.MetaClass;
 
 /**
- * @author werpu
- * this annotation adds scripting behavior
- * only classes using this annotation will be reloaded
+ * TODO check if this is deprecated
+ *
+ * @author Werner Punz
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ScriptingClass {
+public class MetaclassStubcompilerFix extends DelegatingMetaClass {
+
+    public MetaclassStubcompilerFix(Class aClass) {
+        super(aClass);
+        initialize();
+    }
+
+    public MetaclassStubcompilerFix(MetaClass metaClass) {
+        super(metaClass);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    /*dummy constructor do not use it it bypasses
+  * a bug in the maven-groovy stub compiler regarding
+  * base classes*/
+    public MetaclassStubcompilerFix() {
+        super(MetaclassStubcompilerFix.class);
+    }
 }

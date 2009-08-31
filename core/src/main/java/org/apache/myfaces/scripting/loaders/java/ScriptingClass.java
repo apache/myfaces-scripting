@@ -16,27 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.core;
+package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.myfaces.scripting.api.ScriptingConst;
-
-import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author werpu
- * A dynamic class identifier for java classes
+ * this annotation adds scripting behavior
+ * only classes using this annotation will be reloaded
  */
-public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.DynamicClassIdentifier {
-    public boolean isDynamic(Class clazz) {
-        Annotation identifier = clazz.getAnnotation(ScriptingClass.class);
-        return identifier != null;
-    }
-
-    public int getEngineType(Class clazz) {
-            if(isDynamic(clazz)) {
-            return ScriptingConst.ENGINE_TYPE_JAVA;
-        }else{
-            return ScriptingConst.ENGINE_TYPE_NO_ENGINE;
-        }
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ScriptingClass {
 }

@@ -1,4 +1,4 @@
-package org.apache.myfaces.javaloader.core.jsr199;
+package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.commons.logging.LogFactory;

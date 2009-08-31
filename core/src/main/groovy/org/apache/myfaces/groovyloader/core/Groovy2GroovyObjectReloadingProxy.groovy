@@ -19,7 +19,7 @@
 package org.apache.myfaces.groovyloader.core
 
 import org.apache.myfaces.groovyloader.core.GroovyWeaver
-import org.apache.myfaces.groovyloader.core.MetaclassStubcompilerFix
+import org.apache.myfaces.scripting.loaders.groovy.MetaclassStubcompilerFix
 import org.apache.myfaces.scripting.core.util.ProxyUtils
 import org.apache.myfaces.scripting.core.util.ProxyUtils
 

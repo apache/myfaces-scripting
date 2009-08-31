@@ -27,8 +27,8 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
  */
 public class DynamicClassIdentifierHolder implements DynamicClassIdentifier {
 
-    DynamicClassIdentifier _groovyIdentifier = new org.apache.myfaces.groovyloader.core.DynamicClassIdentifier();
-    DynamicClassIdentifier _javaIdentifier = new org.apache.myfaces.javaloader.core.DynamicClassIdentifier();
+    DynamicClassIdentifier _groovyIdentifier = new org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier();
+    DynamicClassIdentifier _javaIdentifier = new org.apache.myfaces.scripting.loaders.java.DynamicClassIdentifier();
 
 
     public boolean isDynamic(Class clazz) {

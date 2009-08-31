@@ -16,31 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.core;
+package org.apache.myfaces.scripting.loaders.java;
 
-import groovy.lang.DelegatingMetaClass;
-import groovy.lang.MetaClass;
+import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
+
+import java.lang.annotation.Annotation;
 
 /**
- * TODO check if this is deprecated
- *
- * @author Werner Punz
+ * @author werpu
+ * A dynamic class identifier for java classes
  */
-public class MetaclassStubcompilerFix extends DelegatingMetaClass {
-
-    public MetaclassStubcompilerFix(Class aClass) {
-        super(aClass);
-        initialize();
+public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.DynamicClassIdentifier {
+    public boolean isDynamic(Class clazz) {
+        Annotation identifier = clazz.getAnnotation(ScriptingClass.class);
+        return identifier != null;
     }
 
-    public MetaclassStubcompilerFix(MetaClass metaClass) {
-        super(metaClass);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    /*dummy constructor do not use it it bypasses
-  * a bug in the maven-groovy stub compiler regarding
-  * base classes*/
-    public MetaclassStubcompilerFix() {
-        super(MetaclassStubcompilerFix.class);
+    public int getEngineType(Class clazz) {
+            if(isDynamic(clazz)) {
+            return ScriptingConst.ENGINE_TYPE_JAVA;
+        }else{
+            return ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+        }
     }
 }

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.core;
+package org.apache.myfaces.scripting.loaders.groovy;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 
