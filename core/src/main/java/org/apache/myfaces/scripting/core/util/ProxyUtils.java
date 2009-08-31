@@ -21,6 +21,8 @@ package org.apache.myfaces.scripting.core.util;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
+import org.apache.myfaces.scripting.core.DynamicClassIdentifierHolder;
+import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;

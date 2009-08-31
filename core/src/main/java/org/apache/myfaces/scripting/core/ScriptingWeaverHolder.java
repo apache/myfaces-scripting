@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.util;
+package org.apache.myfaces.scripting.core;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import java.io.Serializable;
 
@@ -48,7 +49,12 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
 
     @Override
     public Object reloadScriptingInstance(Object o) {
+        if(o.getClass().getName().contains("TestBean2")) {
+            System.out.println("Debugpoint found");
+        }
         int objectType = ProxyUtils.getEngineType(o.getClass());
+
+
         switch (objectType) {
             case ScriptingConst.ENGINE_TYPE_GROOVY:
                 return this._groovyWeaver.reloadScriptingInstance(o);
@@ -60,6 +66,10 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
 
     @Override
     public Class reloadScriptingClass(Class aclass) {
+         if(aclass.getName().contains("TestBean2")) {
+            System.out.println("Debugpoint found");
+        }
+
         int objectType = ProxyUtils.getEngineType(aclass);
         switch (objectType) {
             case ScriptingConst.ENGINE_TYPE_GROOVY:
@@ -72,6 +82,9 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
 
     @Override
     public Class loadScriptingClassFromName(String className) {
+         if(className.contains("TestBean2")) {
+            System.out.println("Debugpoint found");
+        }
         //we try to load from the chain, we cannot determine the engine type upfront here
         Class retVal = this._groovyWeaver.loadScriptingClassFromName(className);
         if (retVal == null) {

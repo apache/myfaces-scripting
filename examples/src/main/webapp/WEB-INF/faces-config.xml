@@ -37,7 +37,7 @@
     
       <managed-bean>
         <managed-bean-name>javatestbean</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.javaloader.test.TestBean</managed-bean-class>
+        <managed-bean-class>org.apache.myfaces.javaloader.test.TestBean2</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 

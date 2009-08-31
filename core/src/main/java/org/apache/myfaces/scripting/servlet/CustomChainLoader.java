@@ -21,7 +21,7 @@ package org.apache.myfaces.scripting.servlet;
 import org.apache.myfaces.groovyloader.core.GroovyWeaver;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
-import org.apache.myfaces.scripting.core.util.ScriptingWeaverHolder;
+import org.apache.myfaces.scripting.core.ScriptingWeaverHolder;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.apache.myfaces.javaloader.core.JavaScriptingWeaver;
 import org.apache.commons.lang.StringUtils;
@@ -99,6 +99,8 @@ public class CustomChainLoader extends ClassLoaderExtension {
             return null;
         else if (name.startsWith("com.sun")) /*internal java specific namespace*/
             return null;
+        else if (name.startsWith("sun.")) /*internal java specific namespace*/
+             return null;
 
         return scriptingWeaver.loadScriptingClassFromName(name);
     }

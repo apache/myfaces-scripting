@@ -23,9 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_impl.util.ClassUtils;
 import org.apache.myfaces.webapp.StartupListener;
-import org.apache.myfaces.scripting.core.util.ScriptingWeaverHolder;
 
-import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
 

@@ -18,11 +18,10 @@
  */
 package org.apache.myfaces.javaloader.core;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
-import org.apache.myfaces.scripting.core.util.DynamicClassIdentifierHolder;
+import org.apache.myfaces.scripting.core.DynamicClassIdentifierHolder;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 
 /**

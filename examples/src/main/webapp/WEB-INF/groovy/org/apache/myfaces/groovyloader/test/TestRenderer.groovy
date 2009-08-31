@@ -30,7 +30,7 @@ public class TestRenderer extends HtmlTextRendererBase {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) {
         facesContext.responseWriter.write """
-            <h1>   Hello from a groovy JSF components renderer </h1>
+            <h1> Hello from a groovy JSF components renderer </h1>
 
             <p> you can find my sources under WEB-INF/groovy/... </p>
 

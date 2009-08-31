@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.util;
+package org.apache.myfaces.scripting.core;
 
 import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.api.ScriptingConst;

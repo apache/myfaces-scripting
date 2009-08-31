@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 /**
  * @author werpu
  *         Reimplementation of the file changed daemon thread
@@ -51,18 +50,15 @@ public class FileChangedDaemon extends Thread {
         if (instance == null) {
             instance = new FileChangedDaemon();
             instance.setDaemon(true);
-        }
-        if (!instance.isRunning() || !instance.isAlive()) {
+             instance.setRunning(true);
             instance.start();
+
         }
+       
         return instance;
     }
 
-    public void start() {
-        setRunning(true);
-        log.info("Dynamic reloading watch daemon is starting");
-        super.start();
-    }
+ 
 
     public void run() {
         while (running) {
@@ -78,12 +74,12 @@ public class FileChangedDaemon extends Thread {
             for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
                 if (!it.getValue().isTainted()) {
 
-                    File proxyFile = new File(it.getValue().getSourcePath()+File.separator+it.getValue().getFileName());
+                    File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
                     it.getValue().setTainted(proxyFile.lastModified() != it.getValue().getTimestamp());
                     if (it.getValue().isTainted()) {
                         it.getValue().setTaintedOnce(true);
-                        log.info("comparing"+it.getKey()+"Dates:"+proxyFile.lastModified()+"-"+it.getValue().getTimestamp());
-                        log.info("Tainting:"+it.getValue().getFileName());
+                        log.info("comparing" + it.getKey() + "Dates:" + proxyFile.lastModified() + "-" + it.getValue().getTimestamp());
+                        log.info("Tainting:" + it.getValue().getFileName());
                     }
                     it.getValue().setTimestamp(proxyFile.lastModified());
                 }
@@ -99,7 +95,7 @@ public class FileChangedDaemon extends Thread {
     public void setRunning(boolean running) {
         this.running = running;
     }
-    
+
 
     public Map<String, ReloadingMetadata> getClassMap() {
         return classMap;

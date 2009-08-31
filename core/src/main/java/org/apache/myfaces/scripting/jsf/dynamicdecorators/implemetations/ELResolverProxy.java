@@ -49,7 +49,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         Object retVal = _delegate.getValue(elContext, base, property);
 
         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            log.info("dynamically reloading bean");
+            
 
             Object newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
