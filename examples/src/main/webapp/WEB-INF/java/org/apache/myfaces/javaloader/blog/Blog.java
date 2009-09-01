@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 
 import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
+import static org.apache.myfaces.scripting.core.util.ClassUtils.*;
 
 /**
  * @author werpu2
