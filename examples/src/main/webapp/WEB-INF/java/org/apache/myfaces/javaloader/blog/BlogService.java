@@ -17,19 +17,18 @@ public class BlogService {
      * note we cannot cast on dynamically referenced
      * and recompiled objects which are shared between beans
      * because due to dynamic recompilation
-     *
+     * <p/>
      * Object a->references b does not reference b of the same class
      * as object c->references b, we have to use introspection in this case
      * we can use our utils class to make it a tiny bit more comfortable
-     *
+     * <p/>
      * Statically compiled types always stay the same however
      * the same goes for interfaces which are present as compiled code only
-     * 
      */
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
 
     public void addEntry(Object entry) {
-        if(entry != null) {
+        if (entry != null) {
             blogEntries.add(entry);
         }
     }
