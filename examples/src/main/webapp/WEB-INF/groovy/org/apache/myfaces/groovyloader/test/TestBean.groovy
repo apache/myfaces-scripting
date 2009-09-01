@@ -32,7 +32,6 @@ class TestBean {
     //String newAttribute = "This is a new attribute"
     //uncomment this and add a control to the page displaying it
 
-
     public String getHelloworld() {
         return helloworld
     }

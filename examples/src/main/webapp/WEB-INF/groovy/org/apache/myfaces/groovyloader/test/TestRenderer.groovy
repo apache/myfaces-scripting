@@ -54,11 +54,11 @@ public class TestRenderer extends HtmlTextRendererBase {
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) {
-          print super.toString()
-           super.encodeEnd(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
+        print super.toString()
+        super.encodeEnd(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
         facesContext.getResponseWriter().write """\
             encode end here
         """
-        
+
     }
 }

@@ -60,9 +60,9 @@ public class TestComponent extends UIInput {
             return _testattr
 
         ValueBinding vb = getValueBinding("testattr")
-        String v = vb != null ? (String)vb.getValue(getFacesContext()) : null
+        String v = vb != null ? (String) vb.getValue(getFacesContext()) : null
         return v != null ? v : ""
-                                
+
     }
 
 

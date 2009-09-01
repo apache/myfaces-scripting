@@ -32,7 +32,6 @@ class TestPhaseListener implements PhaseListener {
         if (event.getPhaseId() == PhaseId.RENDER_RESPONSE)
             println "restoring a view bbb bbb" + event.getPhaseId()
 
-
     }
 
     public void beforePhase(PhaseEvent event) {
