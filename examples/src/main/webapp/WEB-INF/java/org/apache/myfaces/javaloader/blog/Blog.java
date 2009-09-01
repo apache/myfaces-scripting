@@ -4,6 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 
+import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
+
 /**
  * @author werpu2
  * @date: 01.09.2009
@@ -16,25 +18,25 @@ public class Blog {
     String title1 = "You can alter the code for this small blogging application on the fly, " +
                     "you even can add new classes on the fly and Grooy will pick it up";
 
+
     String firstName = "";
     String lastName = "";
     String topic = "";
 
     String content = "";
-    
+
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
 
 
-    
     public String addEntry() {
         getLog().info("adding entry");
 
-       Object service = JSFUtil.resolveVariable("javaBlogService");
+        Object service = JSFUtil.resolveVariable("javaBlogService");
 
-       if (service == null) {
+        if (service == null) {
             getLog().error("service not found");
         } else {
             getLog().info("service found");
@@ -47,13 +49,22 @@ public class Blog {
         entry.setLastName(lastName);
         entry.setTopic(topic);
         entry.setContent(content);
-        
-        if(service != null) {
-            JSFUtil.executeMethod(service, "addEntry", new Cast(Object.class,entry));
+
+        if (service != null) {
+            /*convenience method to call a method on an object dynamically
+            * executeMethod and cast are static imports which encapsule the
+            * ugly stuff the java introspection provides and reduce
+            * the loc down to sane levels
+            *
+            * note the behavior in case of calling errors
+            * is changed from the default managed behavior
+            * to an unmanaged behavior. This is mostly
+            * the same behavior you get from scripting engines!
+            * 
+            */
+            executeMethod(service, "addEntry", cast(Object.class, entry));
         }
 
-
-        
         //we stay on the same page
         return null;
     }

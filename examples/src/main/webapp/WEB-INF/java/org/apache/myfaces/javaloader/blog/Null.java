@@ -1,17 +1,14 @@
 package org.apache.myfaces.javaloader.blog;
 
 /**
- * @author werpu2
- * @date: 01.09.2009
+ *
+ * Special cast case null
  */
-public class Null {
-    Class nulledClass = null;
+public class Null extends Cast {
 
     public Null(Class clazz) {
-        nulledClass = clazz;
+        super(clazz, null);   
     }
 
-    public Class getNulledClass() {
-        return nulledClass;
-    }
+
 }
