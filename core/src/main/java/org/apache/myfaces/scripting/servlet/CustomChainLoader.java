@@ -21,7 +21,7 @@ package org.apache.myfaces.scripting.servlet;
 import org.apache.myfaces.groovyloader.core.GroovyWeaver;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
-import org.apache.myfaces.scripting.core.ScriptingWeaverHolder;
+import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.apache.commons.lang.StringUtils;
@@ -45,7 +45,6 @@ public class CustomChainLoader extends ClassLoaderExtension {
     static String CUSTOM_LOADER_PATHS = "org.apache.myfaces.scripting.groovy.LOADER_PATHS";
     static String CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.scripting.java.LOADER_PATHS";
 
-
     String classRoot = "";
     String scriptingRoot = "";
     ScriptingWeaver scriptingWeaver = null;
@@ -55,14 +54,16 @@ public class CustomChainLoader extends ClassLoaderExtension {
     Log log = LogFactory.getLog(CustomChainLoader.class);
 
 
+    //TODO move the entire init code into the weavers
+    //every weaver should know itself how to initialize itself
     public CustomChainLoader(ServletContext servletContext) {
         ScriptingWeaver groovyWeaver = new GroovyWeaver();
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
-        setupScriptingPaths(servletContext, groovyWeaver,GROOVY_SOURCE_ROOT, CUSTOM_LOADER_PATHS);
+        setupScriptingPaths(servletContext, groovyWeaver, GROOVY_SOURCE_ROOT, CUSTOM_LOADER_PATHS);
         setupScriptingPaths(servletContext, javaWeaver, JAVA_SOURCE_ROOT, CUSTOM_JAVA_LOADER_PATHS);
 
-        this.scriptingWeaver = new ScriptingWeaverHolder(groovyWeaver, javaWeaver);
+        this.scriptingWeaver = new CoreWeaver(groovyWeaver, javaWeaver);
         //we have to store it because our filter
         //does not trigger upon initialisation
         ProxyUtils.setWeaver(this.scriptingWeaver);
@@ -74,7 +75,6 @@ public class CustomChainLoader extends ClassLoaderExtension {
         String contextRoot = servletContext.getRealPath(contextRootKey);
         contextRoot = contextRoot.trim();
         scriptingRoot = contextRoot;
-
 
         additionalLoaderPaths = servletContext.getInitParameter(initParams);
         appendAdditionalPaths(additionalLoaderPaths, weaver);
@@ -100,7 +100,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         else if (name.startsWith("com.sun")) /*internal java specific namespace*/
             return null;
         else if (name.startsWith("sun.")) /*internal java specific namespace*/
-             return null;
+            return null;
 
         return scriptingWeaver.loadScriptingClassFromName(name);
     }

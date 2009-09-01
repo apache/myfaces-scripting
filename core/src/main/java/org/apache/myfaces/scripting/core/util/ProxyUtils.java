@@ -21,7 +21,6 @@ package org.apache.myfaces.scripting.core.util;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
-import org.apache.myfaces.scripting.core.DynamicClassIdentifierHolder;
 import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 
 import java.lang.reflect.InvocationHandler;
@@ -48,7 +47,6 @@ public class ProxyUtils {
      * 
      */
     static ThreadLocal _weaverHolder = new ThreadLocal();
-    static ThreadLocal _identifierHolder = new ThreadLocal();
 
     public static void init() {
 
@@ -120,24 +118,10 @@ public class ProxyUtils {
     }
 
 
-    public static int getEngineType(Class clazz) {
-        DynamicClassIdentifier identifier = getDynamicClassIdentifier();
-        return identifier.getEngineType(clazz);
-    }
-
     public static boolean isDynamic(Class clazz) {
-        DynamicClassIdentifier identifier = getDynamicClassIdentifier();
-        return identifier.isDynamic(clazz);
+       return getWeaver().isDynamic(clazz);
     }
 
-    private static DynamicClassIdentifier getDynamicClassIdentifier() {
-        DynamicClassIdentifier identifier = (DynamicClassIdentifier) _identifierHolder.get();
-        if(identifier == null) {
-            identifier =  new DynamicClassIdentifierHolder();
-            _identifierHolder.set(identifier);
-        }
-        return identifier;
-    }
 
 
 }

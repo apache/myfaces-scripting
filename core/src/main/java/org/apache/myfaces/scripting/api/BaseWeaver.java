@@ -1,4 +1,4 @@
-package org.apache.myfaces.scripting.core;
+package org.apache.myfaces.scripting.api;
 
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -210,6 +210,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     protected abstract void mapProperties(Object target, Object src);
     protected abstract Class loadScriptingClassFromFile(String sourceRoot, String file);
+
+    public abstract boolean isDynamic(Class clazz);
 
     public List<String> getScriptPaths() {
         return scriptPaths;

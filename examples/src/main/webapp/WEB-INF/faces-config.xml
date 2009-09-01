@@ -55,6 +55,20 @@
     </managed-bean>
 
 
+    <managed-bean>
+        <managed-bean-name>javaBlogView</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.javaloader.blog.Blog</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>javaBlogService</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.javaloader.blog.BlogService</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+
+
     <application>
         <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
         <navigation-handler>

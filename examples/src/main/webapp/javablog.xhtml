@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:grv="http://myfaces.apache.org/groovy">
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="body">
+        <h:form id="form">
+            <h:panelGrid id="grid" columns="1">
+                <h:outputText id="title1" styleClass="title" value="#{javaBlogView.title}"/>
+                <h:outputText id="title11" styleClass="title1" value="#{javaBlogView.title1}"/>
+                <!--
+                entry.firstName = firstName
+                entry.lastName = lastName
+                entry.topic = topic
+                entry.content = content
+            -->
+                <h:outputText value="First Name"/><h:inputText value="#{javaBlogView.firstName}"/>
+                <h:outputText value="Last Name"/><h:inputText value="#{javaBlogView.lastName}"/>
+                <h:outputText value="Topic of entry"/><h:inputText value="#{javaBlogView.topic}"/>
+                <h:outputText value="Content"/><h:inputText value="#{javaBlogView.content}"/>
+
+
+                <h:commandLink action="#{javaBlogView.addEntry}" value="Add Blog"/>
+            </h:panelGrid>
+            <h:panelGrid columns="1">
+                <h:outputText value="Blog Entries"/>
+                <t:dataList value="#{javaBlogService.blogEntries}" var="item">
+
+                    <h:outputText value="#{item.topic}"/>
+                    <h:outputText value="#{item.content}"/><br/>
+                </t:dataList>
+            </h:panelGrid>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

@@ -9,7 +9,7 @@ public class TestBean2 {
     String hello3 = "hello from added attribute 2";
 
     public String getSayHello() {
-        return "hello from a Java coded dynamic bean"+TestClass2.hello2+hello3 ;
+        return "hello from a Java  coded dynamic bean"+TestClass2.hello2+hello3 ;
     }
       public String getSayHello2() {
         return hello2;

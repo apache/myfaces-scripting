@@ -48,6 +48,7 @@ public class Blog {
             log.error("service not found")
         } else {
             log.info("service found")
+            
         }
 
         def entry = new BlogEntry()

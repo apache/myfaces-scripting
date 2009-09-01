@@ -23,6 +23,8 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author werpu
@@ -31,15 +33,19 @@ import java.io.Serializable;
  * and implements a chain of responsibility pattern
  * on them
  */
-public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
+public class CoreWeaver implements Serializable,ScriptingWeaver {
 
     ScriptingWeaver _groovyWeaver = null;
     ScriptingWeaver _javaWeaver = null;
+    List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
-    public ScriptingWeaverHolder(ScriptingWeaver groovyWeaver, ScriptingWeaver javaWeaver) {
-        _groovyWeaver = groovyWeaver;
-        _javaWeaver = javaWeaver;
+    public CoreWeaver(ScriptingWeaver ... weavers) {
+        //_groovyWeaver = groovyWeaver;
+        //_javaWeaver = javaWeaver;
 
+        for(ScriptingWeaver weaver: weavers) {
+            _weavers.add(weaver);
+        }
     }
 
     @Override
@@ -52,16 +58,14 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
         if(o.getClass().getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
-        int objectType = ProxyUtils.getEngineType(o.getClass());
-
-
-        switch (objectType) {
-            case ScriptingConst.ENGINE_TYPE_GROOVY:
-                return this._groovyWeaver.reloadScriptingInstance(o);
-            case ScriptingConst.ENGINE_TYPE_JAVA: //java
-                return this._javaWeaver.reloadScriptingInstance(o);
-            default: return o;
+  
+        for(ScriptingWeaver weaver: _weavers) {
+            if(weaver.isDynamic(o.getClass())) {
+                return weaver.reloadScriptingInstance(o);
+            }
         }
+        return o;
+
     }
 
     @Override
@@ -70,14 +74,13 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
             System.out.println("Debugpoint found");
         }
 
-        int objectType = ProxyUtils.getEngineType(aclass);
-        switch (objectType) {
-            case ScriptingConst.ENGINE_TYPE_GROOVY:
-                return this._groovyWeaver.reloadScriptingClass(aclass);
-            case ScriptingConst.ENGINE_TYPE_JAVA: //java
-                return this._javaWeaver.reloadScriptingClass(aclass);
-            default: return aclass;
+        for(ScriptingWeaver weaver: _weavers) {
+            if(weaver.isDynamic(aclass)) {
+                return weaver.reloadScriptingClass(aclass);
+            }
         }
+        return aclass;
+
     }
 
     @Override
@@ -85,12 +88,27 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
          if(className.contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
-        //we try to load from the chain, we cannot determine the engine type upfront here
-        Class retVal = this._groovyWeaver.loadScriptingClassFromName(className);
-        if (retVal == null) {
-            return this._javaWeaver.loadScriptingClassFromName(className);
+
+        for(ScriptingWeaver weaver: _weavers) {
+            Class retVal = weaver.loadScriptingClassFromName(className);
+               if(retVal != null) {
+                   return retVal;
+               }
         }
-        return retVal;
+        return null;
+    }
+
+    public int getScriptingEngine() {
+        return ScriptingConst.ENGINE_TYPE_ALL;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean isDynamic(Class clazz) {
+        for(ScriptingWeaver weaver:_weavers) {
+            if(weaver.isDynamic(clazz)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ScriptingWeaver get_groovyWeaver() {
@@ -108,5 +126,7 @@ public class ScriptingWeaverHolder implements Serializable,ScriptingWeaver {
     public void set_javaWeaver(ScriptingWeaver _javaWeaver) {
         this._javaWeaver = _javaWeaver;
     }
+
+
 }
 

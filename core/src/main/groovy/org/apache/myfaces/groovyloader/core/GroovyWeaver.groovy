@@ -18,16 +18,13 @@
  */
 package org.apache.myfaces.groovyloader.core
 
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 import org.apache.myfaces.groovyloader.core.Groovy2GroovyObjectReloadingProxy
 import org.apache.myfaces.scripting.api.ScriptingConst
 import org.apache.myfaces.scripting.api.ScriptingWeaver
-import org.apache.myfaces.scripting.core.util.ClassUtils
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon
-import org.apache.myfaces.scripting.refresh.ReloadingMetadata
 import org.codehaus.groovy.runtime.InvokerHelper
-import org.apache.myfaces.scripting.core.BaseWeaver
+import org.apache.myfaces.scripting.api.BaseWeaver
+import org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier
+import org.apache.myfaces.scripting.api.BaseWeaver
 
 /**
  * Weaver  which does dynamic class reloading
@@ -47,7 +44,7 @@ import org.apache.myfaces.scripting.core.BaseWeaver
 public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingWeaver {
 
     static ThreadLocal _groovyClassLoaderHolder = new ThreadLocal();
-
+    DynamicClassIdentifier identifier = new DynamicClassIdentifier()
 
 
     public GroovyWeaver() {
@@ -150,6 +147,10 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         def myMetaClass = new Groovy2GroovyObjectReloadingProxy(aclass)
         def invoker = InvokerHelper.instance
         invoker.metaRegistry.setMetaClass(aclass, myMetaClass)
+    }
+
+    public boolean isDynamic(Class clazz) {
+        return identifier.isDynamic(clazz)
     }
 
 }

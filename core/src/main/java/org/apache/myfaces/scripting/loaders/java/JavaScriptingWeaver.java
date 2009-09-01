@@ -25,7 +25,7 @@ import org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.BaseWeaver;
+import org.apache.myfaces.scripting.api.BaseWeaver;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -43,6 +43,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
 
     Log log = LogFactory.getLog(JavaScriptingWeaver.class);
     String classPath = "";
+    DynamicClassIdentifier identifier = new DynamicClassIdentifier();
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -52,6 +53,10 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
     public JavaScriptingWeaver(ServletContext servletContext) {
         super(".java", ScriptingConst.ENGINE_TYPE_JAVA);
         initClasspath(servletContext);
+    }
+
+    public JavaScriptingWeaver() {
+        super(".java", ScriptingConst.ENGINE_TYPE_JAVA);
     }
 
 
@@ -155,4 +160,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
         return retVal;
     }
 
+    public boolean isDynamic(Class clazz) {
+        return identifier.isDynamic(clazz);  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

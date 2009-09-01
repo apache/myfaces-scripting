@@ -32,6 +32,7 @@ public class ScriptingConst {
     public static final String RELOAD_MAP = "reloadMap";
     public static final int TAINT_INTERVAL = 2000;
 
+    public static final int ENGINE_TYPE_ALL = -2;
     public static final int ENGINE_TYPE_NO_ENGINE = -1;
     public static final int ENGINE_TYPE_GROOVY = 0;
     public static final int ENGINE_TYPE_JAVA = 1;

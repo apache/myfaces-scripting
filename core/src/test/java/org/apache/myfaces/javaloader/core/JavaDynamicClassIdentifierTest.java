@@ -21,9 +21,12 @@ package org.apache.myfaces.javaloader.core;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
-import org.apache.myfaces.scripting.core.DynamicClassIdentifierHolder;
+import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.loaders.java.DynamicClassIdentifier;
+import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
+
 
 /**
  * @author werpu
@@ -33,29 +36,23 @@ public class JavaDynamicClassIdentifierTest {
 
      Object probe1 = null;
      Object probe2 = null;
-     DynamicClassIdentifier identifier = new DynamicClassIdentifier();
-     DynamicClassIdentifierHolder identifierHolder = new DynamicClassIdentifierHolder();
+     CoreWeaver weaver = null;
 
      @Before
      public void setUp() {
         probe1 = new Probe1();
-        probe2 = new Probe2(); 
-     }
+        probe2 = new Probe2();
+        weaver = new CoreWeaver(new JavaScriptingWeaver());
+        ProxyUtils.setWeaver(weaver); 
+    }
+
 
      @Test
      public void isDynamic() {
-        assertFalse("Class should be static",identifier.isDynamic(probe1.getClass()));
-        assertTrue("Class should be dynamic",identifier.isDynamic(probe2.getClass()));
+        assertFalse("Class should be static",ProxyUtils.isDynamic(probe1.getClass()));
+        assertTrue("Class should be dynamic",ProxyUtils.isDynamic(probe2.getClass()));
      }
 
-    @Test
-    public void dynamicClassIdentifierHolderTest() {
-        int engineType1 = identifierHolder.getEngineType(probe1.getClass());
-        int engineType2 = identifierHolder.getEngineType(probe2.getClass());
-
-        assertTrue("engine type 1 unknown", engineType1 == ScriptingConst.ENGINE_TYPE_NO_ENGINE);
-        assertTrue("engine type 2 java", engineType2 == ScriptingConst.ENGINE_TYPE_JAVA);
-    }
 
 
 }

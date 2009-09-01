@@ -30,7 +30,7 @@ package org.apache.myfaces.scripting.api;
  * The scripting weaver replaces the classloader for those instances
  * because custom classloaders are inherently problematic in web containers
  */
-public interface ScriptingWeaver {
+public interface ScriptingWeaver  {
 
   /**
      * appends a custom script search path to the original one
@@ -66,5 +66,23 @@ public interface ScriptingWeaver {
      * @return  a class instance of the file
      */
     public Class loadScriptingClassFromName(String className);
+
+
+    /**
+     * returns the engine type for this weaver
+     * 
+     * @return
+     */
+    public int getScriptingEngine();
+
+
+    /**
+     * checks wether a given class can be reloaded
+     * from this weaver or not
+     *
+     * @param clazz
+     * @return
+     */
+    public boolean isDynamic(Class clazz);
 
 }
