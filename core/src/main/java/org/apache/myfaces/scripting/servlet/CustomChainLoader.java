@@ -45,6 +45,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
     static String CUSTOM_LOADER_PATHS = "org.apache.myfaces.scripting.groovy.LOADER_PATHS";
     static String CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.scripting.java.LOADER_PATHS";
 
+
     String classRoot = "";
     String scriptingRoot = "";
     ScriptingWeaver scriptingWeaver = null;

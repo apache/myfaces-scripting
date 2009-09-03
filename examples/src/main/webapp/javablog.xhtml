@@ -10,6 +10,7 @@
 <ui:composition template = "/template.xhtml">
 
     <ui:define name = "body">
+        xxxx
         <h:form id = "form">
             <h:panelGrid id = "grid" columns = "1">
                 <h:outputText id = "title1" styleClass = "title" value = "#{javaBlogView.title}" />
@@ -26,7 +27,12 @@
                 <h:outputText value = "Content" /><h:inputText value = "#{javaBlogView.content}" />
 
 
-                <h:commandLink action = "#{javaBlogView.addEntry}" value = "Add Blog" />
+                <h:outputText value="#{javaBlogView.title3}" />
+
+                <h:outputText value="#{javaBlogView.title4}" />
+                
+
+                <h:commandLink action = "#{javaBlogView.addEntry2}" value = "Add Blog" />
             </h:panelGrid>
             <h:panelGrid columns = "1">
                 <h:outputText value = "Blog Entries" />

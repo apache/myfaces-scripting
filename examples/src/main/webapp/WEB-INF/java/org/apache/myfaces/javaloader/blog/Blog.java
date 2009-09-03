@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.myfaces.javaloader.blog;
 
 import org.apache.commons.logging.Log;
@@ -15,28 +33,33 @@ import static org.apache.myfaces.scripting.core.util.ClassUtils.*;
 @ScriptingClass
 public class Blog {
 
-    String title = "Hello to the myfaces dynamic blogging";
-    String title1 = "You can alter the code for this small blogging application on the fly, " +
-                    "you even can add new classes on the fly and Grooy will pick it up";
+    String title        =   "Hello to the myfaces dynamic blogging";
+    String title1       =   "You can alter the code for this small blogging application on the fly, " +
+                            "you even can add new classes on the fly and Java will pick it up";
+
+    String title3 = "bla";
+    String title4 = "bla2";
 
 
-    String firstName = "";
-    String lastName = "";
-    String topic = "";
+    String firstName    = "";
+    String lastName     = "";
+    String topic        = "";
 
-    String content = "";
+    String content      = "";
 
+    
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
 
 
-    public String addEntry() {
+    public String addEntry2 () {
         getLog().info("adding entry");
 
         Object service = JSFUtil.resolveVariable("javaBlogService");
 
+        
         if (service == null) {
             getLog().error("service not found");
         } else {
@@ -117,5 +140,21 @@ public class Blog {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTitle3() {
+        return "aaaaa";
+    }
+
+    public void setTitle3(String title3) {
+        this.title3 = title3;
+    }
+
+    public String getTitle4() {
+        return title4;
+    }
+
+    public void setTitle4(String title4) {
+        this.title4 = title4;
     }
 }
