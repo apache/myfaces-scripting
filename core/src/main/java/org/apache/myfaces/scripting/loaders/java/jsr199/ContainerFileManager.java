@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.List;
 import java.net.URLClassLoader;
 import java.net.URL;
 
@@ -39,11 +40,13 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
 
     StandardJavaFileManager _delegate = null;
     String _classPath = null;
+    RecompiledClassLoader classLoader = null;
 
 
     protected ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
         _delegate = standardJavaFileManager;
+        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader());
     }
 
 
@@ -54,7 +57,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
 
     @Override
     public ClassLoader getClassLoader(Location location) {
-        return ClassUtils.getContextClassLoader();
+        return classLoader;
     }
 
     Iterable<? extends JavaFileObject> getJavaFileObjects(File... files) {
@@ -65,34 +68,43 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
         return _delegate.getJavaFileObjects(files);
     }
 
+
     String getClassPath() {
         if (_classPath != null) {
             return _classPath;
         }
         ClassLoader cls = getClassLoader(null);
-        while (!(cls instanceof URLClassLoader) && cls != null) {
+
+        StringBuilder retVal = new StringBuilder(500);
+        while (cls != null) {
+            if(cls instanceof URLClassLoader ) {
+                URL[] urls = ((URLClassLoader) cls).getURLs();
+                int len = urls.length;
+                
+                for (int cnt = 0; cnt < len; cnt++) {
+
+                    retVal.append(urls[cnt].getFile());
+                    if (cnt < len - 1) {
+                        retVal.append(File.pathSeparator);
+                    }
+                }
+            }
+
             cls = cls.getParent();
         }
-        if (cls == null) {
-            return "";
+
+        String retStr = retVal.toString();
+        if(retStr.length()>1) {
+            retStr = retStr.substring(0, retStr.length() - 1);
         }
 
-        URL[] urls = ((URLClassLoader) cls).getURLs();
-        int len = urls.length;
-        if (len == 0) {
-            return "";
-        }
-        StringBuilder retVal = new StringBuilder(len * 16);
-
-        for (int cnt = 0; cnt < len; cnt++) {
-            retVal.append(urls[cnt].getFile());
-            if (cnt < len - 1) {
-                retVal.append(File.pathSeparator);
-            }
-        }
-        return (_classPath = retVal.toString());
+        return (_classPath = retStr);
     }
 
+
+    public File getTempDir() {
+        return classLoader.getTempDir();
+    }
 }
 
 

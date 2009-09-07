@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
 
 import javax.tools.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -41,72 +40,15 @@ public class CompilerFacade implements DynamicCompiler {
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
     ContainerFileManager fileManager = null;
-    private static File tempDir = null;
     private static final String FILE_SEPARATOR = File.separator;
 
     public CompilerFacade() {
         super();
+
+        //TODO move this all into the introspection domain
+        //so that we can shift to jdk5
         fileManager = new ContainerFileManager(compiler.getStandardFileManager(diagnosticCollector, null, null));
 
-        if (tempDir == null) {
-            synchronized (this.getClass()) {
-                if (tempDir != null) {
-                    return;
-                }
-                String baseTempPath = System.getProperty("java.io.tmpdir");
-                String tempDirName = "myfaces_compilation_" + Math.random();
-
-                tempDir = new File(baseTempPath + FILE_SEPARATOR + tempDirName);
-                while (tempDir.exists()) {
-                    tempDirName = "myfaces_compilation_" + System.currentTimeMillis() + Math.random();
-                    tempDir = new File(baseTempPath + FILE_SEPARATOR + tempDirName);
-                }
-                tempDir.mkdirs();
-                tempDir.deleteOnExit();
-            }
-        }
-    }
-
-
-    class RecompiledJavaClassloader extends ClassLoader {
-        RecompiledJavaClassloader(ClassLoader classLoader) {
-            super(classLoader);
-        }
-
-        RecompiledJavaClassloader() {
-        }
-
-        @Override
-        public Class<?> loadClass(String className) throws ClassNotFoundException {
-            //check if our class exists in the tempDir
-            String classFile = className.replaceAll("\\.", FILE_SEPARATOR) + ".class";
-            File target = new File(tempDir.getAbsolutePath() + FILE_SEPARATOR + classFile);
-            if (target.exists()) {
-
-                FileInputStream iStream = null;
-                int fileLength = (int) target.length();
-                byte[] fileContent = new byte[fileLength];
-
-                try {
-                    iStream = new FileInputStream(target);
-                    iStream.read(fileContent);
-                    // Erzeugt aus dem byte Feld ein Class Object.
-                    return super.defineClass(className, fileContent, 0, fileLength);
-
-                } catch (Exception e) {
-                    throw new ClassNotFoundException(e.toString());
-                } finally {
-                    if (iStream != null) {
-                        try {
-                            iStream.close();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-            }
-
-            return super.loadClass(className);    //To change body of overridden methods use File | Settings | File Templates.
-        }
     }
 
 
@@ -115,7 +57,7 @@ public class CompilerFacade implements DynamicCompiler {
 
         //TODO add the core jar from our lib dir
         //the compiler otherwise cannot find the file
-        String[] options = new String[]{"-cp", fileManager.getClassPath(), "-d", tempDir.getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
+        String[] options = new String[]{"-cp", fileManager.getClassPath(), "-d", fileManager.getTempDir().getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
         compiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         //TODO collect the diagnostics and if an error was issued dump it on the log
         //and throw an unmanaged exeption which routes later on into myfaces
@@ -135,9 +77,9 @@ public class CompilerFacade implements DynamicCompiler {
         }
 
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        if (!(oldClassLoader instanceof RecompiledJavaClassloader)) {
+        if (!(oldClassLoader instanceof RecompiledClassLoader)) {
             try {
-                RecompiledJavaClassloader classLoader = new RecompiledJavaClassloader(oldClassLoader);
+                RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader(null);
                 Thread.currentThread().setContextClassLoader(classLoader);
                 String classFile = filePath.replaceAll("\\\\", ".").replaceAll("\\/", ".");
                 classFile = classFile.substring(0, classFile.lastIndexOf("."));
