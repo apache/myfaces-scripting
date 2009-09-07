@@ -36,6 +36,17 @@ import java.util.Map;
  *         loaded by the various engine loaders for
  *         for file changes and then if one has changed we have to mark
  *         it for further processing
+ *
+ * TODO to get optimal performance we operate on a deep copy of the underlying map
+ * the map itself has read write access and access the map can only happen synchronized
+ * the write acces has to happen through this class which is sort of the gatekeeper,
+ * the read access happens on a non synchronized instance of the map
+ * which is accessed for readonly reasons, non synchronized map
+ * is refreshed after every interval if something was tainted with
+ * an assignment operation so that nothing can happen
+ * (lisp trick again, immutable data structure == thread safety)
+ *
+ *
  */
 public class FileChangedDaemon extends Thread {
 

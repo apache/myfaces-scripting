@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
@@ -28,6 +29,7 @@ import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.render.RenderKit;
 import javax.faces.component.UIViewRoot;
+import javax.faces.lifecycle.Lifecycle;
 import javax.el.ELContext;
 import java.util.Iterator;
 
@@ -44,8 +46,13 @@ import java.util.Iterator;
  */
 public class FacesContextProxy extends FacesContext implements Decorated {
 
+
     public FacesContext _delegate = null;
 
+    private void weaveDelegate() {
+        if (_delegate != null)
+            _delegate = (FacesContext) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+    }
 
 
     public ELContext getELContext() {
@@ -109,6 +116,7 @@ public class FacesContextProxy extends FacesContext implements Decorated {
     }
 
     public void setViewRoot(UIViewRoot uiViewRoot) {
+        weaveDelegate();//perfect place no matter what the viewRoot is about once per request set
         _delegate.setViewRoot(uiViewRoot);
     }
 
@@ -131,6 +139,7 @@ public class FacesContextProxy extends FacesContext implements Decorated {
 
     public FacesContextProxy(FacesContext delegate) {
         _delegate = delegate;
+        weaveDelegate();
     }
 
     public Object getDelegate() {

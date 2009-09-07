@@ -37,7 +37,7 @@ public class TempFileClassLoader extends ClassLoader {
             this.newClassPath[cnt] = path;
         }
         //TODO add a JSR 199 facade for java6
-        compiler = new JavaCompilerFactory().createCompiler("eclipse");
+            compiler = new JavaCompilerFactory().createCompiler("eclipse");
     }
 
     @Override

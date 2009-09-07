@@ -71,7 +71,7 @@ public class ClassUtils {
     }
 
     /**
-     * executes a function on a target object
+     * executes a function method on a target object
      *
      * @param obj        the target object
      * @param methodName the method name

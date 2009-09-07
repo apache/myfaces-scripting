@@ -72,6 +72,10 @@ public class ProxyUtils {
      * we create a proxy to an existing object
      * which does reloading of the internal class
      * on method level
+     *
+     * this works only on classes which implement contractual interfaces
+     * it cannot work on things like the navigation handler
+     * which rely on base classes
      * 
      * @param o the source object to be proxied
      * @param theInterface the proxying interface

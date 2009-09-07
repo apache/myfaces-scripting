@@ -32,10 +32,12 @@ import java.lang.reflect.Method;
  * Reloading handler which
  * tries to reload classes and objects
  * on instantiation
- *
+ * <p/>
  * TODO check if this is still needed seems deprecated to me
  *
  * @author Werner Punz
+ * @Deprecated not used anymore since we have to do most
+ * of our object instantiation brute force we cannot use proxies here
  */
 public class ConstructorLevelReloadingHandler implements InvocationHandler, Serializable, Decorated {
 

@@ -28,22 +28,20 @@ import java.util.List;
 
 /**
  * @author werpu
- *
- * Facade which holds multiple weavers
- * and implements a chain of responsibility pattern
- * on them
+ *         <p/>
+ *         Facade which holds multiple weavers
+ *         and implements a chain of responsibility pattern
+ *         on them
  */
-public class CoreWeaver implements Serializable,ScriptingWeaver {
+public class CoreWeaver implements Serializable, ScriptingWeaver {
 
-    ScriptingWeaver _groovyWeaver = null;
-    ScriptingWeaver _javaWeaver = null;
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
-    public CoreWeaver(ScriptingWeaver ... weavers) {
+    public CoreWeaver(ScriptingWeaver... weavers) {
         //_groovyWeaver = groovyWeaver;
         //_javaWeaver = javaWeaver;
 
-        for(ScriptingWeaver weaver: weavers) {
+        for (ScriptingWeaver weaver : weavers) {
             _weavers.add(weaver);
         }
     }
@@ -55,12 +53,12 @@ public class CoreWeaver implements Serializable,ScriptingWeaver {
 
     @Override
     public Object reloadScriptingInstance(Object o) {
-        if(o.getClass().getName().contains("TestBean2")) {
+        if (o.getClass().getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
-  
-        for(ScriptingWeaver weaver: _weavers) {
-            if(weaver.isDynamic(o.getClass())) {
+
+        for (ScriptingWeaver weaver : _weavers) {
+            if (weaver.isDynamic(o.getClass())) {
                 return weaver.reloadScriptingInstance(o);
             }
         }
@@ -70,12 +68,12 @@ public class CoreWeaver implements Serializable,ScriptingWeaver {
 
     @Override
     public Class reloadScriptingClass(Class aclass) {
-         if(aclass.getName().contains("TestBean2")) {
+        if (aclass.getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
 
-        for(ScriptingWeaver weaver: _weavers) {
-            if(weaver.isDynamic(aclass)) {
+        for (ScriptingWeaver weaver : _weavers) {
+            if (weaver.isDynamic(aclass)) {
                 return weaver.reloadScriptingClass(aclass);
             }
         }
@@ -85,15 +83,15 @@ public class CoreWeaver implements Serializable,ScriptingWeaver {
 
     @Override
     public Class loadScriptingClassFromName(String className) {
-         if(className.contains("TestBean2")) {
+        if (className.contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
 
-        for(ScriptingWeaver weaver: _weavers) {
+        for (ScriptingWeaver weaver : _weavers) {
             Class retVal = weaver.loadScriptingClassFromName(className);
-               if(retVal != null) {
-                   return retVal;
-               }
+            if (retVal != null) {
+                return retVal;
+            }
         }
         return null;
     }
@@ -103,30 +101,13 @@ public class CoreWeaver implements Serializable,ScriptingWeaver {
     }
 
     public boolean isDynamic(Class clazz) {
-        for(ScriptingWeaver weaver:_weavers) {
-            if(weaver.isDynamic(clazz)) {
+        for (ScriptingWeaver weaver : _weavers) {
+            if (weaver.isDynamic(clazz)) {
                 return true;
             }
         }
         return false;
     }
-
-    public ScriptingWeaver get_groovyWeaver() {
-        return _groovyWeaver;
-    }
-
-    public void set_groovyWeaver(ScriptingWeaver _groovyWeaver) {
-        this._groovyWeaver = _groovyWeaver;
-    }
-
-    public ScriptingWeaver get_javaWeaver() {
-        return _javaWeaver;
-    }
-
-    public void set_javaWeaver(ScriptingWeaver _javaWeaver) {
-        this._javaWeaver = _javaWeaver;
-    }
-
 
 }
 

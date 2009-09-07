@@ -51,6 +51,9 @@ public class ScriptingFacesContextFactory extends javax.faces.context.FacesConte
         FacesContext retVal = _delegate.getFacesContext(o, o1, o2, lifecycle);  //To change body of implemented methods use File | Settings | File Templates.
         //TODO check if we weave thise around our original
         //faces context to bypass our groovy dynamic reflection problems
+        //TODO this is not fully done yet, the faces context is not
+        //Woven around our method reloading weaver or our instantiation
+        //mechanism
         if (scriptingEnabled && !(retVal instanceof FacesContextProxy))
             return new FacesContextProxy(retVal);
         return retVal;

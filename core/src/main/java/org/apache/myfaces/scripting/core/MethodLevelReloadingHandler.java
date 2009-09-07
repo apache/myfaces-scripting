@@ -35,6 +35,10 @@ import java.lang.reflect.Method;
  * only have reloading logic
  * and can cope with reloading on method level
  *
+ * Note this works only for a minority of the artefacts
+ * the reason, most artefacts do not rely on interfaces but
+ * on base classes
+ *
  * @author Werner Punz
  */
 public class MethodLevelReloadingHandler implements InvocationHandler, Serializable, Decorated {

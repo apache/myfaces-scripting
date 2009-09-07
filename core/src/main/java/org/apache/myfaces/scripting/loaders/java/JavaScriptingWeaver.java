@@ -21,19 +21,16 @@ package org.apache.myfaces.scripting.loaders.java;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade;
+import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.api.BaseWeaver;
+import org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade;
 
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * @author werpu
@@ -47,14 +44,6 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
     String classPath = "";
     DynamicClassIdentifier identifier = new DynamicClassIdentifier();
 
-    /**
-     * this override is needed because we cannot sanely determine all jar
-     * paths we need for our compiler in the various web container configurations
-     */
-    static final String CUSTOM_JAR_PATHS = "org.apache.myfaces.scripting.java.JAR_PATHS";
-    /*comma separated list of additional classpaths*/
-    static final String CUSTOM_CLASS_PATHS = "org.apache.myfaces.scripting.java.CLASS_PATHS";
-
     private static final String JAVA_FILE_ENDING = ".java";
 
     /**
@@ -64,130 +53,14 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
      */
     public JavaScriptingWeaver(ServletContext servletContext) {
         super(JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
-        initClasspath(servletContext);
+        //init classpath removed we can resolve that over the
+        //url classloader at the time myfaces is initialized
     }
 
     public JavaScriptingWeaver() {
         super(JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
     }
 
-
-    /**
-     * recursive directory scan
-     *
-     * @param rootPath
-     * @return
-     */
-    private List<String> scanPath(String rootPath) {
-        File jarRoot = new File(rootPath);
-
-        List<String> retVal = new LinkedList<String>();
-        String[] dirs = jarRoot.list(new FilenameFilter() {
-            public boolean accept(File dir,
-                                  String name) {
-
-                String dirPath = dir.getAbsolutePath();
-                File checkFile = new File(dirPath + File.separator + name);
-                return checkFile.isDirectory() && !(name.equals(".") && !name.equals(".."));
-            }
-        });
-
-        for (String dir : dirs) {
-            retVal.addAll(scanPath(rootPath + File.separator + dir));
-        }
-
-        String[] foundNames = jarRoot.list(new FilenameFilter() {
-            public boolean accept(File dir,
-                                  String name) {
-
-                name = name.toLowerCase();
-                name = name.trim();
-                String dirPath = dir.getAbsolutePath();
-                File checkFile = new File(dirPath + File.separator + name);
-                return (!checkFile.isDirectory()) && name.endsWith(".jar") || name.endsWith(".zip");
-            }
-        });
-
-        for (String foundPath : foundNames) {
-            retVal.add(rootPath + File.separator + foundPath);
-        }
-        return retVal;
-    }
-
-    private void initClasspath(ServletContext context) {
-        String webInf = context.getRealPath(File.separator + "WEB-INF");
-        StringBuilder classPath = new StringBuilder(255);
-        File jarRoot = new File(webInf + File.separator + "lib");
-
-        classPath.append(webInf);
-        classPath.append(File.separator);
-        classPath.append("classes");
-
-        List<String> fileNames = new LinkedList<String>();
-        if (jarRoot.exists()) {
-            log.info("Scanning paths for possible java compiler classpaths");
-
-            this.classPath = classPath.toString() + File.pathSeparatorChar + addExternalClassPaths(context) + File.pathSeparator + addStandardJarPaths(jarRoot) + addExternalJarPaths(context);
-
-        } else {
-            log.warn("web-inf/lib not found, you might have to adjust the jar scan paths manually");
-        }
-    }
-
-    private String addStandardJarPaths(File jarRoot) {
-        List<String> fileNames = new LinkedList<String>();
-        StringBuilder retVal = new StringBuilder();
-        fileNames.addAll(scanPath(jarRoot.getAbsolutePath()));
-        int cnt = 0;
-        for (String classPath : fileNames) {
-            cnt++;
-            retVal.append(classPath);
-            if (cnt < fileNames.size()) {
-                retVal.append(File.pathSeparator);
-            }
-        }
-        return retVal.toString();
-    }
-
-    private String addExternalClassPaths(ServletContext context) {
-        String classPaths = context.getInitParameter(CUSTOM_CLASS_PATHS);
-        if (classPaths != null && !classPaths.trim().equals("")) {
-            String[] classPathArr = classPaths.split(",");
-            StringBuilder retVal = new StringBuilder();
-            int cnt = 0;
-            for (String classPath : classPathArr) {
-                cnt++;
-                retVal.append(classPath);
-                if (cnt < classPathArr.length) {
-                    retVal.append(File.pathSeparator);
-                }
-            }
-            return retVal.toString();
-        }
-        return "";
-    }
-
-
-    private String addExternalJarPaths(ServletContext context) {
-        List<String> fileNames = new LinkedList<String>();
-        String jarPaths = context.getInitParameter(CUSTOM_JAR_PATHS);
-        StringBuilder retVal = new StringBuilder();
-        if (jarPaths != null && !jarPaths.trim().equals("")) {
-            String[] jarPathsArr = jarPaths.split(",");
-            for (String jarPath : jarPathsArr) {
-                fileNames.addAll(scanPath(jarPath));
-            }
-        }
-        int cnt = 0;
-        for (String classPath : fileNames) {
-            cnt++;
-            retVal.append(classPath);
-            if (cnt < fileNames.size()) {
-                retVal.append(File.pathSeparator);
-            }
-        }
-        return retVal.toString();
-    }
 
     /**
      * helper to map the properties wherever possible

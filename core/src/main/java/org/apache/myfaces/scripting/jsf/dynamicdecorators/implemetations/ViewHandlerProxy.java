@@ -35,10 +35,12 @@ import java.io.IOException;
  */
 public class ViewHandlerProxy extends ViewHandler implements Decorated {
 
-    
+    ViewHandler _delegate = null;
 
     private void weaveDelegate() {
-        _delegate = (ViewHandler) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+        if (_delegate != null) {
+            _delegate = (ViewHandler) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+        }
     }
 
 
@@ -96,7 +98,6 @@ public class ViewHandlerProxy extends ViewHandler implements Decorated {
         _delegate.writeState(facesContext);
     }
 
-    ViewHandler _delegate = null;
 
 
     public Object getDelegate() {
