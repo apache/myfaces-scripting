@@ -1,1 +1,0 @@
-scratchpad for new ideas
