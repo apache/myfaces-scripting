@@ -13,7 +13,13 @@
 
     <modules>
         <module>core</module>
-        <module>examples</module>
+        <module>core-java6</module>
+
+		<!--
+		<module>myfaces12-extensions</module>
+        <module>myfaces2-extensions</module>
+    	-->
+		<module>examples</module>
     	<module>spring-example</module>
   </modules>
 
@@ -172,6 +178,13 @@
             <version>1.0</version>
         </dependency>
 
+        <!--
+         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-jci-jsr199</artifactId>
+            <version>1.0</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-jci-javac</artifactId>
@@ -183,17 +196,15 @@
 
     <build>
 		<plugins>
-		
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-                    
+					<source>1.5</source>
+					<target>1.5</target>
 				</configuration>
 			</plugin>
  		</plugins>    
-</build>
+    </build>
 
     <reporting>
         <plugins>
