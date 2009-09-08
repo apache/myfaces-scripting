@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns = "http://maven.apache.org/POM/4.0.0" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extension-scripting</groupId>
     <artifactId>root</artifactId>
@@ -15,14 +16,14 @@
         <module>core</module>
         <module>core-java6</module>
 
-		<!--
-		<module>myfaces12-extensions</module>
-        <module>myfaces2-extensions</module>
-    	-->
-		<module>examples</module>
-    	<module>spring-example</module>
-  </modules>
-
+        <!--
+          <module>myfaces12-extensions</module>
+          <module>myfaces2-extensions</module>
+          -->
+        <module>examples</module>
+        <module>spring-example</module>
+    </modules>
+    /Users/werpu2/development/workspace/extensions-scripting//Users/werpu2/development/workspace/extensions-scripting/
 
     <repositories>
         <repository>
@@ -35,33 +36,32 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <snapshots/>
+            <snapshots />
             <id>apache-maven-snapshots</id>
             <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </repository>
         <repository>
-		    <id>jboss</id>
-		    <url>http://repository.jboss.com/maven2/</url>
-		    <releases>
-		        <enabled>true</enabled>
-		    </releases>
-		    <snapshots>
-		        <enabled>false</enabled>
-		    </snapshots>
-		</repository>
+            <id>jboss</id>
+            <url>http://repository.jboss.com/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>
 
-
         <!-- compile -->
 
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>commons-logging</groupId>
@@ -106,7 +106,6 @@
         </dependency>
 
         <!-- provided dependencies -->
-
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -164,18 +163,22 @@
             <version>1.0</version>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-jci-eclipse</artifactId>
             <version>1.0</version>
         </dependency>
 
-       
-
-         <dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-jci-janino</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.bcel</groupId>
+            <artifactId>bcel</artifactId>
+            <version>5.2</version>
         </dependency>
 
         <!--
@@ -191,19 +194,18 @@
             <version>1.0</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
- 		</plugins>    
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <reporting>
