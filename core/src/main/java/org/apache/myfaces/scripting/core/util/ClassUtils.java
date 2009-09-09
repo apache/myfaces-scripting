@@ -256,6 +256,7 @@ public class ClassUtils {
      */
     public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
         SyntheticRepository repo = SyntheticRepository.getInstance(new ClassPath(classPath));
+        repo.clear();
         JavaClass javaClass = repo.loadClass(className);
         ClassGen classGen = new ClassGen(javaClass);
         
