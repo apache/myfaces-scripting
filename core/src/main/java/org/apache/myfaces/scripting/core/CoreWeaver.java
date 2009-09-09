@@ -38,9 +38,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
     public CoreWeaver(ScriptingWeaver... weavers) {
-        //_groovyWeaver = groovyWeaver;
-        //_javaWeaver = javaWeaver;
-
         for (ScriptingWeaver weaver : weavers) {
             _weavers.add(weaver);
         }
@@ -83,10 +80,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     @Override
     public Class loadScriptingClassFromName(String className) {
-        if (className.contains("TestBean2")) {
-            System.out.println("Debugpoint found");
-        }
-
         for (ScriptingWeaver weaver : _weavers) {
             Class retVal = weaver.loadScriptingClassFromName(className);
             if (retVal != null) {

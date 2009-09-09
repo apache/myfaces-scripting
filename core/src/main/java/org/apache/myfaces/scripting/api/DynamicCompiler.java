@@ -19,21 +19,26 @@
 package org.apache.myfaces.scripting.api;
 
 /**
- *  @author Werner Punz
- * Interface marking generic compiler facades which can
- * plug various compiler backends into our system
- * (for now jsr 199 is supported but in the long run JCI will
- * be integrated for pre 1.6 jdks) 
+ * @author Werner Punz
+ *         Interface marking generic compiler facades which can
+ *         plug various compiler backends into our system
+ *         (for now jsr 199 is supported but in the long run JCI will
+ *         be integrated for pre 1.6 jdks)
+ *         <p/>
+ *         Note the class does not have to be thread safe, the
+ *         callers have to take care of the synchronisation
+ *         the class is definitely called synchronized to avoid
+ *         the windows file locking issues
  */
 public interface DynamicCompiler {
-  /**
+    /**
      * compiles a single file into a class
      *
-     * @param sourceRoot  the source search path (root of our source)
-     * @param filePath the relative path of our file
+     * @param sourceRoot the source search path (root of our source)
+     * @param filePath   the relative path of our file
      * @return a valid java class of our file
      * @throws ClassNotFoundException in case of the class neither could be found
-     * in our sources nor could be referenced in binary form from the classloader
+     *                                in our sources nor could be referenced in binary form from the classloader
      */
     Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException;
 }

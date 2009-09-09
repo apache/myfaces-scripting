@@ -26,7 +26,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * initialisation code so no thread safety needed
      */
     protected List<String> scriptPaths = new LinkedList<String>();
-    
+
 
     public BaseWeaver() {
         //work around for yet another groovy bug
@@ -36,7 +36,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         this.fileEnding = fileEnding;
         this.scriptingEngine = scriptingEngine;
     }
-
 
 
     /**
@@ -124,15 +123,22 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         if (metadata == null)
             return aclass;
 
-        if(!assertScriptingEngine(metadata)) {
+        if (!assertScriptingEngine(metadata)) {
             return null;
         }
         if (!metadata.isTainted()) {
             //if not tained then we can recycle the last class loaded
             return metadata.getAClass();
         }
-
-        return loadScriptingClassFromFile(metadata.getSourcePath(), metadata.getFileName());
+        synchronized (BaseWeaver.class) {
+            //another chance just in case someone has reloaded between
+            //the last if and synchronized, that way we can reduce the number of waiting threads
+            if (!metadata.isTainted()) {
+                //if not tained then we can recycle the last class loaded
+                return metadata.getAClass();
+            }
+            return loadScriptingClassFromFile(metadata.getSourcePath(), metadata.getFileName());
+        }
     }
 
     /**
@@ -142,10 +148,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @return a valid class if the sources could be found null if nothing could be found
      */
     public Class loadScriptingClassFromName(String className) {
-        if(className.contains("TestBean2")) {
-                  getLog().debug("debugpoint found");
+        if (className.contains("TestBean2")) {
+            getLog().debug("debugpoint found");
         }
-
 
         Map<String, ReloadingMetadata> classMap = getClassMap();
         ReloadingMetadata metadata = classMap.get(className);
@@ -156,9 +161,19 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //already given in the Groovy classloader, this needs further testing
             for (String pathEntry : getScriptPaths()) {
 
-                Class retVal = (Class) loadScriptingClassFromFile(pathEntry, fileName);
-                if (retVal != null) {
-                    return retVal;
+                /**
+                 * the reload has to be performed synchronized
+                 * hence there is no chance to do it unsynchronized
+                 */
+                synchronized (BaseWeaver.class) {
+                    metadata = classMap.get(className);
+                    if (metadata != null) {
+                        return reloadScriptingClass(metadata.getAClass());
+                    }
+                    Class retVal = (Class) loadScriptingClassFromFile(pathEntry, fileName);
+                    if (retVal != null) {
+                        return retVal;
+                    }
                 }
             }
 
@@ -209,6 +224,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     protected abstract void mapProperties(Object target, Object src);
+
     protected abstract Class loadScriptingClassFromFile(String sourceRoot, String file);
 
     public abstract boolean isDynamic(Class clazz);
@@ -216,6 +232,5 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     public List<String> getScriptPaths() {
         return scriptPaths;
     }
-
 
 }

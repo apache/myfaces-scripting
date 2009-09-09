@@ -19,24 +19,67 @@
 package org.apache.myfaces.scripting.loaders.java;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 
 import java.lang.annotation.Annotation;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author werpu
- * A dynamic class identifier for java classes
+ *         A dynamic class identifier for java classes
  */
 public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.DynamicClassIdentifier {
+    static ThreadLocal _checked = new ThreadLocal();
+
     public boolean isDynamic(Class clazz) {
+        Map<String, Boolean> alreadyChecked = getAlreadyChecked();
+        if (alreadyChecked.containsKey(clazz.getName())) {
+            return alreadyChecked.get(clazz.getName());
+        }
+        if (checkForAnnotation(clazz)) {
+            alreadyChecked.put(clazz.getName(), Boolean.TRUE);
+            return true;
+        }
+        boolean retVal = checkForInterface(clazz);
+        //alreadyChecked.put(clazz.getName(), retVal ? Boolean.TRUE : Boolean.FALSE);
+        return retVal;
+    }
+
+
+    private Map<String, Boolean> getAlreadyChecked() {
+        Map<String, Boolean> checked = (Map<String, Boolean>) _checked.get();
+        if (checked == null) {
+            checked = new HashMap<String, Boolean>();
+        }
+        return checked;
+    }
+
+    private boolean checkForInterface(Class clazz) {
+        Class[] interfaces = clazz.getInterfaces();
+        if (interfaces == null) {
+            return false;
+
+        }
+
+        for (Class theInterface : interfaces) {
+            if (theInterface.equals(_ScriptingClass.class)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkForAnnotation(Class clazz) {
         Annotation identifier = clazz.getAnnotation(ScriptingClass.class);
-        return identifier != null;
+        boolean annotated = identifier != null;
+        return annotated;
     }
 
     public int getEngineType(Class clazz) {
-            if(isDynamic(clazz)) {
+        if (isDynamic(clazz)) {
             return ScriptingConst.ENGINE_TYPE_JAVA;
-        }else{
+        } else {
             return ScriptingConst.ENGINE_TYPE_NO_ENGINE;
         }
     }

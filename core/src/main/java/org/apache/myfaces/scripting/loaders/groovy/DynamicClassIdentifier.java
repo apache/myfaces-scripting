@@ -20,6 +20,9 @@ package org.apache.myfaces.scripting.loaders.groovy;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * This class checks for reloadable class patterns
  * we do it on the java side for existing groovy objects
@@ -27,19 +30,38 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
  * @author Werner Punz
  */
 public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.DynamicClassIdentifier {
+    static ThreadLocal _checked = new ThreadLocal();
+
     public boolean isDynamic(Class clazz) {
+        Map<String, Boolean> alreadyChecked = getAlreadyChecked();
+        if (alreadyChecked.containsKey(clazz.getName())) {
+            return alreadyChecked.get(clazz.getName());
+        }
+
         Class[] interfaces = clazz.getInterfaces();
         for (int cnt = 0; cnt < interfaces.length; cnt++) {
-            if (interfaces[cnt].getName().startsWith("groovy.lang"))
+            if (interfaces[cnt].getName().startsWith("groovy.lang")) {
+                alreadyChecked.put(clazz.getName(), Boolean.TRUE);
                 return true;
+            }
         }
+        alreadyChecked.put(clazz.getName(), Boolean.FALSE);
         return false;
     }
 
+    private Map<String, Boolean> getAlreadyChecked() {
+        Map<String, Boolean> checked = (Map<String, Boolean>) _checked.get();
+        if (checked == null) {
+            checked = new HashMap<String, Boolean>();
+        }
+        return checked;
+    }
+
+
     public int getEngineType(Class clazz) {
-        if(isDynamic(clazz)) {
+        if (isDynamic(clazz)) {
             return ScriptingConst.ENGINE_TYPE_GROOVY;
-        }else{
+        } else {
             return ScriptingConst.ENGINE_TYPE_NO_ENGINE;
         }
     }

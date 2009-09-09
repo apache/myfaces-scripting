@@ -43,7 +43,6 @@ public class ViewHandlerProxy extends ViewHandler implements Decorated {
         }
     }
 
-
     public ViewHandlerProxy(ViewHandler delegate) {
         _delegate = delegate;
     }

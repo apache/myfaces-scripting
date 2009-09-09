@@ -19,12 +19,13 @@
 package org.apache.myfaces.scripting.loaders.java.jci;
 
 import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.myfaces.shared_impl.util.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.jci.compilers.JavaCompiler;
 import org.apache.commons.jci.compilers.JavaCompilerFactory;
 import org.apache.commons.jci.compilers.CompilationResult;
-import org.apache.commons.jci.compilers.EclipseJavaCompiler;
+
 import org.apache.commons.jci.readers.ResourceReader;
 import org.apache.commons.jci.readers.FileResourceReader;
 import org.apache.commons.jci.stores.MemoryResourceStore;
@@ -63,8 +64,12 @@ public class CompilerFacade implements DynamicCompiler {
         result = compiler.compile(toCompile, reader, target);
 
         if (result.getErrors().length == 0) {
+            //TODO add marker mechanism for the compiled resources
+            //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
+            //for now until we have this added please use the annotation
+
             ResourceStore[] stores = {target};
-            ResourceStoreClassLoader loader = new ResourceStoreClassLoader(Thread.currentThread().getContextClassLoader(), stores);
+            ResourceStoreClassLoader loader = new ResourceStoreClassLoader(ClassUtils.getContextClassLoader(), stores);
             return loader.loadClass(className);
         } else {
             Log log = LogFactory.getLog(this.getClass());

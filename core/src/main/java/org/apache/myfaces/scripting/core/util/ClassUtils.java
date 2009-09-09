@@ -19,13 +19,22 @@
 package org.apache.myfaces.scripting.core.util;
 
 
+import org.apache.bcel.util.SyntheticRepository;
+import org.apache.bcel.util.ClassPath;
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.ClassGen;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
+import java.io.IOException;
+import java.io.File;
 
 /**
  * @author werpu
- *         helper class to bypass a groovy related bug
+ *         <p/>
+ *         A generic utils class dealing with different aspects
+ *         (naming and reflection) of java classes
  */
 public class ClassUtils {
 
@@ -229,4 +238,46 @@ public class ClassUtils {
         return new Null(clazz);
     }
 
+
+    /**
+     * we use the BCEL here to add a marker interface dynamically on the compiled java class
+     * so that later we can identify the marked class as being of dynamic origin
+     * that way we dont have to hammer any data structure but can work over introspection
+     * to check for an implemented marker interface
+     *
+     * @param classPath the root classPath which hosts our class
+     * @param className the className from the class which has to be rewritten
+     * @throws ClassNotFoundException
+     */
+    public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
+        SyntheticRepository repo = SyntheticRepository.getInstance(new ClassPath(classPath));
+        JavaClass javaClass = repo.loadClass(className);
+        ClassGen classGen = new ClassGen(javaClass);
+        classGen.addInterface("org.apache.myfaces.scripting.loaders.java._ScriptingClass");
+        classGen.update();
+
+        File target = classNameToFile(classPath, className);
+
+        try {
+            classGen.getJavaClass().dump(target);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static File classNameToFile(String classPath, String className) {
+        String classFileName = classNameToRelativeFileName(className);
+        File target = new File(classPath + File.separator + classFileName);
+        return target;
+    }
+
+    private static String classNameToRelativeFileName(String className) {
+        return className.replaceAll("\\.", File.separator) + ".class";
+    }
+
+    public static String relativeFileToClassName(String relativeFileName) {
+        String className = relativeFileName.replaceAll("\\\\", ".").replaceAll("\\/", ".");
+        className = className.substring(0, className.lastIndexOf("."));
+        return className;
+    }
 }

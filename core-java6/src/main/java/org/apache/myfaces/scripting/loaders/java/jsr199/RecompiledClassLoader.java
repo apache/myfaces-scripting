@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
+import org.apache.myfaces.scripting.core.util.ClassUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -28,6 +30,8 @@ import java.io.FileInputStream;
 
 public class RecompiledClassLoader extends ClassLoader {
     File tempDir = null;
+    static double _tempMarker = Math.random();
+
 
     RecompiledClassLoader(ClassLoader classLoader) {
         super(classLoader);
@@ -36,8 +40,9 @@ public class RecompiledClassLoader extends ClassLoader {
                 if (tempDir != null) {
                     return;
                 }
+
                 String baseTempPath = System.getProperty("java.io.tmpdir");
-                String tempDirName = "myfaces_compilation_" + Math.random();
+                String tempDirName = "myfaces_compilation_" + _tempMarker;
 
                 tempDir = new File(baseTempPath + File.separator + tempDirName);
                 while (tempDir.exists()) {
@@ -57,8 +62,7 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
-        String classFile = className.replaceAll("\\.", File.separator) + ".class";
-        File target = new File(tempDir.getAbsolutePath() + File.separator + classFile);
+        File target = getClassFile(className);
         if (target.exists()) {
 
             FileInputStream iStream = null;
@@ -84,6 +88,10 @@ public class RecompiledClassLoader extends ClassLoader {
         }
 
         return super.loadClass(className);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public File getClassFile(String className) {
+        return ClassUtils.classNameToFile(tempDir.getAbsolutePath(), className);
     }
 
     public File getTempDir() {

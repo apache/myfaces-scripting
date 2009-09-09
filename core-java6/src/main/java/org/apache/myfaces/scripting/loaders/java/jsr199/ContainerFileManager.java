@@ -18,17 +18,16 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
-import javax.tools.*;
-import java.io.IOException;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.List;
-import java.net.URLClassLoader;
-import java.net.URL;
-
 import org.apache.myfaces.shared_impl.util.ClassUtils;
+
+import javax.tools.FileObject;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 
 /**

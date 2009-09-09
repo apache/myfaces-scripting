@@ -25,8 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author werpu
- * this annotation adds scripting behavior
- * only classes using this annotation will be reloaded
+ *         this annotation adds scripting behavior
+ *         only classes using this annotation will be reloaded
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

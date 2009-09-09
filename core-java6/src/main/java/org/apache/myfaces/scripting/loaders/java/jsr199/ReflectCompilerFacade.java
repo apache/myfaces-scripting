@@ -22,7 +22,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.Null;
 import org.apache.myfaces.scripting.core.util.Cast;
-import org.apache.myfaces.scripting.core.util.Array;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 
 
@@ -33,10 +32,7 @@ import java.util.Locale;
 import java.util.Collection;
 import java.nio.charset.Charset;
 
-import static org.apache.myfaces.scripting.core.util.ClassUtils.*;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
-
-import javax.tools.StandardJavaFileManager;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -72,7 +68,7 @@ public class ReflectCompilerFacade  implements DynamicCompiler {
         Object fileObjects = ClassUtils.executeFunction(fileManager, "getJavaFileObjectsSingle",  sourceRoot + FILE_SEPARATOR + filePath)  ;
 
         //TODO add the core jar from our lib dir
-        //the compiler otherwise cannot find the file
+        //the javaCompiler otherwise cannot find the file
         String[] options = new String[]{"-cp",
                                         (String) ClassUtils.executeFunction(fileManager, "getClassPath"), "-d", (String) ClassUtils.executeFunction(ClassUtils.executeFunction(fileManager, "getTempDir"), "getAbsolutePath"), "-sourcepath", sourceRoot, "-g"};
 

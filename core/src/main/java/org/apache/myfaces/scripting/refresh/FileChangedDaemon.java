@@ -36,22 +36,18 @@ import java.util.Map;
  *         loaded by the various engine loaders for
  *         for file changes and then if one has changed we have to mark
  *         it for further processing
- *
- * TODO to get optimal performance we operate on a deep copy of the underlying map
- * the map itself has read write access and access the map can only happen synchronized
- * the write acces has to happen through this class which is sort of the gatekeeper,
- * the read access happens on a non synchronized instance of the map
- * which is accessed for readonly reasons, non synchronized map
- * is refreshed after every interval if something was tainted with
- * an assignment operation so that nothing can happen
- * (lisp trick again, immutable data structure == thread safety)
- *
- *
+ *         <p/>
  */
 public class FileChangedDaemon extends Thread {
 
     static FileChangedDaemon instance = null;
 
+    //TODO replace the synchronized map with a segmented map to reduce
+    //the number of synchronisation locks on parallel access
+    //we have to have in mind that the compiler facades access this map
+    //in a writable way as well to update their meta data so we
+    //should replace the map with something segmented, probably
+    //a balanced tree of depth 2
     Map<String, ReloadingMetadata> classMap = Collections.synchronizedMap(new HashMap<String, ReloadingMetadata>());
     boolean running = false;
     Log log = LogFactory.getLog(FileChangedDaemon.class);
@@ -61,15 +57,14 @@ public class FileChangedDaemon extends Thread {
         if (instance == null) {
             instance = new FileChangedDaemon();
             instance.setDaemon(true);
-             instance.setRunning(true);
+            instance.setRunning(true);
             instance.start();
 
         }
-       
+
         return instance;
     }
 
- 
 
     public void run() {
         while (running) {

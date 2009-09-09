@@ -34,8 +34,6 @@ import javax.faces.context.FacesContext;
 public class VariableResolverProxy extends VariableResolver implements Decorated {
     VariableResolver _delegate;
 
-
-
     public VariableResolverProxy(VariableResolver delegate) {
         _delegate = delegate;
     }

@@ -84,6 +84,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
 
     /**
      * loads a class from a given sourceroot and filename
+     * note this method does not have to be thread safe
+     * it is called in a thread safe manner by the base class
      *
      * @param sourceRoot the source search lookup path
      * @param file       the filename to be compiled and loaded
@@ -107,7 +109,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
         try {
             //we initialize the compiler lazy
             //because the facade itself is lazy
-            DynamicCompiler compiler = (DynamicCompiler) ClassUtils.instantiate("org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade");//new ReflectCompilerFacade();
+            DynamicCompiler compiler = (DynamicCompiler) ClassUtils.instantiate("org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade");//new ReflectCompilerFacade();
             retVal = compiler.compileFile(sourceRoot, classPath, file);
         } catch (ClassNotFoundException e) {
             //can be safely ignored
