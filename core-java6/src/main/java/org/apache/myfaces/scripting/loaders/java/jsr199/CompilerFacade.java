@@ -55,7 +55,9 @@ public class CompilerFacade implements DynamicCompiler {
     //windows file locking, but since this is not for production we can live with it
     public Class compileFile(String sourceRoot, String classPath, String relativeFileName) throws ClassNotFoundException {
 
+        
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + relativeFileName);
+        fileManager.getTempDir().setLastModified(0);
         String[] options = new String[]{"-cp", fileManager.getClassPath(), "-d", fileManager.getTempDir().getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         handleDiagnostics(diagnosticCollector);

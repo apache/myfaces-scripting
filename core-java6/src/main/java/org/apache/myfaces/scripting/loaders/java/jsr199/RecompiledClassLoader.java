@@ -30,7 +30,7 @@ import java.io.FileInputStream;
  */
 
 public class RecompiledClassLoader extends ClassLoader {
-    File tempDir = null;
+    static File tempDir = null;
     static double _tempMarker = Math.random();
 
 
