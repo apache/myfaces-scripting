@@ -245,6 +245,11 @@ public class ClassUtils {
      * that way we dont have to hammer any data structure but can work over introspection
      * to check for an implemented marker interface
      *
+     * I cannot use the planned annotation for now
+     * because the BCEL has annotation support only
+     * in the trunk but in no official release,
+     * the annotation support will be added as soon as it is possible to use it
+     *
      * @param classPath the root classPath which hosts our class
      * @param className the className from the class which has to be rewritten
      * @throws ClassNotFoundException
@@ -253,6 +258,7 @@ public class ClassUtils {
         SyntheticRepository repo = SyntheticRepository.getInstance(new ClassPath(classPath));
         JavaClass javaClass = repo.loadClass(className);
         ClassGen classGen = new ClassGen(javaClass);
+        
         classGen.addInterface("org.apache.myfaces.scripting.loaders.java._ScriptingClass");
         classGen.update();
 
@@ -264,6 +270,8 @@ public class ClassUtils {
             e.printStackTrace();
         }
     }
+
+  
 
     public static File classNameToFile(String classPath, String className) {
         String classFileName = classNameToRelativeFileName(className);

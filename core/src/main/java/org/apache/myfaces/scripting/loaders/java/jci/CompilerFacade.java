@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.loaders.java.jci;
 
 import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.shared_impl.util.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +32,7 @@ import org.apache.commons.jci.readers.FileResourceReader;
 import org.apache.commons.jci.stores.MemoryResourceStore;
 import org.apache.commons.jci.stores.ResourceStore;
 import org.apache.commons.jci.stores.ResourceStoreClassLoader;
+import org.apache.commons.jci.stores.FileResourceStore;
 import org.apache.commons.jci.problems.CompilationProblem;
 
 import java.io.File;
@@ -42,6 +44,7 @@ import java.io.File;
 public class CompilerFacade implements DynamicCompiler {
     JavaCompiler compiler = null;
 
+    static File tempDir = FileUtils.getTempDir();
 
     public CompilerFacade() {
         super();
@@ -54,19 +57,16 @@ public class CompilerFacade implements DynamicCompiler {
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
 
         ResourceReader reader = new FileResourceReader(new File(sourceRoot));
-        MemoryResourceStore target = new MemoryResourceStore();
+        FileResourceStore target = new FileResourceStore(tempDir);
         CompilationResult result = null;
         String[] toCompile = new String[]{filePath};
         String className = filePath.replaceAll(File.separator, ".");
-        className = className.replaceAll("[\\\\\\/]", ".");
-        className = className.substring(0, className.length() - 5);
+        className = org.apache.myfaces.scripting.core.util.ClassUtils.relativeFileToClassName(className);
 
         result = compiler.compile(toCompile, reader, target);
 
         if (result.getErrors().length == 0) {
-            //TODO add marker mechanism for the compiled resources
-            //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
-            //for now until we have this added please use the annotation
+            org.apache.myfaces.scripting.core.util.ClassUtils.markAsDynamicJava(tempDir.getAbsolutePath(), className);
 
             ResourceStore[] stores = {target};
             ResourceStoreClassLoader loader = new ResourceStoreClassLoader(ClassUtils.getContextClassLoader(), stores);

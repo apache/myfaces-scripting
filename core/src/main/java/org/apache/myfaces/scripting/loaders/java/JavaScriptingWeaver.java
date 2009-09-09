@@ -46,6 +46,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
     DynamicClassIdentifier identifier = new DynamicClassIdentifier();
 
     private static final String JAVA_FILE_ENDING = ".java";
+    private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade";
+    private static final String JCI_COMPILER = "org.apache.myfaces.scripting.loaders.java.jci";
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -109,7 +111,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
         try {
             //we initialize the compiler lazy
             //because the facade itself is lazy
-            DynamicCompiler compiler = (DynamicCompiler) ClassUtils.instantiate("org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade");//new ReflectCompilerFacade();
+            DynamicCompiler compiler = (DynamicCompiler) ClassUtils.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
             retVal = compiler.compileFile(sourceRoot, classPath, file);
         } catch (ClassNotFoundException e) {
             //can be safely ignored
@@ -120,6 +122,20 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
         }
 
         return retVal;
+    }
+
+    private String getScriptingFacadeClass() {
+        String javaVer = System.getProperty("java.version");
+        String [] versionArr = javaVer.split("\\.");
+
+        int major = Integer.parseInt(versionArr[Math.min(versionArr.length, 1)]);
+
+        if(major > 5) {
+            //jsr199 compliant jdk
+            return JSR199_COMPILER;
+        }
+        //otherwise 
+        return JCI_COMPILER;
     }
 
     public boolean isDynamic(Class clazz) {

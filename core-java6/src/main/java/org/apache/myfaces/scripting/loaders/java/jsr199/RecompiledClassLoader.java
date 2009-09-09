@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,7 +30,7 @@ import java.io.FileInputStream;
  */
 
 public class RecompiledClassLoader extends ClassLoader {
-    File tempDir = null;
+    static File tempDir = null;
     static double _tempMarker = Math.random();
 
 
@@ -41,16 +42,7 @@ public class RecompiledClassLoader extends ClassLoader {
                     return;
                 }
 
-                String baseTempPath = System.getProperty("java.io.tmpdir");
-                String tempDirName = "myfaces_compilation_" + _tempMarker;
-
-                tempDir = new File(baseTempPath + File.separator + tempDirName);
-                while (tempDir.exists()) {
-                    tempDirName = "myfaces_compilation_" + System.currentTimeMillis() + Math.random();
-                    tempDir = new File(baseTempPath + File.separator + tempDirName);
-                }
-                tempDir.mkdirs();
-                tempDir.deleteOnExit();
+                tempDir = FileUtils.getTempDir();
             }
         }
     }
