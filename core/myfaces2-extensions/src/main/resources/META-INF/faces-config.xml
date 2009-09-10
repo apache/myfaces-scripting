@@ -23,7 +23,6 @@
  * under the License.
 -->
 
-<faces-config>
     <factory>
         <!--
           all these factories are replacements for the normal ones
