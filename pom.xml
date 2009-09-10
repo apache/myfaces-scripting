@@ -13,7 +13,7 @@
     </description>
 
     <modules>
-        <module>engine</module>
+        <module>core</module>
 
         <!--
           <module>myfaces12-extensions</module>
