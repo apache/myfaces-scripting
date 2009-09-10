@@ -64,6 +64,11 @@ public class ScriptingRenderkitFactory extends RenderKitFactory implements Decor
         _delegate = delegate;
     }
 
+    @Override
+    public RenderKitFactory getWrapped() {
+        return _delegate.getWrapped();
+    }
+
     RenderKitFactory _delegate = null;
 
     public Object getDelegate() {

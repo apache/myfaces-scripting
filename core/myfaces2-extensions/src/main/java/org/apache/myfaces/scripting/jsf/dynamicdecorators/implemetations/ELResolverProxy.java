@@ -87,6 +87,9 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return _delegate.getCommonPropertyType(elContext, o);
     }
 
+
+
+
     public ELResolverProxy(ELResolver delegate) {
         _delegate = delegate;
     }

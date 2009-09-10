@@ -26,10 +26,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
 import javax.faces.render.Renderer;
 import javax.faces.render.ResponseStateManager;
+import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseStream;
 import java.io.Writer;
 import java.io.OutputStream;
+import java.util.Iterator;
 import javax.servlet.ServletRequest;
 
 /**
@@ -99,6 +101,37 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
         return _delegate.createResponseStream(outputStream);
+    }
+
+    //TODO add full support for myfaces 2.0 here
+    @Override
+    public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer clientBehaviorRenderer) {
+        weaveDelegate();
+        _delegate.addClientBehaviorRenderer(s, clientBehaviorRenderer);
+    }
+
+    @Override
+    public ClientBehaviorRenderer getClientBehaviorRenderer(String s) {
+        weaveDelegate();
+        return _delegate.getClientBehaviorRenderer(s);
+    }
+
+    @Override
+    public Iterator<String> getClientBehaviorRendererTypes() {
+        weaveDelegate();
+        return _delegate.getClientBehaviorRendererTypes();
+    }
+
+    @Override
+    public Iterator<String> getComponentFamilies() {
+        weaveDelegate();
+        return _delegate.getComponentFamilies();
+    }
+
+    @Override
+    public Iterator<String> getRendererTypes(String s) {
+        weaveDelegate();
+        return _delegate.getRendererTypes(s);
     }
 
     public Object getDelegate() {

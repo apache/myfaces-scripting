@@ -24,22 +24,19 @@ import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import javax.el.*;
 import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.NavigationHandler;
-import javax.faces.application.StateManager;
-import javax.faces.application.ViewHandler;
+import javax.faces.application.*;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.*;
 import javax.faces.event.ActionListener;
+import javax.faces.event.SystemEventListener;
+import javax.faces.event.SystemEvent;
 import javax.faces.validator.Validator;
 import javax.servlet.ServletRequest;
 import java.lang.reflect.Proxy;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * our decorating applicstion
@@ -149,14 +146,6 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getELContextListeners();
     }
 
-    public Object evaluateExpressionGet(FacesContext facesContext, String s, Class aClass) throws ELException {
-        weaveDelegate();
-        //good place for a dynamic reloading check as well
-        Object retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
-        if (ProxyUtils.isDynamic(retVal.getClass()))
-            retVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-        return retVal;
-    }
 
     public ActionListener getActionListener() {
         weaveDelegate();
@@ -370,7 +359,7 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
 
-    public Iterator<Class> getConverterTypes() {
+    public Iterator<Class<?>> getConverterTypes() {
         weaveDelegate();
         return _delegate.getConverterTypes();
     }
@@ -412,6 +401,120 @@ public class ApplicationProxy extends Application implements Decorated {
     public ValueBinding createValueBinding(String s) throws ReferenceSyntaxException {
         weaveDelegate();
         return _delegate.createValueBinding(s);
+    }
+
+    //TODO add new implementation stuff here
+
+    @Override
+    public void addBehavior(String s, String s1) {
+        weaveDelegate();
+        _delegate.addBehavior(s, s1);
+    }
+
+    @Override
+    public void addDefaultValidatorId(String s) {
+        weaveDelegate();
+        _delegate.addDefaultValidatorId(s);
+    }
+
+    @Override
+    public Behavior createBehavior(String s) throws FacesException {
+        weaveDelegate();
+        return _delegate.createBehavior(s);
+    }
+
+    @Override
+    public UIComponent createComponent(FacesContext facesContext, Resource resource) {
+        return super.createComponent(facesContext, resource);
+    }
+
+    @Override
+    public UIComponent createComponent(FacesContext facesContext, String s, String s1) {
+        weaveDelegate();
+        //TODO check if we can add a component weaving here, but I assume it is handled in the viewroot already decently
+        return _delegate.createComponent(facesContext, s, s1);
+    }
+
+    @Override
+    public UIComponent createComponent(ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
+        weaveDelegate();
+        return _delegate.createComponent(valueExpression, facesContext, s, s1);
+    }
+
+    @Override
+    public <T> T evaluateExpressionGet(FacesContext facesContext, String s, Class<? extends T> aClass) throws ELException {
+         weaveDelegate();
+        //good place for a dynamic reloading check as well
+        T retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
+        if (ProxyUtils.isDynamic(retVal.getClass()))
+            retVal = (T) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+        return retVal;
+    }
+
+    @Override
+    public Iterator<String> getBehaviorIds() {
+        weaveDelegate();
+        return _delegate.getBehaviorIds();
+    }
+
+    @Override
+    public Map<String, String> getDefaultValidatorInfo() {
+       weaveDelegate();
+       return _delegate.getDefaultValidatorInfo();
+    }
+
+    @Override
+    public ProjectStage getProjectStage() {
+       weaveDelegate();
+       return _delegate.getProjectStage();
+    }
+
+    @Override
+    public ResourceHandler getResourceHandler() {
+        weaveDelegate();
+        return _delegate.getResourceHandler();
+    }
+
+    @Override
+    public void publishEvent(FacesContext facesContext, Class<? extends SystemEvent> eventClass, Class<?> aClass, Object o) {
+        weaveDelegate();
+        _delegate.publishEvent(facesContext, eventClass, aClass, o);
+    }
+
+    @Override
+    public void publishEvent(FacesContext facesContext, Class<? extends SystemEvent> eventClass, Object o) {
+        weaveDelegate();
+        _delegate.publishEvent(facesContext, eventClass, o);
+    }
+
+    @Override
+    public void setResourceHandler(ResourceHandler resourceHandler) {
+        weaveDelegate();
+        _delegate.setResourceHandler(resourceHandler);
+    }
+
+    @Override
+    public void subscribeToEvent(Class<? extends SystemEvent> eventClass, Class<?> aClass, SystemEventListener systemEventListener) {
+        weaveDelegate();
+        _delegate.subscribeToEvent(eventClass, aClass, systemEventListener);
+    }
+
+    @Override
+    public void subscribeToEvent(Class<? extends SystemEvent> aClass, SystemEventListener systemEventListener) {
+        weaveDelegate();
+        _delegate.subscribeToEvent(aClass, systemEventListener);
+    }
+
+    @Override
+    public void unsubscribeFromEvent(Class<? extends SystemEvent> eventClass, Class<?> aClass, SystemEventListener systemEventListener) {
+        weaveDelegate();
+        _delegate.unsubscribeFromEvent(eventClass, aClass, systemEventListener);
+    }
+
+    @Override
+    public void unsubscribeFromEvent(Class<? extends SystemEvent> aClass, SystemEventListener systemEventListener) {
+        weaveDelegate();
+        _delegate.unsubscribeFromEvent(aClass, systemEventListener);
     }
 
     public ApplicationProxy(Application delegate) {

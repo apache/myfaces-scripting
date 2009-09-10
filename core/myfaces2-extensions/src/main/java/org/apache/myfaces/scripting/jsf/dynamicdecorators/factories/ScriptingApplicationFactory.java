@@ -69,6 +69,11 @@ public class ScriptingApplicationFactory extends ApplicationFactory implements D
         _delegate.setApplication(application);
     }
 
+    @Override
+    public ApplicationFactory getWrapped() {
+        return _delegate.getWrapped();
+    }
+
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }

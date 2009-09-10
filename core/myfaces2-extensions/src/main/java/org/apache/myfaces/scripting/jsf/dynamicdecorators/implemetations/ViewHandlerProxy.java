@@ -25,7 +25,10 @@ import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIViewRoot;
 import javax.faces.FacesException;
+import javax.faces.view.ViewDeclarationLanguage;
 import java.util.Locale;
+import java.util.Map;
+import java.util.List;
 import java.io.IOException;
 
 /**
@@ -97,7 +100,30 @@ public class ViewHandlerProxy extends ViewHandler implements Decorated {
         _delegate.writeState(facesContext);
     }
 
+    //TODO add myfaces 2.0 stuff here
 
+    @Override
+    public String deriveViewId(FacesContext facesContext, String s) {
+        weaveDelegate();
+        return _delegate.deriveViewId(facesContext, s);
+    }
+
+    @Override
+    public String getBookmarkableURL(FacesContext facesContext, String s, Map<String, List<String>> stringListMap, boolean b) {
+        return super.getBookmarkableURL(facesContext, s, stringListMap, b);
+    }
+
+    @Override
+    public ViewDeclarationLanguage getViewDeclarationLanguage(FacesContext facesContext, String s) {
+        weaveDelegate();
+        return _delegate.getViewDeclarationLanguage(facesContext, s);
+    }
+
+    @Override
+    public String getRedirectURL(FacesContext facesContext, String s, Map<String, List<String>> stringListMap, boolean b) {
+        weaveDelegate();
+        return _delegate.getRedirectURL(facesContext, s, stringListMap, b);
+    }
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.

@@ -65,6 +65,11 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
         this._delegate = delegate;
     }
 
+    @Override
+    public LifecycleFactory getWrapped() {
+        return _delegate.getWrapped();
+    }
+
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }

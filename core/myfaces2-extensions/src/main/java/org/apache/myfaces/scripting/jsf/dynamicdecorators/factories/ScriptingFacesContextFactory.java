@@ -59,6 +59,11 @@ public class ScriptingFacesContextFactory extends javax.faces.context.FacesConte
         return retVal;
     }
 
+    @Override
+    public FacesContextFactory getWrapped() {
+        return _delegate.getWrapped();
+    }
+
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }

@@ -21,17 +21,18 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.ResponseStream;
-import javax.faces.context.ResponseWriter;
+import javax.faces.context.*;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
 import javax.faces.render.RenderKit;
 import javax.faces.component.UIViewRoot;
 import javax.faces.lifecycle.Lifecycle;
+import javax.faces.event.PhaseId;
 import javax.el.ELContext;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.List;
 
 /**
  * A reloading, weaving  faces context
@@ -140,6 +141,78 @@ public class FacesContextProxy extends FacesContext implements Decorated {
     public FacesContextProxy(FacesContext delegate) {
         _delegate = delegate;
         weaveDelegate();
+    }
+
+
+    //TODO add support for myfaces 2.0 fully here
+    @Override
+    public Map<Object, Object> getAttributes() {
+        return _delegate.getAttributes();
+    }
+
+    @Override
+    public PhaseId getCurrentPhaseId() {
+        return _delegate.getCurrentPhaseId();
+    }
+
+    @Override
+    public ExceptionHandler getExceptionHandler() {
+        return _delegate.getExceptionHandler();
+    }
+
+    @Override
+    public List<FacesMessage> getMessageList() {
+        return _delegate.getMessageList();
+    }
+
+    @Override
+    public List<FacesMessage> getMessageList(String s) {
+        return _delegate.getMessageList(s);
+    }
+
+    @Override
+    public PartialViewContext getPartialViewContext() {
+        return _delegate.getPartialViewContext();
+    }
+
+    @Override
+    public boolean isValidationFailed() {
+        return _delegate.isValidationFailed();
+    }
+
+    @Override
+    public boolean isPostback() {
+        return _delegate.isPostback();
+    }
+
+    @Override
+    public boolean isProcessingEvents() {
+        return _delegate.isProcessingEvents();
+    }
+
+    @Override
+    public void setCurrentPhaseId(PhaseId phaseId) {
+        _delegate.setCurrentPhaseId(phaseId);
+    }
+
+    @Override
+    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+        _delegate.setExceptionHandler(exceptionHandler);
+    }
+
+    @Override
+    public void setProcessingEvents(boolean b) {
+        _delegate.setProcessingEvents(b);
+    }
+
+    @Override
+    public void validationFailed() {
+        _delegate.validationFailed();
+    }
+
+    @Override
+    public boolean isProjectStage(ProjectStage projectStage) {
+        return _delegate.isProjectStage(projectStage);
     }
 
     public Object getDelegate() {
