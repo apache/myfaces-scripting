@@ -420,7 +420,14 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public Behavior createBehavior(String s) throws FacesException {
         weaveDelegate();
-        return _delegate.createBehavior(s);
+        Behavior retVal = _delegate.createBehavior(s);
+        //TODO check if this does not break our ClientSideBehavior
+        //instances, otherwise we have to do a bypass for f:ajax or do it
+        //directly via the weaver instead of using the automated proxy
+        if (ProxyUtils.isDynamic(retVal.getClass())) {
+            retVal = (Behavior) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Behavior.class);
+        }
+        return retVal;
     }
 
     @Override
@@ -472,7 +479,12 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
-        return _delegate.getResourceHandler();
+        ResourceHandler retVal = _delegate.getResourceHandler();
+         if (ProxyUtils.isDynamic(retVal.getClass())) {
+            retVal = (ResourceHandler) new ResourceHandlerProxy(retVal);
+            setResourceHandler(retVal);
+         }
+         return retVal;
     }
 
     @Override
