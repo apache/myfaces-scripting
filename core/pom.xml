@@ -5,7 +5,8 @@
     <artifactId>core-root</artifactId>
     <packaging>pom</packaging>
     <name>groovy core engine</name>
-
+	<version>1.0-SNAPSHOT</version>
+	
     <description>
         groovy myfaces core engine meta project
     </description>
@@ -18,6 +19,8 @@
 
    <modules>
      <module>core</module>
+	 <module>myfaces12-extensions</module>
+	 <module>myfaces2-extensions</module>
      <module>core-java6</module>
    </modules>
 </project>	
