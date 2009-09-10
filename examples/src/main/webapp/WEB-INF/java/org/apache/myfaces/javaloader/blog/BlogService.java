@@ -28,7 +28,6 @@ import java.util.Collections;
  * @author werpu2
  * @date: 01.09.2009
  */
-@ScriptingClass
 public class BlogService {
 
 

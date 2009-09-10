@@ -46,7 +46,7 @@
     </context-param>
 
 
-    <!--
+
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -56,10 +56,6 @@
         </param-value>
     </context-param>
 
-    <context-param>
-        <param-name>org.apache.myfaces.scripting.java.JAR_PATHS</param-name>
-        <param-value>/Users/werpu2/development/apache-tomcat-6.0.16/lib</param-value>
-    </context-param>
 
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
@@ -69,7 +65,7 @@
         <param-value>/Users/werpu2/development/workspace/extensions-scripting/examples/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
-     -->
+    
 
     <context-param>
         <description>State saving method: "client" or "server" (= default)

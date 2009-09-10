@@ -23,22 +23,25 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 
 import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
-import static org.apache.myfaces.scripting.core.util.ClassUtils.*;
+import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
 
 /**
  * @author werpu2
  * @date: 01.09.2009
  */
 
-@ScriptingClass
+
 public class Blog {
 
-    String title        =   "Hello to the myfaces dynamic blogging";
+    String title        =   "Hello to the myfaces dynamic blogging example";
     String title1       =   "You can alter the code for this small blogging application on the fly, " +
                             "you even can add new classes on the fly and Java will pick it up";
 
     String title3 = "bla";
     String title4 = "bla2";
+
+    String title5 = "test from title5";
+
 
 
     String firstName    = "";
@@ -86,6 +89,7 @@ public class Blog {
             * the same behavior you get from scripting engines!
             * 
             */
+            //service.addEntry(entry);
             executeMethod(service, "addEntry", cast(Object.class, entry));
         }
 
@@ -138,12 +142,13 @@ public class Blog {
         return content;
     }
 
+
     public void setContent(String content) {
         this.content = content;
     }
 
     public String getTitle3() {
-        return "aaaaa";
+        return "title 3 from java blog";
     }
 
     public void setTitle3(String title3) {
@@ -157,4 +162,15 @@ public class Blog {
     public void setTitle4(String title4) {
         this.title4 = title4;
     }
+
+
+    public String getTitle5() {
+        return title5;
+    }
+
+    public void setTitle5(String title5) {
+
+    }
+    
+
 }

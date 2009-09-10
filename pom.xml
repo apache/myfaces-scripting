@@ -13,8 +13,7 @@
     </description>
 
     <modules>
-        <module>core</module>
-        <module>core-java6</module>
+        <module>engine</module>
 
         <!--
           <module>myfaces12-extensions</module>
@@ -23,7 +22,6 @@
         <module>examples</module>
         <module>spring-example</module>
     </modules>
-    /Users/werpu2/development/workspace/extensions-scripting//Users/werpu2/development/workspace/extensions-scripting/
 
     <repositories>
         <repository>

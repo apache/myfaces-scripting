@@ -41,13 +41,14 @@
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
             <version>1.2.8-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
             <version>1.2.8-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -103,4 +104,5 @@
         </plugins>
     </build>
 
+    
 </project>
