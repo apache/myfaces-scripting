@@ -369,6 +369,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getConverterIds();
     }
 
+
     public Iterator<Class> getConverterTypes() {
         weaveDelegate();
         return _delegate.getConverterTypes();

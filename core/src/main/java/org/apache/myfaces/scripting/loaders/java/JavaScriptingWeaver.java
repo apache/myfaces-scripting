@@ -25,7 +25,7 @@ import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
@@ -111,7 +111,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
         try {
             //we initialize the compiler lazy
             //because the facade itself is lazy
-            DynamicCompiler compiler = (DynamicCompiler) ClassUtils.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
+            DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
             retVal = compiler.compileFile(sourceRoot, classPath, file);
         } catch (ClassNotFoundException e) {
             //can be safely ignored

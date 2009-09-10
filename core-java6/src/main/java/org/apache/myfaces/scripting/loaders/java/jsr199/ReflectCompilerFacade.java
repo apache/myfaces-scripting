@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.Null;
 import org.apache.myfaces.scripting.core.util.Cast;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 
 import java.io.File;
@@ -55,36 +56,36 @@ public class ReflectCompilerFacade  implements DynamicCompiler {
         //TODO move this all into the introspection domain
         //so that we can shift to jdk5
         Class toolProviderClass = ClassUtils.forName("javax.tools.ToolProvider");
-        compiler = ClassUtils.executeStaticFunction(toolProviderClass, "getSystemJavaCompiler");
-        diagnosticCollector = ClassUtils.instantiate("javax.tools.DiagnosticCollector");
+        compiler = ReflectUtil.executeStaticFunction(toolProviderClass, "getSystemJavaCompiler");
+        diagnosticCollector = ReflectUtil.instantiate("javax.tools.DiagnosticCollector");
 
-        fileManager = ClassUtils.instantiate("org.apache.myfaces.scripting.loaders.java.jsr199.ContainerFileManager",
-                                  new Cast(ClassUtils.forName("javax.tools.StandardJavaFileManager"), ClassUtils.executeFunction(compiler, "getStandardFileManager", new Cast(ClassUtils.forName("javax.tools.DiagnosticListener"),diagnosticCollector), new Null(Locale.class), new Null(Charset.class))));
+        fileManager = ReflectUtil.instantiate("org.apache.myfaces.scripting.loaders.java.jsr199.ContainerFileManager",
+                                  new Cast(ClassUtils.forName("javax.tools.StandardJavaFileManager"), ReflectUtil.executeFunction(compiler, "getStandardFileManager", new Cast(ClassUtils.forName("javax.tools.DiagnosticListener"),diagnosticCollector), new Null(Locale.class), new Null(Charset.class))));
 
     }
 
 
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
-        Object fileObjects = ClassUtils.executeFunction(fileManager, "getJavaFileObjectsSingle",  sourceRoot + FILE_SEPARATOR + filePath)  ;
+        Object fileObjects = ReflectUtil.executeFunction(fileManager, "getJavaFileObjectsSingle",  sourceRoot + FILE_SEPARATOR + filePath)  ;
 
         //TODO add the core jar from our lib dir
         //the javaCompiler otherwise cannot find the file
         String[] options = new String[]{"-cp",
-                                        (String) ClassUtils.executeFunction(fileManager, "getClassPath"), "-d", (String) ClassUtils.executeFunction(ClassUtils.executeFunction(fileManager, "getTempDir"), "getAbsolutePath"), "-sourcepath", sourceRoot, "-g"};
+                                        (String) ReflectUtil.executeFunction(fileManager, "getClassPath"), "-d", (String) ReflectUtil.executeFunction(ReflectUtil.executeFunction(fileManager, "getTempDir"), "getAbsolutePath"), "-sourcepath", sourceRoot, "-g"};
 
-        ClassUtils.executeMethod(ClassUtils.executeFunction(compiler, "getTask", new Null(Writer.class), new Cast(ClassUtils.forName("javax.tools.JavaFileManager"), fileManager),new Cast(ClassUtils.forName("javax.tools.DiagnosticListener"), diagnosticCollector),new Cast(java.lang.Iterable.class, Arrays.asList(options)), new Null(Iterable.class), new Cast(java.lang.Iterable.class,fileObjects)), "call");
+        ReflectUtil.executeMethod(ReflectUtil.executeFunction(compiler, "getTask", new Null(Writer.class), new Cast(ClassUtils.forName("javax.tools.JavaFileManager"), fileManager),new Cast(ClassUtils.forName("javax.tools.DiagnosticListener"), diagnosticCollector),new Cast(java.lang.Iterable.class, Arrays.asList(options)), new Null(Iterable.class), new Cast(java.lang.Iterable.class,fileObjects)), "call");
         //TODO collect the diagnostics and if an error was issued dump it on the log
         //and throw an unmanaged exeption which routes later on into myfaces
-        Collection diagnostics = (Collection) ClassUtils.executeFunction(diagnosticCollector, "getDiagnostics");
+        Collection diagnostics = (Collection) ReflectUtil.executeFunction(diagnosticCollector, "getDiagnostics");
         Integer size = diagnostics.size();
         if (size > 0) {
             Log log = LogFactory.getLog(this.getClass());
             StringBuilder errors = new StringBuilder();
             for (Object diagnostic : diagnostics) {
                 String error = "Error on line" +
-                               ClassUtils.executeFunction(diagnostic, "getMessage", Locale.getDefault()) + "------" +
-                               ClassUtils.executeFunction(diagnostic, "getLineNumber") + " File:" +
-                               ClassUtils.executeFunction(diagnostic, "getSource").toString();
+                               ReflectUtil.executeFunction(diagnostic, "getMessage", Locale.getDefault()) + "------" +
+                               ReflectUtil.executeFunction(diagnostic, "getLineNumber") + " File:" +
+                               ReflectUtil.executeFunction(diagnostic, "getSource").toString();
                 log.error(error);
                 errors.append(error);
 
@@ -95,7 +96,7 @@ public class ReflectCompilerFacade  implements DynamicCompiler {
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         if (!(oldClassLoader instanceof RecompiledClassLoader)) {
             try {
-                RecompiledClassLoader classLoader = (RecompiledClassLoader) ClassUtils.executeFunction(fileManager, "getClassLoader");
+                RecompiledClassLoader classLoader = (RecompiledClassLoader) ReflectUtil.executeFunction(fileManager, "getClassLoader");
                 Thread.currentThread().setContextClassLoader(classLoader);
                 String classFile = filePath.replaceAll("\\\\", ".").replaceAll("\\/", ".");
                 classFile = classFile.substring(0, classFile.lastIndexOf("."));

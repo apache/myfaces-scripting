@@ -21,8 +21,9 @@ package org.apache.myfaces.scripting.servlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.shared_impl.util.ClassUtils;
+
 import org.apache.myfaces.webapp.StartupListener;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;

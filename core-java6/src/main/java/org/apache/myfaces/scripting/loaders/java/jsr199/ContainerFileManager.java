@@ -18,7 +18,9 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
-import org.apache.myfaces.shared_impl.util.ClassUtils;
+
+
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 
 import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;
