@@ -33,31 +33,15 @@ import java.io.Writer;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Map;
-import javax.servlet.ServletRequest;
 
 /**
  * Weaving renderkit which
  * acts as a proxy factory for
- * our internal reloading renerers
+ * our internal reloading referers
  *
  * @author Werner Punz
  */
 public class RenderkitProxy extends RenderKit implements Decorated {
-
-
-    private void weaveDelegate() {
-        _delegate = (RenderKit) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
-    }
-
-    private boolean alreadyWovenInRequest(String clazz) {
-        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
-            req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
-            return false;
-        }
-        return true;
-    }
 
     RenderKit _delegate = null;
 
@@ -66,26 +50,18 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         _delegate = delegate;
     }
 
+
     public void addRenderer(String s, String s1, Renderer renderer) {
         weaveDelegate();
-        if (ProxyUtils.isDynamic(renderer.getClass()) && !alreadyWovenInRequest(renderer.toString())) {
-            renderer = (Renderer) ProxyUtils.getWeaver().reloadScriptingInstance(renderer);
-            alreadyWovenInRequest(renderer.toString());
-        }
-
+        //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
+        //renderers itself are flyweight patterns which means they are shared over objects
+        renderer = (Renderer) reloadInstance(renderer);
         _delegate.addRenderer(s, s1, renderer);
     }
 
     public Renderer getRenderer(String s, String s1) {
         weaveDelegate();
-        Renderer retVal = _delegate.getRenderer(s, s1);
-
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass()) && !alreadyWovenInRequest(retVal.toString())) {
-            retVal = (Renderer) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-            alreadyWovenInRequest(retVal.toString());
-            _delegate.addRenderer(s, s1, retVal);
-        }
-        return retVal;
+        return  (Renderer) reloadInstance(_delegate.getRenderer(s, s1));
     }
 
     public ResponseStateManager getResponseStateManager() {
@@ -95,25 +71,28 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public ResponseWriter createResponseWriter(Writer writer, String s, String s1) {
         weaveDelegate();
-        return _delegate.createResponseWriter(writer, s, s1);
+        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1));
     }
 
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
-        return _delegate.createResponseStream(outputStream);
+        return (ResponseStream) reloadInstance( _delegate.createResponseStream(outputStream));
     }
 
     //TODO add full support for myfaces 2.0 here
     @Override
-    public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer clientBehaviorRenderer) {
+    public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer renderer) {
+
         weaveDelegate();
-        _delegate.addClientBehaviorRenderer(s, clientBehaviorRenderer);
+        renderer = (ClientBehaviorRenderer) reloadInstance(renderer);
+        _delegate.addClientBehaviorRenderer(s, renderer);
     }
+
 
     @Override
     public ClientBehaviorRenderer getClientBehaviorRenderer(String s) {
         weaveDelegate();
-        return _delegate.getClientBehaviorRenderer(s);
+        return (ClientBehaviorRenderer) reloadInstance(_delegate.getClientBehaviorRenderer(s));
     }
 
     @Override
@@ -135,6 +114,34 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;  
     }
+
+
+     private final void weaveDelegate() {
+        _delegate = (RenderKit) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+    }
+
+    private final Object reloadInstance(Object instance) {
+        if(instance == null) {
+            return null;
+        }
+        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+            alreadyWovenInRequest(instance.toString());
+        }
+        return instance;
+    }
+
+
+    private final boolean alreadyWovenInRequest(String clazz) {
+        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+        Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+            req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -31,6 +31,8 @@ import javax.faces.context.FacesContext;
  */
 public class NavigationHandlerProxy extends NavigationHandler implements Decorated {
 
+    NavigationHandler _delegate;
+
     private void weaveDelegate() {
         _delegate = (NavigationHandler) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
     }
@@ -45,7 +47,7 @@ public class NavigationHandlerProxy extends NavigationHandler implements Decorat
         _delegate.handleNavigation(facesContext, s, s1);
     }
 
-    NavigationHandler _delegate;
+
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.

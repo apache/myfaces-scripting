@@ -33,7 +33,7 @@ import javax.faces.FacesException;
  */
 public class LifefcycleProxy extends Lifecycle implements Decorated {
 
- //   GroovyWeaver ProxyUtils.getWeaver() =  ProxyUtils.getWeaver();
+    Lifecycle _delegate = null;
 
     private void weaveDelegate() {
         if(_delegate != null)
@@ -74,7 +74,6 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
         _delegate.render(facesContext);
     }
 
-    Lifecycle _delegate = null;
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.

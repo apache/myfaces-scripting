@@ -32,10 +32,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.*;
 import javax.faces.event.ActionListener;
-import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import javax.faces.validator.Validator;
-import javax.servlet.ServletRequest;
 import java.lang.reflect.Proxy;
 import java.util.*;
 
@@ -50,17 +49,10 @@ public class ApplicationProxy extends Application implements Decorated {
 
     Application _delegate = null;
 
-    private boolean alreadyWovenInRequest(String clazz) {
-        //todo also enable portlets here
-        ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
-            req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
-            return false;
-        }
-        return false;
+    public ApplicationProxy(Application delegate) {
+        _delegate = delegate;
     }
 
-    //TODO add a proxy for the el resolvers as well
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
@@ -285,12 +277,7 @@ public class ApplicationProxy extends Application implements Decorated {
         * code, in the renderer we do it on method base
         * due to the fact that our renderers are recycled via
         * a flyweight pattern*/
-        if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
-            /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
-            alreadyWovenInRequest(component.toString());
-        }
-        return component;
+        return (UIComponent) reloadInstance(component);
     }
 
     public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String s) throws FacesException {
@@ -298,16 +285,11 @@ public class ApplicationProxy extends Application implements Decorated {
         UIComponent component = _delegate.createComponent(valueBinding, facesContext, s);
 
         /*we are reweaving on the fly because we cannot be sure if
-     * the class is not recycled all the time in the creation
-     * code, in the renderer we do it on method base
-     * due to the fact that our renderers are recycled via
-     * a flyweight pattern*/
-        if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
-            /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
-            alreadyWovenInRequest(component.toString());
-        }
-        return component;
+         * the class is not recycled all the time in the creation
+         * code, in the renderer we do it on method base
+         * due to the fact that our renderers are recycled via
+         * a flyweight pattern*/
+        return (UIComponent) reloadInstance(component);
     }
 
     public Iterator<String> getComponentTypes() {
@@ -387,6 +369,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public Validator createValidator(String s) throws FacesException {
         weaveDelegate();
+
         Validator retVal = _delegate.createValidator(s);
         if (ProxyUtils.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
             retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
@@ -429,6 +412,10 @@ public class ApplicationProxy extends Application implements Decorated {
         //be enough for behavior replacements on the user side, which this mechanism should
         //cover for now
         boolean isDynamic = ProxyUtils.isDynamic(retVal.getClass());
+        //TODO Check how often the behavior is really created if only once
+        //we have to operate over reloading proxies nevertheless
+        //the add and remove behavior listeners being protected might
+        //be a showstopper because we cannot provide the same in our proxies
         if (!isDynamic) {
             return retVal;
         } else if (retVal instanceof BehaviorBase) {
@@ -455,7 +442,7 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public UIComponent createComponent(ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
         weaveDelegate();
-        return _delegate.createComponent(valueExpression, facesContext, s, s1);
+        return (UIComponent) reloadInstance(_delegate.createComponent(valueExpression, facesContext, s, s1));
     }
 
     @Override
@@ -490,15 +477,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-        if (ProxyUtils.isDynamic(retVal.getClass())) {
-            //we use a proxy here to limit the reloads to some central
-            //points which have a lower calling frequency which is high enough
-            //to get it reloaded upon every request, but which should not drag
-            //down the entire system speedwise
-            retVal = (ResourceHandler) new ResourceHandlerProxy(retVal);
-            setResourceHandler(retVal);
-        }
-        return retVal;
+        return (ResourceHandler) reloadInstance(retVal);
     }
 
     @Override
@@ -543,12 +522,31 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.unsubscribeFromEvent(aClass, systemEventListener);
     }
 
-    public ApplicationProxy(Application delegate) {
-        _delegate = delegate;
-    }
-
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    private final Object reloadInstance(Object instance) {
+        if (instance == null) {
+            return null;
+        }
+        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+            alreadyWovenInRequest(instance.toString());
+        }
+        return instance;
+    }
+
+
+    private final boolean alreadyWovenInRequest(String clazz) {
+        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+        Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+            req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
+            return false;
+        }
+        return true;
+    }
+
 }

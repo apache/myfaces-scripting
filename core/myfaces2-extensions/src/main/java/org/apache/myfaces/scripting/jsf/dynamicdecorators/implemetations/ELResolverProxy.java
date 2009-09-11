@@ -38,10 +38,9 @@ import org.apache.myfaces.scripting.core.util.ProxyUtils;
  * @author Werner Punz
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
+
     Log log = LogFactory.getLog(ELResolverProxy.class);
-
-
-    //Map reinstantiated = new HashMap();
+    ELResolver _delegate = null;
 
 
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
@@ -94,7 +93,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         _delegate = delegate;
     }
 
-    ELResolver _delegate = null;
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
