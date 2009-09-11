@@ -52,14 +52,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
     Application _delegate = null;
 
-    private boolean alreadyWovenInRequest(String clazz) {
-        //todo also enable portlets here
-        ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
-            req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
-            return false;
-        }
-        return false;
+    public ApplicationProxy(Application delegate) {
+        _delegate = delegate;
     }
 
     //TODO add a proxy for the el resolvers as well
@@ -82,7 +76,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private void weaveDelegate() {
         if (_delegate != null) {
             _delegate = (Application) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
-        }    
+        }
     }
 
     public ELResolver getELResolver() {
@@ -295,12 +289,7 @@ public class ApplicationProxy extends Application implements Decorated {
         * code, in the renderer we do it on method base
         * due to the fact that our renderers are recycled via
         * a flyweight pattern*/
-        if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
-            /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
-            alreadyWovenInRequest(component.toString());
-        }
-        return component;
+        return (UIComponent) reloadInstance(component);
     }
 
     public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String s) throws FacesException {
@@ -308,16 +297,11 @@ public class ApplicationProxy extends Application implements Decorated {
         UIComponent component = _delegate.createComponent(valueBinding, facesContext, s);
 
         /*we are reweaving on the fly because we cannot be sure if
-     * the class is not recycled all the time in the creation
-     * code, in the renderer we do it on method base
-     * due to the fact that our renderers are recycled via
-     * a flyweight pattern*/
-        if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
-            /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
-            alreadyWovenInRequest(component.toString());
-        }
-        return component;
+         * the class is not recycled all the time in the creation
+         * code, in the renderer we do it on method base
+         * due to the fact that our renderers are recycled via
+         * a flyweight pattern*/
+        return (UIComponent) reloadInstance(component);
     }
 
     public Iterator<String> getComponentTypes() {
@@ -397,6 +381,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public Validator createValidator(String s) throws FacesException {
         weaveDelegate();
+
         Validator retVal = _delegate.createValidator(s);
         if (ProxyUtils.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
             retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
@@ -414,12 +399,31 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.createValueBinding(s);
     }
 
-    public ApplicationProxy(Application delegate) {
-        _delegate = delegate;
-    }
-
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    private final Object reloadInstance(Object instance) {
+        if (instance == null) {
+            return null;
+        }
+        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+            alreadyWovenInRequest(instance.toString());
+        }
+        return instance;
+    }
+
+
+    private final boolean alreadyWovenInRequest(String clazz) {
+        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+        ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+            req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
+            return false;
+        }
+        return true;
+    }
+
 }
