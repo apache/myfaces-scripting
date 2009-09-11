@@ -27,6 +27,7 @@ import javax.faces.FacesException;
 import javax.faces.application.*;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
+import javax.faces.component.behavior.BehaviorBase;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.*;
@@ -79,7 +80,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private void weaveDelegate() {
         if (_delegate != null) {
             _delegate = (Application) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
-        }    
+        }
     }
 
     public ELResolver getELResolver() {
@@ -421,10 +422,15 @@ public class ApplicationProxy extends Application implements Decorated {
     public Behavior createBehavior(String s) throws FacesException {
         weaveDelegate();
         Behavior retVal = _delegate.createBehavior(s);
-        //TODO check if this does not break our ClientSideBehavior
-        //instances, otherwise we have to do a bypass for f:ajax or do it
-        //directly via the weaver instead of using the automated proxy
-        if (ProxyUtils.isDynamic(retVal.getClass())) {
+        //in case of a descendend of BehaviorBase we probably
+        //can count on additional functionality within the codebase we avoid
+        //therefore the interface reloading and work directly on the object
+        //still direct casts are forbidden, but parent casts are ok, which should
+        //be enough for behavior replacements on the user side, which this mechanism should
+        //cover for now
+        if (retVal instanceof BehaviorBase && ProxyUtils.isDynamic(retVal.getClass())) { //we might have casts here
+            retVal = (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+        } else if (ProxyUtils.isDynamic(retVal.getClass())) {
             retVal = (Behavior) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Behavior.class);
         }
         return retVal;
@@ -450,7 +456,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     @Override
     public <T> T evaluateExpressionGet(FacesContext facesContext, String s, Class<? extends T> aClass) throws ELException {
-         weaveDelegate();
+        weaveDelegate();
         //good place for a dynamic reloading check as well
         T retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
         if (ProxyUtils.isDynamic(retVal.getClass()))
@@ -466,25 +472,25 @@ public class ApplicationProxy extends Application implements Decorated {
 
     @Override
     public Map<String, String> getDefaultValidatorInfo() {
-       weaveDelegate();
-       return _delegate.getDefaultValidatorInfo();
+        weaveDelegate();
+        return _delegate.getDefaultValidatorInfo();
     }
 
     @Override
     public ProjectStage getProjectStage() {
-       weaveDelegate();
-       return _delegate.getProjectStage();
+        weaveDelegate();
+        return _delegate.getProjectStage();
     }
 
     @Override
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-         if (ProxyUtils.isDynamic(retVal.getClass())) {
+        if (ProxyUtils.isDynamic(retVal.getClass())) {
             retVal = (ResourceHandler) new ResourceHandlerProxy(retVal);
             setResourceHandler(retVal);
-         }
-         return retVal;
+        }
+        return retVal;
     }
 
     @Override
