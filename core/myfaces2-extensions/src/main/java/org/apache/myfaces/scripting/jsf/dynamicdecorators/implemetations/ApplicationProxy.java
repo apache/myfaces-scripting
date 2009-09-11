@@ -491,6 +491,10 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
         if (ProxyUtils.isDynamic(retVal.getClass())) {
+            //we use a proxy here to limit the reloads to some central
+            //points which have a lower calling frequency which is high enough
+            //to get it reloaded upon every request, but which should not drag
+            //down the entire system speedwise
             retVal = (ResourceHandler) new ResourceHandlerProxy(retVal);
             setResourceHandler(retVal);
         }

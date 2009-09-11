@@ -32,6 +32,7 @@ import javax.faces.context.ResponseStream;
 import java.io.Writer;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.Map;
 import javax.servlet.ServletRequest;
 
 /**
@@ -44,16 +45,15 @@ import javax.servlet.ServletRequest;
 public class RenderkitProxy extends RenderKit implements Decorated {
 
 
-
     private void weaveDelegate() {
         _delegate = (RenderKit) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
     }
 
     private boolean alreadyWovenInRequest(String clazz) {
-        //todo also enable portlets here
-       ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if(req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON+clazz) == null) {
-            req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON+clazz,"");
+        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+        Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+            req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
             return false;
         }
         return true;
@@ -68,7 +68,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public void addRenderer(String s, String s1, Renderer renderer) {
         weaveDelegate();
-        if(ProxyUtils.isDynamic(renderer.getClass()) && !alreadyWovenInRequest(renderer.toString())) {
+        if (ProxyUtils.isDynamic(renderer.getClass()) && !alreadyWovenInRequest(renderer.toString())) {
             renderer = (Renderer) ProxyUtils.getWeaver().reloadScriptingInstance(renderer);
             alreadyWovenInRequest(renderer.toString());
         }
@@ -80,10 +80,10 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         Renderer retVal = _delegate.getRenderer(s, s1);
 
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())&& !alreadyWovenInRequest(retVal.toString())) {
+        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass()) && !alreadyWovenInRequest(retVal.toString())) {
             retVal = (Renderer) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
             alreadyWovenInRequest(retVal.toString());
-            _delegate.addRenderer(s,s1,retVal);
+            _delegate.addRenderer(s, s1, retVal);
         }
         return retVal;
     }
