@@ -428,12 +428,16 @@ public class ApplicationProxy extends Application implements Decorated {
         //still direct casts are forbidden, but parent casts are ok, which should
         //be enough for behavior replacements on the user side, which this mechanism should
         //cover for now
-        if (retVal instanceof BehaviorBase && ProxyUtils.isDynamic(retVal.getClass())) { //we might have casts here
-            retVal = (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-        } else if (ProxyUtils.isDynamic(retVal.getClass())) {
-            retVal = (Behavior) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Behavior.class);
+        boolean isDynamic = ProxyUtils.isDynamic(retVal.getClass());
+        if (!isDynamic) {
+            return retVal;
+        } else if (retVal instanceof BehaviorBase) {
+            //we might have casts here against one of the parents
+            //of this object
+            return (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+        } else {
+            return (Behavior) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Behavior.class);
         }
-        return retVal;
     }
 
     @Override
