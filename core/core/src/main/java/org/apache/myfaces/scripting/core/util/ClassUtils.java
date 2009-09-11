@@ -19,17 +19,21 @@
 package org.apache.myfaces.scripting.core.util;
 
 
-import org.apache.bcel.util.SyntheticRepository;
-import org.apache.bcel.util.ClassPath;
-import org.apache.bcel.classfile.JavaClass;
-import org.apache.bcel.generic.ClassGen;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
+import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AnnotationNode;
+import org.objectweb.asm.tree.ClassNode;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
-import java.io.IOException;
-import java.io.File;
+
+import java.io.*;
+import java.util.LinkedList;
+
 
 /**
  * @author werpu
@@ -39,7 +43,6 @@ import java.io.File;
  */
 public class ClassUtils {
 
-
     public static Class forName(String name) {
         try {
             return Class.forName(name);
@@ -48,39 +51,92 @@ public class ClassUtils {
         }
     }
 
-
     /**
-     * we use the BCEL here to add a marker interface dynamically on the compiled java class
-     * so that later we can identify the marked class as being of dynamic origin
-     * that way we dont have to hammer any data structure but can work over introspection
-     * to check for an implemented marker interface
-     * <p/>
-     * I cannot use the planned annotation for now
-     * because the BCEL has annotation support only
-     * in the trunk but in no official release,
-     * the annotation support will be added as soon as it is possible to use it
+     * We use asm here to add the marker annotation
+     * to the list of our public annotations
      *
      * @param classPath the root classPath which hosts our class
      * @param className the className from the class which has to be rewritten
      * @throws ClassNotFoundException
      */
     public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
-        SyntheticRepository repo = SyntheticRepository.getInstance(new ClassPath(classPath));
-        repo.clear();
-        JavaClass javaClass = repo.loadClass(className);
-        ClassGen classGen = new ClassGen(javaClass);
-
-        classGen.addInterface("org.apache.myfaces.scripting.loaders.java._ScriptingClass");
-        classGen.update();
-
-        File target = classNameToFile(classPath, className);
-
+        FileInputStream fIstr = null;
+        FileOutputStream foStream = null;
         try {
-            classGen.getJavaClass().dump(target);
+            File classFile = classNameToFile(classPath, className);
+            fIstr = new FileInputStream(classFile);
+
+            ClassNode node = new ClassNode();
+            ClassReader clsReader = new ClassReader(fIstr);
+            //ClassWriter wrt = new ClassWriter();
+            clsReader.accept((ClassVisitor) node, ClassReader.SKIP_FRAMES );
+            //node.accept(wrt);
+            ClassWriter wrt = new ClassWriter(0);
+
+            if (node.visibleAnnotations == null) {
+                node.visibleAnnotations = new LinkedList<AnnotationNode>();
+            }
+            
+            boolean hasAnnotation = false;
+            String annotationMarker = Type.getDescriptor(ScriptingClass.class);
+            for (Object elem : node.visibleAnnotations) {
+                AnnotationNode aNode = (AnnotationNode) elem;
+                if (aNode.desc.equals(annotationMarker)) {
+                    hasAnnotation = true;
+                    break;
+                }
+            }
+            if (!hasAnnotation) {
+                node.visibleAnnotations.add(new AnnotationNode(annotationMarker));
+            }
+            node.accept(wrt);
+
+            byte[] finalClass = wrt.toByteArray();
+            fIstr.close();
+            fIstr = null;
+
+            foStream = new FileOutputStream(classNameToFile(classPath, className));
+            foStream.write(finalClass);
+            foStream.flush();
+          
+
+        } catch (FileNotFoundException ex) {
+            throw new ClassNotFoundException("Class " + className + " not found ");
+
         } catch (IOException e) {
-            e.printStackTrace();
+            logError(e);
+        } finally {
+            closeStreams(fIstr, foStream);
+        }
+
+    }
+
+    private static void logError(IOException e) {
+        Log log = LogFactory.getLog(ClassUtils.class);
+        log.error(e);
+    }
+
+    private static void closeStreams(FileInputStream fIstr, FileOutputStream foStream) {
+        try {
+            if (fIstr != null) {
+                fIstr.close();
+            }
+        } catch (IOException e) {
+            logError(e);
+        }
+        try {
+            if (foStream != null) {
+                foStream.close();
+            }
+        } catch (IOException e) {
+            logError(e);
         }
     }
+
+
+
+
+
 
 
     public static File classNameToFile(String classPath, String className) {
@@ -110,4 +166,5 @@ public class ClassUtils {
     public Class classForName(String name) throws ClassNotFoundException {
         return org.apache.myfaces.shared_impl.util.ClassUtils.classForName(name);
     }
+
 }

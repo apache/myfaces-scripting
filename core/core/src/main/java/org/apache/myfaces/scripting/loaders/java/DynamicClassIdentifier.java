@@ -40,9 +40,9 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
             alreadyChecked.put(clazz.getName(), Boolean.TRUE);
             return true;
         }
-        boolean retVal = checkForInterface(clazz);
-        //alreadyChecked.put(clazz.getName(), retVal ? Boolean.TRUE : Boolean.FALSE);
-        return retVal;
+
+        alreadyChecked.put(clazz.getName(), Boolean.FALSE);
+        return false;
     }
 
 
@@ -50,25 +50,12 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
         Map<String, Boolean> checked = (Map<String, Boolean>) _checked.get();
         if (checked == null) {
             checked = new HashMap<String, Boolean>();
+            _checked.set(checked);
         }
         return checked;
     }
 
-    private boolean checkForInterface(Class clazz) {
-        Class[] interfaces = clazz.getInterfaces();
-        if (interfaces == null) {
-            return false;
 
-        }
-
-        for (Class theInterface : interfaces) {
-            if (theInterface.equals(_ScriptingClass.class)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private boolean checkForAnnotation(Class clazz) {
         Annotation identifier = clazz.getAnnotation(ScriptingClass.class);
