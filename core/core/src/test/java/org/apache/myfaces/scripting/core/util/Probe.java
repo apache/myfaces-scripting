@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
+import org.junit.Ignore;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -25,9 +27,10 @@ package org.apache.myfaces.scripting.core.util;
  * testprobe for our reflectutils
  */
 
-public class TestProbe {
+@Ignore
+public class Probe {
 
-    public TestProbe() {
+    public Probe() {
     }
 
     public void testMethod1() {

@@ -21,7 +21,6 @@ package org.apache.myfaces.scripting.core.util;
 import static org.junit.Assert.*;
 import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 
@@ -32,7 +31,7 @@ import org.junit.Test;
 
 public class ReflectUtilTest {
 
-    TestProbe probe = new TestProbe();
+    Probe probe = new Probe();
 
     @Test
     public void executeMethod1() {
@@ -66,7 +65,7 @@ public class ReflectUtilTest {
 
     @Test
     public void executeStatic() {
-        boolean retVal = (Boolean) executeStaticMethod(TestProbe.class, "testMethod4", "1", "2");
+        boolean retVal = (Boolean) executeStaticMethod(Probe.class, "testMethod4", "1", "2");
     }
 
 }
