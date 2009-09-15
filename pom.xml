@@ -14,13 +14,7 @@
 
     <modules>
         <module>core</module>
-
-        <!--
-          <module>myfaces12-extensions</module>
-          <module>myfaces2-extensions</module>
-          -->
         <module>examples</module>
-        <module>spring-example</module>
     </modules>
 
     <repositories>
