@@ -62,43 +62,93 @@ public class ReflectUtil {
    * exeption wrongly, delegating the instantiation code to java
    * fixes that
    * */
+
     public static Object newObject(Class clazz) throws IllegalAccessException, InstantiationException {
         return clazz.newInstance();
     }
 
-    /**
-     * executes a method
-     *
-     * @param obj        the target object
-     * @param methodName the method name
-     * @param varargs    a list of objects casts or nulls defining the parameter classes and its values
-     *                   if something occurs on introspection level an unmanaged exception is throw, just like
-     *                   it would happen in a scripting class
-     */
-    public static void executeMethod(Object obj, String methodName, Object... varargs) {
 
-        Class[] classes = new Class[varargs.length];
-        for (int cnt = 0; cnt < varargs.length; cnt++) {
+    public static Object executeStaticMethod(Class obj, String methodName, Object... varargs) {
 
-            if (varargs[cnt] instanceof Cast) {
-                classes[cnt] = ((Cast) varargs[cnt]).getClazz();
-                varargs[cnt] = ((Cast) varargs[cnt]).getValue();
-            } else {
-                classes[cnt] = varargs[cnt].getClass();
+        Method[] methods = obj.getDeclaredMethods();
+
+         for (Method m : methods) {
+
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+                continue;
+            }
+            try {
+                return m.invoke(obj, varargs);
+            } catch (IllegalAccessException e) {
+                //expected, we do it that way for speed reasons
+                //because it is faster on most cases than looping over the param types
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
             }
         }
 
-        try {
-            Method m = getMethod(obj, methodName, classes);
-            m.invoke(obj, varargs);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        methods = obj.getMethods();
+        for (Method m : methods) {
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+                continue;
+            }
+            try {
+                return m.invoke(obj, varargs);
+            } catch (IllegalAccessException e) {
+                //expected, we do it that way for speed reasons
+                //because it is faster on most cases than looping over the param types
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        throw new RuntimeException("Static Method of :" + methodName + " from class " + obj.getClass().getName() + " not found");
+
     }
+
+
+
+
+
+
+
+    public static Object executeMethod(Object obj, String methodName, Object... varargs) {
+        Class clazz = obj.getClass();
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method m : methods) {
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+                continue;
+            }
+            try {
+                return m.invoke(obj, varargs);
+            } catch (IllegalAccessException e) {
+                //expected, we do it that way for speed reasons
+                //because it is faster on most cases than looping over the param types
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        methods = clazz.getMethods();
+        for (Method m : methods) {
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+                continue;
+            }
+            try {
+                return m.invoke(obj, varargs);
+            } catch (IllegalAccessException e) {
+                //expected, we do it that way for speed reasons
+                //because it is faster on most cases than looping over the param types
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new RuntimeException("Method of :" + methodName + " from class " + obj.getClass().getName() + " not found");
+    }
+
+
+   
+
 
     /**
      * executes a function method on a target object
@@ -108,10 +158,10 @@ public class ReflectUtil {
      * @param varargs    a list of objects casts or nulls defining the parameter classes and its values
      *                   if something occurs on introspection level an unmanaged exception is throw, just like
      *                   it would happen in a scripting class
-     * @return the result object for the function(method) call
+     * @return the result object for the Method(method) call
      * @throws RuntimeException an unmanaged runtime exception in case of an introspection error
      */
-    public static Object executeFunction(Object obj, String methodName, Object... varargs) {
+    public static Object fastExecuteMethod(Object obj, String methodName, Object... varargs) {
         Class[] classes = new Class[varargs.length];
         for (int cnt = 0; cnt < varargs.length; cnt++) {
 
@@ -124,7 +174,7 @@ public class ReflectUtil {
         }
 
         try {
-            Method m = getMethod(obj, methodName, classes);
+            Method m = fastGetMethod(obj, methodName, classes);
             return m.invoke(obj, varargs);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
@@ -136,7 +186,8 @@ public class ReflectUtil {
 
     }
 
-    public static Method getMethod(Object obj, String methodName, Class[] classes) throws NoSuchMethodException {
+
+    public static Method fastGetMethod(Object obj, String methodName, Class[] classes) throws NoSuchMethodException {
         Method m = null;
         try {
             m = obj.getClass().getDeclaredMethod(methodName, classes);
@@ -154,10 +205,10 @@ public class ReflectUtil {
      * @param varargs    a list of objects casts or nulls defining the parameter classes and its values
      *                   if something occurs on introspection level an unmanaged exception is throw, just like
      *                   it would happen in a scripting class
-     * @return the result object for the function(method) call
+     * @return the result object for the Method(method) call
      * @throws RuntimeException an unmanaged runtime exception in case of an introspection error
      */
-    public static Object executeStaticFunction(Class obj, String methodName, Object... varargs) {
+    public static Object fastExecuteStaticMethod(Class obj, String methodName, Object... varargs) {
         Class[] classes = new Class[varargs.length];
         for (int cnt = 0; cnt < varargs.length; cnt++) {
 
@@ -172,7 +223,7 @@ public class ReflectUtil {
         //TODO add autocasting instead of manual casting
 
         try {
-            Method m = getStaticMethod(obj, methodName, classes);
+            Method m = fastGetStaticMethod(obj, methodName, classes);
             return m.invoke(obj, varargs);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
@@ -184,7 +235,7 @@ public class ReflectUtil {
 
     }
 
-    public static Method getStaticMethod(Class obj, String methodName, Class[] classes) throws NoSuchMethodException {
+    public static Method fastGetStaticMethod(Class obj, String methodName, Class[] classes) throws NoSuchMethodException {
         Method m = null;
         try {
             m = obj.getDeclaredMethod(methodName, classes);
