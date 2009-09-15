@@ -49,8 +49,8 @@ public class JSFUtil {
         Log log = LogFactory.getLog(JSFUtil.class);
         Object facesContext = FacesContext.getCurrentInstance();
 
-        Object elContext = executeFunction(facesContext, "getELContext");
-        Object elResolver = executeFunction(elContext, "getELResolver");
+        Object elContext = executeMethod(facesContext, "getELContext");
+        Object elResolver = executeMethod(elContext, "getELResolver");
 
 
             /*
@@ -64,7 +64,7 @@ public class JSFUtil {
             */
             //we use the introspection calls here to achieve our goal that way
             //we can shift the dependency resolution from compile time to runtime
-            return executeFunction(elResolver, "getValue", cast(forName("javax.el.ELContext"), elContext), nullCast(Object.class), cast(Object.class, beanName));
+            return executeMethod(elResolver, "getValue",  elContext, null,  beanName);
             // return FacesContext.getCurrentInstance().getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().getELContext(), null, beanName);
 
 

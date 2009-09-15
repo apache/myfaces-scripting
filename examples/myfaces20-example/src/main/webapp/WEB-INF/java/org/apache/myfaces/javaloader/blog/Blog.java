@@ -97,8 +97,7 @@ public class Blog {
             * 
             */
             //service.addEntry(entry);
-            getLog().info((String)executeFunction(service, "getTest"));
-            executeMethod(service, "addEntry", cast(Object.class, entry));
+            executeMethod(service, "addEntry",  entry);
         }
 
         //we stay on the same page

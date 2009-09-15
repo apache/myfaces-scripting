@@ -19,6 +19,7 @@
 
    <modules>
      <module>myfaces12-example</module>
+	<module>myfaces20-example</module>
 	 <module>spring-example</module>
    </modules>
 
