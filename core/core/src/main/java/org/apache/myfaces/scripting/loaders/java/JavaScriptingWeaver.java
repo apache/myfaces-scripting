@@ -73,6 +73,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
      */
     protected void mapProperties(Object target, Object src) {
         try {
+            //TODO add dynamic property reloading hook here
             BeanUtils.copyProperties(target, src);
         } catch (IllegalAccessException e) {
             log.debug(e);

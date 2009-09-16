@@ -24,6 +24,7 @@
     <description>MyProject web.xml</description>
 
 
+  
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -31,7 +32,6 @@
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
-   
 
 
     <context-param>
@@ -39,7 +39,7 @@
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>/Users/werpu2/development/workspace/extensions-scripting/examples/src/main/webapp/WEB-INF/groovy
+        <param-value>/Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -49,10 +49,10 @@
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
-        <param-value>/Users/werpu2/development/workspace/extensions-scripting/examples/src/main/webapp/WEB-INF/java
+        <param-value>/Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
-    
+
 
     <context-param>
         <description>State saving method: "client" or "server" (= default)
@@ -61,12 +61,10 @@
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
     </context-param>
-
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/groovy-taglib.xml</param-value>
     </context-param>
-
 
 
 
@@ -82,8 +80,7 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-
-
+  
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <!--    <listener>
             <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>

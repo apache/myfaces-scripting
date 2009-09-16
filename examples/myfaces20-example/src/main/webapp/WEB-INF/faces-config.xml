@@ -27,6 +27,8 @@
         <managed-bean-class>org.apache.myfaces.blank.HelloWorldController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+
+
     <managed-bean>
         <managed-bean-name>testbean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.groovyloader.test.TestBean</managed-bean-class>
@@ -64,22 +66,19 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 
-    <!--
     <application>
-        <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
         <navigation-handler>
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
         </navigation-handler>
 
     </application>
-    -->
 
     <lifecycle>
-
-        <phase-listener>
+       <phase-listener>
             org.apache.myfaces.groovyloader.test.TestPhaseListener
         </phase-listener>
     </lifecycle>
+    
 
     <!-- navigation rules for helloWorld.jsp -->
     <navigation-rule>
@@ -98,6 +97,7 @@
             <to-view-id>/helloWorld.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
+
 
     <validator>
         <validator-id>org.apache.myfaces.groovyloader.test.TestValidator</validator-id>
@@ -119,4 +119,5 @@
             <renderer-class>org.apache.myfaces.groovyloader.test.TestRenderer</renderer-class>
         </renderer>
     </render-kit>
+
 </faces-config>

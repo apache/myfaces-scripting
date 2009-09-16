@@ -21,7 +21,11 @@ package org.apache.myfaces.scripting.core.util;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
+import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
+import org.apache.myfaces.scripting.core.DummyWeaver;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -65,6 +69,12 @@ public class ProxyUtils {
     }
 
     public static ScriptingWeaver getWeaver() {
+        ScriptingWeaver weaver = (ScriptingWeaver) _weaverHolder.get();
+        if(weaver == null) {
+            Log log = LogFactory.getLog(ProxyUtils.class);
+            log.warn("Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml");
+            _weaverHolder.set(new DummyWeaver());    
+        }
         return (ScriptingWeaver) _weaverHolder.get();
     }
 
