@@ -43,12 +43,10 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         }
     }
 
-    @Override
     public void appendCustomScriptPath(String scriptPaths) {
         throw new RuntimeException("Method not supported from this facade");
     }
 
-    @Override
     public Object reloadScriptingInstance(Object o) {
         if (o.getClass().getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
@@ -63,7 +61,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     }
 
-    @Override
     public Class reloadScriptingClass(Class aclass) {
         if (aclass.getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
@@ -78,7 +75,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     }
 
-    @Override
     public Class loadScriptingClassFromName(String className) {
         for (ScriptingWeaver weaver : _weavers) {
             Class retVal = weaver.loadScriptingClassFromName(className);

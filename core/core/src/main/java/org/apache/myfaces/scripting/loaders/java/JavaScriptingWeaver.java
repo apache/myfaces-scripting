@@ -47,7 +47,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
 
     private static final String JAVA_FILE_ENDING = ".java";
     private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade";
-    private static final String JCI_COMPILER = "org.apache.myfaces.scripting.loaders.java.jci";
+    private static final String JCI_COMPILER = "org.apache.myfaces.scripting.loaders.java.jci.CompilerFacade";
 
     /**
      * helper to allow initial compiler classpath scanning
