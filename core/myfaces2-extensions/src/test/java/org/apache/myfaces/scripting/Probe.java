@@ -16,21 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.jsf2.annotation;
+package org.apache.myfaces.scripting;
 
-import java.util.Map;
+import org.junit.Ignore;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Testprobe for the qdox evaluation testbed
  */
 
-public class ComponentImplementationListener implements SourceClassAnnotationListener {
-    public boolean supportsAnnotation(Class annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+@ManagedBean(name = "TestProbe")
+@SessionScoped
+@Ignore
+public class Probe {
 
-    public void register(String className, String annotationName, Map<String, String> params) {
-         //To change body of implemented methods use File | Settings | File Templates.
-    }
+    
+    
 }

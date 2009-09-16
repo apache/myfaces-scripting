@@ -30,7 +30,9 @@ import java.util.Map;
 
 public interface SourceClassAnnotationListener {
 
-    public void register(String annotationName, Map<String, String> params);
+    public boolean supportsAnnotation(Class annotation);
+
+    public void register(String className, String annotationName, Map<String, String> params);
 
 
 }

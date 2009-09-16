@@ -26,7 +26,11 @@ import java.util.Map;
  */
 
 public class RendererImplementationListener implements SourceClassAnnotationListener {
-    public void register(String annotationName, Map<String, String> params) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean supportsAnnotation(Class annotation) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void register(String className, String annotationName, Map<String, String> params) {
+         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

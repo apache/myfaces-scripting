@@ -27,9 +27,12 @@ import java.util.Map;
 
 public class BeanImplementationListener implements SourceClassAnnotationListener {
 
-  
+    
 
-    public void register(String annotationName, Map<String, String> params) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(javax.faces.bean.ManagedBean.class);
+    }
+
+    public void register(String className, String annotationName, Map<String, String> params) {
     }
 }

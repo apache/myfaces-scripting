@@ -18,10 +18,21 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
+import java.util.Map;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ConverterImplementationListener {
+public class ConverterImplementationListener implements SourceClassAnnotationListener {
+
+    public boolean supportsAnnotation(Class annotation) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void register(String className, String annotationName, Map<String, String> params) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }

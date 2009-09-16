@@ -22,6 +22,7 @@ import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.Type;
+import com.thoughtworks.qdox.model.Annotation;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -44,15 +45,28 @@ public class SourceAnnotationScanner {
 
     public SourceAnnotationScanner(String... sourcePaths) {
 
+        initSourcePaths(sourcePaths);
+
+        initDefaultListeners();
+
+    }
+
+    private void initSourcePaths(String... sourcePaths) {
         for (String sourcePath : sourcePaths) {
             File sourcePathFile = new File(sourcePath);
             if (sourcePathFile.exists()) {
                 _builder.addSourceTree(sourcePathFile);
             }
         }
+    }
 
+    private void initDefaultListeners() {
         _listeners.add(new BeanImplementationListener());
-
+        _listeners.add(new BehaviorImplementationListener());
+        _listeners.add(new ComponentImplementationListener());
+        _listeners.add(new ConverterImplementationListener());
+        _listeners.add(new RendererImplementationListener());
+        _listeners.add(new ValidatorImplementationListener());
     }
 
 
@@ -60,23 +74,31 @@ public class SourceAnnotationScanner {
      * builds up the parsing chain and then notifies its observers
      * on the found data
      */
-    public void doiIt() {
-        JavaSource []sources = _builder.getSources();
-        for(JavaSource source: sources) {
-            String packageName = source.getPackage();
+    public void scanSources() {
+        JavaSource[] sources = _builder.getSources();
+        for (JavaSource source : sources) {
+            String packageName = source.getPackage().toString();
             JavaClass[] classes = source.getClasses();
-            for(JavaClass clazz: classes) {
-                Type[] annotations = clazz.getImplements();
-                if(clazz.getName().contains("Bean2")) {
-                    //todo to reverse engineer the missing
-                    //  annotation detection docs of qdox
-                    System.out.println("debugpoint found");
+            for (JavaClass clazz : classes) {
+                Annotation[] anns = clazz.getAnnotations();
+                for (Annotation ann : anns) {
+
+                    for (SourceClassAnnotationListener listener : _listeners) {
+                        if (listener.supportsAnnotation(ann.getClass())) {
+                            listener.register(clazz.getName(), ann.getType().getValue(), ann.getPropertyMap());
+                        }
+                    }
                 }
             }
         }
-
-
     }
 
+    public void clearListeners() {
+        _listeners.clear();
+    }
+
+    public void addListener(SourceClassAnnotationListener listener) {
+        _listeners.add(listener);
+    }
 
 }
