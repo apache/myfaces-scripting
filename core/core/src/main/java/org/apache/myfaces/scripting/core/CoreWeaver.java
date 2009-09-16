@@ -98,5 +98,14 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         return false;
     }
 
+    public ScriptingWeaver getWeaverInstance(Class weaverClass) {
+         for (ScriptingWeaver weaver : _weavers) {
+            ScriptingWeaver retVal = weaver.getWeaverInstance(weaverClass);
+            if(retVal != null) {
+                return retVal;
+            }
+         }
+         return null;   
+    }
 }
 

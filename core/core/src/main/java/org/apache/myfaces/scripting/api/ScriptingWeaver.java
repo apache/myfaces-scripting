@@ -85,4 +85,7 @@ public interface ScriptingWeaver  {
      */
     public boolean isDynamic(Class clazz);
 
+
+    public ScriptingWeaver getWeaverInstance(Class weaverClass);
+
 }

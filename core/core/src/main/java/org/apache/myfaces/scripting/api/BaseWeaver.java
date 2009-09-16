@@ -233,4 +233,10 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return scriptPaths;
     }
 
+    public ScriptingWeaver getWeaverInstance(Class weaverClass) {
+        if(getClass().equals(weaverClass)) return this;
+
+        return null;
+    }
+
 }
