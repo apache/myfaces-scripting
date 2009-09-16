@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
+import com.thoughtworks.qdox.model.JavaClass;
+
 import java.util.Map;
 
 /**
@@ -30,7 +32,7 @@ public class ComponentImplementationListener implements SourceClassAnnotationLis
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void register(String className, String annotationName, Map<String, String> params) {
+    public void register(JavaClass clazz, String annotationName, Map<String, String> params) {
          //To change body of implemented methods use File | Settings | File Templates.
     }
 }

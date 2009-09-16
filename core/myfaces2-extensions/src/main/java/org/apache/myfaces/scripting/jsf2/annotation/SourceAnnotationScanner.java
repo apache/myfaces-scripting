@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
 
+import org.apache.myfaces.config.RuntimeConfig;
+
+import javax.faces.context.FacesContext;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -50,6 +54,7 @@ public class SourceAnnotationScanner {
         initDefaultListeners();
 
     }
+
 
     private void initSourcePaths(String... sourcePaths) {
         for (String sourcePath : sourcePaths) {
@@ -85,7 +90,7 @@ public class SourceAnnotationScanner {
 
                     for (SourceClassAnnotationListener listener : _listeners) {
                         if (listener.supportsAnnotation(ann.getClass())) {
-                            listener.register(clazz.getName(), ann.getType().getValue(), ann.getPropertyMap());
+                            listener.register(clazz, ann.getType().getValue(), ann.getPropertyMap());
                         }
                     }
                 }
