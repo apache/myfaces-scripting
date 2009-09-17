@@ -85,4 +85,60 @@ public class BeanImplementationListener implements SourceClassAnnotationListener
         return RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
     }
 
+    /*
+            for (Field field : fields)
+           {
+               if (log.isTraceEnabled())
+               {
+                   log.trace("  Scanning field '" + field.getName() + "'");
+               }
+               javax.faces.bean.ManagedProperty property = (javax.faces.bean.ManagedProperty) field
+                       .getAnnotation(javax.faces.bean.ManagedProperty.class);
+               if (property != null)
+               {
+                   if (log.isDebugEnabled())
+                   {
+                       log.debug("  Field '" + field.getName()
+                               + "' has a @ManagedProperty annotation");
+                   }
+                   org.apache.myfaces.config.impl.digester.elements.ManagedProperty mpc =
+                       new org.apache.myfaces.config.impl.digester.elements.ManagedProperty();
+                   String name = property.name();
+                   if ((name == null) || "".equals(name))
+                   {
+                       name = field.getName();
+                   }
+                   mpc.setPropertyName(name);
+                   mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
+                   mpc.setValue(property.value());
+                   mbc.addProperty(mpc);
+                   continue;
+               }
+           }
+
+    */
+
+    /**
+     * <p>Return an array of all <code>Field</code>s reflecting declared
+     * fields in this class, or in any superclass other than
+     * <code>java.lang.Object</code>.</p>
+     *
+     * @param clazz Class to be analyzed
+     */
+    /*
+    private Field[] fields(Class clazz) {
+
+        Map<String, Field> fields = new HashMap<String, Field>();
+        do {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (!fields.containsKey(field.getName())) {
+                    fields.put(field.getName(), field);
+                }
+            }
+        } while ((clazz = clazz.getSuperclass()) != Object.class);
+        return (Field[]) fields.values().toArray(new Field[fields.size()]);
+
+    }
+    */
+
 }
