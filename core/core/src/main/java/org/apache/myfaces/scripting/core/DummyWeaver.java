@@ -54,4 +54,8 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     public boolean isDynamic(Class clazz) {
         return false;  
     }
+
+    public ScriptingWeaver getWeaverInstance(Class weaverClass) {
+        return this;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
