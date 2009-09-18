@@ -22,12 +22,14 @@ import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 
 import javax.faces.context.FacesContext;
+import javax.faces.bean.ManagedProperty;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
+import com.thoughtworks.qdox.model.Annotation;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -84,6 +86,22 @@ public class BeanImplementationListener implements SourceClassAnnotationListener
     protected RuntimeConfig getRuntimeConfig() {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
         return RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
+    }
+
+
+    private void handleManagedproperties(ManagedBean mbean, JavaField[] fields) {
+        //TODO crossport the myfaces 2 code to qdox
+        for (JavaField field : fields) {
+            Annotation[] annotations = field.getAnnotations();
+            if (annotations != null && annotations.length > 0) {
+                for (Annotation ann : annotations) {
+                    if (ann.getType().getValue().equals(ManagedProperty.class.getName())) {
+
+                        //TODO implement meta handling
+                    }
+                }
+            }
+        }
     }
 
     /*
