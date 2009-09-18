@@ -15,9 +15,11 @@ package org.apache.myfaces.scripting.api;
 public interface AnnotationScanner {
 
 
-    void scanPaths();
+    public void scanPaths();
 
-    void clearListeners();
+    public void clearListeners();
 
-    void addListener(AnnotationScanListener listener);
+    public void addListener(AnnotationScanListener listener);
+
+    public void addScanPath(String scanPath);
 }

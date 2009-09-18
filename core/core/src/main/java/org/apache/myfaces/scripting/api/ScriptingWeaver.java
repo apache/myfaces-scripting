@@ -88,4 +88,13 @@ public interface ScriptingWeaver  {
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass);
 
+    /**
+     * full annotation scan
+     * at startup once the system is initialized
+     */
+    public void fullAnnotationScan();
+
+
+    //TODO add file annotation scan capabilities here
+
 }

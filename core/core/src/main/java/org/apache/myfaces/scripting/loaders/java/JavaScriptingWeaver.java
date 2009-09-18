@@ -21,15 +21,14 @@ package org.apache.myfaces.scripting.loaders.java;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.api.BaseWeaver;
-import org.apache.myfaces.scripting.api.DynamicCompiler;
-import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
@@ -39,7 +38,7 @@ import java.util.Iterator;
  *         The Scripting Weaver for the java core which reloads the java scripts
  *         dynamically upon change
  */
-public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
+public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, Serializable {
 
     Log log = LogFactory.getLog(JavaScriptingWeaver.class);
     String classPath = "";
@@ -48,6 +47,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
     private static final String JAVA_FILE_ENDING = ".java";
     private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade";
     private static final String JCI_COMPILER = "org.apache.myfaces.scripting.loaders.java.jci.CompilerFacade";
+
+    AnnotationScanner _scanner = null;
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -58,6 +59,26 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
         super(JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
         //init classpath removed we can resolve that over the
         //url classloader at the time myfaces is initialized
+        try {
+            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.JavaSourceAnnotationScanner");
+            AnnotationScanner scanObj = (AnnotationScanner) scanner.newInstance();
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            //we do nothing here
+        }
+
+    }
+
+    @Override
+    public void appendCustomScriptPath(String scriptPath) {
+        super.appendCustomScriptPath(scriptPath);
+        if(_scanner != null) {
+            _scanner.addScanPath(scriptPath);
+        }
     }
 
     public JavaScriptingWeaver() {
@@ -142,4 +163,16 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver {
     public boolean isDynamic(Class clazz) {
         return identifier.isDynamic(clazz);  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
+    /**
+     * full scan, scans for all artefacts in all files
+     */
+    public void fullAnnotationScan() {
+        if(_scanner == null) {
+            return;
+        }
+        _scanner.scanPaths();
+    }
+
 }

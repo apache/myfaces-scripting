@@ -40,12 +40,17 @@ import org.apache.myfaces.scripting.api.AnnotationScanListener;
  *          wherever possible
  */
 
-public class SourceAnnotationScanner implements AnnotationScanner {
+public class JavaSourceAnnotationScanner implements AnnotationScanner {
 
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
     JavaDocBuilder _builder = new JavaDocBuilder();
 
-    public SourceAnnotationScanner(String... sourcePaths) {
+    public JavaSourceAnnotationScanner() {
+        initDefaultListeners();
+    }
+
+
+    public JavaSourceAnnotationScanner(String... sourcePaths) {
 
         initSourcePaths(sourcePaths);
 
@@ -53,13 +58,17 @@ public class SourceAnnotationScanner implements AnnotationScanner {
 
     }
 
+    public void addScanPath(String sourcePath) {
+        File sourcePathFile = new File(sourcePath);
+        if (sourcePathFile.exists()) {
+            _builder.addSourceTree(sourcePathFile);
+        }
+    }
+
 
     private void initSourcePaths(String... sourcePaths) {
         for (String sourcePath : sourcePaths) {
-            File sourcePathFile = new File(sourcePath);
-            if (sourcePathFile.exists()) {
-                _builder.addSourceTree(sourcePathFile);
-            }
+           addScanPath(sourcePath);
         }
     }
 

@@ -107,5 +107,11 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
          }
          return null;   
     }
+
+    public void fullAnnotationScan() {
+        for(ScriptingWeaver weaver : _weavers) {
+            weaver.fullAnnotationScan();
+        }
+    }
 }
 
