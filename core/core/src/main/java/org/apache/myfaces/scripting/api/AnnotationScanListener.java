@@ -16,32 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.jsf2.annotation;
+package org.apache.myfaces.scripting.api;
 
-import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.Map;
-
-import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *          <p/>
+ *          We use a source code artefact observer here to register the
+ *          meta data in the correct registry entries
  */
 
-public class ConverterImplementationListener implements AnnotationScanListener {
+public interface AnnotationScanListener {
 
-    public boolean supportsAnnotation(Class annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    public boolean supportsAnnotation(Class annotation);
 
-    public void registerSource(Object sourceClass, String annotationName, Map<String, String> params) {
-        JavaClass clazz = (JavaClass) sourceClass;
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+    public void registerSource(Object clazz, String annotationName, Map<String, String> params);
 
-    public void register(Class clazz, String annotationName, Map<String, String> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    public void register(Class clazz, String annotationName, Map<String, String> params);
 
 }

@@ -20,12 +20,11 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
+import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 import javax.faces.context.FacesContext;
-import javax.faces.bean.ManagedProperty;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Collections;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
@@ -40,7 +39,7 @@ import com.thoughtworks.qdox.model.Annotation;
  *          it is only allowed to be called from a single thread
  */
 
-public class BeanImplementationListener implements SourceClassAnnotationListener {
+public class BeanImplementationListener implements AnnotationScanListener {
 
     static Map<String, ManagedBean> _alreadyRegistered = new HashMap<String, ManagedBean>();
 
@@ -80,11 +79,13 @@ public class BeanImplementationListener implements SourceClassAnnotationListener
      * or class has changed
      * or class does not exist at all
      *
-     * @param clazz
+     * @param sourceClass
      * @param annotationName
      * @param params
      */
-    public void register(JavaClass clazz, String annotationName, Map<String, String> params) {
+    public void registerSource(Object sourceClass, String annotationName, Map<String, String> params) {
+        JavaClass clazz = (JavaClass) sourceClass;
+
         RuntimeConfig config = getRuntimeConfig();
 
         String beanName = params.get("name");

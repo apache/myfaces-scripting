@@ -22,17 +22,20 @@ import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.Map;
 
+import org.apache.myfaces.scripting.api.AnnotationScanListener;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ComponentImplementationListener implements SourceClassAnnotationListener {
+public class ComponentImplementationListener implements AnnotationScanListener {
     public boolean supportsAnnotation(Class annotation) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void register(JavaClass clazz, String annotationName, Map<String, String> params) {
+    public void registerSource(Object sourceClass, String annotationName, Map<String, String> params) {
+        JavaClass clazz = (JavaClass) sourceClass;
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

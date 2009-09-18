@@ -21,16 +21,14 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.Type;
 import com.thoughtworks.qdox.model.Annotation;
 
 import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
 
-import org.apache.myfaces.config.RuntimeConfig;
-
-import javax.faces.context.FacesContext;
+import org.apache.myfaces.scripting.api.AnnotationScanner;
+import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -42,9 +40,9 @@ import javax.faces.context.FacesContext;
  *          wherever possible
  */
 
-public class SourceAnnotationScanner {
+public class SourceAnnotationScanner implements AnnotationScanner {
 
-    List<SourceClassAnnotationListener> _listeners = new LinkedList<SourceClassAnnotationListener>();
+    List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
     JavaDocBuilder _builder = new JavaDocBuilder();
 
     public SourceAnnotationScanner(String... sourcePaths) {
@@ -74,12 +72,11 @@ public class SourceAnnotationScanner {
         _listeners.add(new ValidatorImplementationListener());
     }
 
-
     /**
      * builds up the parsing chain and then notifies its observers
      * on the found data
      */
-    public void scanSources() {
+    public void scanPaths() {
         JavaSource[] sources = _builder.getSources();
         for (JavaSource source : sources) {
             String packageName = source.getPackage().toString();
@@ -88,9 +85,10 @@ public class SourceAnnotationScanner {
                 Annotation[] anns = clazz.getAnnotations();
                 for (Annotation ann : anns) {
 
-                    for (SourceClassAnnotationListener listener : _listeners) {
+                    for (AnnotationScanListener listener : _listeners) {
                         if (listener.supportsAnnotation(ann.getClass())) {
-                            listener.register(clazz, ann.getType().getValue(), ann.getPropertyMap());
+                            listener.registerSource(
+                                    clazz, ann.getType().getValue(), ann.getPropertyMap());
                         }
                     }
                 }
@@ -102,7 +100,7 @@ public class SourceAnnotationScanner {
         _listeners.clear();
     }
 
-    public void addListener(SourceClassAnnotationListener listener) {
+    public void addListener(AnnotationScanListener listener) {
         _listeners.add(listener);
     }
 
