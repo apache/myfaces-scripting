@@ -40,9 +40,6 @@ import javax.faces.context.FacesContext;
  *          recursively for additional information
  *          and then adds the id/name -> class binding information to the correct factory locations,
  *          wherever possible
- *
- *
- * 
  */
 
 public class SourceAnnotationScanner {

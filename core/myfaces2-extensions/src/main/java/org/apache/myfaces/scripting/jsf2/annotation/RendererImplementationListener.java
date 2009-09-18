@@ -34,4 +34,9 @@ public class RendererImplementationListener implements SourceClassAnnotationList
 
     public void register(JavaClass clazz, String annotationName, Map<String, String> params) {
     }
+
+    public void register(Class clazz, String annotationName, Map<String, String> params) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }

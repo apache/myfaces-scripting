@@ -49,8 +49,27 @@ public class BeanImplementationListener implements SourceClassAnnotationListener
     }
 
 
+    /**
+     * simple check we do not check for the contents of the managed property here
+     * This is somewhat a simplification does not drag down the managed property handling
+     * speed too much
+     * <p/>
+     * TODO we have to find a way to enable the checking on managed property level
+     * so that we can replace the meta data on the fly (probably by extending the interface)
+     * for first registration this is enough
+     *
+     * @param name
+     * @param clazz
+     * @return
+     */
     public boolean hasToReregister(String name, JavaClass clazz) {
-        return !_alreadyRegistered.containsKey(name);
+        ManagedBean mbean = _alreadyRegistered.get(name);
+        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
+    }
+
+
+    public void register(Class clazz, String annotationName, Map<String, String> params) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 
@@ -90,52 +109,28 @@ public class BeanImplementationListener implements SourceClassAnnotationListener
 
 
     private void handleManagedproperties(ManagedBean mbean, JavaField[] fields) {
-        //TODO crossport the myfaces 2 code to qdox
         for (JavaField field : fields) {
             Annotation[] annotations = field.getAnnotations();
             if (annotations != null && annotations.length > 0) {
                 for (Annotation ann : annotations) {
-                    if (ann.getType().getValue().equals(ManagedProperty.class.getName())) {
-
+                    if (ann.getType().getValue().equals(javax.faces.bean.ManagedProperty.class.getName())) {
                         //TODO implement meta handling
+                        org.apache.myfaces.config.impl.digester.elements.ManagedProperty managedProperty =
+                                new org.apache.myfaces.config.impl.digester.elements.ManagedProperty();
+                        String name = (String) ann.getPropertyMap().get("name");
+                        if ((name == null) || "".equals(name)) {
+                            name = field.getName();
+                        }
+                        managedProperty.setPropertyName(name);
+                        managedProperty.setPropertyClass(field.getType().getValue()); // FIXME - primitives, arrays, etc.
+                        managedProperty.setValue((String) ann.getPropertyMap().get("value"));
+                        mbean.addProperty(managedProperty);
                     }
                 }
             }
         }
     }
 
-    /*
-            for (Field field : fields)
-           {
-               if (log.isTraceEnabled())
-               {
-                   log.trace("  Scanning field '" + field.getName() + "'");
-               }
-               javax.faces.bean.ManagedProperty property = (javax.faces.bean.ManagedProperty) field
-                       .getAnnotation(javax.faces.bean.ManagedProperty.class);
-               if (property != null)
-               {
-                   if (log.isDebugEnabled())
-                   {
-                       log.debug("  Field '" + field.getName()
-                               + "' has a @ManagedProperty annotation");
-                   }
-                   org.apache.myfaces.config.impl.digester.elements.ManagedProperty mpc =
-                       new org.apache.myfaces.config.impl.digester.elements.ManagedProperty();
-                   String name = property.name();
-                   if ((name == null) || "".equals(name))
-                   {
-                       name = field.getName();
-                   }
-                   mpc.setPropertyName(name);
-                   mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
-                   mpc.setValue(property.value());
-                   mbc.addProperty(mpc);
-                   continue;
-               }
-           }
-
-    */
 
     /**
      * <p>Return an array of all <code>Field</code>s reflecting declared

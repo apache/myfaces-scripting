@@ -25,9 +25,9 @@ import java.util.Map;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * We use a source code artefact observer here to register the
- * meta data in the correct registry entries
+ *          <p/>
+ *          We use a source code artefact observer here to register the
+ *          meta data in the correct registry entries
  */
 
 public interface SourceClassAnnotationListener {
@@ -36,5 +36,6 @@ public interface SourceClassAnnotationListener {
 
     public void register(JavaClass clazz, String annotationName, Map<String, String> params);
 
+    public void register(Class clazz, String annotationName, Map<String, String> params);
 
 }

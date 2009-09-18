@@ -35,4 +35,9 @@ public class BehaviorImplementationListener implements SourceClassAnnotationList
     public void register(JavaClass clazz, String annotationName, Map<String, String> params) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    public void register(Class clazz, String annotationName, Map<String, String> params) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }
