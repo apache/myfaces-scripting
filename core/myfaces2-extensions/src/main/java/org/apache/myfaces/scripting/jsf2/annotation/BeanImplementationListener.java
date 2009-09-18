@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Collections;
 
 import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaField;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -125,20 +126,18 @@ public class BeanImplementationListener implements SourceClassAnnotationListener
      *
      * @param clazz Class to be analyzed
      */
-    /*
-    private Field[] fields(Class clazz) {
 
-        Map<String, Field> fields = new HashMap<String, Field>();
+    private JavaField[] fields(JavaClass clazz) {
+
+        Map<String, JavaField> fields = new HashMap<String, JavaField>();
         do {
-            for (Field field : clazz.getDeclaredFields()) {
+            for (JavaField field : clazz.getFields()) {
                 if (!fields.containsKey(field.getName())) {
                     fields.put(field.getName(), field);
                 }
             }
-        } while ((clazz = clazz.getSuperclass()) != Object.class);
-        return (Field[]) fields.values().toArray(new Field[fields.size()]);
+        } while ((clazz = clazz.getSuperJavaClass()) != null && !clazz.getName().equals("java.lang.Object"));
+        return (JavaField[]) fields.values().toArray(new JavaField[fields.size()]);
 
     }
-    */
-
 }
