@@ -29,6 +29,7 @@ import java.io.File;
 
 import org.apache.myfaces.scripting.api.AnnotationScanner;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -95,7 +96,7 @@ public class JavaSourceAnnotationScanner implements AnnotationScanner {
                 for (Annotation ann : anns) {
 
                     for (AnnotationScanListener listener : _listeners) {
-                        if (listener.supportsAnnotation(ann.getClass())) {
+                        if (listener.supportsAnnotation(ann.getType().getValue())) {
                             listener.registerSource(
                                     clazz, ann.getType().getValue(), ann.getPropertyMap());
                         }

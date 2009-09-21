@@ -30,7 +30,7 @@ import org.apache.myfaces.scripting.api.AnnotationScanListener;
  */
 
 public class ComponentImplementationListener implements AnnotationScanListener {
-    public boolean supportsAnnotation(Class annotation) {
+    public boolean supportsAnnotation(String annotation) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

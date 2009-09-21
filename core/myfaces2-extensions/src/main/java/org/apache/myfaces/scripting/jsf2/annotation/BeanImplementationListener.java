@@ -43,8 +43,8 @@ public class BeanImplementationListener implements AnnotationScanListener {
 
     static Map<String, ManagedBean> _alreadyRegistered = new HashMap<String, ManagedBean>();
 
-    public boolean supportsAnnotation(Class annotation) {
-        return annotation.equals(javax.faces.bean.ManagedBean.class);
+    public boolean supportsAnnotation(String annotation) {
+        return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
     }
 
 
