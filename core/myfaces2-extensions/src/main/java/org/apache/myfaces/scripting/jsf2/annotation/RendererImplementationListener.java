@@ -38,7 +38,7 @@ public class RendererImplementationListener implements AnnotationScanListener {
         JavaClass clazz = (JavaClass) sourceClass;
     }
 
-    public void register(Class clazz, String annotationName, Map<String, String> params) {
+    public void register(Class clazz, String annotationName, Map<String, Object> params) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

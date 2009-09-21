@@ -38,7 +38,7 @@ public class BehaviorImplementationListener implements AnnotationScanListener {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void register(Class clazz, String annotationName, Map<String, String> params) {
+    public void register(Class clazz, String annotationName, Map<String, Object> params) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
