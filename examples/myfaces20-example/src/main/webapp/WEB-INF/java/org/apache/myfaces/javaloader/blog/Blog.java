@@ -64,6 +64,8 @@ public class Blog {
 
     public String addEntry2 () {
 
+
+
         getLog().info("adding entry");
 
         Object service = JSFUtil.resolveVariable("javaBlogService");
@@ -100,8 +102,10 @@ public class Blog {
             executeMethod(service, "addEntry",  entry);
         }
 
+        throw new javax.faces.FacesException("bla bla bla");
+        
         //we stay on the same page
-        return null;
+ //       return null;
     }
 
 

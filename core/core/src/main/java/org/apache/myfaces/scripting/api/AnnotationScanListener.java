@@ -35,6 +35,6 @@ public interface AnnotationScanListener {
 
     public void registerSource(Object clazz, String annotationName, Map<String, Object> params);
 
-    public void register(Class clazz, String annotationName, Map<String, String> params);
+    public void register(Class clazz, String annotationName, Map<String, Object> params);
 
 }

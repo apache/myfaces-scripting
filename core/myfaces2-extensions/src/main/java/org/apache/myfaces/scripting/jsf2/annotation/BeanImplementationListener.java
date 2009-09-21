@@ -91,12 +91,13 @@ public class BeanImplementationListener implements AnnotationScanListener {
 
         AnnotationConstant propVal = (AnnotationConstant) params.get("name");
         String beanName = (String) propVal.getParameterValue();
+        beanName = beanName.replaceAll("\"","");
         if (!hasToReregister(beanName, clazz)) {
             return;
         }
 
         ManagedBean mbean = new ManagedBean();
-        mbean.setBeanClass(clazz.getName());
+        mbean.setBeanClass(clazz.getFullyQualifiedName());
         mbean.setName(beanName);
 
         _alreadyRegistered.put(beanName, mbean);

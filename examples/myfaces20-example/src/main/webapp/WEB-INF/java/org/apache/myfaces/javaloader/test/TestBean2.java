@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 
+@ManagedBean (name="javatestbean")
 public class TestBean2 {
     String sayHello = "hello worldgggg";
     String hello2 = "hello from added attribute";
