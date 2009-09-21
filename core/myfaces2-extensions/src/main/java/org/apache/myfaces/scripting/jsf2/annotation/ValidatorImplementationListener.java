@@ -34,7 +34,7 @@ public class ValidatorImplementationListener implements AnnotationScanListener {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void registerSource(Object sourceClass, String annotationName, Map<String, String> params) {
+    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
         JavaClass clazz = (JavaClass) sourceClass;
         //To change body of implemented methods use File | Settings | File Templates.
     }

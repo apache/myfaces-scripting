@@ -31,9 +31,9 @@ import java.util.Map;
 
 public interface AnnotationScanListener {
 
-    public boolean supportsAnnotation(Class annotation);
+    public boolean supportsAnnotation(String annotation);
 
-    public void registerSource(Object clazz, String annotationName, Map<String, String> params);
+    public void registerSource(Object clazz, String annotationName, Map<String, Object> params);
 
     public void register(Class clazz, String annotationName, Map<String, String> params);
 

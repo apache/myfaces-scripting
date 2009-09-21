@@ -19,10 +19,9 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
+import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 import java.util.Map;
-
-import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -34,7 +33,7 @@ public class ComponentImplementationListener implements AnnotationScanListener {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void registerSource(Object sourceClass, String annotationName, Map<String, String> params) {
+    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
         JavaClass clazz = (JavaClass) sourceClass;
         //To change body of implemented methods use File | Settings | File Templates.
     }

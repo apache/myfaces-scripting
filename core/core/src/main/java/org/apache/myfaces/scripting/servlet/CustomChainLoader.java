@@ -93,7 +93,9 @@ public class CustomChainLoader extends ClassLoaderExtension {
     }
 
     public Class forName(String name) {
-
+        if(name == null) {
+            return null;
+        }
         if (name.startsWith("java.")) /*the entire java namespace is reserved so no use to do a specific classloading check here*/
             return null;
         if (name.startsWith("javax.")) /*the entire java namespace is reserved so no use to do a specific classloading check here*/

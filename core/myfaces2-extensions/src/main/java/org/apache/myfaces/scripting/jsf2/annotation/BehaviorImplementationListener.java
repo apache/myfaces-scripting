@@ -34,7 +34,7 @@ public class BehaviorImplementationListener implements AnnotationScanListener {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void registerSource(Object clazz, String annotationName, Map<String, String> params) {
+    public void registerSource(Object clazz, String annotationName, Map<String, Object> params) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

@@ -239,4 +239,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
+    public void fullAnnotationScan() {
+    }
 }

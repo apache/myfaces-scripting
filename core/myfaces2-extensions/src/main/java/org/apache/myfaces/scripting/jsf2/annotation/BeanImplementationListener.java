@@ -29,6 +29,7 @@ import java.util.HashMap;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.Annotation;
+import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -67,7 +68,7 @@ public class BeanImplementationListener implements AnnotationScanListener {
     }
 
 
-    public void register(Class clazz, String annotationName, Map<String, String> params) {
+    public void register(Class clazz, String annotationName, Map<String, Object> params) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -83,12 +84,13 @@ public class BeanImplementationListener implements AnnotationScanListener {
      * @param annotationName
      * @param params
      */
-    public void registerSource(Object sourceClass, String annotationName, Map<String, String> params) {
+    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
         JavaClass clazz = (JavaClass) sourceClass;
 
         RuntimeConfig config = getRuntimeConfig();
 
-        String beanName = params.get("name");
+        AnnotationConstant propVal = (AnnotationConstant) params.get("name");
+        String beanName = (String) propVal.getParameterValue();
         if (!hasToReregister(beanName, clazz)) {
             return;
         }
