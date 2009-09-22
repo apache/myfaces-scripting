@@ -38,7 +38,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 
 public class BaseAnnotationScanListener {
     Log log = LogFactory.getLog(this.getClass());
-    static Map<String, ManagedBean> _alreadyRegistered = new HashMap<String, ManagedBean>();
+    static Map<String, Object> _alreadyRegistered = new HashMap<String, Object>();
 
     protected RuntimeConfig getRuntimeConfig() {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -56,26 +56,5 @@ public class BaseAnnotationScanListener {
         return name;
     }
 
-    protected boolean hasToReregister(String name, Class clazz) {
-        ManagedBean mbean = _alreadyRegistered.get(name);
-        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
-    }
-
-    /**
-     * simple check we do not check for the contents of the managed property here
-     * This is somewhat a simplification does not drag down the managed property handling
-     * speed too much
-     * <p/>
-     * TODO we have to find a way to enable the checking on managed property level
-     * so that we can replace the meta data on the fly (probably by extending the interface)
-     * for first registration this is enough
-     *
-     * @param name
-     * @param clazz
-     * @return
-     */
-    protected boolean hasToReregister(String name, JavaClass clazz) {
-        ManagedBean mbean = _alreadyRegistered.get(name);
-        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getFullyQualifiedName());
-    }
+  
 }
