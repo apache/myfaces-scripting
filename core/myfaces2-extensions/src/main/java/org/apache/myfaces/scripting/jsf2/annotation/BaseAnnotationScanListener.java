@@ -18,18 +18,15 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import org.apache.myfaces.config.RuntimeConfig;
-import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
+import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.config.RuntimeConfig;
 
-import javax.faces.context.FacesContext;
 import javax.faces.application.Application;
-import java.util.Map;
+import javax.faces.context.FacesContext;
 import java.util.HashMap;
-
-import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
-import com.thoughtworks.qdox.model.JavaClass;
+import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

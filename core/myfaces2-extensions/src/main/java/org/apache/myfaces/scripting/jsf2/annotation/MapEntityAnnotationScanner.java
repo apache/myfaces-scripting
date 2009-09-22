@@ -18,11 +18,10 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
+import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 import java.util.Map;
-
-import com.thoughtworks.qdox.model.JavaClass;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

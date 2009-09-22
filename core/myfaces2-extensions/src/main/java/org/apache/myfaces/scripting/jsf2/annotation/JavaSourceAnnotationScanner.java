@@ -19,17 +19,15 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.Annotation;
-
-import java.util.List;
-import java.util.LinkedList;
-import java.io.File;
-
-import org.apache.myfaces.scripting.api.AnnotationScanner;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaSource;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.api.AnnotationScanner;
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

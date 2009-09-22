@@ -18,21 +18,16 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
+import com.thoughtworks.qdox.model.Annotation;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaField;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
-import javax.faces.context.FacesContext;
-import java.util.Map;
-import java.util.HashMap;
 import java.lang.reflect.Field;
-
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.Annotation;
-import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

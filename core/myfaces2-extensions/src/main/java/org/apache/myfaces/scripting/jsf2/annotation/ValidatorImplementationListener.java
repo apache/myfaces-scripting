@@ -19,12 +19,10 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
-
-import java.util.Map;
-
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 import javax.faces.validator.FacesValidator;
+import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

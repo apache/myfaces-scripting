@@ -19,17 +19,14 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
-
-import java.util.Map;
-
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
 
-import javax.faces.render.FacesRenderer;
-import javax.faces.render.RenderKitFactory;
-import javax.faces.render.RenderKit;
-import javax.faces.render.Renderer;
 import javax.faces.FactoryFinder;
+import javax.faces.render.FacesRenderer;
+import javax.faces.render.RenderKit;
+import javax.faces.render.RenderKitFactory;
+import javax.faces.render.Renderer;
+import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

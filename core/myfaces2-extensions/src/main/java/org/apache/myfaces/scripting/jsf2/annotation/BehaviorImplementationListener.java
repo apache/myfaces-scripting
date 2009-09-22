@@ -20,12 +20,8 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 
 import com.thoughtworks.qdox.model.JavaClass;
-
-import java.util.Map;
-
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
-import javax.faces.component.FacesComponent;
 import javax.faces.component.behavior.FacesBehavior;
 
 /**
