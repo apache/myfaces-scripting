@@ -49,27 +49,11 @@ public class BeanImplementationListener implements AnnotationScanListener {
     }
 
 
-    /**
-     * simple check we do not check for the contents of the managed property here
-     * This is somewhat a simplification does not drag down the managed property handling
-     * speed too much
-     * <p/>
-     * TODO we have to find a way to enable the checking on managed property level
-     * so that we can replace the meta data on the fly (probably by extending the interface)
-     * for first registration this is enough
-     *
-     * @param name
-     * @param clazz
-     * @return
-     */
-    public boolean hasToReregister(String name, JavaClass clazz) {
-        ManagedBean mbean = _alreadyRegistered.get(name);
-        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
-    }
-
-
     public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        RuntimeConfig config = getRuntimeConfig();
+        String propVal = (String) params.get("name");
+
+        //TODO rest of compiled class registration
     }
 
 
@@ -91,7 +75,7 @@ public class BeanImplementationListener implements AnnotationScanListener {
 
         AnnotationConstant propVal = (AnnotationConstant) params.get("name");
         String beanName = (String) propVal.getParameterValue();
-        beanName = beanName.replaceAll("\"","");
+        beanName = beanName.replaceAll("\"", "");
         if (!hasToReregister(beanName, clazz)) {
             return;
         }
@@ -133,6 +117,25 @@ public class BeanImplementationListener implements AnnotationScanListener {
                 }
             }
         }
+    }
+
+
+    /**
+     * simple check we do not check for the contents of the managed property here
+     * This is somewhat a simplification does not drag down the managed property handling
+     * speed too much
+     * <p/>
+     * TODO we have to find a way to enable the checking on managed property level
+     * so that we can replace the meta data on the fly (probably by extending the interface)
+     * for first registration this is enough
+     *
+     * @param name
+     * @param clazz
+     * @return
+     */
+    private boolean hasToReregister(String name, JavaClass clazz) {
+        ManagedBean mbean = _alreadyRegistered.get(name);
+        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
     }
 
 
