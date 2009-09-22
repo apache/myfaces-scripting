@@ -41,7 +41,7 @@ import org.apache.myfaces.scripting.core.util.ClassUtils;
  *          wherever possible
  */
 
-public class JavaSourceAnnotationScanner implements AnnotationScanner {
+public class JavaSourceAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
 
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
     JavaDocBuilder _builder = new JavaDocBuilder();

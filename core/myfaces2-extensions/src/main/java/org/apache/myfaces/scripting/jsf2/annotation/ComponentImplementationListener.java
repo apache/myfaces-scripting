@@ -20,7 +20,11 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
+import javax.faces.component.FacesComponent;
+import javax.faces.context.FacesContext;
 import java.util.Map;
 
 /**
@@ -28,9 +32,12 @@ import java.util.Map;
  * @version $Revision$ $Date$
  */
 
-public class ComponentImplementationListener implements AnnotationScanListener {
+public class ComponentImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+
+    Log log = LogFactory.getLog(this.getClass());
+
     public boolean supportsAnnotation(String annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesComponent.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
@@ -39,7 +46,21 @@ public class ComponentImplementationListener implements AnnotationScanListener {
     }
 
     public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (log.isTraceEnabled()) {
+            log.trace("registerClass(" + clazz.getName() + ")");
+        }
+
+        FacesComponent comp = (FacesComponent) clazz
+                .getAnnotation(FacesComponent.class);
+
+        if (comp != null) {
+            if (log.isTraceEnabled()) {
+                log.trace("addComponent(" + comp.value() + ","
+                          + clazz.getName() + ")");
+            }
+
+            FacesContext.getCurrentInstance().getApplication().addComponent(comp.value(), clazz.getName());
+        }
     }
 
 }

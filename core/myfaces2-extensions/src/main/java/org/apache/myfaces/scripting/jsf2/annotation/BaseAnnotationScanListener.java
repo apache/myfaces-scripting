@@ -18,28 +18,10 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.JavaClass;
-
-import java.util.Map;
-
-import org.apache.myfaces.scripting.api.AnnotationScanListener;
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class RendererImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
-    public boolean supportsAnnotation(String annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
-        JavaClass clazz = (JavaClass) sourceClass;
-    }
-
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
+public class BaseAnnotationScanListener {
 }

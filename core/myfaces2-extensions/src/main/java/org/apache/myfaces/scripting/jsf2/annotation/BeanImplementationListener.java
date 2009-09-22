@@ -43,7 +43,7 @@ import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
  *          it is only allowed to be called from a single thread
  */
 
-public class BeanImplementationListener implements AnnotationScanListener {
+public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
 
     Log log = LogFactory.getLog(this.getClass());
 
