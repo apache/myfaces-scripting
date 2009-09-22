@@ -24,24 +24,110 @@ import java.util.Map;
 
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
+import javax.faces.convert.FacesConverter;
+import javax.faces.validator.FacesValidator;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ConverterImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+public class ConverterImplementationListener extends MapEntityAnnotationScanner implements AnnotationScanListener {
+
+    private static final String PAR_VALUE = "value";
+    private static final String PAR_DEFAULT = "forClass";
+
+
+    class AnnotationEntry {
+        String value;
+        Class forClass;
+
+        AnnotationEntry(String value, Class forClass) {
+            this.value = value;
+            this.forClass = forClass;
+        }
+
+        public boolean equals(Object incoming) {
+            if (!(incoming instanceof AnnotationEntry)) {
+                return false;
+            }
+            AnnotationEntry toCompare = (AnnotationEntry) incoming;
+            //handle null cases
+            if ((value == null && toCompare.getValue() != null) ||
+                (value != null && toCompare.getValue() == null) ||
+                (forClass == null && toCompare.getForClass() != null) ||
+                (forClass != null && toCompare.getForClass() == null)) {
+                return false;
+            } else if (value == null && toCompare.getValue() == null && forClass == null && toCompare.getForClass() == null) {
+                return true;
+            }
+
+            return value.equals(toCompare.getValue()) && forClass.equals(toCompare.getValue());
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public Class getForClass() {
+            return forClass;
+        }
+    }
+
+    @Override
+    protected void addEntity(Class clazz, Map<String, Object> params) {
+        String value = (String) params.get(PAR_VALUE);
+        Class forClass = (Class) params.get(PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, forClass);
+        _alreadyRegistered.put(clazz.getName(), entry);
+
+        getApplication().addValidator(entry.getValue(), clazz.getName());
+    }
+
+    @Override
+    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
+        String value = getAnnotatedStringParam(params, PAR_VALUE);
+        Class forClass = getAnnotatedClassParam(params, PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, forClass);
+        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
+
+        getApplication().addValidator(entry.getValue(), clazz.getFullyQualifiedName());
+    }
+
+    @Override
+    protected boolean hasToReregister(Map params, Class clazz) {
+        String value = (String) params.get(PAR_VALUE);
+        Class forClass = (Class) params.get(PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, forClass);
+
+        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getName());
+        if (alreadyRegistered == null) {
+            return true;
+        }
+
+        return alreadyRegistered.equals(entry);
+    }
+
+    @Override
+    protected boolean hasToReregister(Map params, JavaClass clazz) {
+        String value = getAnnotatedStringParam(params, PAR_VALUE);
+        Class forClass = getAnnotatedClassParam(params, PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, forClass);
+
+        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
+        if (alreadyRegistered == null) {
+            return true;
+        }
+
+        return alreadyRegistered.equals(entry);
+    }
 
     public boolean supportsAnnotation(String annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
-        JavaClass clazz = (JavaClass) sourceClass;
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return annotation.equals(FacesConverter.class.getName());
     }
 
 }

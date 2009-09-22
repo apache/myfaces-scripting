@@ -73,8 +73,8 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
 
 
     public boolean supportsAnnotation(String annotation) {
-        return annotation.equals(FacesValidator.class.getName());
-    }
+         return annotation.equals(FacesValidator.class.getName());
+     }
 
 
     @Override
