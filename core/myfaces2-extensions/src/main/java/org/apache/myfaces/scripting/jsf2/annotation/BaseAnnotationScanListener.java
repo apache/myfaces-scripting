@@ -51,9 +51,15 @@ public class BaseAnnotationScanListener {
 
     protected String getAnnotatedStringParam(Map<String, Object> propMap, String key) {
         AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
-        String name = (String) propVal.getParameterValue();
-        name = name.replaceAll("\"", "");
-        return name;
+        String val = (String) propVal.getParameterValue();
+        val = val.replaceAll("\"", "");
+        return val;
+    }
+
+      protected Boolean getAnnotatedBolleanParam(Map<String, Object> propMap, String key) {
+        AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
+        Boolean val = (Boolean) propVal.getParameterValue();
+        return val;
     }
 
   

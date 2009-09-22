@@ -24,23 +24,108 @@ import java.util.Map;
 
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
+import javax.faces.validator.FacesValidator;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ValidatorImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+public class ValidatorImplementationListener extends MapEntityAnnotationScanner implements AnnotationScanListener {
+    private static final String PAR_VALUE = "value";
+    private static final String PAR_DEFAULT = "default";
+
+    class AnnotationEntry {
+        String value;
+        Boolean theDefault;
+
+        AnnotationEntry(String value, Boolean theDefault) {
+            this.value = value;
+            this.theDefault = theDefault;
+        }
+
+        public boolean equals(Object incoming) {
+            if (!(incoming instanceof AnnotationEntry)) {
+                return false;
+            }
+            AnnotationEntry toCompare = (AnnotationEntry) incoming;
+            //handle null cases
+            if ((value == null && toCompare.getValue() != null) ||
+                (value != null && toCompare.getValue() == null) ||
+                (theDefault == null && toCompare.getTheDefault() != null) ||
+                (theDefault != null && toCompare.getTheDefault() == null)) {
+                return false;
+            } else if (value == null && toCompare.getValue() == null && theDefault == null && toCompare.getTheDefault() == null) {
+                return true;
+            }
+
+            return value.equals(toCompare.getValue()) && theDefault.equals(toCompare.getValue());
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public Boolean getTheDefault() {
+            return theDefault;
+        }
+    }
+
+
     public boolean supportsAnnotation(String annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesValidator.class.getName());
     }
 
-    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
-        JavaClass clazz = (JavaClass) sourceClass;
-        //To change body of implemented methods use File | Settings | File Templates.
+
+    @Override
+    protected void addEntity(Class clazz, Map<String, Object> params) {
+        String value = (String) params.get(PAR_VALUE);
+        Boolean theDefault = (Boolean) params.get(PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault);
+        _alreadyRegistered.put(clazz.getName(), entry);
+
+        getApplication().addConverter(entry.getValue(), clazz.getName());
     }
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Override
+    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
+        String value = getAnnotatedStringParam(params, PAR_VALUE);
+        Boolean theDefault = getAnnotatedBolleanParam(params, PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault);
+        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
+
+        getApplication().addConverter(entry.getValue(), clazz.getFullyQualifiedName());
     }
 
+    @Override
+    protected boolean hasToReregister(Map params, Class clazz) {
+        String value = (String) params.get(PAR_VALUE);
+        Boolean theDefault = (Boolean) params.get(PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault);
+
+        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getName());
+        if (alreadyRegistered == null) {
+            return true;
+        }
+
+        return alreadyRegistered.equals(entry);
+    }
+
+    @Override
+    protected boolean hasToReregister(Map params, JavaClass clazz) {
+        String value = getAnnotatedStringParam(params, PAR_VALUE);
+        Boolean theDefault = getAnnotatedBolleanParam(params, PAR_DEFAULT);
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault);
+
+        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
+        if (alreadyRegistered == null) {
+            return true;
+        }
+
+        return alreadyRegistered.equals(entry);
+    }
 }

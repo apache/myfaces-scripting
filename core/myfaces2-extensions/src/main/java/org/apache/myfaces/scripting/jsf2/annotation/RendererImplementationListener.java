@@ -24,22 +24,128 @@ import java.util.Map;
 
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
+import javax.faces.render.FacesRenderer;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class RendererImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+public class RendererImplementationListener extends MapEntityAnnotationScanner implements AnnotationScanListener {
+    private static final String PAR_FAMILY = "componentFamily";
+    private static final String PAR_RENDERERTYPE = "rendererType";
+    private static final String PAR_RENDERKITID = "renderKitId";
+
+    class AnnotationEntry {
+        String componentFamily;
+        String rendererType;
+        String renderKitId;
+
+        AnnotationEntry(String componentFamily, String rendererType, String renderKitId) {
+            this.componentFamily = componentFamily;
+            this.rendererType = rendererType;
+            this.renderKitId = renderKitId;
+        }
+
+        public boolean equals(Object incoming) {
+            if (!(incoming instanceof AnnotationEntry)) {
+                return false;
+            }
+            AnnotationEntry toCompare = (AnnotationEntry) incoming;
+            //handle null cases
+            if ((componentFamily == null && toCompare.getComponentFamily() != null) ||
+                (componentFamily != null && toCompare.getComponentFamily() == null) ||
+                (rendererType == null && toCompare.getRendererType() != null) ||
+                (rendererType != null && toCompare.getRendererType() == null) ||
+                (renderKitId == null && toCompare.getRenderKitId() != null) ||
+                (renderKitId != null && toCompare.getRenderKitId() == null)) {
+
+                return false;
+            } else if (componentFamily == null && toCompare.getComponentFamily() == null &&
+                       rendererType == null && toCompare.getRendererType() == null &&
+                       renderKitId == null && toCompare.getRenderKitId() == null) {
+                return true;
+            }
+
+            return componentFamily.equals(toCompare.getComponentFamily()) &&
+                   rendererType.equals(toCompare.getComponentFamily()) &&
+                   renderKitId.equals(toCompare.getRenderKitId());
+        }
+
+        public String getComponentFamily() {
+            return componentFamily;
+        }
+
+        public String getRendererType() {
+            return rendererType;
+        }
+
+        public String getRenderKitId() {
+            return rendererType;
+        }
+    }
+
+
     public boolean supportsAnnotation(String annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesRenderer.class.getName());
     }
 
-    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
-        JavaClass clazz = (JavaClass) sourceClass;
+
+    @Override
+    protected void addEntity(Class clazz, Map<String, Object> params) {
+        String value = (String) params.get(PAR_FAMILY);
+        String theDefault = (String) params.get(PAR_RENDERERTYPE);
+        String renderKitId = (String) params.get(PAR_RENDERKITID);
+
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
+        _alreadyRegistered.put(clazz.getName(), entry);
+
+        //getApplication().getResourceBundle(entry.getComponentFamily(), clazz.getName()) ;
     }
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Override
+    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
+        String value = getAnnotatedStringParam(params, PAR_FAMILY);
+        String theDefault = getAnnotatedStringParam(params, PAR_RENDERERTYPE);
+        String renderKitId = (String) getAnnotatedStringParam(params, PAR_RENDERKITID);
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
+        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
+
+        //getApplication().addConverter(entry.getComponentFamily(), clazz.getFullyQualifiedName());
     }
 
+    @Override
+    protected boolean hasToReregister(Map params, Class clazz) {
+        String value = (String) params.get(PAR_FAMILY);
+        String theDefault = (String) params.get(PAR_RENDERERTYPE);
+        String renderKitId = (String) params.get(PAR_RENDERKITID);
+
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
+
+        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getName());
+        if (alreadyRegistered == null) {
+            return true;
+        }
+
+        return alreadyRegistered.equals(entry);
+    }
+
+    @Override
+    protected boolean hasToReregister(Map params, JavaClass clazz) {
+        String value = getAnnotatedStringParam(params, PAR_FAMILY);
+        String theDefault = (String) getAnnotatedStringParam(params, PAR_RENDERERTYPE);
+        String renderKitId = (String) getAnnotatedStringParam(params, PAR_RENDERKITID);
+
+        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
+
+        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
+        if (alreadyRegistered == null) {
+            return true;
+        }
+
+        return alreadyRegistered.equals(entry);
+    }
 }

@@ -22,41 +22,40 @@ import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
 import javax.faces.component.FacesComponent;
-import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ComponentImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+public class ComponentImplementationListener extends SingleEntityAnnotationListener implements AnnotationScanListener {
+
+
+    public ComponentImplementationListener() {
+        super();
+        _entityParamValue = "value";
+    }
 
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesComponent.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
-        JavaClass clazz = (JavaClass) sourceClass;
-        //To change body of implemented methods use File | Settings | File Templates.
+
+    protected void addEntity(Class clazz, String val) {
+        if (log.isTraceEnabled()) {
+            log.trace("addComponent(" + val + ","
+                      + clazz.getName() + ")");
+        }
+        getApplication().addComponent(val, clazz.getName());
     }
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
+    protected void addEntity(JavaClass clazz, String val) {
         if (log.isTraceEnabled()) {
-            log.trace("registerClass(" + clazz.getName() + ")");
+            log.trace("addComponent(" + val + ","
+                      + clazz.getFullyQualifiedName() + ")");
         }
-
-        FacesComponent comp = (FacesComponent) clazz
-                .getAnnotation(FacesComponent.class);
-
-        if (comp != null) {
-            if (log.isTraceEnabled()) {
-                log.trace("addComponent(" + comp.value() + ","
-                          + clazz.getName() + ")");
-            }
-
-            getApplication().addComponent(comp.value(), clazz.getName());
-        }
+        getApplication().addComponent(val, clazz.getFullyQualifiedName());
     }
 
 }

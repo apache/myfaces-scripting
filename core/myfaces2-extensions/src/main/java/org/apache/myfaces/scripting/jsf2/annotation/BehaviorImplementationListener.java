@@ -19,29 +19,46 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 
-
 import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.Map;
 
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
+import javax.faces.component.FacesComponent;
+import javax.faces.component.behavior.FacesBehavior;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class BehaviorImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+public class BehaviorImplementationListener extends SingleEntityAnnotationListener implements AnnotationScanListener {
+    public BehaviorImplementationListener() {
+        super();
+        _entityParamValue = "value";
+    }
+
+
     public boolean supportsAnnotation(String annotation) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesBehavior.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void registerSource(Object clazz, String annotationName, Map<String, Object> params) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+    protected void addEntity(Class clazz, String val) {
+        if (log.isTraceEnabled()) {
+            log.trace("addBehavior(" + val + ","
+                      + clazz.getName() + ")");
+        }
+        getApplication().addBehavior(val, clazz.getName());
     }
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    protected void addEntity(JavaClass clazz, String val) {
+        if (log.isTraceEnabled()) {
+            log.trace("addBehavior (" + val + ","
+                      + clazz.getFullyQualifiedName() + ")");
+        }
+        getApplication().addBehavior(val, clazz.getFullyQualifiedName());
     }
 
 }
