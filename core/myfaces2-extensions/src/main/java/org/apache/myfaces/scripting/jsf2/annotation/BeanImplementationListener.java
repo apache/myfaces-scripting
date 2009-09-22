@@ -21,10 +21,13 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.reflect.Field;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
@@ -42,6 +45,8 @@ import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
 
 public class BeanImplementationListener implements AnnotationScanListener {
 
+    Log log = LogFactory.getLog(this.getClass());
+
     static Map<String, ManagedBean> _alreadyRegistered = new HashMap<String, ManagedBean>();
 
     public boolean supportsAnnotation(String annotation) {
@@ -51,9 +56,19 @@ public class BeanImplementationListener implements AnnotationScanListener {
 
     public void register(Class clazz, String annotationName, Map<String, Object> params) {
         RuntimeConfig config = getRuntimeConfig();
-        String propVal = (String) params.get("name");
+        String beanName = (String) params.get("name");
+        beanName = beanName.replaceAll("\"", "");
+        if (!hasToReregister(beanName, clazz)) {
+            return;
+        }
 
-        //TODO rest of compiled class registration
+        ManagedBean mbean = new ManagedBean();
+        mbean.setBeanClass(clazz.getName());
+        mbean.setName(beanName);
+        handleManagedpropertiesCompiled(mbean, fields(clazz));
+
+        _alreadyRegistered.put(beanName, mbean);
+        config.addManagedBean(beanName, mbean);
     }
 
 
@@ -73,9 +88,7 @@ public class BeanImplementationListener implements AnnotationScanListener {
 
         RuntimeConfig config = getRuntimeConfig();
 
-        AnnotationConstant propVal = (AnnotationConstant) params.get("name");
-        String beanName = (String) propVal.getParameterValue();
-        beanName = beanName.replaceAll("\"", "");
+        String beanName = getAnnotatedStringParam(params, "name");
         if (!hasToReregister(beanName, clazz)) {
             return;
         }
@@ -83,7 +96,7 @@ public class BeanImplementationListener implements AnnotationScanListener {
         ManagedBean mbean = new ManagedBean();
         mbean.setBeanClass(clazz.getFullyQualifiedName());
         mbean.setName(beanName);
-
+        handleManagedproperties(mbean, fields(clazz));
         _alreadyRegistered.put(beanName, mbean);
 
         config.addManagedBean(beanName, mbean);
@@ -96,16 +109,51 @@ public class BeanImplementationListener implements AnnotationScanListener {
     }
 
 
+    private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
+        for (Field field : fields) {
+            if (log.isTraceEnabled()) {
+                log.trace("  Scanning field '" + field.getName() + "'");
+            }
+            javax.faces.bean.ManagedProperty property = (javax.faces.bean.ManagedProperty) field
+                    .getAnnotation(javax.faces.bean.ManagedProperty.class);
+            if (property != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("  Field '" + field.getName()
+                              + "' has a @ManagedProperty annotation");
+                }
+
+                org.apache.myfaces.config.impl.digester.elements.ManagedProperty mpc =
+                        new org.apache.myfaces.config.impl.digester.elements.ManagedProperty();
+                String name = property.name();
+                if ((name == null) || "".equals(name)) {
+                    name = field.getName();
+                }
+                mpc.setPropertyName(name);
+                mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
+                mpc.setValue(property.value());
+                mbean.addProperty(mpc);
+                continue;
+            }
+        }
+    }
+
+
     private void handleManagedproperties(ManagedBean mbean, JavaField[] fields) {
         for (JavaField field : fields) {
             Annotation[] annotations = field.getAnnotations();
             if (annotations != null && annotations.length > 0) {
+                //TODO debug this out
                 for (Annotation ann : annotations) {
                     if (ann.getType().getValue().equals(javax.faces.bean.ManagedProperty.class.getName())) {
-                        //TODO implement meta handling
                         org.apache.myfaces.config.impl.digester.elements.ManagedProperty managedProperty =
                                 new org.apache.myfaces.config.impl.digester.elements.ManagedProperty();
-                        String name = (String) ann.getPropertyMap().get("name");
+                        String name = getAnnotatedStringParam(ann.getPropertyMap(), "name");
+
+                        if (log.isDebugEnabled()) {
+                            log.debug("  Field '" + field.getName()
+                                      + "' has a @ManagedProperty annotation");
+                        }
+
                         if ((name == null) || "".equals(name)) {
                             name = field.getName();
                         }
@@ -117,6 +165,19 @@ public class BeanImplementationListener implements AnnotationScanListener {
                 }
             }
         }
+    }
+
+    private String getAnnotatedStringParam(Map<String, Object> propMap, String key) {
+        AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
+        String name = (String) propVal.getParameterValue();
+        name = name.replaceAll("\"", "");
+        return name;
+    }
+
+
+    private boolean hasToReregister(String name, Class clazz) {
+        ManagedBean mbean = _alreadyRegistered.get(name);
+        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
     }
 
 
@@ -135,7 +196,7 @@ public class BeanImplementationListener implements AnnotationScanListener {
      */
     private boolean hasToReregister(String name, JavaClass clazz) {
         ManagedBean mbean = _alreadyRegistered.get(name);
-        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
+        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getFullyQualifiedName());
     }
 
 
@@ -157,7 +218,27 @@ public class BeanImplementationListener implements AnnotationScanListener {
                 }
             }
         } while ((clazz = clazz.getSuperJavaClass()) != null && !clazz.getName().equals("java.lang.Object"));
-        return (JavaField[]) fields.values().toArray(new JavaField[fields.size()]);
+        return fields.values().toArray(new JavaField[fields.size()]);
 
+    }
+
+    /**
+     * <p>Return an array of all <code>Field</code>s reflecting declared
+     * fields in this class, or in any superclass other than
+     * <code>java.lang.Object</code>.</p>
+     *
+     * @param clazz Class to be analyzed
+     */
+    private Field[] fields(Class clazz) {
+
+        Map<String, Field> fields = new HashMap<String, Field>();
+        do {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (!fields.containsKey(field.getName())) {
+                    fields.put(field.getName(), field);
+                }
+            }
+        } while ((clazz = clazz.getSuperclass()) != Object.class);
+        return (Field[]) fields.values().toArray(new Field[fields.size()]);
     }
 }
