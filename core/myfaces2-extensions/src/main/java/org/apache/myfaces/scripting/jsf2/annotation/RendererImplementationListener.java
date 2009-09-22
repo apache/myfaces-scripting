@@ -23,8 +23,13 @@ import com.thoughtworks.qdox.model.JavaClass;
 import java.util.Map;
 
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 
 import javax.faces.render.FacesRenderer;
+import javax.faces.render.RenderKitFactory;
+import javax.faces.render.RenderKit;
+import javax.faces.render.Renderer;
+import javax.faces.FactoryFinder;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -97,23 +102,41 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         String theDefault = (String) params.get(PAR_RENDERERTYPE);
         String renderKitId = (String) params.get(PAR_RENDERKITID);
 
-
         AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
         _alreadyRegistered.put(clazz.getName(), entry);
 
         //getApplication().getResourceBundle(entry.getComponentFamily(), clazz.getName()) ;
+        if (renderKitId == null) {
+            renderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;
+        }
+        if (log.isTraceEnabled()) {
+            log.trace("addRenderer(" + renderKitId + ", "
+                      + entry.getComponentFamily() + ", " + entry.getRendererType()
+                      + ", " + clazz.getName() + ")");
+        }
+        RenderKit rk = renderKitFactory().getRenderKit(null,
+                                                       renderKitId);
+        try {
+            rk.addRenderer(entry.getComponentFamily(), entry.getRendererType(), (Renderer) clazz.newInstance());
+        } catch (InstantiationException e) {
+            log.error(e);
+        } catch (IllegalAccessException e) {
+            log.error(e);
+        }
+    }
+
+    private RenderKitFactory renderKitFactory() {
+        return (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
     }
 
     @Override
     protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        String value = getAnnotatedStringParam(params, PAR_FAMILY);
-        String theDefault = getAnnotatedStringParam(params, PAR_RENDERERTYPE);
-        String renderKitId = (String) getAnnotatedStringParam(params, PAR_RENDERKITID);
+        
+        //TODO map this into a compile time thing, we have to compile our source
+        //class referenced and then we can process here
+        //not possible at source scan time :-(
 
-        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
-        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
 
-        //getApplication().addConverter(entry.getComponentFamily(), clazz.getFullyQualifiedName());
     }
 
     @Override
@@ -121,7 +144,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         String value = (String) params.get(PAR_FAMILY);
         String theDefault = (String) params.get(PAR_RENDERERTYPE);
         String renderKitId = (String) params.get(PAR_RENDERKITID);
-
 
         AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
 
