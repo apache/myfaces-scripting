@@ -20,11 +20,8 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 import javax.faces.component.FacesComponent;
-import javax.faces.context.FacesContext;
 import java.util.Map;
 
 /**
@@ -34,7 +31,6 @@ import java.util.Map;
 
 public class ComponentImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
 
-    Log log = LogFactory.getLog(this.getClass());
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesComponent.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
@@ -59,7 +55,7 @@ public class ComponentImplementationListener extends BaseAnnotationScanListener 
                           + clazz.getName() + ")");
             }
 
-            FacesContext.getCurrentInstance().getApplication().addComponent(comp.value(), clazz.getName());
+            getApplication().addComponent(comp.value(), clazz.getName());
         }
     }
 

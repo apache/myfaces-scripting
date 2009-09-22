@@ -45,10 +45,6 @@ import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
 
-    Log log = LogFactory.getLog(this.getClass());
-
-    static Map<String, ManagedBean> _alreadyRegistered = new HashMap<String, ManagedBean>();
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
     }
@@ -100,12 +96,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         _alreadyRegistered.put(beanName, mbean);
 
         config.addManagedBean(beanName, mbean);
-    }
-
-
-    protected RuntimeConfig getRuntimeConfig() {
-        final FacesContext facesContext = FacesContext.getCurrentInstance();
-        return RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
     }
 
 
@@ -165,38 +155,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 }
             }
         }
-    }
-
-    private String getAnnotatedStringParam(Map<String, Object> propMap, String key) {
-        AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
-        String name = (String) propVal.getParameterValue();
-        name = name.replaceAll("\"", "");
-        return name;
-    }
-
-
-    private boolean hasToReregister(String name, Class clazz) {
-        ManagedBean mbean = _alreadyRegistered.get(name);
-        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
-    }
-
-
-    /**
-     * simple check we do not check for the contents of the managed property here
-     * This is somewhat a simplification does not drag down the managed property handling
-     * speed too much
-     * <p/>
-     * TODO we have to find a way to enable the checking on managed property level
-     * so that we can replace the meta data on the fly (probably by extending the interface)
-     * for first registration this is enough
-     *
-     * @param name
-     * @param clazz
-     * @return
-     */
-    private boolean hasToReregister(String name, JavaClass clazz) {
-        ManagedBean mbean = _alreadyRegistered.get(name);
-        return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getFullyQualifiedName());
     }
 
 
