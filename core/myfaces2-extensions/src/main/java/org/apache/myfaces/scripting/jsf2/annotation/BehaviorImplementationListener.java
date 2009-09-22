@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
+
+
 import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.Map;
