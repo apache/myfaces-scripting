@@ -6,13 +6,14 @@ import javax.faces.bean.RequestScoped;
 
 
 @ManagedBean (name="javatestbean")
+@RequestScoped 
 public class TestBean2 {
     String sayHello = "hello worldgggg";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
  
     public String getSayHello() {
-        return "sss Java dynamic  bean - "+TestClass2.hello2 + hello3;
+        return "Java dynamic  bean - "+TestClass2.hello2 + hello3;
     }
 
     public String getSayHello2() {

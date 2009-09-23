@@ -63,9 +63,27 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         mbean.setBeanClass(clazz.getName());
         mbean.setName(beanName);
         handleManagedpropertiesCompiled(mbean, fields(clazz));
+        resolveScope(clazz, mbean);
 
         _alreadyRegistered.put(beanName, mbean);
         config.addManagedBean(beanName, mbean);
+    }
+
+    private void resolveScope(Class clazz, ManagedBean mbean) {
+        //now lets resolve the scope
+        String scope = "none";
+        if (clazz.isAnnotationPresent(RequestScoped.class)) {
+            scope = "request";
+        } else if (clazz.isAnnotationPresent(SessionScoped.class)) {
+            scope = "session";
+        } else if (clazz.isAnnotationPresent(ApplicationScoped.class)) {
+            scope = "application";
+        } else if (clazz.isAnnotationPresent(NoneScoped.class)) {
+            scope = "none";
+        } else if (clazz.isAnnotationPresent(CustomScoped.class)) {
+            scope = "custom";
+        }
+        mbean.setScope(scope);
     }
 
 
@@ -96,25 +114,33 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         handleManagedproperties(mbean, fields(clazz));
         _alreadyRegistered.put(beanName, mbean);
         //find the scope
+        resolveScope(clazz, mbean);
+
+        config.addManagedBean(beanName, mbean);
+    }
+
+    private void resolveScope(JavaClass clazz, ManagedBean mbean) {
         Annotation[] anns = clazz.getAnnotations();
 
         for (Annotation ann : anns) {
-            if (ann.getType().getValue().equals(RequestScoped.class.getName())) {
+            String scopeType = ann.getType().getValue();
+
+            if (scopeType.equals(RequestScoped.class.getName())) {
                 mbean.setScope("request");
                 break;
-            } else if (ann.getType().getValue().equals(SessionScoped.class.getName())) {
+            } else if (scopeType.equals(SessionScoped.class.getName())) {
                 mbean.setScope(SCOPE_SESSION);
                 break;
-            } else if (ann.getType().getValue().equals(ApplicationScoped.class.getName())) {
+            } else if (scopeType.equals(ApplicationScoped.class.getName())) {
                 mbean.setScope(SCOPE_APPLICATION);
                 break;
-            } else if (ann.getType().getValue().equals(ViewScoped.class.getName())) {
+            } else if (scopeType.equals(ViewScoped.class.getName())) {
                 mbean.setScope(SCOPE_VIEW);
                 break;
-            } else if (ann.getType().getValue().equals(NoneScoped.class.getName())) {
+            } else if (scopeType.equals(NoneScoped.class.getName())) {
                 mbean.setScope(SCOPE_NONE);
                 break;
-            } else if (ann.getType().getValue().equals(CustomScoped.class.getName())) {
+            } else if (scopeType.equals(CustomScoped.class.getName())) {
                 //TODO find out how to handle custom scope values
                 mbean.setScope(SCOPE_CUSTOM);
                 break;
@@ -124,8 +150,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         if (mbean.getManagedBeanScope() == null) {
             mbean.setScope(SCOPE_NONE);
         }
-
-        config.addManagedBean(beanName, mbean);
     }
 
 
