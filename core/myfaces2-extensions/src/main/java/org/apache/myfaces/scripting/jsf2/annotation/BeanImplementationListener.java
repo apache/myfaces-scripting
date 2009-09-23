@@ -25,6 +25,7 @@ import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 
+import javax.faces.bean.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,11 @@ import java.util.Map;
  */
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
+    private static final String SCOPE_SESSION = "session";
+    private static final String SCOPE_APPLICATION = "application";
+    private static final String SCOPE_VIEW = "view";
+    private static final String SCOPE_NONE = "none";
+    private static final String SCOPE_CUSTOM = "custom";
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
@@ -89,6 +95,35 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         mbean.setName(beanName);
         handleManagedproperties(mbean, fields(clazz));
         _alreadyRegistered.put(beanName, mbean);
+        //find the scope
+        Annotation[] anns = clazz.getAnnotations();
+
+        for (Annotation ann : anns) {
+            if (ann.getType().getValue().equals(RequestScoped.class.getName())) {
+                mbean.setScope("request");
+                break;
+            } else if (ann.getType().getValue().equals(SessionScoped.class.getName())) {
+                mbean.setScope(SCOPE_SESSION);
+                break;
+            } else if (ann.getType().getValue().equals(ApplicationScoped.class.getName())) {
+                mbean.setScope(SCOPE_APPLICATION);
+                break;
+            } else if (ann.getType().getValue().equals(ViewScoped.class.getName())) {
+                mbean.setScope(SCOPE_VIEW);
+                break;
+            } else if (ann.getType().getValue().equals(NoneScoped.class.getName())) {
+                mbean.setScope(SCOPE_NONE);
+                break;
+            } else if (ann.getType().getValue().equals(CustomScoped.class.getName())) {
+                //TODO find out how to handle custom scope values
+                mbean.setScope(SCOPE_CUSTOM);
+                break;
+            }
+        }
+
+        if (mbean.getManagedBeanScope() == null) {
+            mbean.setScope(SCOPE_NONE);
+        }
 
         config.addManagedBean(beanName, mbean);
     }
