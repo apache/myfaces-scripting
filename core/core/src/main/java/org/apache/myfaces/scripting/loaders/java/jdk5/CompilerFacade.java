@@ -18,18 +18,75 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jdk5;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+
+import java.io.File;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Custom compiler call for jdk5
- * we can call javac directly
+ *          <p/>
+ *          Custom compiler call for jdk5
+ *          we can call javac directly
  */
 
 public class CompilerFacade implements DynamicCompiler {
+    JavacCompiler compiler = null;
+
+    Log log = LogFactory.getLog(this.getClass());
+    ContainerFileManager fileManager = null;
+
+
+    public CompilerFacade() {
+        super();
+
+        compiler = new JavacCompiler();
+        fileManager = new ContainerFileManager();
+    }
+
+
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
+
+        String className = filePath.replaceAll(File.separator, ".");
+        className = ClassUtils.relativeFileToClassName(className);
+
+        try {
+            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath);
+
+            displayMessages(result);
+
+            if (result.getErrors().size() == 0) {
+                ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+                if (!(oldClassLoader instanceof RecompiledClassLoader)) {
+                    try {
+                        RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader();
+                        Thread.currentThread().setContextClassLoader(classLoader);
+
+                        ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
+
+                        return classLoader.loadClass(className);
+                    } finally {
+                        Thread.currentThread().setContextClassLoader(oldClassLoader);
+                    }
+                }
+            }
+
+        } catch (CompilationException e) {
+            log.error(e);
+        }
         return null;
+    }
+
+    private void displayMessages(CompilationResult result) {
+        for (CompilationResult.CompilationMessage error : result.getErrors()) {
+            log.error(error.getMessage());
+        }
+        for (CompilationResult.CompilationMessage error : result.getWarnings()) {
+            log.error(error.getMessage());
+        }
     }
 }

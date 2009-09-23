@@ -20,6 +20,8 @@ package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.scripting.loaders.java.jsr199.ContainerFileManager;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 

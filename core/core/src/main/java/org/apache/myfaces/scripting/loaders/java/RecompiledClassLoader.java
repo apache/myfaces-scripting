@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.loaders.java.jsr199;
+package org.apache.myfaces.scripting.loaders.java;
 
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
@@ -34,7 +34,7 @@ public class RecompiledClassLoader extends ClassLoader {
     static double _tempMarker = Math.random();
 
 
-    RecompiledClassLoader(ClassLoader classLoader) {
+    public RecompiledClassLoader(ClassLoader classLoader) {
         super(classLoader);
         if (tempDir == null) {
             synchronized (this.getClass()) {
