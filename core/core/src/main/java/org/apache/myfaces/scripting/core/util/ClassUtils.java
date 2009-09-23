@@ -51,6 +51,16 @@ public class ClassUtils {
         }
     }
 
+    public static boolean isPresent(String clazz) {
+        try {
+            getContextClassLoader().loadClass(clazz);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+
     /**
      * We use asm here to add the marker annotation
      * to the list of our public annotations
@@ -69,14 +79,14 @@ public class ClassUtils {
             ClassNode node = new ClassNode();
             ClassReader clsReader = new ClassReader(fIstr);
             //ClassWriter wrt = new ClassWriter();
-            clsReader.accept((ClassVisitor) node, ClassReader.SKIP_FRAMES );
+            clsReader.accept((ClassVisitor) node, ClassReader.SKIP_FRAMES);
             //node.accept(wrt);
             ClassWriter wrt = new ClassWriter(0);
 
             if (node.visibleAnnotations == null) {
                 node.visibleAnnotations = new LinkedList<AnnotationNode>();
             }
-            
+
             boolean hasAnnotation = false;
             String annotationMarker = Type.getDescriptor(ScriptingClass.class);
             for (Object elem : node.visibleAnnotations) {
@@ -98,7 +108,6 @@ public class ClassUtils {
             foStream = new FileOutputStream(classNameToFile(classPath, className));
             foStream.write(finalClass);
             foStream.flush();
-          
 
         } catch (FileNotFoundException ex) {
             throw new ClassNotFoundException("Class " + className + " not found ");
@@ -132,11 +141,6 @@ public class ClassUtils {
             logError(e);
         }
     }
-
-
-
-
-
 
 
     public static File classNameToFile(String classPath, String className) {
