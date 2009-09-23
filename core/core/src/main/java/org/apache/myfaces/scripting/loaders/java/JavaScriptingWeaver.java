@@ -46,7 +46,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
     private static final String JAVA_FILE_ENDING = ".java";
     private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade";
-    private static final String JCI_COMPILER = "org.apache.myfaces.scripting.loaders.java.jci.CompilerFacade";
+    private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
 
     AnnotationScanner _scanner = null;
 
@@ -76,7 +76,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     @Override
     public void appendCustomScriptPath(String scriptPath) {
         super.appendCustomScriptPath(scriptPath);
-        if(_scanner != null) {
+        if (_scanner != null) {
             _scanner.addScanPath(scriptPath);
         }
     }
@@ -148,16 +148,16 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
     private String getScriptingFacadeClass() {
         String javaVer = System.getProperty("java.version");
-        String [] versionArr = javaVer.split("\\.");
+        String[] versionArr = javaVer.split("\\.");
 
         int major = Integer.parseInt(versionArr[Math.min(versionArr.length, 1)]);
 
-        if(major > 5) {
+        if (major > 5) {
             //jsr199 compliant jdk
             return JSR199_COMPILER;
         }
         //otherwise 
-        return JCI_COMPILER;
+        return JAVA5_COMPILER;
     }
 
     public boolean isDynamic(Class clazz) {
@@ -169,7 +169,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
      * full scan, scans for all artefacts in all files
      */
     public void fullAnnotationScan() {
-        if(_scanner == null) {
+        if (_scanner == null) {
             return;
         }
         _scanner.scanPaths();

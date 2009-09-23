@@ -88,7 +88,7 @@ class JavacCompiler implements Compiler {
      * @param file       the relative file name of the class you want to compile
      * @return the compilation result, i.e. as of now only the compiler output
      */
-    public CompilationResult compile(File sourcePath, File targetPath, String file) throws CompilationException {
+    public CompilationResult compile(File sourcePath, File targetPath, String file, String classPath) throws CompilationException {
         // The destination directory must already exist as javac will not create the destination directory.
         if (!targetPath.exists()) {
             if (!targetPath.mkdirs()) {
@@ -106,7 +106,7 @@ class JavacCompiler implements Compiler {
             // Invoke the Javac compiler
             Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
             Integer returnCode = (Integer) compile.invoke(null,
-                                                          new Object[]{buildCompilerArguments(sourcePath, targetPath, file), new PrintWriter(compilerOutput)});
+                                                          new Object[]{buildCompilerArguments(sourcePath, targetPath, file, classPath), new PrintWriter(compilerOutput)});
 
             CompilationResult result = new CompilationResult(compilerOutput.toString());
             if (returnCode == null || returnCode.intValue() != 0) {
@@ -138,7 +138,7 @@ class JavacCompiler implements Compiler {
      * @param file       the relative file name of the class you want to compile
      * @return an array of arguments that you have to pass to the Javac compiler
      */
-    protected String[] buildCompilerArguments(File sourcePath, File targetPath, String file) {
+    protected String[] buildCompilerArguments(File sourcePath, File targetPath, String file, String classPath) {
         List arguments = new ArrayList();
 
         // Set both the source code path to search for class or interface
@@ -147,6 +147,8 @@ class JavacCompiler implements Compiler {
         arguments.add(sourcePath.getAbsolutePath());
         arguments.add("-d");
         arguments.add(targetPath.getAbsolutePath());
+        arguments.add("-cp");
+        arguments.add(classPath);       
 
         // Enable verbose output.
         arguments.add("-verbose");

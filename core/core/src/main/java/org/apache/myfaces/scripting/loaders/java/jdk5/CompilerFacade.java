@@ -55,7 +55,7 @@ public class CompilerFacade implements DynamicCompiler {
         className = ClassUtils.relativeFileToClassName(className);
 
         try {
-            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath);
+            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath, fileManager.getClassPath());
 
             displayMessages(result);
 
@@ -73,6 +73,8 @@ public class CompilerFacade implements DynamicCompiler {
                         Thread.currentThread().setContextClassLoader(oldClassLoader);
                     }
                 }
+            } else {
+                log.error("Compiler output:"+result.getCompilerOutput());
             }
 
         } catch (CompilationException e) {
@@ -83,7 +85,8 @@ public class CompilerFacade implements DynamicCompiler {
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.error(error.getMessage());
+            log.error(error.getLineNumber()+"-"+error.getMessage());
+
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
             log.error(error.getMessage());

@@ -17,6 +17,6 @@ interface Compiler {
      * 
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
      */
-    public CompilationResult compile(File sourcePath, File targetPath, String file) throws CompilationException;
+    public CompilationResult compile(File sourcePath, File targetPath, String file, String classPath) throws CompilationException;
 
 }
