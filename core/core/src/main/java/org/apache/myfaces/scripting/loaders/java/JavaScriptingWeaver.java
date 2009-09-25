@@ -143,6 +143,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
         }
 
+        
+
         return retVal;
     }
 

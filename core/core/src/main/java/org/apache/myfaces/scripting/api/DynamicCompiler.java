@@ -40,5 +40,8 @@ public interface DynamicCompiler {
      * @throws ClassNotFoundException in case of the class neither could be found
      *                                in our sources nor could be referenced in binary form from the classloader
      */
-    Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException;
+    public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException;
+
+    public void compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException;
+
 }

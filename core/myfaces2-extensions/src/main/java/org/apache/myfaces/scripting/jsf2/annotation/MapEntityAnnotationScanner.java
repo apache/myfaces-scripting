@@ -20,8 +20,12 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
+import javax.faces.component.behavior.FacesBehavior;
 import java.util.Map;
+import java.util.HashMap;
+import java.lang.annotation.Annotation;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -30,17 +34,31 @@ import java.util.Map;
 
 public abstract class MapEntityAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanListener {
 
+    String[] _annotationParms = null;
+
+    public MapEntityAnnotationScanner(String... annotationParms) {
+        _annotationParms = annotationParms;
+    }
+
 
     public void registerSource(Object sourceClass, String annotationName, Map<String, Object> params) {
         JavaClass clazz = (JavaClass) sourceClass;
         if (hasToReregister(params, clazz)) {
             addEntity(clazz, params);
         }
+
     }
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        if (hasToReregister(params, clazz)) {
-            addEntity(clazz, params);
+    public void register(Class clazz, Annotation annotation) {
+
+        Map<String, Object> parms = new HashMap<String, Object>(_annotationParms.length);
+
+        for (String accessor : _annotationParms) {
+            ReflectUtil.fastExecuteMethod(annotation, accessor, new Object[0]);
+        }
+
+        if (hasToReregister(parms, clazz)) {
+            addEntity(clazz, parms);
         }
     }
 
@@ -48,7 +66,6 @@ public abstract class MapEntityAnnotationScanner extends BaseAnnotationScanListe
     protected abstract void addEntity(Class clazz, Map<String, Object> params);
 
     protected abstract void addEntity(JavaClass clazz, Map<String, Object> params);
-
 
     protected abstract boolean hasToReregister(Map params, Class clazz);
 

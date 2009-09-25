@@ -33,6 +33,10 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
     private static final String PAR_VALUE = "value";
     private static final String PAR_DEFAULT = "default";
 
+    public ValidatorImplementationListener() {
+        super(PAR_VALUE, PAR_DEFAULT);
+    }
+
     class AnnotationEntry {
         String value;
         Boolean theDefault;
@@ -71,8 +75,8 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
 
 
     public boolean supportsAnnotation(String annotation) {
-         return annotation.equals(FacesValidator.class.getName());
-     }
+        return annotation.equals(FacesValidator.class.getName());
+    }
 
 
     @Override

@@ -20,8 +20,10 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 import java.util.Map;
+import java.lang.annotation.Annotation;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -39,8 +41,10 @@ public abstract class SingleEntityAnnotationListener extends BaseAnnotationScanL
         }
     }
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
-        String val = (String) params.get(_entityParamValue);
+    public void register(Class clazz, Annotation annotation) {
+
+
+        String val = (String) ReflectUtil.executeMethod(annotation, _entityParamValue);
         if (hasToReregister(val, clazz)) {
             addEntity(clazz, val);
         }

@@ -34,7 +34,6 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
     private static final String PAR_VALUE = "value";
     private static final String PAR_DEFAULT = "forClass";
 
-
     class AnnotationEntry {
         String value;
         Class forClass;
@@ -69,6 +68,10 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         public Class getForClass() {
             return forClass;
         }
+    }
+
+    public ConverterImplementationListener() {
+        super();
     }
 
     @Override

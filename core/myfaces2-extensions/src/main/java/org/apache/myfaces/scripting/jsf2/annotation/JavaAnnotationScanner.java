@@ -24,6 +24,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.AnnotationScanner;
+import org.vafer.dependency.Clazz;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -39,22 +40,19 @@ import java.util.List;
  *          wherever possible
  */
 
-public class JavaSourceAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
+public class JavaAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
 
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
     JavaDocBuilder _builder = new JavaDocBuilder();
 
-    public JavaSourceAnnotationScanner() {
+    public JavaAnnotationScanner() {
         initDefaultListeners();
     }
 
-
-    public JavaSourceAnnotationScanner(String... sourcePaths) {
+    public JavaAnnotationScanner(String... sourcePaths) {
 
         initSourcePaths(sourcePaths);
-
         initDefaultListeners();
-
     }
 
     public void addScanPath(String sourcePath) {
@@ -64,10 +62,22 @@ public class JavaSourceAnnotationScanner extends BaseAnnotationScanListener impl
         }
     }
 
+    public void scanClass(Class clazz) {
+        java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+        for (java.lang.annotation.Annotation ann : anns) {
+
+            for (AnnotationScanListener listener : _listeners) {
+                if (listener.supportsAnnotation(ann.getClass().getName())) {
+                    listener.register(clazz, ann);
+                }
+            }
+        }
+    }
+
 
     private void initSourcePaths(String... sourcePaths) {
         for (String sourcePath : sourcePaths) {
-           addScanPath(sourcePath);
+            addScanPath(sourcePath);
         }
     }
 
@@ -87,7 +97,6 @@ public class JavaSourceAnnotationScanner extends BaseAnnotationScanListener impl
     public void scanPaths() {
         JavaSource[] sources = _builder.getSources();
         for (JavaSource source : sources) {
-            String packageName = source.getPackage().toString();
             JavaClass[] classes = source.getClasses();
             for (JavaClass clazz : classes) {
                 Annotation[] anns = clazz.getAnnotations();

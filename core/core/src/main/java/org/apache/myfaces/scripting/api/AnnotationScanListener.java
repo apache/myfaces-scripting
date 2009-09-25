@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.api;
 
 
 import java.util.Map;
+import java.lang.annotation.Annotation;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -35,6 +36,6 @@ public interface AnnotationScanListener {
 
     public void registerSource(Object clazz, String annotationName, Map<String, Object> params);
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params);
+    public void register(Class clazz, Annotation annotationName);
 
 }

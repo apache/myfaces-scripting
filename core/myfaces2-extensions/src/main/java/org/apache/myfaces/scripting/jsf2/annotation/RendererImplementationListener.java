@@ -38,6 +38,11 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
     private static final String PAR_RENDERERTYPE = "rendererType";
     private static final String PAR_RENDERKITID = "renderKitId";
 
+    public RendererImplementationListener() {
+        super(PAR_FAMILY, PAR_RENDERERTYPE, PAR_RENDERKITID);
+    }
+
+
     class AnnotationEntry {
         String componentFamily;
         String rendererType;
@@ -128,11 +133,10 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
     @Override
     protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        
+
         //TODO map this into a compile time thing, we have to compile our source
         //class referenced and then we can process here
         //not possible at source scan time :-(
-
 
     }
 

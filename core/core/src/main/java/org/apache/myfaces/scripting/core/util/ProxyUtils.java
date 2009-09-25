@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.scripting.core.DummyWeaver;
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
@@ -33,7 +34,7 @@ import java.lang.reflect.Proxy;
 /**
  * A set of proxy utils called
  * by the various subsystems
- * 
+ *
  * @author Werner Punz
  */
 public class ProxyUtils {
@@ -43,12 +44,11 @@ public class ProxyUtils {
      * to avoid too many calls into the
      * context classloading hierarchy
      * this should speed things up a little bit.
-     *
+     * <p/>
      * Note we could work with this with static
      * objects as well but since we also have to work with context
      * reloading we probably are safer with filters
      * a reference in the context and a threadLocal variable
-     * 
      */
     static ThreadLocal _weaverHolder = new ThreadLocal();
 
@@ -62,18 +62,21 @@ public class ProxyUtils {
 
     public static void setWeaver(Object weaver) {
         _weaverHolder.set(weaver);
+        if (FileChangedDaemon.getInstance().getWeavers() == null) {
+            FileChangedDaemon.getInstance().setWeavers((ScriptingWeaver) weaver);
+        }
     }
 
     public static boolean isScriptingEnabled() {
-       return _weaverHolder.get() != null;
+        return _weaverHolder.get() != null;
     }
 
     public static ScriptingWeaver getWeaver() {
         ScriptingWeaver weaver = (ScriptingWeaver) _weaverHolder.get();
-        if(weaver == null) {
+        if (weaver == null) {
             Log log = LogFactory.getLog(ProxyUtils.class);
             log.warn("Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml");
-            _weaverHolder.set(new DummyWeaver());    
+            _weaverHolder.set(new DummyWeaver());
         }
         return (ScriptingWeaver) _weaverHolder.get();
     }
@@ -82,12 +85,12 @@ public class ProxyUtils {
      * we create a proxy to an existing object
      * which does reloading of the internal class
      * on method level
-     *
+     * <p/>
      * this works only on classes which implement contractual interfaces
      * it cannot work on things like the navigation handler
      * which rely on base classes
-     * 
-     * @param o the source object to be proxied
+     *
+     * @param o            the source object to be proxied
      * @param theInterface the proxying interface
      * @return a proxied reloading object of type theInterface
      */
@@ -115,7 +118,7 @@ public class ProxyUtils {
 
     /**
      * unmapping of a proxied object
-     * 
+     *
      * @param o the proxied object
      * @return the unproxied object
      */
@@ -133,9 +136,7 @@ public class ProxyUtils {
 
 
     public static boolean isDynamic(Class clazz) {
-       return getWeaver().isDynamic(clazz);
+        return getWeaver().isDynamic(clazz);
     }
-
-
 
 }

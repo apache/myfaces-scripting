@@ -21,6 +21,7 @@ package org.apache.myfaces.scripting.refresh;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.io.File;
 import java.util.Collections;
@@ -51,6 +52,8 @@ public class FileChangedDaemon extends Thread {
     Map<String, ReloadingMetadata> classMap = Collections.synchronizedMap(new HashMap<String, ReloadingMetadata>());
     boolean running = false;
     Log log = LogFactory.getLog(FileChangedDaemon.class);
+    ScriptingWeaver _weavers = null;
+
 
 
     public static synchronized FileChangedDaemon getInstance() {
@@ -111,5 +114,12 @@ public class FileChangedDaemon extends Thread {
         this.classMap = classMap;
     }
 
+    public ScriptingWeaver getWeavers() {
+        return _weavers;
+    }
+
+    public void setWeavers(ScriptingWeaver weavers) {
+        _weavers = weavers;
+    }
 }
 

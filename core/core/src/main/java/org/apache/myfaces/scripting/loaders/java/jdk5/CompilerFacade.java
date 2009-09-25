@@ -83,6 +83,10 @@ public class CompilerFacade implements DynamicCompiler {
         return null;
     }
 
+    public void compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+        //TODO implement this
+    }
+
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
             log.error(error.getLineNumber()+"-"+error.getMessage());

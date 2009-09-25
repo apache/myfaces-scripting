@@ -1,0 +1,47 @@
+Managed property reloading
+
+Problem, managed beans only reload currently at their own level.
+They should reload the entire dependency graph wherever needed.
+
+We face two problems first we can have deep dependency graphs
+Secondly multiple beans can reference the same bean and also
+can have long running scopes.
+
+We cannot for now solve all problems related to dependency graph reloading
+but we can solve most.
+
+First deep graphs.
+
+The copy properties has to be extende, first we have to walk through the entire dependency
+graph and in case of managed properties we have to reload the instances in case
+of having a manged property. (Simply fetch the bean instead of
+simply copying the old one)
+
+Long running beans, this is not really possible to resolve for now because
+we do not have back references to the old beans, programmers
+must use either a manual load for long running beans referencing others, or simply
+live with it.
+
+
+We probably in the long run can introduce a scoped proxy doing it, but then
+we have to work over interfaces again, which is contra productive.
+
+Solution for now we probably have to allow a scoped proxy system within jsf
+not sure how to solve this fully yet.
+
+
+We have to deal in two stages with the problem
+
+first make a forward referencing reloading mechanism for the current state
+secondly deal with parents as soon as we can determine them by
+simply touching the corresponding parent source files, or make a full graph and then even mark
+the precompiled parents as cascadable
+
+
+
+
+
+
+
+
+

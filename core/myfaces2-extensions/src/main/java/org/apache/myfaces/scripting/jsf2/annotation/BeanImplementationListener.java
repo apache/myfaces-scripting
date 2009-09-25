@@ -24,6 +24,7 @@ import com.thoughtworks.qdox.model.JavaField;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 import javax.faces.bean.*;
 import java.lang.reflect.Field;
@@ -40,20 +41,22 @@ import java.util.Map;
  */
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
-    private static final String SCOPE_SESSION = "session";
-    private static final String SCOPE_APPLICATION = "application";
-    private static final String SCOPE_VIEW = "view";
-    private static final String SCOPE_NONE = "none";
-    private static final String SCOPE_CUSTOM = "custom";
+
+    private static final String SCOPE_SESSION       = "session";
+    private static final String SCOPE_APPLICATION   = "application";
+    private static final String SCOPE_VIEW          = "view";
+    private static final String SCOPE_NONE          = "none";
+    private static final String SCOPE_CUSTOM        = "custom";
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
     }
 
+    public void register(Class clazz, java.lang.annotation.Annotation ann) {
+        String annotationName = ann.getClass().getName();
 
-    public void register(Class clazz, String annotationName, Map<String, Object> params) {
         RuntimeConfig config = getRuntimeConfig();
-        String beanName = (String) params.get("name");
+        String beanName = (String) ReflectUtil.executeMethod(ann, "getName");
         beanName = beanName.replaceAll("\"", "");
         if (!hasToReregister(beanName, clazz)) {
             return;
@@ -67,6 +70,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
 
         _alreadyRegistered.put(beanName, mbean);
         config.addManagedBean(beanName, mbean);
+
     }
 
     private void resolveScope(Class clazz, ManagedBean mbean) {
@@ -85,7 +89,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         }
         mbean.setScope(scope);
     }
-
 
     /**
      * reregistration strategy:
@@ -152,7 +155,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         }
     }
 
-
     private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
         for (Field field : fields) {
             if (log.isTraceEnabled()) {
@@ -180,7 +182,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             }
         }
     }
-
 
     private void handleManagedproperties(ManagedBean mbean, JavaField[] fields) {
         for (JavaField field : fields) {
@@ -210,7 +211,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             }
         }
     }
-
 
     /**
      * <p>Return an array of all <code>Field</code>s reflecting declared
