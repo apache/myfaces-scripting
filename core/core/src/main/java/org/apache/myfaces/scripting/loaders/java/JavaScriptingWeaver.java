@@ -60,7 +60,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         //init classpath removed we can resolve that over the
         //url classloader at the time myfaces is initialized
         try {
-            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.JavaSourceAnnotationScanner");
+            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.JavaAnnotationScanner");
             this._scanner = (AnnotationScanner) scanner.newInstance();
 
         } catch (IllegalAccessException e) {
