@@ -39,6 +39,64 @@ the precompiled parents as cascadable
 
 
 
+Annotation scanning and recompilation in an language independend manner
+
+Currently:
+We do currently source scanning for annotations this can only work in java
+and only works in a limited manner in java
+
+Goal:
+Annotatons should be processed on the fly and new ones automatically picked up
+and altered ones being reprocessed.
+
+Existing facilities, the class tracker which keeps track of already loaded
+classes.
+The MyFaces configuration object which keeps the data for the beans etc...
+
+Following way should be provided. If an object loading or reinitialisation
+runs into a class not found situation or resource not declared situation,
+track down the sources which are not processed yet and do a compilation of them
+then process the annotation and try to reload the class for further
+processing.
+
+
+Following interception points have to be triggered.
+
+A the scripting weaver has to trigger the tracking code if a class cannot
+be found.
+Upon initial loading for beans etc... in the proxies if a null value
+is given back we have to trigger the scanner and recompiler on this level as well.
+
+Extension to the tracker to deal with removed or renamed files.
+The tracker upon running has to track if the file still exists and if not
+has to remove the file from its list.
+
+Also we have to remove the facilities from the configuration in this case!
+PENDING removal:
+
+
+Following has to be done for now:
+a) provide the annotation scanning upon class loading every time a class
+is loaded via our facilities we have to rescan the annotations
+this can keep track of changes in the managed properties
+
+b) if a class cannot be found on loader level we have to compile all source files of the requested type
+currently not found in the tracker and then try to load it again and reparse it
+if the class still cannot be found we can fall back into the old class not found code
+(probably can be automatable via javac due to its nature of wildcarding)
+
+if a facility under a certain id cannot be found we have to do a recompile of all facilities
+and then do a full reregistration scan of all annotations (note we also should keep
+track of the annotation states so that we can unregister deleted ones )
+
+
+
+
+
+
+
+
+
 
 
 

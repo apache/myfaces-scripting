@@ -64,4 +64,16 @@ public class BaseAnnotationScanListener {
         Class val = (Class) propVal.getParameterValue();
         return val;
     }
+
+
+    /**
+     * unregisters this class in the central registry
+     * is triggered if the class itself has been registered previously
+     *
+     * @param className
+     * @return
+     */
+    public void purge(String className) {
+
+    }
 }

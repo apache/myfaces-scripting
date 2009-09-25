@@ -22,6 +22,7 @@ import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import org.apache.myfaces.config.RuntimeConfig;
+import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
@@ -30,6 +31,8 @@ import javax.faces.bean.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -42,11 +45,12 @@ import java.util.Map;
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
 
-    private static final String SCOPE_SESSION       = "session";
-    private static final String SCOPE_APPLICATION   = "application";
-    private static final String SCOPE_VIEW          = "view";
-    private static final String SCOPE_NONE          = "none";
-    private static final String SCOPE_CUSTOM        = "custom";
+    private static final String SCOPE_SESSION = "session";
+    private static final String SCOPE_APPLICATION = "application";
+    private static final String SCOPE_VIEW = "view";
+    private static final String SCOPE_NONE = "none";
+    private static final String SCOPE_CUSTOM = "custom";
+
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
@@ -276,5 +280,34 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
     protected boolean hasToReregister(String name, JavaClass clazz) {
         ManagedBean mbean = (ManagedBean) _alreadyRegistered.get(name);
         return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getFullyQualifiedName());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void purge(String className) {
+        RuntimeConfig config = getRuntimeConfig();
+        //We have to purge and readd our managed beans, unfortunatly the myfaces impl enforces
+        //us to do the same for the nav rules after purge
+        //we cannot purge the managed beans and nav rules separately
+        Collection<NavigationRule> navigationRules = new ArrayList<NavigationRule>();
+        Map<String, org.apache.myfaces.config.element.ManagedBean> managedBeans = new HashMap<String, org.apache.myfaces.config.element.ManagedBean>();
+
+        navigationRules.addAll(config.getNavigationRules());
+        managedBeans.putAll(config.getManagedBeans());
+
+        config.purge();
+
+        for (NavigationRule navRule : navigationRules) {
+            config.addNavigationRule(navRule);
+        }
+
+        //We refresh the managed beans, dead references still can cause
+        //runtime errors but in this case we cannot do anything
+        for (Map.Entry mbean : managedBeans.entrySet()) {
+            org.apache.myfaces.config.element.ManagedBean bean = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();
+            if (!bean.getClass().getName().equals(className)) {
+                config.addManagedBean((String) mbean.getKey(), (org.apache.myfaces.config.element.ManagedBean) mbean.getValue());
+            }
+        }
+
     }
 }

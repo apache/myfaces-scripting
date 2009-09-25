@@ -143,7 +143,19 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
         }
 
-        
+        /**
+         * we now scan the return value and update its configuration parameters if needed
+         * this can help to deal with method level changes of class files like managed properties
+         * or scope changes from shorter running scopes to longer running ones
+         * if the annotation has been moved the class will be deregistered but still delivered for now
+         *
+         * at the next refresh the second step of the registration cycle should pick the new class up
+         * //TODO we have to mark the artefacting class as deregistered and then enforce
+         * //a reload this is however not the scope of the commit of this subtask
+         * //we only deal with class level reloading here
+         * //the deregistration notification should happen on artefact level (which will be the next subtask)
+         */
+        _scanner.scanClass(retVal);
 
         return retVal;
     }

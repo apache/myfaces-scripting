@@ -24,9 +24,7 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -50,6 +48,9 @@ public class FileChangedDaemon extends Thread {
     //should replace the map with something segmented, probably
     //a balanced tree of depth 2
     Map<String, ReloadingMetadata> classMap = Collections.synchronizedMap(new HashMap<String, ReloadingMetadata>());
+    
+
+
     boolean running = false;
     Log log = LogFactory.getLog(FileChangedDaemon.class);
     ScriptingWeaver _weavers = null;

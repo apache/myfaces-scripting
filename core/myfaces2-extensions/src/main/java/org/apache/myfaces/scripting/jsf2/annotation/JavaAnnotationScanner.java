@@ -24,11 +24,12 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.AnnotationScanner;
-import org.vafer.dependency.Clazz;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -44,6 +45,8 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
 
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
     JavaDocBuilder _builder = new JavaDocBuilder();
+    Map<String, String> _registeredAnnotations = new HashMap<String, String>();
+
 
     public JavaAnnotationScanner() {
         initDefaultListeners();
@@ -63,14 +66,13 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     }
 
     public void scanClass(Class clazz) {
-        java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
-        for (java.lang.annotation.Annotation ann : anns) {
+        //java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
 
-            for (AnnotationScanListener listener : _listeners) {
-                if (listener.supportsAnnotation(ann.getClass().getName())) {
-                    listener.register(clazz, ann);
-                }
-            }
+        java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+        if (anns != null || anns.length > 0) {
+            addOrMoveAnnotations(clazz);
+        } else {
+            removeAnnotations(clazz);
         }
     }
 
@@ -100,18 +102,127 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
             JavaClass[] classes = source.getClasses();
             for (JavaClass clazz : classes) {
                 Annotation[] anns = clazz.getAnnotations();
-                for (Annotation ann : anns) {
+                if (anns != null || anns.length > 0) {
+                    addOrMoveAnnotations(clazz, anns);
+                } else {
+                    removeAnnotations(clazz);
+                }
+            }
 
-                    for (AnnotationScanListener listener : _listeners) {
-                        if (listener.supportsAnnotation(ann.getType().getValue())) {
-                            listener.registerSource(
-                                    clazz, ann.getType().getValue(), ann.getPropertyMap());
-                        }
-                    }
+        }
+    }
+
+    /**
+     * add or moves a class level annotation
+     * to a new place
+     *
+     * @param clazz
+     * @param anns
+     */
+    private void addOrMoveAnnotations(JavaClass clazz, Annotation[] anns) {
+        for (Annotation ann : anns) {
+            for (AnnotationScanListener listener : _listeners) {
+                if (listener.supportsAnnotation(ann.getType().getValue())) {
+                    listener.registerSource(
+                            clazz, ann.getType().getValue(), ann.getPropertyMap());
+
+                    _registeredAnnotations.put(clazz.getFullyQualifiedName(), ann.getType().getValue());
+                } else {
+                    annotationMoved(clazz, ann, listener);
+
                 }
             }
         }
     }
+
+    /**
+     * add or moves a class level annotation
+     * to a new place
+     *
+     * @param clazz
+     */
+    private void addOrMoveAnnotations(Class clazz) {
+        java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+        for (java.lang.annotation.Annotation ann : anns) {
+            for (AnnotationScanListener listener : _listeners) {
+                if (listener.supportsAnnotation(ann.getClass().getName())) {
+                    listener.register(clazz, ann);
+
+                    _registeredAnnotations.put(clazz.getName(), ann.getClass().getName());
+                } else {
+                    annotationMoved(clazz, ann, listener);
+
+                }
+            }
+        }
+    }
+
+    /**
+     * use case annotation removed
+     * we have to entirely remove the annotation
+     * from our internal registry and the myfaces registry
+     *
+     * @param clazz
+     */
+    private void removeAnnotations(JavaClass clazz) {
+        String registeredAnnotation = _registeredAnnotations.get(clazz.getFullyQualifiedName());
+        if (registeredAnnotation != null) {
+            for (AnnotationScanListener listener : _listeners) {
+                if (listener.supportsAnnotation(registeredAnnotation)) {
+                    listener.purge(clazz.getFullyQualifiedName());
+                    _registeredAnnotations.remove(clazz.getFullyQualifiedName());
+
+                }
+            }
+        }
+    }
+
+    /**
+     * use case annotation removed
+     * we have to entirely remove the annotation
+     * from our internal registry and the myfaces registry
+     *
+     * @param clazz
+     */
+    private void removeAnnotations(Class clazz) {
+        String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
+        if (registeredAnnotation != null) {
+            for (AnnotationScanListener listener : _listeners) {
+                if (listener.supportsAnnotation(registeredAnnotation)) {
+                    listener.purge(clazz.getName());
+                    _registeredAnnotations.remove(clazz.getName());
+
+                }
+            }
+        }
+    }
+
+
+    /**
+     * use case annotation moved
+     * we have to remove the annotation from the myfaces registry of the old
+     * listeners place, the new entry is done in the first step add or move
+     *
+     * @param clazz
+     * @param ann
+     * @param listener
+     */
+    private void annotationMoved(JavaClass clazz, Annotation ann, AnnotationScanListener listener) {
+        //case class exists but it has been moved to anoter annotation
+        String registeredAnnotation = _registeredAnnotations.get(clazz.getFullyQualifiedName());
+        if (registeredAnnotation != null && registeredAnnotation.equals(ann.getType().getValue())) {
+            listener.purge(clazz.getFullyQualifiedName());
+        }
+    }
+
+    private void annotationMoved(Class clazz, java.lang.annotation.Annotation ann, AnnotationScanListener listener) {
+        //case class exists but it has been moved to anoter annotation
+        String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
+        if (registeredAnnotation != null && registeredAnnotation.equals(ann.getClass().getName())) {
+            listener.purge(clazz.getName());
+        }
+    }
+
 
     public void clearListeners() {
         _listeners.clear();

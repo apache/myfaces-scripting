@@ -32,10 +32,37 @@ import java.lang.annotation.Annotation;
 
 public interface AnnotationScanListener {
 
+    /**
+     * returns true if the annotation marked by the incoming parameter is supported by this scanner
+     *
+     * @param annotation the supported annotation as neutral string representation of its class
+     * @return in case of support
+     */
     public boolean supportsAnnotation(String annotation);
 
+    /**
+     * registers the class within the myfaces runtime system
+     * within a neutral source representation of this class
+     *
+     * @param clazz          the class as neutral definition (currently qdox JavaClass only)
+     * @param annotationName the annotation name
+     * @param params         a map of annotation params
+     */
     public void registerSource(Object clazz, String annotationName, Map<String, Object> params);
 
+    /**
+     * class file registration of the supported annotation
+     *
+     * @param clazz
+     * @param annotationName
+     */
     public void register(Class clazz, Annotation annotationName);
 
+    /**
+     * purges the class from the correct places of the myfaces registry
+     * so that the artefact is not reachable anymore
+     *
+     * @param className
+     */
+    public void purge(String className);
 }
