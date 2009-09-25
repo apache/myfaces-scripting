@@ -22,6 +22,7 @@ package org.apache.myfaces.scripting.core;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -34,16 +35,14 @@ import java.lang.reflect.Method;
  * all interfacable artefacts which
  * only have reloading logic
  * and can cope with reloading on method level
- *
+ * <p/>
  * Note this works only for a minority of the artefacts
  * the reason, most artefacts do not rely on interfaces but
  * on base classes
  *
  * @author Werner Punz
  */
-public class MethodLevelReloadingHandler implements InvocationHandler, Serializable, Decorated {
-    Class _loadedClass = null;
-    transient Object _delegate = null;
+public class MethodLevelReloadingHandler extends ReloadingInvocationHandler implements  Serializable {
     ScriptingWeaver _weaver = null;
 
     public MethodLevelReloadingHandler(Object rootObject) {
@@ -51,18 +50,6 @@ public class MethodLevelReloadingHandler implements InvocationHandler, Serializa
         _delegate = rootObject;
     }
 
-
-    public Object getDelegate() {
-        return _delegate;
-    }
-
-    public Class getLoadedClass() {
-        return _loadedClass;
-    }
-
-    public void setLoadedClassName(Class loadedClass) {
-        this._loadedClass = loadedClass;
-    }
 
     /**
      * outside interface to the invoke method
@@ -102,6 +89,10 @@ public class MethodLevelReloadingHandler implements InvocationHandler, Serializa
         } else {
             //if we are stateful only a tainted artefact is reloaded
             _delegate = _weaver.reloadScriptingInstance(_delegate);
+
+            //we work our way through all proxies and fetch the class for further reference
+            Object delegate = ProxyUtils.getDelegateFromProxy(_delegate);
+            _loadedClass = delegate.getClass();
         }
         //check for proxies and unproxy them before calling the methods
         //to avoid unneccessary cast problems

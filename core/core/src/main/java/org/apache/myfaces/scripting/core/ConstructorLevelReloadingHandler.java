@@ -39,21 +39,10 @@ import java.lang.reflect.Method;
  * @Deprecated not used anymore since we have to do most
  * of our object instantiation brute force we cannot use proxies here
  */
-public class ConstructorLevelReloadingHandler implements InvocationHandler, Serializable, Decorated {
+public class ConstructorLevelReloadingHandler extends ReloadingInvocationHandler implements Serializable, Decorated {
 
-    Class _loadedClass = null;
     ScriptingWeaver _weaver = null;
-
-
-    public Object getDelegate() {
-        return _delegate;
-    }
-
-    transient Object _delegate = null;
-
-    public Class getLoadedClass() {
-        return _loadedClass;
-    }
+ 
 
     public void setLoadedClass(Class loadedClass) {
         _loadedClass = loadedClass;

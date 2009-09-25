@@ -50,13 +50,11 @@ public class ReflectUtilTest {
         try {
             executeMethod(probe, "testMethod3");
         } catch (RuntimeException e) {
-
         }
 
         try {
             executeMethod(probe, "testMethod3", 10);
         } catch (RuntimeException e) {
-
         }
 
         boolean retVal = (Boolean) executeMethod(probe, "testMethod3", "hello world");
