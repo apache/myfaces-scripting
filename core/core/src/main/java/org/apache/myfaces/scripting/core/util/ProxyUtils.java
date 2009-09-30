@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.api.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.scripting.core.DummyWeaver;
+import org.apache.myfaces.scripting.core.scanEvents.SystemEventProcessor;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -52,12 +53,28 @@ public class ProxyUtils {
      */
     static ThreadLocal _weaverHolder = new ThreadLocal();
 
+    static ThreadLocal _eventProcessorHolder = new ThreadLocal();
+
+
     public static void init() {
 
     }
 
     public static void clean() {
         _weaverHolder.set(null);
+    }
+
+
+    /**
+     * @return returns the thread bound system event processor
+     */
+    public static SystemEventProcessor getEventProcessor() {
+        SystemEventProcessor retVal = (SystemEventProcessor) _eventProcessorHolder.get();
+        if (retVal == null) {
+            retVal = new SystemEventProcessor();
+            _eventProcessorHolder.set(retVal);
+        }
+        return retVal;
     }
 
     public static void setWeaver(Object weaver) {

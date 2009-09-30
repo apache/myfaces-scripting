@@ -24,12 +24,15 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.AnnotationScanner;
+import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+
+import org.apache.myfaces.scripting.core.scanEvents.events.AnnotatedArtefactRemovedEvent;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -149,6 +152,8 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                     listener.register(clazz, ann);
 
                     _registeredAnnotations.put(clazz.getName(), ann.getClass().getName());
+
+
                 } else {
                     annotationMoved(clazz, ann, listener);
 
@@ -171,7 +176,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                 if (listener.supportsAnnotation(registeredAnnotation)) {
                     listener.purge(clazz.getFullyQualifiedName());
                     _registeredAnnotations.remove(clazz.getFullyQualifiedName());
-
+                    ProxyUtils.getEventProcessor().dispatchEvent(new AnnotatedArtefactRemovedEvent(clazz.getFullyQualifiedName()));
                 }
             }
         }
@@ -191,7 +196,6 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                 if (listener.supportsAnnotation(registeredAnnotation)) {
                     listener.purge(clazz.getName());
                     _registeredAnnotations.remove(clazz.getName());
-
                 }
             }
         }
