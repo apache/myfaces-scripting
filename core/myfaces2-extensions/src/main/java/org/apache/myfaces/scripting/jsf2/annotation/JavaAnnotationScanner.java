@@ -27,6 +27,7 @@ import org.apache.myfaces.scripting.api.AnnotationScanner;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import org.apache.myfaces.scripting.core.scanEvents.events.AnnotatedArtefactRemovedEvent;
@@ -48,7 +49,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
     JavaDocBuilder _builder = new JavaDocBuilder();
     Map<String, String> _registeredAnnotations = new HashMap<String, String>();
-
+    LinkedList<String> _sourcePaths = new LinkedList<String>();
 
     public JavaAnnotationScanner() {
         initDefaultListeners();
@@ -56,15 +57,14 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
 
     public JavaAnnotationScanner(String... sourcePaths) {
 
-        initSourcePaths(sourcePaths);
+        for (String source : sourcePaths) {
+            _sourcePaths.addFirst(source);
+        }
         initDefaultListeners();
     }
 
     public void addScanPath(String sourcePath) {
-        File sourcePathFile = new File(sourcePath);
-        if (sourcePathFile.exists()) {
-            _builder.addSourceTree(sourcePathFile);
-        }
+        _sourcePaths.addFirst(sourcePath);
     }
 
     Collection<Annotation> filterAnnotations(Annotation[] anns) {
@@ -107,9 +107,15 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     }
 
 
-    private void initSourcePaths(String... sourcePaths) {
-        for (String sourcePath : sourcePaths) {
-            addScanPath(sourcePath);
+    private void initSourcePaths() {
+        _builder = new JavaDocBuilder();
+        for (String sourcePath : _sourcePaths) {
+            File source = new File(sourcePath);
+            if(source.exists() ) {
+
+                    _builder.addSourceTree(source);
+
+            }
         }
     }
 
@@ -127,12 +133,13 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
      * on the found data
      */
     public void scanPaths() {
+        initSourcePaths();
         JavaSource[] sources = _builder.getSources();
         for (JavaSource source : sources) {
             JavaClass[] classes = source.getClasses();
             for (JavaClass clazz : classes) {
                 Annotation[] anns = clazz.getAnnotations();
-                if (anns != null || anns.length > 0) {
+                if (anns != null && anns.length > 0) {
                     addOrMoveAnnotations(clazz, anns);
                 } else {
                     removeAnnotations(clazz);
@@ -185,7 +192,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                     if (metaData != null) {
                         metaData.setAnnotated(true);
                     }
-                } 
+                }
             }
         }
     }

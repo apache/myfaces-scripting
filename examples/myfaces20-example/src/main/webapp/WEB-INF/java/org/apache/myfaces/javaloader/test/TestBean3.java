@@ -5,16 +5,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
-
-
-
-public class TestBean2 {
+@ManagedBean (name="javatestbean")
+@SessionScoped
+public class TestBean3 {
     String sayHello = "hello worldgggg";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
- 
+
     public String getSayHello() {
-        return "Java dynamic  bean - "+TestClass2.hello2 + hello3;
+        return "Java dynamic  bean Testbean3 bla bla bla - "+TestClass2.hello2 + hello3;
     }
 
     public String getSayHello2() {
@@ -28,5 +27,5 @@ public class TestBean2 {
     }
 
 
- 
+
 }

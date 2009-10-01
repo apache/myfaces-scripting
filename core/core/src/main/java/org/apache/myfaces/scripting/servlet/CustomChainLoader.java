@@ -79,8 +79,10 @@ public class CustomChainLoader extends ClassLoaderExtension {
 
         additionalLoaderPaths = servletContext.getInitParameter(initParams);
         appendAdditionalPaths(additionalLoaderPaths, weaver);
-        weaver.appendCustomScriptPath(scriptingRoot);
-        weaver.appendCustomScriptPath(classRoot);
+        if(additionalLoaderPaths == null || additionalLoaderPaths.trim().equals("")) {
+            weaver.appendCustomScriptPath(scriptingRoot);
+            weaver.appendCustomScriptPath(classRoot);
+        }    
     }
 
     private void appendAdditionalPaths(String additionalLoaderPaths, ScriptingWeaver workWeaver) {

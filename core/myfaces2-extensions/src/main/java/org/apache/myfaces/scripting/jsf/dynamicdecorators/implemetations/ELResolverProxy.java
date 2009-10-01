@@ -26,6 +26,8 @@ import javax.el.ELException;
 import javax.el.ELResolver;
 import javax.el.PropertyNotFoundException;
 import javax.el.PropertyNotWritableException;
+import javax.faces.context.FacesContext;
+import javax.faces.bean.ManagedBean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +37,7 @@ import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
 import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
 import org.apache.myfaces.scripting.core.scanEvents.events.BeanRemovedEvent;
+import org.apache.myfaces.config.RuntimeConfig;
 
 /**
  * EL Resolver which is scripting enabled
@@ -46,74 +49,61 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     Log log = LogFactory.getLog(ELResolverProxy.class);
     ELResolver _delegate = null;
 
-    StackingBeanEventListener _listenerStack = new StackingBeanEventListener();
-
-    private void registerListenerStack() {
-        if (!ProxyUtils.getEventProcessor().hasListener(_listenerStack)) {
-            ProxyUtils.getEventProcessor().addListener(_listenerStack);
-        }
-    }
-
+    static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
 
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
+
         Object retVal = _delegate.getValue(elContext, base, property);
         Object newRetVal = null;
+
         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-
-            //We have to register one listener per el instance
-            //because we have to deal with nesting of
-            //el locading caused by beans referencing other beans
-            //via inversion of object control
-
-            //onfurtunately this flow is somewhat strange because
-            //we shift logic into dynamically registered events
-            //but the event system is the only means of communication
-            //attached modules have to the core
-
-            //the flow is this -> try to load bean bean loading failes because
-            //annotation has moved -> this is notified about it ->
-            //we have to do a full recompile
-            //retry to load but this time without our referencing listener
-            registerListenerStack();
-            BeanEventListener eventListener = new BeanEventListener();
-            _listenerStack.pushListener(eventListener);
-            try {
-                //We register for annotation scanning events
-
-                newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
+            newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
-                fullRecompileReload(eventListener);
-            } finally {
-                _listenerStack.popListener();
-            }
 
             if (newRetVal != retVal) {
                 _delegate.setValue(elContext, base, property, newRetVal);
             }
 
+            //in case we have an annotation change we have to deal with it differently
+            newRetVal = reloadAnnotatedBean(elContext, base, property, newRetVal);
+
             return newRetVal;
-            //reinstantiated.put(retVal.getClass().getName(), retVal.getClass());
+        } else if (retVal == null) {
+            retVal = reloadAnnotatedBean(elContext, base, property, null);
         }
 
         return retVal;
-
     }
 
+    private Object reloadAnnotatedBean(ELContext elContext, Object base, Object property, Object newRetVal) {
+        //Avoid recursive calls into ourselfs here
 
-    private void fullRecompileReload(BeanEventListener eventListener) {
-        if (eventListener.getBeanEventIssued().size() > 0) {
-            //last was the first event issued
-            SystemEvent beanEvent = eventListener.getBeanEventIssued().removeLast();
-            eventListener.getBeanEventIssued().clear();
-            if (beanEvent instanceof BeanRemovedEvent) {
+        try {
+            if (_getValue.get() != null && _getValue.get().equals(Boolean.TRUE)) {
+                return newRetVal;
+            }
+            _getValue.set(Boolean.TRUE);
+            if (base == null) {
+                final FacesContext facesContext = FacesContext.getCurrentInstance();
+                RuntimeConfig config = RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
+                Map<String, org.apache.myfaces.config.element.ManagedBean> mbeans = config.getManagedBeans();
+                if (!mbeans.containsKey(property.toString())) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("ElResolverProxy.getValue bean removed we have to issue a recompile and then try to load the bean anew");
+                    }
+                    _delegate.setValue(elContext, base, property, null);
 
-                if (log.isDebugEnabled()) {
-                    log.debug("ElResolverProxy.getValue bean removed we have to issue a recompile and then try to load the bean anew");
-
+                    //we only trigger this if the bean was deregistered, we now can reregister it again
+                    ProxyUtils.getWeaver().fullAnnotationScan();
+                    newRetVal = _delegate.getValue(elContext, base, property);
                 }
             }
+        } finally {
+            _getValue.set(Boolean.FALSE);
         }
+        return newRetVal;
     }
+
 
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);

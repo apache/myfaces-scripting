@@ -78,8 +78,9 @@ public class ApplicationProxy extends Application implements Decorated {
     public ELResolver getELResolver() {
         weaveDelegate();
         ELResolver retVal = _delegate.getELResolver();
-        if (!(retVal instanceof ELResolverProxy))
+        if (!(retVal instanceof ELResolverProxy)) {
             retVal = new ELResolverProxy(retVal);
+        }    
         return retVal;
 
     }

@@ -34,10 +34,7 @@ import org.apache.myfaces.scripting.core.scanEvents.events.ManagedPropertyRemove
 
 import javax.faces.bean.*;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collection;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -115,7 +112,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         JavaClass clazz = (JavaClass) sourceClass;
 
         RuntimeConfig config = getRuntimeConfig();
-
+        //TODO has to register still needed we have it in the runtime config anyway?
         String beanName = getAnnotatedStringParam(params, "name");
         if (!hasToReregister(beanName, clazz)) {
             return;
@@ -314,6 +311,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         //We refresh the managed beans, dead references still can cause
         //runtime errors but in this case we cannot do anything
         org.apache.myfaces.config.element.ManagedBean mbeanFound = null;
+        List<String> mbeanKey = new LinkedList<String>();
 
         for (Map.Entry mbean : managedBeans.entrySet()) {
             org.apache.myfaces.config.element.ManagedBean bean = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();
@@ -321,6 +319,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 config.addManagedBean((String) mbean.getKey(), (org.apache.myfaces.config.element.ManagedBean) mbean.getValue());
             } else {
                 mbeanFound = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();
+                mbeanKey.add(mbeanFound.getManagedBeanName());
             }
         }
         if (mbeanFound != null) {
@@ -332,6 +331,10 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 ProxyUtils.getEventProcessor().dispatchEvent(new BeanRemovedEvent(className, mbeanToDispatch.getManagedBeanName()));
 
             }
+            for(String toRemove: mbeanKey) {
+                _alreadyRegistered.remove(toRemove);
+            }
         }
+
     }
 }
