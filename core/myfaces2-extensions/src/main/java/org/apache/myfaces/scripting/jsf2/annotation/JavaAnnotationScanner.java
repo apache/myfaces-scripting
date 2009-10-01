@@ -27,12 +27,11 @@ import org.apache.myfaces.scripting.api.AnnotationScanner;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.myfaces.scripting.core.scanEvents.events.AnnotatedArtefactRemovedEvent;
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -68,11 +67,39 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
         }
     }
 
+    Collection<Annotation> filterAnnotations(Annotation[] anns) {
+        List<Annotation> retVal = new ArrayList<Annotation>(anns.length);
+        if (anns == null) {
+            return retVal;
+        }
+        for (Annotation ann : anns) {
+            if (ann.getType().getValue().startsWith("javax.faces")) {
+                retVal.add(ann);
+            }
+        }
+        return retVal;
+    }
+
+    Collection<java.lang.annotation.Annotation> filterAnnotations(java.lang.annotation.Annotation[] anns) {
+        List<java.lang.annotation.Annotation> retVal = new ArrayList<java.lang.annotation.Annotation>(anns.length);
+        if (anns == null) {
+            return retVal;
+        }
+        for (java.lang.annotation.Annotation ann : anns) {
+            if (ann.annotationType().getName().startsWith("javax.faces")) {
+                retVal.add(ann);
+            }
+
+        }
+        return retVal;
+    }
+
     public void scanClass(Class clazz) {
         //java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
 
         java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
-        if (anns != null || anns.length > 0) {
+        Collection<java.lang.annotation.Annotation> annCol = filterAnnotations(anns);
+        if (!annCol.isEmpty()) {
             addOrMoveAnnotations(clazz);
         } else {
             removeAnnotations(clazz);
@@ -130,9 +157,10 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                             clazz, ann.getType().getValue(), ann.getPropertyMap());
 
                     _registeredAnnotations.put(clazz.getFullyQualifiedName(), ann.getType().getValue());
-                } else {
-                    annotationMoved(clazz, ann, listener);
-
+                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(clazz.getFullyQualifiedName());
+                    if (metaData != null) {
+                        metaData.setAnnotated(true);
+                    }
                 }
             }
         }
@@ -148,16 +176,16 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
         java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
         for (java.lang.annotation.Annotation ann : anns) {
             for (AnnotationScanListener listener : _listeners) {
-                if (listener.supportsAnnotation(ann.getClass().getName())) {
+                if (listener.supportsAnnotation(ann.annotationType().getName())) {
                     listener.register(clazz, ann);
 
-                    _registeredAnnotations.put(clazz.getName(), ann.getClass().getName());
+                    _registeredAnnotations.put(clazz.getName(), ann.annotationType().getName());
 
-
-                } else {
-                    annotationMoved(clazz, ann, listener);
-
-                }
+                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(clazz.getName());
+                    if (metaData != null) {
+                        metaData.setAnnotated(true);
+                    }
+                } 
             }
         }
     }
@@ -177,6 +205,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                     listener.purge(clazz.getFullyQualifiedName());
                     _registeredAnnotations.remove(clazz.getFullyQualifiedName());
                     ProxyUtils.getEventProcessor().dispatchEvent(new AnnotatedArtefactRemovedEvent(clazz.getFullyQualifiedName()));
+                    FileChangedDaemon.getInstance().getClassMap().remove(clazz.getFullyQualifiedName());
                 }
             }
         }
@@ -196,6 +225,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                 if (listener.supportsAnnotation(registeredAnnotation)) {
                     listener.purge(clazz.getName());
                     _registeredAnnotations.remove(clazz.getName());
+                    FileChangedDaemon.getInstance().getClassMap().remove(clazz.getName());
                 }
             }
         }
@@ -215,7 +245,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
         //case class exists but it has been moved to anoter annotation
         String registeredAnnotation = _registeredAnnotations.get(clazz.getFullyQualifiedName());
         if (registeredAnnotation != null && registeredAnnotation.equals(ann.getType().getValue())) {
-            listener.purge(clazz.getFullyQualifiedName());
+            removeAnnotations(clazz);
         }
     }
 
@@ -223,7 +253,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
         //case class exists but it has been moved to anoter annotation
         String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
         if (registeredAnnotation != null && registeredAnnotation.equals(ann.getClass().getName())) {
-            listener.purge(clazz.getName());
+            removeAnnotations(clazz);
         }
     }
 

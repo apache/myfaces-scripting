@@ -42,6 +42,10 @@ public class SystemEventProcessor {
         _listeners.add(listener);
     }
 
+    public boolean hasListener(SystemEventListener listener) {
+        return _listeners.contains(listener);
+    }
+
     public void removeListener(SystemEventListener listener) {
         _listeners.remove(listener);
     }

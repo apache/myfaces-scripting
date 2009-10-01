@@ -20,6 +20,8 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.el.ELContext;
 import javax.el.ELException;
@@ -31,13 +33,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
+import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
+import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
 
 /**
  * EL Resolver which is scripting enabled
  *
  * @author Werner Punz
  */
-public class ELResolverProxy extends ELResolver implements Decorated {
+public class ELResolverProxy extends ELResolver implements Decorated, SystemEventListener {
     Log log = LogFactory.getLog(ELResolverProxy.class);
 
 
@@ -48,7 +53,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         Object retVal = _delegate.getValue(elContext, base, property);
 
         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            
+
 
             Object newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
@@ -95,5 +100,16 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Set<Integer> supportsEvents() {
+        Set<Integer> supports = new HashSet<Integer>();
+        supports.add(BeanLoadedEvent.ARTEFACT_TYPE_MANAGEDBEAN);
+
+        return supports;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void handleEvent(SystemEvent evt) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

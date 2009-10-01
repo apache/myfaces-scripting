@@ -65,7 +65,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         String annotationName = ann.getClass().getName();
 
         RuntimeConfig config = getRuntimeConfig();
-        String beanName = (String) ReflectUtil.executeMethod(ann, "getName");
+        String beanName = (String) ReflectUtil.executeMethod(ann.annotationType(), "getName");
         beanName = beanName.replaceAll("\"", "");
         if (!hasToReregister(beanName, clazz)) {
             return;
@@ -317,7 +317,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
 
         for (Map.Entry mbean : managedBeans.entrySet()) {
             org.apache.myfaces.config.element.ManagedBean bean = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();
-            if (!bean.getClass().getName().equals(className)) {
+            if (!bean.getManagedBeanClass().getName().equals(className)) {
                 config.addManagedBean((String) mbean.getKey(), (org.apache.myfaces.config.element.ManagedBean) mbean.getValue());
             } else {
                 mbeanFound = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();

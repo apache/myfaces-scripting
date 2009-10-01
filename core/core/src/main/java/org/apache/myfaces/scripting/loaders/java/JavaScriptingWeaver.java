@@ -27,10 +27,12 @@ import org.apache.myfaces.scripting.core.util.ClassUtils;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
+import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author werpu
@@ -49,6 +51,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
 
     AnnotationScanner _scanner = null;
+
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -187,6 +190,40 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             return;
         }
         _scanner.scanPaths();
+    }
+
+    public void fullRecompile() {
+        if (isFullyRecompiled()) {
+            return;
+        }
+
+        DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
+        for (String scriptPath : getScriptPaths()) {
+            //compile via javac dynamically, also after this block dynamic compilation
+            //for the entire length of the request,
+
+        }
+
+        markAsFullyRecompiled();
+    }
+
+    private void markAsFullyRecompiled() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context != null) {
+            //mark the request as tainted with recompile
+            if (context != null) {
+                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+                requestMap.put(JavaScriptingWeaver.class.getName() + "_recompiled", Boolean.TRUE);
+            }
+        }
+    }
+
+    private boolean isFullyRecompiled() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context != null) {
+            return context.getExternalContext().getRequestMap().containsKey(JavaScriptingWeaver.class.getName() + "_recompiled");
+        }
+        return false;
     }
 
 }

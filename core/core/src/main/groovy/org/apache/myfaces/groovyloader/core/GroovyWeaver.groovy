@@ -153,4 +153,8 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         return identifier.isDynamic(clazz)
     }
 
+    public void fullRecompile() {
+        //TODO implement this
+    }
+
 }

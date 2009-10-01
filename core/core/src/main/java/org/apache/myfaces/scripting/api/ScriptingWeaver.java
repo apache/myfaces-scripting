@@ -26,17 +26,18 @@ package org.apache.myfaces.scripting.api;
  * this class is a weaver which allows to trigger
  * the scripting layer in various situations
  * of the JSF interception points
- *
+ * <p/>
  * The scripting weaver replaces the classloader for those instances
  * because custom classloaders are inherently problematic in web containers
  */
-public interface ScriptingWeaver  {
+public interface ScriptingWeaver {
 
-  /**
+    /**
      * appends a custom script search path to the original one
-      * @param scriptPaths
+     *
+     * @param scriptPaths
      */
-   public void appendCustomScriptPath(String  scriptPaths); 
+    public void appendCustomScriptPath(String scriptPaths);
 
 
     /**
@@ -54,23 +55,24 @@ public interface ScriptingWeaver  {
      * if no new class exists the original class is given back
      *
      * @param aclass the class which is likely to be reloaded
-     * @return   a new class or the same if no refresh has to be performed
+     * @return a new class or the same if no refresh has to be performed
      */
     public Class reloadScriptingClass(Class aclass);
 
     /**
-     *  loads a scripting class from a given className
+     * loads a scripting class from a given className
      * note, this method probably will be dropped in the long
      * run
+     *
      * @param className the classname including the package
-     * @return  a class instance of the file
+     * @return a class instance of the file
      */
     public Class loadScriptingClassFromName(String className);
 
 
     /**
      * returns the engine type for this weaver
-     * 
+     *
      * @return
      */
     public int getScriptingEngine();
@@ -95,6 +97,10 @@ public interface ScriptingWeaver  {
     public void fullAnnotationScan();
 
 
-    //TODO add file annotation scan capabilities here
+    /**
+     * do a full recompile of changed resources instead of a
+     * simply compile per file
+     */
+    public void fullRecompile();
 
 }

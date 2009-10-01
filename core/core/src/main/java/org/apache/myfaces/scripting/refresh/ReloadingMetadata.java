@@ -29,13 +29,14 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 public class ReloadingMetadata {
 
     boolean tainted = false;
+    boolean annotated = false;
     boolean taintedOnce = false;
     String fileName = "";
     String sourcePath = "";
     Class aClass = null;
     long timestamp = 0l;
     int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
-    
+
 
     public boolean isTainted() {
         return tainted;
@@ -91,5 +92,13 @@ public class ReloadingMetadata {
 
     public void setSourcePath(String sourcePath) {
         this.sourcePath = sourcePath;
+    }
+
+    public boolean isAnnotated() {
+        return annotated;
+    }
+
+    public void setAnnotated(boolean annotated) {
+        this.annotated = annotated;
     }
 }
