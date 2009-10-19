@@ -20,9 +20,12 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedValidator;
 
 import javax.faces.validator.FacesValidator;
 import java.util.Map;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -30,10 +33,13 @@ import java.util.Map;
  */
 
 public class ValidatorImplementationListener extends MapEntityAnnotationScanner implements AnnotationScanListener {
+
     private static final String PAR_VALUE = "value";
     private static final String PAR_DEFAULT = "default";
 
+
     public ValidatorImplementationListener() {
+        /*supported annotation parameters value and default*/
         super(PAR_VALUE, PAR_DEFAULT);
     }
 
@@ -87,7 +93,7 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, theDefault);
         _alreadyRegistered.put(clazz.getName(), entry);
 
-        getApplication().addConverter(entry.getValue(), clazz.getName());
+        getApplication().addValidator(entry.getValue(), clazz.getName());
     }
 
     @Override
@@ -98,7 +104,7 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, theDefault);
         _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
 
-        getApplication().addConverter(entry.getValue(), clazz.getFullyQualifiedName());
+        getApplication().addValidator(entry.getValue(), clazz.getFullyQualifiedName());
     }
 
     @Override
@@ -129,5 +135,17 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         }
 
         return alreadyRegistered.equals(entry);
+    }
+
+
+    @Override
+    public void purge(String className) {
+        super.purge(className);
+        AnnotationEntry entry = (AnnotationEntry) _alreadyRegistered.get(className);
+        if (entry == null) {
+            return;
+        }
+        _alreadyRegistered.remove(className);
+        getApplication().addValidator(entry.getValue(), PurgedValidator.class.getName());
     }
 }

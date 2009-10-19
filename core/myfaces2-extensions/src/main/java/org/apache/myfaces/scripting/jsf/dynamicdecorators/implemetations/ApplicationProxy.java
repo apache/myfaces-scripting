@@ -21,6 +21,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedResourceHandler;
 
 import javax.el.*;
 import javax.faces.FacesException;
@@ -80,7 +81,7 @@ public class ApplicationProxy extends Application implements Decorated {
         ELResolver retVal = _delegate.getELResolver();
         if (!(retVal instanceof ELResolverProxy)) {
             retVal = new ELResolverProxy(retVal);
-        }    
+        }
         return retVal;
 
     }
@@ -96,17 +97,20 @@ public class ApplicationProxy extends Application implements Decorated {
         System.out.println("create1");
         UIComponent component = _delegate.createComponent(valueExpression, facesContext, s);
 
+        //We can replace annotated components on the fly via
+        //ApplicationImpl.addComponent(final String componentType, final String componentClassName)
+
         /*we are reweaving on the fly because we cannot be sure if
-         * the class is not recycled all the time in the creation
-         * code, in the renderer we do it on method base
-         * due to the fact that our renderers are recycled via
-         * a flyweight pattern
-         *
-         *
-         * Also we cannot proxy here because there is no UIComponent interface
-         * maybe in the long run we can make a decorator here instead
-         * but for now lets try it this way
-         */
+        * the class is not recycled all the time in the creation
+        * code, in the renderer we do it on method base
+        * due to the fact that our renderers are recycled via
+        * a flyweight pattern
+        *
+        *
+        * Also we cannot proxy here because there is no UIComponent interface
+        * maybe in the long run we can make a decorator here instead
+        * but for now lets try it this way
+        */
         if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
             /*once it was tainted we have to recreate all the time*/
             component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
@@ -262,16 +266,16 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.setStateManager(stateManager);
     }
 
-    public void addComponent(String s, String s1) {
+    public void addComponent(String componentType, String componentClass) {
         weaveDelegate();
-        _delegate.addComponent(s, s1);
+        _delegate.addComponent(componentType, componentClass);
     }
 
-    public UIComponent createComponent(String s) throws FacesException {
+    public UIComponent createComponent(String componentType) throws FacesException {
         weaveDelegate();
         //the components are generated anew very often
         //we cannot do an on object weaving here
-        UIComponent component = _delegate.createComponent(s);
+        UIComponent component = _delegate.createComponent(componentType);
 
         /*we are reweaving on the fly because we cannot be sure if
         * the class is not recycled all the time in the creation
@@ -281,9 +285,9 @@ public class ApplicationProxy extends Application implements Decorated {
         return (UIComponent) reloadInstance(component);
     }
 
-    public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String s) throws FacesException {
+    public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String componentType) throws FacesException {
         weaveDelegate();
-        UIComponent component = _delegate.createComponent(valueBinding, facesContext, s);
+        UIComponent component = _delegate.createComponent(valueBinding, facesContext, componentType);
 
         /*we are reweaving on the fly because we cannot be sure if
          * the class is not recycled all the time in the creation
@@ -298,19 +302,19 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getComponentTypes();
     }
 
-    public void addConverter(String s, String s1) {
+    public void addConverter(String converterId, String converterClass) {
         weaveDelegate();
-        _delegate.addConverter(s, s1);
+        _delegate.addConverter(converterId, converterClass);
     }
 
-    public void addConverter(Class aClass, String s) {
+    public void addConverter(Class targetClass, String converterClass) {
         weaveDelegate();
-        _delegate.addConverter(aClass, s);
+        _delegate.addConverter(targetClass, converterClass);
     }
 
-    public Converter createConverter(String s) {
+    public Converter createConverter(String converterId) {
         weaveDelegate();
-        Converter retVal = _delegate.createConverter(s);
+        Converter retVal = _delegate.createConverter(converterId);
         /**
          * since createConverter is called only once
          * we have to work with method reloading proxies
@@ -388,24 +392,23 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.createValueBinding(s);
     }
 
-    //TODO add new implementation stuff here
 
     @Override
-    public void addBehavior(String s, String s1) {
+    public void addBehavior(String behaviorId, String behaviorClass) {
         weaveDelegate();
-        _delegate.addBehavior(s, s1);
+        _delegate.addBehavior(behaviorId, behaviorClass);
     }
 
     @Override
-    public void addDefaultValidatorId(String s) {
+    public void addDefaultValidatorId(String behaviorId) {
         weaveDelegate();
-        _delegate.addDefaultValidatorId(s);
+        _delegate.addDefaultValidatorId(behaviorId);
     }
 
     @Override
-    public Behavior createBehavior(String s) throws FacesException {
+    public Behavior createBehavior(String behaviorId) throws FacesException {
         weaveDelegate();
-        Behavior retVal = _delegate.createBehavior(s);
+        Behavior retVal = _delegate.createBehavior(behaviorId);
         //in case of a descendend of BehaviorBase we probably
         //can count on additional functionality within the codebase we avoid
         //therefore the interface reloading and work directly on the object
@@ -478,6 +481,12 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
+        if (retVal instanceof PurgedResourceHandler) {
+            //TODO if resource handler purged then do a recompile
+            retVal = _delegate.getResourceHandler();
+            return retVal;
+        }
+
         return (ResourceHandler) reloadInstance(retVal);
     }
 
