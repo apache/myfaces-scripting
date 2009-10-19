@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 
@@ -26,9 +28,24 @@ import javax.faces.context.FacesContext;
  * @version $Revision$ $Date$
  */
 
-public class PurgedNavigationHandler extends NavigationHandler {
+public class PurgedNavigationHandler extends NavigationHandler implements Decorated {
+
+    NavigationHandler _delegate;
+
+    public PurgedNavigationHandler(NavigationHandler delegate) {
+        _delegate = delegate;
+    }
+
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         throw new RuntimeException("Navigation handler does not exist");
+    }
+
+    public NavigationHandler getDelegate() {
+        return _delegate;
+    }
+
+    public void setDelegate(NavigationHandler delegate) {
+        _delegate = delegate;
     }
 }

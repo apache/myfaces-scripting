@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.event.PhaseListener;
 import javax.faces.context.FacesContext;
@@ -28,9 +30,16 @@ import javax.faces.FacesException;
  * @version $Revision$ $Date$
  */
 
-public class PurgedLifecycle extends Lifecycle {
+public class PurgedLifecycle extends Lifecycle implements Decorated {
 
     private static final String DOES_NOT_EXIST = "Lifecycle does not exist";
+
+    Lifecycle _delegate;
+
+    public PurgedLifecycle(Lifecycle delegate) {
+        _delegate = delegate;
+    }
+
 
     @Override
     public void addPhaseListener(PhaseListener listener) {
@@ -55,5 +64,9 @@ public class PurgedLifecycle extends Lifecycle {
     @Override
     public void render(FacesContext context) throws FacesException {
         throw new RuntimeException(DOES_NOT_EXIST);
+    }
+
+    public Object getDelegate() {
+        return _delegate;  
     }
 }

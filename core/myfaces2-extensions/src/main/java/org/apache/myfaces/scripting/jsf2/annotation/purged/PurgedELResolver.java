@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.el.ELResolver;
 import javax.el.ELContext;
 import java.util.Iterator;
@@ -27,9 +29,15 @@ import java.util.Iterator;
  * @version $Revision$ $Date$
  */
 
-public class PurgedELResolver extends ELResolver {
+public class PurgedELResolver extends ELResolver implements Decorated {
 
     private final String DOES_NOT_EXIST = "EL Resolver does not exist";
+
+    ELResolver _delegate;
+
+    public PurgedELResolver(ELResolver delegate) {
+        _delegate = delegate;
+    }
 
     @Override
     public Object getValue(ELContext elContext, Object o, Object o1) {
@@ -59,5 +67,9 @@ public class PurgedELResolver extends ELResolver {
     @Override
     public Class getCommonPropertyType(ELContext elContext, Object o) {
         throw new RuntimeException(DOES_NOT_EXIST);
+    }
+
+    public ELResolver getDelegate() {
+        return _delegate;
     }
 }

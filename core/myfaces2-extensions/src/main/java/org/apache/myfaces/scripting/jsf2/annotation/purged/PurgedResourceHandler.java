@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.Resource;
 import javax.faces.context.FacesContext;
@@ -27,12 +29,15 @@ import javax.faces.context.FacesContext;
  * @version $Revision$ $Date$
  */
 
-public class PurgedResourceHandler extends ResourceHandler {
+public class PurgedResourceHandler extends ResourceHandler implements Decorated {
 
     private static final String DOES_NOT_EXIST = "Resource Handler does not exist";
 
-    public PurgedResourceHandler() {
-        super();
+
+    ResourceHandler _delegate;
+
+    public PurgedResourceHandler(ResourceHandler delegate) {
+        _delegate = delegate;
     }
 
     @Override
@@ -68,5 +73,13 @@ public class PurgedResourceHandler extends ResourceHandler {
     @Override
     public boolean libraryExists(String libraryName) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public ResourceHandler getDelegate() {
+        return _delegate;
+    }
+
+    public void setDelegate(ResourceHandler delegate) {
+        _delegate = delegate;
     }
 }

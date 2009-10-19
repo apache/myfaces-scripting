@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.faces.context.FacesContext;
@@ -33,7 +35,9 @@ import javax.faces.component.UIComponent;
  */
 
 public class PurgedValidator implements Validator {
+
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         throw new RuntimeException("Validator does not exist");
     }
+
 }

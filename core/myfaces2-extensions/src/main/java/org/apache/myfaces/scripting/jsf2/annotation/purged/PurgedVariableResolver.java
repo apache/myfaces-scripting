@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.faces.el.VariableResolver;
 import javax.faces.el.EvaluationException;
 import javax.faces.context.FacesContext;
@@ -27,9 +29,24 @@ import javax.faces.context.FacesContext;
  * @version $Revision$ $Date$
  */
 
-public class PurgedVariableResolver extends VariableResolver {
+public class PurgedVariableResolver extends VariableResolver implements Decorated {
+
+    VariableResolver _delegate;
+
+    public PurgedVariableResolver(VariableResolver delegate) {
+        _delegate = delegate;
+    }
+
     @Override
     public Object resolveVariable(FacesContext facesContext, String name) throws EvaluationException {
         throw new RuntimeException("VariableResolver does not exist");
+    }
+
+    public VariableResolver getDelegate() {
+        return _delegate;
+    }
+
+    public void setDelegate(VariableResolver delegate) {
+        _delegate = delegate;
     }
 }

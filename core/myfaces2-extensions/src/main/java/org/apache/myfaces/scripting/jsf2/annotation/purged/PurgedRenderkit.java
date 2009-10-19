@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
+import org.apache.myfaces.scripting.api.Decorated;
+
 import javax.faces.render.RenderKit;
 import javax.faces.render.Renderer;
 import javax.faces.render.ResponseStateManager;
@@ -31,9 +33,15 @@ import java.io.Writer;
  * @version $Revision$ $Date$
  */
 
-public class PurgedRenderkit extends RenderKit {
+public class PurgedRenderkit extends RenderKit implements Decorated {
 
     private static final String DOES_NOT_EXIST = "Renderkit does not exist";
+
+    RenderKit _delegate;
+
+    public PurgedRenderkit(RenderKit delegate) {
+        _delegate = delegate;
+    }
 
     @Override
     public void addRenderer(String family, String rendererType, Renderer renderer) {
@@ -58,5 +66,13 @@ public class PurgedRenderkit extends RenderKit {
     @Override
     public ResponseStateManager getResponseStateManager() {
         throw new RuntimeException(DOES_NOT_EXIST);
+    }
+
+    public RenderKit getDelegate() {
+        return _delegate;
+    }
+
+    public void setDelegate(RenderKit delegate) {
+        _delegate = delegate;
     }
 }
