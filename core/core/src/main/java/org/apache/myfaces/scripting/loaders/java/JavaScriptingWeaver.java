@@ -158,7 +158,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
          * //we only deal with class level reloading here
          * //the deregistration notification should happen on artefact level (which will be the next subtask)
          */
-        _scanner.scanClass(retVal);
+        if(_scanner != null) {
+            _scanner.scanClass(retVal);
+        }
 
         return retVal;
     }
