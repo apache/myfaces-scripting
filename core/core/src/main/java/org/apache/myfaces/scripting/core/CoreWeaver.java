@@ -35,6 +35,11 @@ import java.util.List;
  */
 public class CoreWeaver implements Serializable, ScriptingWeaver {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3034995032644947216L;
+
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
     public CoreWeaver(ScriptingWeaver... weavers) {
@@ -112,6 +117,9 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         for(ScriptingWeaver weaver : _weavers) {
             weaver.fullAnnotationScan();
         }
+    }
+
+    public void fullRecompile() {
     }
 }
 

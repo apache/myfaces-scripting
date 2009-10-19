@@ -32,6 +32,11 @@ import java.io.Serializable;
  */
 
 public class DummyWeaver implements Serializable, ScriptingWeaver {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1504583349449148143L;
+
     public void appendCustomScriptPath(String scriptPaths) {
     }
 
@@ -60,5 +65,8 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void fullAnnotationScan() {
+    }
+
+    public void fullRecompile() {
     }
 }
