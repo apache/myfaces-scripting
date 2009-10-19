@@ -27,6 +27,7 @@ import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -35,7 +36,7 @@ import java.util.Map;
 
 public class BaseAnnotationScanListener {
     Log log = LogFactory.getLog(this.getClass());
-    static Map<String, Object> _alreadyRegistered = new HashMap<String, Object>();
+    static Map<String, Object> _alreadyRegistered = new ConcurrentHashMap<String, Object>(8, 0.75f, 1);
 
     protected RuntimeConfig getRuntimeConfig() {
         final FacesContext facesContext = FacesContext.getCurrentInstance();

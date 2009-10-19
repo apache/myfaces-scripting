@@ -47,11 +47,11 @@ import java.util.*;
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
 
-    private static final String SCOPE_SESSION = "session";
-    private static final String SCOPE_APPLICATION = "application";
-    private static final String SCOPE_VIEW = "view";
-    private static final String SCOPE_NONE = "none";
-    private static final String SCOPE_CUSTOM = "custom";
+    private static final String SCOPE_SESSION       = "session";
+    private static final String SCOPE_APPLICATION   = "application";
+    private static final String SCOPE_VIEW          = "view";
+    private static final String SCOPE_NONE          = "none";
+    private static final String SCOPE_CUSTOM        = "custom";
 
 
     public boolean supportsAnnotation(String annotation) {

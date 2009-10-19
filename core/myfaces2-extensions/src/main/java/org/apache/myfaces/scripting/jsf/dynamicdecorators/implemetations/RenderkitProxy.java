@@ -21,6 +21,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
@@ -56,12 +57,18 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
         renderer = (Renderer) reloadInstance(renderer);
+
+        //we have a purged renderer we now have to trigger a full recompile and rescan!
+        //and once found we should get the new renderer in recursively without further hazzles
+        if (renderer instanceof PurgedRenderer) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+        }
         _delegate.addRenderer(s, s1, renderer);
     }
 
     public Renderer getRenderer(String s, String s1) {
         weaveDelegate();
-        return  (Renderer) reloadInstance(_delegate.getRenderer(s, s1));
+        return (Renderer) reloadInstance(_delegate.getRenderer(s, s1));
     }
 
     public ResponseStateManager getResponseStateManager() {
@@ -76,7 +83,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
-        return (ResponseStream) reloadInstance( _delegate.createResponseStream(outputStream));
+        return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream));
     }
 
     //TODO add full support for myfaces 2.0 here
@@ -114,16 +121,16 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     public Object getDelegate() {
-        return _delegate;  
+        return _delegate;
     }
 
 
-     private final void weaveDelegate() {
+    private final void weaveDelegate() {
         _delegate = (RenderKit) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
     }
 
     private final Object reloadInstance(Object instance) {
-        if(instance == null) {
+        if (instance == null) {
             return null;
         }
         if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {

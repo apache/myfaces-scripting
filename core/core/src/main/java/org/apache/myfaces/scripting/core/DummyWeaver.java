@@ -68,5 +68,8 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void fullRecompile() {
+
     }
+        
+
 }

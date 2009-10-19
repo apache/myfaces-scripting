@@ -18,12 +18,10 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
-import org.apache.myfaces.scripting.api.Decorated;
-
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIComponent;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

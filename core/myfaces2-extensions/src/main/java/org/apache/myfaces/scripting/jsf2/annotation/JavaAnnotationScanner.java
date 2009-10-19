@@ -111,9 +111,9 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
         _builder = new JavaDocBuilder();
         for (String sourcePath : _sourcePaths) {
             File source = new File(sourcePath);
-            if(source.exists() ) {
+            if (source.exists()) {
 
-                    _builder.addSourceTree(source);
+                _builder.addSourceTree(source);
 
             }
         }

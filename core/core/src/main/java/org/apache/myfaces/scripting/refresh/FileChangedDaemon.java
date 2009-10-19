@@ -25,6 +25,7 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -47,7 +48,10 @@ public class FileChangedDaemon extends Thread {
     //in a writable way as well to update their meta data so we
     //should replace the map with something segmented, probably
     //a balanced tree of depth 2
-    Map<String, ReloadingMetadata> classMap = Collections.synchronizedMap(new HashMap<String, ReloadingMetadata>());
+
+    // ConcurrentHashMap<String, Renderer>(8, 0.75f, 1)
+    // segmented map here because we have to deal with multithreaded access
+    Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
     
 
 
