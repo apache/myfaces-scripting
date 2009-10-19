@@ -48,8 +48,18 @@ public class BaseAnnotationScanListener {
     }
 
     protected String getAnnotatedStringParam(Map<String, Object> propMap, String key) {
-        AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
+        Object tempPropVal = propMap.get(key);
+        if(tempPropVal instanceof String) {
+            return (String) tempPropVal;
+        }
+        AnnotationConstant propVal = (AnnotationConstant) tempPropVal;
+        if (propVal == null) {
+            return null;
+        }
         String val = (String) propVal.getParameterValue();
+        if (val == null) {
+            return null;
+        }
         val = val.replaceAll("\"", "");
         return val;
     }

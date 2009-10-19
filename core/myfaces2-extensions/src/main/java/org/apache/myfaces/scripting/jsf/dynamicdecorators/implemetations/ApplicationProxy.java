@@ -22,6 +22,7 @@ import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedResourceHandler;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
 
 import javax.el.*;
 import javax.faces.FacesException;
@@ -43,6 +44,12 @@ import java.util.*;
  * our decorating applicstion
  * which should resolve our bean issues within a central
  * bean processing interceptor
+ * <p/>
+ * 
+ * TODO at component reload via annotations the component family is lost
+ * locate where it is and then add the family handling here
+ * so that it is set again!
+ * (Line 490 it is lost)
  *
  * @author Werner Punz
  */
@@ -94,9 +101,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public UIComponent createComponent(ValueExpression valueExpression, FacesContext facesContext, String s) throws FacesException, NullPointerException {
         weaveDelegate();
-        System.out.println("create1");
         UIComponent component = _delegate.createComponent(valueExpression, facesContext, s);
-
+        UIComponent oldComponent = component;
         //We can replace annotated components on the fly via
         //ApplicationImpl.addComponent(final String componentType, final String componentClassName)
 
@@ -111,14 +117,17 @@ public class ApplicationProxy extends Application implements Decorated {
         * maybe in the long run we can make a decorator here instead
         * but for now lets try it this way
         */
-        if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
-            /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
-            alreadyWovenInRequest(component.toString());
+        component = (UIComponent) reloadInstance(component);
+
+        //we now have to check for an annotation change, but only in case a reload has happened
+        if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
+            return handeAnnotationChange(component, valueExpression, facesContext, s);
         }
+
         return component;
 
     }
+
 
     public ExpressionFactory getExpressionFactory() {
         weaveDelegate();
@@ -275,26 +284,41 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         //the components are generated anew very often
         //we cannot do an on object weaving here
-        UIComponent component = _delegate.createComponent(componentType);
+        UIComponent oldComponent = _delegate.createComponent(componentType);
 
         /*we are reweaving on the fly because we cannot be sure if
         * the class is not recycled all the time in the creation
         * code, in the renderer we do it on method base
         * due to the fact that our renderers are recycled via
         * a flyweight pattern*/
-        return (UIComponent) reloadInstance(component);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+
+        //we now have to check for an annotation change, but only in case a reload has happened
+        if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
+            return handeAnnotationChange(component, componentType);
+        }
+
+        return component;
+
     }
 
     public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String componentType) throws FacesException {
         weaveDelegate();
-        UIComponent component = _delegate.createComponent(valueBinding, facesContext, componentType);
+        UIComponent oldComponent = _delegate.createComponent(valueBinding, facesContext, componentType);
 
         /*we are reweaving on the fly because we cannot be sure if
          * the class is not recycled all the time in the creation
          * code, in the renderer we do it on method base
          * due to the fact that our renderers are recycled via
          * a flyweight pattern*/
-        return (UIComponent) reloadInstance(component);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+
+        //we now have to check for an annotation change, but only in case a reload has happened
+        if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
+            return handeAnnotationChange(component, valueBinding, facesContext, componentType);
+        }
+
+        return component;
     }
 
     public Iterator<String> getComponentTypes() {
@@ -431,22 +455,68 @@ public class ApplicationProxy extends Application implements Decorated {
         }
     }
 
+
+    //TODO implement those 
     @Override
     public UIComponent createComponent(FacesContext facesContext, Resource resource) {
-        return super.createComponent(facesContext, resource);
+        weaveDelegate();
+
+        UIComponent oldComponent = _delegate.createComponent(facesContext, resource);
+
+        /*we are reweaving on the fly because we cannot be sure if
+         * the class is not recycled all the time in the creation
+         * code, in the renderer we do it on method base
+         * due to the fact that our renderers are recycled via
+         * a flyweight pattern*/
+        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+
+        //we now have to check for an annotation change, but only in case a reload has happened
+        if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
+            return handeAnnotationChange(component, facesContext, resource);
+        }
+
+        return component;
+
     }
 
     @Override
-    public UIComponent createComponent(FacesContext facesContext, String s, String s1) {
+    public UIComponent createComponent(FacesContext facesContext, String componentType, String rendererType) {
         weaveDelegate();
-        //TODO check if we can add a component weaving here, but I assume it is handled in the viewroot already decently
-        return _delegate.createComponent(facesContext, s, s1);
+        UIComponent oldComponent = _delegate.createComponent(facesContext, componentType, rendererType);
+
+        /*we are reweaving on the fly because we cannot be sure if
+         * the class is not recycled all the time in the creation
+         * code, in the renderer we do it on method base
+         * due to the fact that our renderers are recycled via
+         * a flyweight pattern*/
+        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+
+        //we now have to check for an annotation change, but only in case a reload has happened
+        if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
+            return handeAnnotationChange(component, facesContext, componentType, rendererType);
+        }
+
+        return component;
     }
 
     @Override
     public UIComponent createComponent(ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
         weaveDelegate();
-        return (UIComponent) reloadInstance(_delegate.createComponent(valueExpression, facesContext, s, s1));
+        UIComponent oldComponent = _delegate.createComponent(valueExpression, facesContext, s, s1);
+
+        /*we are reweaving on the fly because we cannot be sure if
+     * the class is not recycled all the time in the creation
+     * code, in the renderer we do it on method base
+     * due to the fact that our renderers are recycled via
+     * a flyweight pattern*/
+        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+
+        //we now have to check for an annotation change, but only in case a reload has happened
+        if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
+            return handeAnnotationChange(component, valueExpression, facesContext, s, s1);
+        }
+
+        return component;
     }
 
     @Override
@@ -557,6 +627,100 @@ public class ApplicationProxy extends Application implements Decorated {
             return false;
         }
         return true;
+    }
+
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String s) {
+        UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s);
+        if (componentToChange instanceof PurgedComponent) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            //via an additional create component we can check whether a purged component
+            //was registered after the reload because the annotation has been removed
+            componentToChange = _delegate.createComponent(valueExpression, facesContext, s);
+            if (componentToChange instanceof PurgedComponent) {
+                throw new FacesException("Annotation on component removed but no replacement found");
+            }
+            return componentToChange;
+        }
+        return oldComponent;
+    }
+
+
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, String componentType) {
+        UIComponent componentToChange = _delegate.createComponent(componentType);
+        if (componentToChange instanceof PurgedComponent) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            //via an additional create component we can check whether a purged component
+            //was registered after the reload because the annotation has been removed
+            componentToChange = _delegate.createComponent(componentType);
+            if (componentToChange instanceof PurgedComponent) {
+                throw new FacesException("Annotation on component removed but no replacement found");
+            }
+            return componentToChange;
+        }
+        return oldComponent;
+    }
+
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueBinding valueBinding, FacesContext context, String componentType) {
+        UIComponent componentToChange = _delegate.createComponent(valueBinding, context, componentType);
+        if (componentToChange instanceof PurgedComponent) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            //via an additional create component we can check whether a purged component
+            //was registered after the reload because the annotation has been removed
+            componentToChange = _delegate.createComponent(valueBinding, context, componentType);
+            if (componentToChange instanceof PurgedComponent) {
+                throw new FacesException("Annotation on component removed but no replacement found");
+            }
+            return componentToChange;
+        }
+        return oldComponent;
+    }
+
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, Resource resource) {
+        UIComponent componentToChange = _delegate.createComponent(context, resource);
+        if (componentToChange instanceof PurgedComponent) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            //via an additional create component we can check whether a purged component
+            //was registered after the reload because the annotation has been removed
+            componentToChange = _delegate.createComponent(context, resource);
+            if (componentToChange instanceof PurgedComponent) {
+                throw new FacesException("Annotation on component removed but no replacement found");
+            }
+            return componentToChange;
+        }
+        return oldComponent;
+    }
+
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, String componentType, String rendererType) {
+        UIComponent componentToChange = _delegate.createComponent(context, componentType, rendererType);
+        if (componentToChange instanceof PurgedComponent) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            //via an additional create component we can check whether a purged component
+            //was registered after the reload because the annotation has been removed
+            componentToChange = _delegate.createComponent(context, componentType, rendererType);
+            if (componentToChange instanceof PurgedComponent) {
+                throw new FacesException("Annotation on component removed but no replacement found");
+            }
+            return componentToChange;
+        }
+        return oldComponent;
+    }
+
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
+        UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
+        String family = oldComponent.getFamily();
+        if (componentToChange instanceof PurgedComponent) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+
+            //via an additional create component we can check whether a purged component
+            //was registered after the reload because the annotation has been removed
+
+            componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
+            if (componentToChange instanceof PurgedComponent) {
+                throw new FacesException("Annotation on component removed but no replacement found");
+            }
+            return componentToChange;
+        }
+        return oldComponent;
     }
 
 }

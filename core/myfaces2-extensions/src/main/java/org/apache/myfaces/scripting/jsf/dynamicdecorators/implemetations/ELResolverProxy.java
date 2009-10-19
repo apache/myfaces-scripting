@@ -83,6 +83,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
                 return newRetVal;
             }
             _getValue.set(Boolean.TRUE);
+            //base == null means bean el
             if (base == null) {
                 final FacesContext facesContext = FacesContext.getCurrentInstance();
                 RuntimeConfig config = RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());

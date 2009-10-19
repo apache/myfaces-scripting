@@ -30,6 +30,7 @@ import javax.faces.render.ResponseStateManager;
 import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseStream;
+import javax.faces.FacesException;
 import java.io.Writer;
 import java.io.OutputStream;
 import java.util.Iterator;
@@ -58,17 +59,35 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         //renderers itself are flyweight patterns which means they are shared over objects
         renderer = (Renderer) reloadInstance(renderer);
 
-        //we have a purged renderer we now have to trigger a full recompile and rescan!
-        //and once found we should get the new renderer in recursively without further hazzles
-        if (renderer instanceof PurgedRenderer) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
-        }
+        
         _delegate.addRenderer(s, s1, renderer);
     }
 
     public Renderer getRenderer(String s, String s1) {
         weaveDelegate();
-        return (Renderer) reloadInstance(_delegate.getRenderer(s, s1));
+        Renderer rendr = _delegate.getRenderer(s, s1);
+        Renderer rendr2 = (Renderer) reloadInstance(rendr);
+        if (rendr != rendr2) {
+            rendr2 = _delegate.getRenderer(s, s1);
+            if (rendr2 instanceof PurgedRenderer) {
+                return handleAnnotationChange(s, s1);
+            }
+
+            _delegate.addRenderer(s, s1, rendr2);
+            return rendr2;
+        }
+        return rendr;
+    }
+
+    private Renderer handleAnnotationChange(String s, String s1) {
+        Renderer rendr2;
+        ProxyUtils.getWeaver().fullAnnotationScan();
+        rendr2 = _delegate.getRenderer(s, s1);
+        if (rendr2 instanceof PurgedRenderer) {
+            throw new FacesException("Renderer not found");
+        }
+        rendr2 = _delegate.getRenderer(s, s1);
+        return rendr2;
     }
 
     public ResponseStateManager getResponseStateManager() {
@@ -134,8 +153,10 @@ public class RenderkitProxy extends RenderKit implements Decorated {
             return null;
         }
         if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
             alreadyWovenInRequest(instance.toString());
+            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+
+            //now the add should be done properly if possible
         }
         return instance;
     }

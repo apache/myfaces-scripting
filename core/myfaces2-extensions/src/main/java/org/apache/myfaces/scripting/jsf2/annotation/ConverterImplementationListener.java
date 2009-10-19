@@ -20,8 +20,12 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedConverter;
 
 import javax.faces.convert.FacesConverter;
+import javax.faces.render.RenderKit;
+import javax.faces.application.Application;
 import java.util.Map;
 
 /**
@@ -123,11 +127,23 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
             return true;
         }
 
-        return alreadyRegistered.equals(entry);
+        return !alreadyRegistered.equals(entry);
     }
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesConverter.class.getName());
+    }
+
+    @Override
+    public void purge(String className) {
+        super.purge(className);
+        AnnotationEntry entry = (AnnotationEntry) _alreadyRegistered.remove(className);
+        if (entry == null) {
+            return;
+        }
+
+        Application renderKit = getApplication();
+        renderKit.addConverter(entry.getValue(), PurgedConverter.class.getName());
     }
 
 }

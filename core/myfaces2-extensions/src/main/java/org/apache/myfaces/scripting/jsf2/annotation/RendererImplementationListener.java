@@ -96,7 +96,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         }
 
         public String getRenderKitId() {
-            return rendererType;
+            return renderKitId;
         }
     }
 
@@ -108,8 +108,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
     @Override
     protected void addEntity(Class clazz, Map<String, Object> params) {
-        String value = (String) params.get(PAR_FAMILY);
-        String theDefault = (String) params.get(PAR_RENDERERTYPE);
+        String value = (String) getAnnotatedStringParam(params, PAR_FAMILY);
+        String theDefault = (String) getAnnotatedStringParam(params, PAR_RENDERERTYPE);
 
         String renderKitId = getRenderKitId(params);
         RenderKit renderKit = getRenderkit(renderKitId);
@@ -138,8 +138,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
     @Override
     protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        String value = (String) params.get(PAR_FAMILY);
-        String theDefault = (String) params.get(PAR_RENDERERTYPE);
+        String value = getAnnotatedStringParam(params, PAR_FAMILY);
+        String theDefault = getAnnotatedStringParam(params, PAR_RENDERERTYPE);
 
         String renderKitId = getRenderKitId(params);
         RenderKit renderKit = getRenderkit(renderKitId);
@@ -159,7 +159,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
         try {
             //recompile the class here because we cannot deal with the renderer otherwise
-            renderKit.addRenderer((String) params.get(PAR_FAMILY), (String) params.get(PAR_RENDERERTYPE), (Renderer) ProxyUtils.getWeaver().loadScriptingClassFromName(clazz.getFullyQualifiedName()).newInstance());
+            renderKit.addRenderer(getAnnotatedStringParam(params,PAR_FAMILY), getAnnotatedStringParam(params, PAR_RENDERERTYPE), (Renderer) ProxyUtils.getWeaver().loadScriptingClassFromName(clazz.getFullyQualifiedName()).newInstance());
         } catch (InstantiationException e) {
             log.error(e);
         } catch (IllegalAccessException e) {
@@ -191,7 +191,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         if (alreadyRegistered == null) {
             return true;
         }
-
+        //here the check if the new class is the same as the old one
         return alreadyRegistered.equals(entry);
     }
 
@@ -204,11 +204,11 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
 
         AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
-        if (alreadyRegistered == null) {
-            return true;
+        if (alreadyRegistered != null) {
+            return !alreadyRegistered.equals(entry);
         }
 
-        return alreadyRegistered.equals(entry);
+        return true;
     }
 
     @Override
@@ -219,10 +219,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
             return;
         }
 
-        Map<String, Object> newParams = new HashMap<String, Object>();
-        newParams.put(PAR_FAMILY, entry.getComponentFamily());
-        newParams.put(PAR_RENDERERTYPE, entry.getRendererType());
-        newParams.put(PAR_RENDERKITID, entry.getRenderKitId());
+        //TODO handle the changed renderer params, but annotation on same
+        //class case (remove and add case on the same class)
 
         RenderKit renderKit = getRenderkit(entry.getRenderKitId());
         try {

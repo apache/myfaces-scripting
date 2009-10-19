@@ -36,12 +36,12 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  *          <p/>
  *          Testing ground for qdox evaluation
- *
- *
- * we set it to ignore because it is a testing
- * 
- * class to evaluate how to handle qdox
- * on java sources
+ *          <p/>
+ *          <p/>
+ *          we set it to ignore because it is a testing
+ *          <p/>
+ *          class to evaluate how to handle qdox
+ *          on java sources
  */
 
 @Ignore
@@ -75,7 +75,7 @@ public class QDoxTest {
                     for (Annotation annot : annotations) {
                         System.out.println(annot.toString());
                         managedBeanFound |= annot.getType().getValue().equals("javax.faces.bean.ManagedBean");
-                        if(managedBeanFound) {
+                        if (managedBeanFound) {
                             break;
                         }
                     }

@@ -54,7 +54,7 @@ public abstract class MapEntityAnnotationScanner extends BaseAnnotationScanListe
         Map<String, Object> parms = new HashMap<String, Object>(_annotationParms.length);
 
         for (String accessor : _annotationParms) {
-            ReflectUtil.fastExecuteMethod(annotation, accessor, new Object[0]);
+            parms.put(accessor ,ReflectUtil.fastExecuteMethod(annotation, accessor, new Object[0]));
         }
 
         if (hasToReregister(parms, clazz)) {

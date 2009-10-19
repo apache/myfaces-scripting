@@ -16,24 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting;
-
-import org.junit.Ignore;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+package org.apache.myfaces.javaloader.test;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Testprobe for the qdox evaluation testbed
  */
 
-@ManagedBean(name = "TestProbe")
-@SessionScoped
-@Ignore
-public class Probe {
-
-
+@Val
+public class TestValidator {
 }

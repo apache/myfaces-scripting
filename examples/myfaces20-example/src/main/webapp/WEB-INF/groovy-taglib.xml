@@ -23,4 +23,19 @@
             <renderer-type>org.apache.myfaces.groovyloader.test.Test</renderer-type>
         </component>
     </tag>
+    <tag>
+        <tag-name>testcomponent2</tag-name>
+        <component>
+            <component-type>at.irian.JavaTestComponent</component-type>
+            <renderer-type>at.irian.JavaTestRenderer</renderer-type>
+        </component>
+    </tag>
+    <tag>
+        <tag-name>testcomponent3</tag-name>
+        <component>
+            <component-type>at.irian.JavaTestComponent</component-type>
+            <renderer-type>at.irian.JavaTestRenderer</renderer-type>
+        </component>
+    </tag>
+
 </facelet-taglib>

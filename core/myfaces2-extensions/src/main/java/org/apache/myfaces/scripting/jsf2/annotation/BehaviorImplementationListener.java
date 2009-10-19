@@ -21,6 +21,8 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedBehavior;
 
 import javax.faces.component.behavior.FacesBehavior;
 
@@ -30,16 +32,15 @@ import javax.faces.component.behavior.FacesBehavior;
  */
 
 public class BehaviorImplementationListener extends SingleEntityAnnotationListener implements AnnotationScanListener {
+
     public BehaviorImplementationListener() {
         super();
         _entityParamValue = "value";
     }
 
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesBehavior.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     protected void addEntity(Class clazz, String val) {
         if (log.isTraceEnabled()) {
@@ -55,6 +56,15 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
                       + clazz.getFullyQualifiedName() + ")");
         }
         getApplication().addBehavior(val, clazz.getFullyQualifiedName());
+    }
+
+    @Override
+    public void purge(String className) {
+        super.purge(className);
+        String val = (String) _alreadyRegistered.remove(className);
+        if (val != null) {
+            getApplication().addBehavior(val, PurgedBehavior.class.getName());
+        }
     }
 
 }

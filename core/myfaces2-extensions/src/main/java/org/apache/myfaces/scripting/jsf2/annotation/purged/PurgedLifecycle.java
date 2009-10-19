@@ -67,6 +67,6 @@ public class PurgedLifecycle extends Lifecycle implements Decorated {
     }
 
     public Object getDelegate() {
-        return _delegate;  
+        return _delegate;
     }
 }

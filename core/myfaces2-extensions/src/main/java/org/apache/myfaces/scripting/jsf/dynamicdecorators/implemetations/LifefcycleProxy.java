@@ -36,7 +36,7 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
     Lifecycle _delegate = null;
 
     private void weaveDelegate() {
-        if(_delegate != null)
+        if (_delegate != null)
             _delegate = (Lifecycle) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
     }
 
@@ -49,7 +49,7 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
         weaveDelegate();
         /*we can put our object weaving code into the add here*/
         if (ProxyUtils.isDynamic(phaseListener.getClass()))
-            phaseListener = (PhaseListener)  ProxyUtils.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class);
+            phaseListener = (PhaseListener) ProxyUtils.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class);
 
         _delegate.addPhaseListener(phaseListener);
     }

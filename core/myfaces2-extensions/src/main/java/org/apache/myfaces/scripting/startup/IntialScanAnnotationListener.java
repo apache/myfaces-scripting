@@ -29,10 +29,10 @@ import javax.faces.application.Application;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * we do the initial source scan after the entire application has started up
- * we now can reuse our jsf2 system event faclities by placing
- * a listener to the application startup
+ *          <p/>
+ *          we do the initial source scan after the entire application has started up
+ *          we now can reuse our jsf2 system event faclities by placing
+ *          a listener to the application startup
  */
 
 public class IntialScanAnnotationListener implements SystemEventListener {
