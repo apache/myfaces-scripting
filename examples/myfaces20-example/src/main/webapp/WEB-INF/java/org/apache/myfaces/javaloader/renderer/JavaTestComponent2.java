@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.javaloader.renderer;
 
-import javax.faces.component.UIInput;                                 O
+import javax.faces.component.UIInput;                                 
 import javax.faces.component.FacesComponent;
 
 /**

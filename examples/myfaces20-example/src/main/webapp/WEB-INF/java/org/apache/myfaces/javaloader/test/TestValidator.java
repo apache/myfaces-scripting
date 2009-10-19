@@ -23,6 +23,6 @@ package org.apache.myfaces.javaloader.test;
  * @version $Revision$ $Date$
  */
 
-@Val
+
 public class TestValidator {
 }

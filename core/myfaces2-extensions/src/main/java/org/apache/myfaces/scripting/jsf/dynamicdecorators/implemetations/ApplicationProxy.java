@@ -45,7 +45,7 @@ import java.util.*;
  * which should resolve our bean issues within a central
  * bean processing interceptor
  * <p/>
- * 
+ *
  * TODO at component reload via annotations the component family is lost
  * locate where it is and then add the family handling here
  * so that it is set again!
@@ -456,7 +456,7 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
 
-    //TODO implement those 
+    //TODO implement those
     @Override
     public UIComponent createComponent(FacesContext facesContext, Resource resource) {
         weaveDelegate();

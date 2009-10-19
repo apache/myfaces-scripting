@@ -49,13 +49,14 @@ public class BaseAnnotationScanListener {
 
     protected String getAnnotatedStringParam(Map<String, Object> propMap, String key) {
         Object tempPropVal = propMap.get(key);
+        if(tempPropVal == null) {
+            return null;
+        }
         if(tempPropVal instanceof String) {
             return (String) tempPropVal;
         }
         AnnotationConstant propVal = (AnnotationConstant) tempPropVal;
-        if (propVal == null) {
-            return null;
-        }
+      
         String val = (String) propVal.getParameterValue();
         if (val == null) {
             return null;
