@@ -20,10 +20,7 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
-import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 
 import javax.faces.FactoryFinder;
@@ -33,8 +30,6 @@ import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
 import java.util.Map;
-import java.util.Iterator;
-import java.util.HashMap;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

@@ -140,6 +140,9 @@ public class ProxyUtils {
      * @return the unproxied object
      */
     public static Object getDelegateFromProxy(Object o) {
+        if(o == null) {
+            return null;
+        }
         if (o instanceof Decorated)
             return ((Decorated) o).getDelegate();
 

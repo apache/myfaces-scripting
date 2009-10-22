@@ -18,32 +18,23 @@
  */
 package org.apache.myfaces.javaloader.renderer;
 
-
-import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
-
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
-import javax.faces.render.FacesRenderer;
-import java.io.IOException;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-
-public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
-
-    private static final String MSG = "Hello world from Renderer 2 sasdfasd ";
-
-    @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        super.encodeBegin(context, component);
-        ResponseWriter writer = context.getResponseWriter();
-        writer.write(MSG);
-        writer.write((String)ReflectUtil.executeMethod(component, "getMarker"));
+@FacesConverter(value="at.irian.CustomConverter")
+public class TestConverter1 implements Converter {
+    public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
+        return "hello from converter1";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
+        return "hello from converter1";  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

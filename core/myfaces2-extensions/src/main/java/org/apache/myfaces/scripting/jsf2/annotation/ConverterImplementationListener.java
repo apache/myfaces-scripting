@@ -86,7 +86,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, forClass);
         _alreadyRegistered.put(clazz.getName(), entry);
 
-        getApplication().addValidator(entry.getValue(), clazz.getName());
+        getApplication().addConverter(entry.getValue(), clazz.getName());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, forClass);
         _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
 
-        getApplication().addValidator(entry.getValue(), clazz.getFullyQualifiedName());
+        getApplication().addConverter(entry.getValue(), clazz.getFullyQualifiedName());
     }
 
     @Override
@@ -142,8 +142,8 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
             return;
         }
 
-        Application renderKit = getApplication();
-        renderKit.addConverter(entry.getValue(), PurgedConverter.class.getName());
+        Application application = getApplication();
+        application.addConverter(entry.getValue(), PurgedConverter.class.getName());
     }
 
 }

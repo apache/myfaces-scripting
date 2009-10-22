@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ValidatorImplementationListener extends MapEntityAnnotationScanner implements AnnotationScanListener {
 
     private static final String PAR_VALUE = "value";
-    private static final String PAR_DEFAULT = "default";
+    private static final String PAR_DEFAULT = "isDefault";
 
 
     public ValidatorImplementationListener() {
@@ -52,22 +52,35 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
             this.theDefault = theDefault;
         }
 
+
+
         public boolean equals(Object incoming) {
             if (!(incoming instanceof AnnotationEntry)) {
                 return false;
             }
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
-            //handle null cases
-            if ((value == null && toCompare.getValue() != null) ||
-                (value != null && toCompare.getValue() == null) ||
-                (theDefault == null && toCompare.getTheDefault() != null) ||
-                (theDefault != null && toCompare.getTheDefault() == null)) {
+
+            if(incoming == null) {
                 return false;
-            } else if (value == null && toCompare.getValue() == null && theDefault == null && toCompare.getTheDefault() == null) {
-                return true;
             }
 
-            return value.equals(toCompare.getValue()) && theDefault.equals(toCompare.getValue());
+            boolean firstEquals = compareValuePair( value, toCompare.getValue());
+            boolean secondEquals = compareValuePair( theDefault, toCompare.getTheDefault());
+
+            return firstEquals && secondEquals;
+        }
+
+        protected boolean compareValuePair(Object val1, Object val2) {
+            boolean retVal = false;
+            if(val1 == null ) {
+                if(val2 != null) retVal = false;
+                if(val2 == null) {
+                    retVal = true;
+                }
+            } else {
+                retVal = val1.equals(val2);
+            }
+            return retVal;
         }
 
         public String getValue() {

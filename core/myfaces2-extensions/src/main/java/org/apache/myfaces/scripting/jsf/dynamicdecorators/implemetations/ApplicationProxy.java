@@ -23,6 +23,8 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedResourceHandler;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedValidator;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedConverter;
 
 import javax.el.*;
 import javax.faces.FacesException;
@@ -45,7 +47,7 @@ import java.util.*;
  * which should resolve our bean issues within a central
  * bean processing interceptor
  * <p/>
- *
+ * <p/>
  * TODO at component reload via annotations the component family is lost
  * locate where it is and then add the family handling here
  * so that it is set again!
@@ -56,6 +58,9 @@ import java.util.*;
 public class ApplicationProxy extends Application implements Decorated {
 
     Application _delegate = null;
+    private static final String ERR_CONV_ANN_MOVED = "Converter annotation moved but target was not found";
+    private static final String ERR_ANN_VAL_MOVED = "Annotation on validator removed but no replacement found";
+    private static final String ERR_ANN_COMP_MOVED = "Annotation on component removed but no replacement found";
 
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
@@ -64,7 +69,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
-        //TODO this can be problematic if several libraries add their own proxies
+        //This can be problematic if several libraries add their own proxies
         // that way then might get get a cyclic stack
         //under normal circumstances this should not happen
         //because addElResolver is called once and getElResolver
@@ -328,6 +333,19 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addConverter(String converterId, String converterClass) {
         weaveDelegate();
+        if (converterClass.equals(PurgedConverter.class.getName())) {
+            //purged case we do a full rescane
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            Converter componentToChange = _delegate.createConverter(converterId);
+            if (componentToChange instanceof PurgedConverter) {
+                //Null not allowed here, but we set a purted validator to make
+                //sure that we get errors on the proper level
+                _delegate.addConverter(converterId, PurgedConverter.class.getName());
+                throw new FacesException(ERR_CONV_ANN_MOVED);
+            }
+            return;
+        }
+
         _delegate.addConverter(converterId, converterClass);
     }
 
@@ -391,15 +409,27 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.setSupportedLocales(locales);
     }
 
-    public void addValidator(String s, String s1) {
+    public void addValidator(String validatorId, String validatorClass) {
         weaveDelegate();
-        _delegate.addValidator(s, s1);
+        if (validatorClass.equals(PurgedValidator.class.getName())) {
+            //purged case we do a full rescane
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            Validator componentToChange = _delegate.createValidator(validatorId);
+            if (componentToChange instanceof PurgedValidator) {
+                //Null not allowed here, but we set a purted validator to make
+                //sure that we get errors on the proper level
+                _delegate.addValidator(validatorId, PurgedValidator.class.getName());
+                throw new FacesException(ERR_ANN_VAL_MOVED);
+            }
+            return;
+        }
+        _delegate.addValidator(validatorId, validatorClass);
     }
 
-    public Validator createValidator(String s) throws FacesException {
+    public Validator createValidator(String validatorId) throws FacesException {
         weaveDelegate();
 
-        Validator retVal = _delegate.createValidator(s);
+        Validator retVal = _delegate.createValidator(validatorId);
         if (ProxyUtils.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
             retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
         }
@@ -637,7 +667,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueExpression, facesContext, s);
             if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException("Annotation on component removed but no replacement found");
+                throw new FacesException(ERR_ANN_COMP_MOVED);
             }
             return componentToChange;
         }
@@ -653,7 +683,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(componentType);
             if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException("Annotation on component removed but no replacement found");
+                throw new FacesException(ERR_ANN_COMP_MOVED);
             }
             return componentToChange;
         }
@@ -668,7 +698,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueBinding, context, componentType);
             if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException("Annotation on component removed but no replacement found");
+                throw new FacesException(ERR_ANN_COMP_MOVED);
             }
             return componentToChange;
         }
@@ -683,7 +713,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, resource);
             if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException("Annotation on component removed but no replacement found");
+                throw new FacesException(ERR_ANN_COMP_MOVED);
             }
             return componentToChange;
         }
@@ -698,7 +728,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, componentType, rendererType);
             if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException("Annotation on component removed but no replacement found");
+                throw new FacesException(ERR_ANN_COMP_MOVED);
             }
             return componentToChange;
         }
@@ -716,7 +746,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
             componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
             if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException("Annotation on component removed but no replacement found");
+                throw new FacesException(ERR_ANN_COMP_MOVED);
             }
             return componentToChange;
         }
