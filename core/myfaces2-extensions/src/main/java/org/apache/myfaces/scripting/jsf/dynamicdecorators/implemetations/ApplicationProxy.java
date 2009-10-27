@@ -56,12 +56,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ApplicationProxy extends Application implements Decorated {
 
     Application _delegate = null;
-    private static final String ERR_CONV_ANN_MOVED = "Converter annotation moved but target was not found";
-    private static final String ERR_ANN_VAL_MOVED = "Annotation on validator removed but no replacement found";
-    private static final String ERR_ANN_COMP_MOVED = "Annotation on component removed but no replacement found";
-    private static final String ERR_BEH_NOTFOUND = "Behavior annotation was moved but could not be found";
+    private static final String ERR_CONV_ANN_MOVED  = "Converter annotation moved but target was not found";
+    private static final String ERR_ANN_VAL_MOVED   = "Annotation on validator removed but no replacement found";
+    private static final String ERR_ANN_COMP_MOVED  = "Annotation on component removed but no replacement found";
+    private static final String ERR_BEH_NOTFOUND    = "Behavior annotation was moved but could not be found";
 
-    //TODO add purged mapa here as well, for the getBehaviorIds etc...
+    /*
+     * separate map needed for the behavior ids, because
+     * the original is immutable
+     * we have to do a double bookkeeping
+     * here
+     */
     Map <String, String>_behaviors = new ConcurrentHashMap();
 
 
