@@ -25,12 +25,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.validator.ValidatorException;
 import javax.faces.validator.Validator;
+import javax.faces.validator.FacesValidator;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
 public class TestValidator2 implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         Log log = LogFactory.getLog(TestValidator1.class);

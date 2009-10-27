@@ -216,6 +216,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         //defined in the setter to speed things up a little
         NavigationHandler retVal = _delegate.getNavigationHandler();
+        //TODO add annotatiom support for the navigation handler as well
         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass()))
             retVal = new NavigationHandlerProxy(retVal);
         return retVal;
@@ -223,6 +224,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void setNavigationHandler(NavigationHandler navigationHandler) {
         weaveDelegate();
+        //TODO add annotatiom support for the navigation handler as well
         if (navigationHandler != null && ProxyUtils.isDynamic(navigationHandler.getClass()))
             navigationHandler = new NavigationHandlerProxy(navigationHandler);
         _delegate.setNavigationHandler(navigationHandler);
@@ -346,7 +348,7 @@ public class ApplicationProxy extends Application implements Decorated {
             ProxyUtils.getWeaver().fullAnnotationScan();
             Converter componentToChange = _delegate.createConverter(converterId);
             if (componentToChange instanceof PurgedConverter) {
-                //Null not allowed here, but we set a purted validator to make
+                //Null not allowed here, but we set a purted converter to make
                 //sure that we get errors on the proper level
                 _delegate.addConverter(converterId, PurgedConverter.class.getName());
                 throw new FacesException(ERR_CONV_ANN_MOVED);

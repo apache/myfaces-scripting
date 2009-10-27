@@ -48,21 +48,32 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         }
 
         public boolean equals(Object incoming) {
-            if (!(incoming instanceof AnnotationEntry)) {
+             if (!(incoming instanceof AnnotationEntry)) {
                 return false;
             }
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
-            //handle null cases
-            if ((value == null && toCompare.getValue() != null) ||
-                (value != null && toCompare.getValue() == null) ||
-                (forClass == null && toCompare.getForClass() != null) ||
-                (forClass != null && toCompare.getForClass() == null)) {
+
+            if(incoming == null) {
                 return false;
-            } else if (value == null && toCompare.getValue() == null && forClass == null && toCompare.getForClass() == null) {
-                return true;
             }
 
-            return value.equals(toCompare.getValue()) && forClass.equals(toCompare.getValue());
+            boolean firstEquals = compareValuePair( value, toCompare.getValue());
+            boolean secondEquals = compareValuePair( forClass, toCompare.getForClass());
+
+            return firstEquals && secondEquals;
+        }
+
+        protected boolean compareValuePair(Object val1, Object val2) {
+            boolean retVal = false;
+            if(val1 == null ) {
+                if(val2 != null) retVal = false;
+                if(val2 == null) {
+                    retVal = true;
+                }
+            } else {
+                retVal = val1.equals(val2);
+            }
+            return retVal;
         }
 
         public String getValue() {

@@ -31,7 +31,6 @@ import javax.faces.validator.ValidatorException;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
 @FacesValidator(value = "at.irian.CustomValidator")
 public class TestValidator1 implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
