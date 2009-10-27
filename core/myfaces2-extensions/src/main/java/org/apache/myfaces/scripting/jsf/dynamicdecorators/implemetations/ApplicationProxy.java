@@ -365,9 +365,11 @@ public class ApplicationProxy extends Application implements Decorated {
          *
          * reloading objects at their interception points
          */
-        if (ProxyUtils.isDynamic(retVal.getClass())) {
-            retVal = (Converter) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Converter.class);
-
+         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
+            Converter newRetVal = (Converter) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+            if(newRetVal != retVal) {
+                return _delegate.createConverter(converterId);
+            }
         }
 
         return retVal;
@@ -377,7 +379,10 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         Converter retVal = _delegate.createConverter(aClass);
         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            retVal = (Converter) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Converter.class);
+            Converter newRetVal = (Converter)ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+            if(newRetVal != retVal) {
+                return _delegate.createConverter(aClass);
+            }
         }
 
         return retVal;
@@ -430,8 +435,14 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
 
         Validator retVal = _delegate.createValidator(validatorId);
-        if (ProxyUtils.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
-            retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
+        if (ProxyUtils.isDynamic(retVal.getClass()) /*&& !Proxy.isProxyClass(retVal.getClass())*/) {
+            //the validators are recreated every request we do not have to deal with them on method level 
+            Validator newRetVal = (Validator) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+            if(newRetVal != retVal) {
+                return _delegate.createValidator(validatorId);
+            }
+
+            //retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
         }
         return retVal;
     }
@@ -479,7 +490,11 @@ public class ApplicationProxy extends Application implements Decorated {
         } else if (retVal instanceof BehaviorBase) {
             //we might have casts here against one of the parents
             //of this object
-            return (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+            Behavior newBehavior = (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+            if(newBehavior != retVal) {
+                return _delegate.createBehavior(behaviorId);
+            }
+            return retVal;
         } else {
             return (Behavior) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Behavior.class);
         }
