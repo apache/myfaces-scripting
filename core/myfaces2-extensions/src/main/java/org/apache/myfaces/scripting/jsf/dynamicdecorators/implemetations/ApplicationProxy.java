@@ -21,10 +21,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
-import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedResourceHandler;
-import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
-import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedValidator;
-import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedConverter;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.*;
 
 import javax.el.*;
 import javax.faces.FacesException;
@@ -41,6 +38,7 @@ import javax.faces.event.SystemEventListener;
 import javax.faces.validator.Validator;
 import java.lang.reflect.Proxy;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * our decorating applicstion
@@ -61,6 +59,11 @@ public class ApplicationProxy extends Application implements Decorated {
     private static final String ERR_CONV_ANN_MOVED = "Converter annotation moved but target was not found";
     private static final String ERR_ANN_VAL_MOVED = "Annotation on validator removed but no replacement found";
     private static final String ERR_ANN_COMP_MOVED = "Annotation on component removed but no replacement found";
+    private static final String ERR_BEH_NOTFOUND = "Behavior annotation was moved but could not be found";
+
+    //TODO add purged mapa here as well, for the getBehaviorIds etc...
+    Map <String, String>_behaviors = new ConcurrentHashMap();
+
 
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
@@ -441,8 +444,6 @@ public class ApplicationProxy extends Application implements Decorated {
             if(newRetVal != retVal) {
                 return _delegate.createValidator(validatorId);
             }
-
-            //retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
         }
         return retVal;
     }
@@ -461,13 +462,29 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public void addBehavior(String behaviorId, String behaviorClass) {
         weaveDelegate();
+
+         if (behaviorClass.equals(PurgedValidator.class.getName())) {
+            //purged case we do a full rescane
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            Behavior behavior = (Behavior) _delegate.createBehavior(behaviorId);
+            _behaviors.put(behaviorId, behaviorClass);
+            if (behavior instanceof PurgedBehavior) {
+                //Null not allowed here, but we set a purted validator to make
+                //sure that we get errors on the proper level
+                _delegate.addBehavior(behaviorId, PurgedBehavior.class.getName());
+                _behaviors.remove(behaviorId);
+                throw new FacesException(ERR_BEH_NOTFOUND);
+            }
+            return;
+        }
+
         _delegate.addBehavior(behaviorId, behaviorClass);
     }
 
     @Override
-    public void addDefaultValidatorId(String behaviorId) {
+    public void addDefaultValidatorId(String validatorId) {
         weaveDelegate();
-        _delegate.addDefaultValidatorId(behaviorId);
+        _delegate.addDefaultValidatorId(validatorId);
     }
 
     @Override
@@ -564,7 +581,8 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public Iterator<String> getBehaviorIds() {
         weaveDelegate();
-        return _delegate.getBehaviorIds();
+        return _behaviors.keySet().iterator();
+        //return _delegate.getBehaviorIds();
     }
 
     @Override
