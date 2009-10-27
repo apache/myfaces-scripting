@@ -474,30 +474,17 @@ public class ApplicationProxy extends Application implements Decorated {
     public Behavior createBehavior(String behaviorId) throws FacesException {
         weaveDelegate();
         Behavior retVal = _delegate.createBehavior(behaviorId);
-        //in case of a descendend of BehaviorBase we probably
-        //can count on additional functionality within the codebase we avoid
-        //therefore the interface reloading and work directly on the object
-        //still direct casts are forbidden, but parent casts are ok, which should
-        //be enough for behavior replacements on the user side, which this mechanism should
-        //cover for now
-        boolean isDynamic = ProxyUtils.isDynamic(retVal.getClass());
-        //TODO Check how often the behavior is really created if only once
-        //we have to operate over reloading proxies nevertheless
-        //the add and remove behavior listeners being protected might
-        //be a showstopper because we cannot provide the same in our proxies
-        if (!isDynamic) {
-            return retVal;
-        } else if (retVal instanceof BehaviorBase) {
+
+        if( ProxyUtils.isDynamic(retVal.getClass())) {
             //we might have casts here against one of the parents
             //of this object
             Behavior newBehavior = (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
             if(newBehavior != retVal) {
                 return _delegate.createBehavior(behaviorId);
             }
-            return retVal;
-        } else {
-            return (Behavior) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Behavior.class);
         }
+
+        return retVal;
     }
 
 
@@ -596,13 +583,14 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-        if (retVal instanceof PurgedResourceHandler) {
-            //TODO if resource handler purged then do a recompile
-            retVal = _delegate.getResourceHandler();
-            return retVal;
+        if(ProxyUtils.isDynamic(retVal.getClass())) {
+            ResourceHandler newHandler = (ResourceHandler) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+            if(newHandler != retVal) {
+                return _delegate.getResourceHandler();    
+            }
         }
+        return retVal;
 
-        return (ResourceHandler) reloadInstance(retVal);
     }
 
     @Override
@@ -621,6 +609,14 @@ public class ApplicationProxy extends Application implements Decorated {
     public void setResourceHandler(ResourceHandler resourceHandler) {
         weaveDelegate();
         _delegate.setResourceHandler(resourceHandler);
+        ResourceHandler handler = _delegate.getResourceHandler();
+        if (handler instanceof PurgedResourceHandler) {
+            ProxyUtils.getWeaver().fullAnnotationScan();
+            handler = _delegate.getResourceHandler();
+            if (handler instanceof PurgedResourceHandler) {
+                throw new FacesException("Resource handler annotation was moved but no target was found");
+            }
+        }
     }
 
     @Override
