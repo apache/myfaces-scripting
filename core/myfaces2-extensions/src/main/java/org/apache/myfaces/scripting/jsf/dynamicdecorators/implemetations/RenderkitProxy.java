@@ -54,27 +54,27 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
 
-    public void addRenderer(String s, String s1, Renderer renderer) {
+    public void addRenderer(String componentFamily, String rendererType, Renderer renderer) {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
         renderer = (Renderer) reloadInstance(renderer);
 
         
-        _delegate.addRenderer(s, s1, renderer);
+        _delegate.addRenderer(componentFamily, rendererType, renderer);
     }
 
-    public Renderer getRenderer(String s, String s1) {
+    public Renderer getRenderer(String componentFamily, String rendererType) {
         weaveDelegate();
-        Renderer rendr = _delegate.getRenderer(s, s1);
+        Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
         Renderer rendr2 = (Renderer) reloadInstance(rendr);
         if (rendr != rendr2) {
-            rendr2 = _delegate.getRenderer(s, s1);
+            rendr2 = _delegate.getRenderer(componentFamily, rendererType);
             if (rendr2 instanceof PurgedRenderer) {
-                return handleAnnotationChange(s, s1);
+                return handleAnnotationChange(componentFamily, rendererType);
             }
 
-            _delegate.addRenderer(s, s1, rendr2);
+            _delegate.addRenderer(componentFamily, rendererType, rendr2);
             return rendr2;
         }
         return rendr;

@@ -25,6 +25,7 @@ import javax.faces.component.FacesComponent;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@FacesComponent("at.irian.JavaTestComponent")
 public class JavaTestComponent2 extends UIInput implements Markable {
 
     public JavaTestComponent2() {
@@ -33,7 +34,7 @@ public class JavaTestComponent2 extends UIInput implements Markable {
 
 
     public String getMarker() {
-        return "Component 2 marker";
+        return "<h1>Component 2 marker</h1>";
     }
 
     public void setMarker() {

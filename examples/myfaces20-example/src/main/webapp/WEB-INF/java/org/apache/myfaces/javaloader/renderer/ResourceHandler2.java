@@ -19,6 +19,7 @@
 package org.apache.myfaces.javaloader.renderer;
 
 import javax.faces.application.ResourceHandler;
+import javax.faces.application.Resource;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -28,5 +29,15 @@ import javax.faces.application.ResourceHandler;
 public class ResourceHandler2 extends BaseResourceHandler {
     public ResourceHandler2(ResourceHandler delegate) {
         super(delegate);
+    }
+
+    @Override
+    public Resource createResource(String resourceName) {
+        if (resourceName.equals("testResource")) {
+            Resource retVal = new StringResource("hello world from resource handler1");
+            return retVal;
+        }
+
+        return super.createResource(resourceName);
     }
 }

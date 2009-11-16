@@ -4,8 +4,13 @@ import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-
-
+import javax.faces.application.ResourceHandler;
+import javax.faces.application.Resource;
+import javax.faces.context.FacesContext;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 
 public class TestBean2 {
@@ -27,6 +32,27 @@ public class TestBean2 {
         System.out.println("hello world");
     }
 
+    public void setResource(String param) {
+
+    }
+    
+    public String getResource() {
+           ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
+           Resource resource = handler.createResource("testResource");
+           InputStream istr = resource.getInputStream();
+           BufferedReader rdr = new BufferedReader(new InputStreamReader(istr));
+           StringBuilder strBuf = new StringBuilder();
+           String line = null;
+           try {
+               while ((line = rdr.readLine()) != null) {
+                   strBuf.append(line);
+               }
+           } catch (IOException ex) {
+
+           };
+           return strBuf.toString();
+       }
+    
 
  
 }

@@ -45,12 +45,12 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
 
     protected void addEntity(Class clazz, String val) {
         if (log.isTraceEnabled()) {
-            log.trace("addComponent(" + val + ","
-                      + clazz.getName() + ")");
+            log.trace("addComponent(" + val + "," + clazz.getName() + ")");
         }
         getApplication().addComponent(val, clazz.getName());
-        //TODO check by debugging into the impl why the family is lost
-        //if we run into this stage via reloading
+        //register the renderer if not registered
+
+
         _alreadyRegistered.put(clazz.getName(), val);
     }
 

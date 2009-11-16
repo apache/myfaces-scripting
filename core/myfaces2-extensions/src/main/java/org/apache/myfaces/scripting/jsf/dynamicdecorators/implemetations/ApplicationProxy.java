@@ -504,7 +504,6 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
 
-    //TODO implement those
     @Override
     public UIComponent createComponent(FacesContext facesContext, Resource resource) {
         weaveDelegate();
@@ -680,13 +679,14 @@ public class ApplicationProxy extends Application implements Decorated {
         return true;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String s) {
-        UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s);
+    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String componentType) {
+        UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
         if (componentToChange instanceof PurgedComponent) {
             ProxyUtils.getWeaver().fullAnnotationScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
-            componentToChange = _delegate.createComponent(valueExpression, facesContext, s);
+            componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
+            //TODO reregister the renderer for the component because otherwise we get an npe here on renderkitlevel
 
             return componentToChange;
         }

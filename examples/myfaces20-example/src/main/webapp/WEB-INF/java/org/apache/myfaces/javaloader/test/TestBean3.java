@@ -1,11 +1,21 @@
 package org.apache.myfaces.javaloader.test;
 
 import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
+import org.apache.myfaces.config.impl.digester.elements.FacesConfig;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.application.ResourceHandler;
+import javax.faces.application.Resource;
+import javax.faces.context.FacesContext;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.nio.CharBuffer;
 
-@ManagedBean (name="javatestbean")
+@ManagedBean(name = "javatestbean")
 @SessionScoped
 public class TestBean3 {
     String sayHello = "hello worldgggg";
@@ -13,7 +23,7 @@ public class TestBean3 {
     String hello3 = "hello from  added attribute 2";
 
     public String getSayHello() {
-        return "Java dynamic  bean Testbean3 bla bla bla - "+TestClass2.hello2 + hello3;
+        return "Java dynamic  bean Testbean3 bla bla bla - " + TestClass2.hello2 + hello3;
     }
 
     public String getSayHello2() {
@@ -26,6 +36,28 @@ public class TestBean3 {
         System.out.println("hello world");
     }
 
+    public void setResource(String param) {
 
+    }
+    
+
+    public String getResource() {
+     /*   ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
+        Resource resource = handler.createResource("testResource");
+        InputStream istr = resource.getInputStream();
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(istr));
+        StringBuilder strBuf = new StringBuilder();
+        String line = null;
+        try {
+            while ((line = rdr.readLine()) != null) {
+                strBuf.append(line);
+            }
+        } catch (IOException ex) {
+
+        };
+        return strBuf.toString();
+        */
+        return "hello world";
+    }
 
 }

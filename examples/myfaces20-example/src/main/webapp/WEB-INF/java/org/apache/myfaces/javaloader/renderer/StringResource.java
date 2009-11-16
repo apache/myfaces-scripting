@@ -18,41 +18,49 @@
  */
 package org.apache.myfaces.javaloader.renderer;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.FacesComponent;
+import javax.faces.application.Resource;
+import javax.faces.context.FacesContext;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.util.Map;
+import java.net.URL;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-/**
- * Simple component to be picked up by
- */
+public class StringResource extends Resource {
 
-public class JavaTestComponent extends UIInput implements Markable {
+    String resourceString = "";
 
-    enum PropertyKeys {
-        inc
+    public StringResource(String resourceString) {
+        this.resourceString = resourceString;
     }
 
-    public JavaTestComponent() {
-        setRendererType("at.irian.JavaTestRenderer");
+    @Override
+    public InputStream getInputStream() {
+
+        return new ByteArrayInputStream(resourceString.getBytes());  
     }
 
-    public String getMarker() {
-        return "Component 1 marker";
+    @Override
+    public String getRequestPath() {
+        return null;  
     }
 
-    public void setMarker() {
-       
+    @Override
+    public Map<String, String> getResponseHeaders() {
+        return null;  
     }
 
-    public int getInc() {
-        return (Integer) getStateHelper().eval(PropertyKeys.inc, 1);
+    @Override
+    public URL getURL() {
+        return null;  
     }
 
-    public void setInc(int inc) {
-        getStateHelper().put(PropertyKeys.inc, inc);
+    @Override
+    public boolean userAgentNeedsUpdate(FacesContext context) {
+        return false;  
     }
 }
