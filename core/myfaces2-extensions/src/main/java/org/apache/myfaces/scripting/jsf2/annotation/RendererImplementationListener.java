@@ -162,17 +162,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         }
     }
 
-    private String getRenderKitId(Map<String, Object> params) {
-        String renderKitId = (String) params.get(PAR_RENDERKITID);
-        renderKitId = (renderKitId == null) ? getApplication().getDefaultRenderKitId() : renderKitId;
-        return renderKitId;
-    }
-
-    private RenderKit getRenderkit(String renderKitId) {
-        RenderKitFactory factory = getRenderKitFactory();
-        RenderKit renderKit = factory.getRenderKit(FacesContext.getCurrentInstance(), renderKitId);
-        return renderKit;
-    }
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -206,6 +195,20 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return true;
     }
 
+
+    private String getRenderKitId(Map<String, Object> params) {
+        String renderKitId = (String) params.get(PAR_RENDERKITID);
+        renderKitId = (renderKitId == null) ? getApplication().getDefaultRenderKitId() : renderKitId;
+        return renderKitId;
+    }
+
+    private RenderKit getRenderkit(String renderKitId) {
+        RenderKitFactory factory = getRenderKitFactory();
+        RenderKit renderKit = factory.getRenderKit(FacesContext.getCurrentInstance(), renderKitId);
+        return renderKit;
+    }
+
+
     @Override
     public void purge(String className) {
         super.purge(className);
@@ -219,6 +222,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
         RenderKit renderKit = getRenderkit(entry.getRenderKitId());
         try {
+            
             renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
         } catch (InstantiationException e) {
             log.error(e);

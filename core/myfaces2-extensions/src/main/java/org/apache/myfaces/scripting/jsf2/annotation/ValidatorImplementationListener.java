@@ -24,8 +24,6 @@ import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedValidator;
 
 import javax.faces.validator.FacesValidator;
 import java.util.Map;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -39,7 +37,7 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
 
 
     public ValidatorImplementationListener() {
-        /*supported annotation parameters value and default*/
+        /*supported annotation parameters rendererType and default*/
         super(PAR_VALUE, PAR_DEFAULT);
     }
 
