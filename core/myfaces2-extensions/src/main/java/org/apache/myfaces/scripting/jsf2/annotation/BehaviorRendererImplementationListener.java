@@ -31,6 +31,8 @@ import java.util.Map;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *          <p/>
+ *          Implementation listener for the FacesBehaviorRenderer annotation
  */
 
 public class BehaviorRendererImplementationListener extends MapEntityAnnotationScanner {
@@ -168,7 +170,6 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
 
         RenderKit renderKit = getRenderkit(entry.getRenderKitId());
         try {
-
             renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
         } catch (InstantiationException e) {
             log.error(e);

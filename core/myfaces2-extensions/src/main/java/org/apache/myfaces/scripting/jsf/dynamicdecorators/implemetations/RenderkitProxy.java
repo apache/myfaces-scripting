@@ -22,6 +22,7 @@ import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ProxyUtils;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedClientBehaviorRenderer;
 
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
@@ -79,6 +80,18 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return rendr;
     }
 
+    private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
+           ClientBehaviorRenderer rendr2;
+           ProxyUtils.getWeaver().fullAnnotationScan();
+           rendr2 = _delegate.getClientBehaviorRenderer(s);
+           if (rendr2 instanceof PurgedClientBehaviorRenderer) {
+               throw new FacesException("Renderer not found");
+           }
+           rendr2 = _delegate.getClientBehaviorRenderer(s);
+           return rendr2;
+       }
+
+
     private Renderer handleAnnotationChange(String s, String s1) {
         Renderer rendr2;
         ProxyUtils.getWeaver().fullAnnotationScan();
@@ -118,7 +131,17 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     @Override
     public ClientBehaviorRenderer getClientBehaviorRenderer(String s) {
         weaveDelegate();
-        return (ClientBehaviorRenderer) reloadInstance(_delegate.getClientBehaviorRenderer(s));
+        ClientBehaviorRenderer rendr = _delegate.getClientBehaviorRenderer(s);
+        ClientBehaviorRenderer rendr2 = (ClientBehaviorRenderer) reloadInstance(rendr);
+        if (rendr != rendr2) {
+            //TODO simplyfy this
+            rendr2 = _delegate.getClientBehaviorRenderer(s);
+            if (rendr2 instanceof PurgedClientBehaviorRenderer) {
+                return handleAnnotationChangeBehaviorRenderer(s);
+            }
+            return rendr2;
+        }
+        return rendr;
     }
 
     @Override
