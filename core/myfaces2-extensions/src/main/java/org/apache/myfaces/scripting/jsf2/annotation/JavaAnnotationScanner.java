@@ -50,6 +50,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     JavaDocBuilder _builder = new JavaDocBuilder();
     Map<String, String> _registeredAnnotations = new HashMap<String, String>();
     LinkedList<String> _sourcePaths = new LinkedList<String>();
+    private static final String JAVAX_FACES = "javax.faces";
 
     public JavaAnnotationScanner() {
         initDefaultListeners();
@@ -73,7 +74,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
             return retVal;
         }
         for (Annotation ann : anns) {
-            if (ann.getType().getValue().startsWith("javax.faces")) {
+            if (ann.getType().getValue().startsWith(JAVAX_FACES)) {
                 retVal.add(ann);
             }
         }
@@ -86,7 +87,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
             return retVal;
         }
         for (java.lang.annotation.Annotation ann : anns) {
-            if (ann.annotationType().getName().startsWith("javax.faces")) {
+            if (ann.annotationType().getName().startsWith(JAVAX_FACES)) {
                 retVal.add(ann);
             }
 
