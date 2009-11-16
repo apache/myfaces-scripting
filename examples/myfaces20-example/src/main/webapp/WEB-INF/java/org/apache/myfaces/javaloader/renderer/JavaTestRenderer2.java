@@ -32,7 +32,6 @@ import java.io.IOException;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
 
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 

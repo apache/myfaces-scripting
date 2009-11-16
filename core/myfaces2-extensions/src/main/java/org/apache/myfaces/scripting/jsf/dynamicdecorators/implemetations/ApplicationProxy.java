@@ -56,10 +56,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ApplicationProxy extends Application implements Decorated {
 
     Application _delegate = null;
-    private static final String ERR_CONV_ANN_MOVED  = "Converter annotation moved but target was not found";
-    private static final String ERR_ANN_VAL_MOVED   = "Annotation on validator removed but no replacement found";
-    private static final String ERR_ANN_COMP_MOVED  = "Annotation on component removed but no replacement found";
-    private static final String ERR_BEH_NOTFOUND    = "Behavior annotation was moved but could not be found";
+    private static final String ERR_CONV_ANN_MOVED = "Converter annotation moved but target was not found";
+    private static final String ERR_ANN_VAL_MOVED = "Annotation on validator removed but no replacement found";
+    private static final String ERR_ANN_COMP_MOVED = "Annotation on component removed but no replacement found";
+    private static final String ERR_BEH_NOTFOUND = "Behavior annotation was moved but could not be found";
 
     /*
      * separate map needed for the behavior ids, because
@@ -67,7 +67,7 @@ public class ApplicationProxy extends Application implements Decorated {
      * we have to do a double bookkeeping
      * here
      */
-    Map <String, String>_behaviors = new ConcurrentHashMap();
+    Map<String, String> _behaviors = new ConcurrentHashMap();
 
 
     public ApplicationProxy(Application delegate) {
@@ -351,7 +351,6 @@ public class ApplicationProxy extends Application implements Decorated {
                 //Null not allowed here, but we set a purted converter to make
                 //sure that we get errors on the proper level
                 _delegate.addConverter(converterId, PurgedConverter.class.getName());
-                throw new FacesException(ERR_CONV_ANN_MOVED);
             }
             return;
         }
@@ -367,6 +366,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public Converter createConverter(String converterId) {
         weaveDelegate();
         Converter retVal = _delegate.createConverter(converterId);
+
         /**
          * since createConverter is called only once
          * we have to work with method reloading proxies
@@ -375,11 +375,9 @@ public class ApplicationProxy extends Application implements Decorated {
          *
          * reloading objects at their interception points
          */
-         if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            Converter newRetVal = (Converter) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-            if(newRetVal != retVal) {
-                return _delegate.createConverter(converterId);
-            }
+        Converter newRetVal = (Converter) reloadInstance(retVal);
+        if (newRetVal != retVal) {
+            return _delegate.createConverter(converterId);
         }
 
         return retVal;
@@ -388,11 +386,9 @@ public class ApplicationProxy extends Application implements Decorated {
     public Converter createConverter(Class aClass) {
         weaveDelegate();
         Converter retVal = _delegate.createConverter(aClass);
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            Converter newRetVal = (Converter)ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-            if(newRetVal != retVal) {
-                return _delegate.createConverter(aClass);
-            }
+        Converter newRetVal = (Converter) reloadInstance(retVal);
+        if (newRetVal != retVal) {
+            return _delegate.createConverter(aClass);
         }
 
         return retVal;
@@ -434,7 +430,7 @@ public class ApplicationProxy extends Application implements Decorated {
                 //Null not allowed here, but we set a purted validator to make
                 //sure that we get errors on the proper level
                 _delegate.addValidator(validatorId, PurgedValidator.class.getName());
-                throw new FacesException(ERR_ANN_VAL_MOVED);
+
             }
             return;
         }
@@ -445,12 +441,10 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
 
         Validator retVal = _delegate.createValidator(validatorId);
-        if (ProxyUtils.isDynamic(retVal.getClass()) /*&& !Proxy.isProxyClass(retVal.getClass())*/) {
-            //the validators are recreated every request we do not have to deal with them on method level 
-            Validator newRetVal = (Validator) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-            if(newRetVal != retVal) {
-                return _delegate.createValidator(validatorId);
-            }
+        //the validators are recreated every request we do not have to deal with them on method level
+        Validator newRetVal = (Validator) reloadInstance(retVal);
+        if (newRetVal != retVal) {
+            return _delegate.createValidator(validatorId);
         }
         return retVal;
     }
@@ -470,7 +464,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void addBehavior(String behaviorId, String behaviorClass) {
         weaveDelegate();
 
-         if (behaviorClass.equals(PurgedValidator.class.getName())) {
+        if (behaviorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescane
             ProxyUtils.getWeaver().fullAnnotationScan();
             Behavior behavior = (Behavior) _delegate.createBehavior(behaviorId);
@@ -480,7 +474,7 @@ public class ApplicationProxy extends Application implements Decorated {
                 //sure that we get errors on the proper level
                 _delegate.addBehavior(behaviorId, PurgedBehavior.class.getName());
                 _behaviors.remove(behaviorId);
-                throw new FacesException(ERR_BEH_NOTFOUND);
+
             }
             return;
         }
@@ -499,13 +493,11 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         Behavior retVal = _delegate.createBehavior(behaviorId);
 
-        if( ProxyUtils.isDynamic(retVal.getClass())) {
-            //we might have casts here against one of the parents
-            //of this object
-            Behavior newBehavior = (Behavior) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-            if(newBehavior != retVal) {
-                return _delegate.createBehavior(behaviorId);
-            }
+        //we might have casts here against one of the parents
+        //of this object
+        Behavior newBehavior = (Behavior) reloadInstance(retVal);
+        if (newBehavior != retVal) {
+            return _delegate.createBehavior(behaviorId);
         }
 
         return retVal;
@@ -608,14 +600,11 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-        if(ProxyUtils.isDynamic(retVal.getClass())) {
-            ResourceHandler newHandler = (ResourceHandler) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
-            if(newHandler != retVal) {
-                return _delegate.getResourceHandler();    
-            }
+        ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal);
+        if (newHandler != retVal) {
+            return _delegate.getResourceHandler();
         }
         return retVal;
-
     }
 
     @Override
@@ -637,10 +626,6 @@ public class ApplicationProxy extends Application implements Decorated {
         ResourceHandler handler = _delegate.getResourceHandler();
         if (handler instanceof PurgedResourceHandler) {
             ProxyUtils.getWeaver().fullAnnotationScan();
-            handler = _delegate.getResourceHandler();
-            if (handler instanceof PurgedResourceHandler) {
-                throw new FacesException("Resource handler annotation was moved but no target was found");
-            }
         }
     }
 
@@ -702,9 +687,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueExpression, facesContext, s);
-            if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException(ERR_ANN_COMP_MOVED);
-            }
+
             return componentToChange;
         }
         return oldComponent;
@@ -718,9 +701,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(componentType);
-            if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException(ERR_ANN_COMP_MOVED);
-            }
+
             return componentToChange;
         }
         return oldComponent;
@@ -733,9 +714,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueBinding, context, componentType);
-            if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException(ERR_ANN_COMP_MOVED);
-            }
+
             return componentToChange;
         }
         return oldComponent;
@@ -748,9 +727,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, resource);
-            if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException(ERR_ANN_COMP_MOVED);
-            }
+
             return componentToChange;
         }
         return oldComponent;
@@ -763,9 +740,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, componentType, rendererType);
-            if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException(ERR_ANN_COMP_MOVED);
-            }
+
             return componentToChange;
         }
         return oldComponent;
@@ -781,9 +756,7 @@ public class ApplicationProxy extends Application implements Decorated {
             //was registered after the reload because the annotation has been removed
 
             componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
-            if (componentToChange instanceof PurgedComponent) {
-                throw new FacesException(ERR_ANN_COMP_MOVED);
-            }
+
             return componentToChange;
         }
         return oldComponent;
