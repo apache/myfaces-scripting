@@ -46,6 +46,18 @@ import java.util.HashSet;
  *         <p/>
  *         The Scripting Weaver for the java core which reloads the java scripts
  *         dynamically upon change
+ *
+ * <p />
+ * Note this is the central focus point for all reloading related activity
+ * this class introduces the correct class loader
+ * it manages the bean reloading on the proper stage of the lifecyle,
+ * calls the compilers single and all compile,
+ * it adds the strategies for the property handling of the reloaded instance
+ * <p />
+ * Every language implementation has to implement this weaver
+ * and (if not done differently) also the proper compiler bindings
+ * and property handling strategies.
+ *
  */
 public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, Serializable {
 
@@ -94,26 +106,6 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
     public JavaScriptingWeaver() {
         super(JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
-    }
-
-
-    /**
-     * helper to map the properties wherever possible
-     *
-     * @param target
-     * @param src
-     */
-    protected void mapProperties(Object target, Object src) {
-        try {
-            //TODO add dynamic property reloading hook here
-            BeanUtils.copyProperties(target, src);
-        } catch (IllegalAccessException e) {
-            log.debug(e);
-            //this is wanted
-        } catch (InvocationTargetException e) {
-            log.debug(e);
-            //this is wanted
-        }
     }
 
 
@@ -240,7 +232,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         Set<String> tainted = new HashSet<String>();
         for (Map.Entry<String, ReloadingMetadata> it : FileChangedDaemon.getInstance().getClassMap().entrySet()) {
             if (it.getValue().getScriptingEngine() == ScriptingConst.ENGINE_TYPE_JAVA && it.getValue().isTainted()) {
-                tainted.add(it.getValue().getAClass().getName());
+                tainted.add(it.getKey());
             }
         }
         if (tainted.size() > 0) {

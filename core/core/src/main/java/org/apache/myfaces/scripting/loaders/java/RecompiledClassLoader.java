@@ -20,6 +20,9 @@ package org.apache.myfaces.scripting.loaders.java;
 
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,14 +30,16 @@ import java.io.FileInputStream;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Classloader which loads the compilates for the scripting engine
  */
-
 public class RecompiledClassLoader extends ClassLoader {
     static File tempDir = null;
     static double _tempMarker = Math.random();
+    int _scriptingEngine;
 
 
-    public RecompiledClassLoader(ClassLoader classLoader) {
+    public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine) {
         super(classLoader);
         if (tempDir == null) {
             synchronized (this.getClass()) {
@@ -45,6 +50,7 @@ public class RecompiledClassLoader extends ClassLoader {
                 tempDir = FileUtils.getTempDir();
             }
         }
+        _scriptingEngine = scriptingEngine;
     }
 
     RecompiledClassLoader() {
@@ -67,6 +73,10 @@ public class RecompiledClassLoader extends ClassLoader {
         //check if our class exists in the tempDir
         File target = getClassFile(className);
         if (target.exists()) {
+            ReloadingMetadata data = FileChangedDaemon.getInstance().getClassMap().get(className);
+            if(data != null && !data.isTainted()) {
+                return data.getAClass();
+            }
 
             FileInputStream iStream = null;
             int fileLength = (int) target.length();
@@ -78,8 +88,16 @@ public class RecompiledClassLoader extends ClassLoader {
                 // Erzeugt aus dem byte Feld ein Class Object.
                 Class retVal = null;
                 
-
-                return super.defineClass(className, fileContent, 0, fileLength);
+                //we have to do it here because just in case
+                //a dependend class is loaded as well we run into classcast exceptions
+                if(data != null) {
+                    data.setTainted(false);
+                    return super.defineClass(className, fileContent, 0, fileLength);
+                } else {
+                    //we store the initial reloading meta data information so that it is refreshed
+                    //later on, this we we cover dependend classes on the initial load
+                    return storeReloadableDefinitions(className, target, fileLength, fileContent);
+                }
 
             } catch (Exception e) {
                 throw new ClassNotFoundException(e.toString());
@@ -96,6 +114,23 @@ public class RecompiledClassLoader extends ClassLoader {
         
 
         return super.loadClass(className);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    private Class<?> storeReloadableDefinitions(String className, File target, int fileLength, byte[] fileContent) {
+        Class retVal;
+        retVal = super.defineClass(className, fileContent, 0, fileLength);
+        ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
+        reloadingMetaData.setAClass(retVal);
+
+        reloadingMetaData.setFileName(target.getAbsolutePath());
+        reloadingMetaData.setSourcePath("");
+        reloadingMetaData.setTimestamp(target.lastModified());
+        reloadingMetaData.setTainted(false);
+        reloadingMetaData.setTaintedOnce(true);
+        reloadingMetaData.setScriptingEngine(_scriptingEngine);
+
+        FileChangedDaemon.getInstance().getClassMap().put(className, reloadingMetaData);
+        return retVal;
     }
 
 

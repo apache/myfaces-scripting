@@ -146,8 +146,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         if (metadata == null) {
             String fileName = className.replaceAll("\\.", File.separator) + getFileEnding();
 
-            //TODO this code can probably be replaced by the functionality
-            //already given in the Groovy classloader, this needs further testing
             for (String pathEntry : getScriptPaths()) {
 
                 /**
@@ -172,6 +170,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
+    //TODO move this into the classloader to cover dependend classes as well
     protected void refreshReloadingMetaData(String sourceRoot, String file, File currentClassFile, Class retVal, int engineType) {
         ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
         reloadingMetaData.setAClass(retVal);
@@ -212,7 +211,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         this.scriptingEngine = scriptingEngine;
     }
 
-    protected abstract void mapProperties(Object target, Object src);
 
     protected abstract Class loadScriptingClassFromFile(String sourceRoot, String file);
 

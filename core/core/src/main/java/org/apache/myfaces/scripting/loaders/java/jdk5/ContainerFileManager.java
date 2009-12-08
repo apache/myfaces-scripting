@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.loaders.java.jdk5;
 
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import java.io.File;
 import java.net.URL;
@@ -38,7 +39,7 @@ public class ContainerFileManager {
     RecompiledClassLoader classLoader = null;
 
     public ContainerFileManager() {
-        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader());
+        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
     }
 
     public String getClassPath() {

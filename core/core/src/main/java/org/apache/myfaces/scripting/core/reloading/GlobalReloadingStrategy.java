@@ -36,11 +36,13 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
     private BaseWeaver _weaver = null;
 
     private ReloadingStrategy _beanStrategy;
+    private ReloadingStrategy _rendererStrategy;
     private ReloadingStrategy _allOthers;
 
     public GlobalReloadingStrategy(BaseWeaver weaver) {
         _weaver = weaver;
         _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
+        _rendererStrategy = new RendererReloadingStrategy();
         _allOthers = new SimpleReloadingStrategy(weaver);
     }
 
@@ -57,6 +59,8 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
         switch (artefactType) {
             case ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN:
                 return _beanStrategy.reload(toReload, artefactType);
+            case ScriptingConst.ARTEFACT_TYPE_RENDERER:
+                return _rendererStrategy.reload(toReload, artefactType);
             //TODO Add other artefact loading strategies on demand here
             default:
                 return _allOthers.reload(toReload, artefactType);

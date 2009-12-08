@@ -53,7 +53,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //FIXME this is private in super class
         scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
         fileEnding = ".groovy"
-        _reloadingStrategy = new GroovyReloadingStrategy(this)
+        _reloadingStrategy = new GlobalReloadingStrategy(this)
     }
 
 
@@ -160,7 +160,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     }
 
     public void requestRefresh() {
-        
+
     }
 
 }
