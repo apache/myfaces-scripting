@@ -35,13 +35,12 @@ import java.util.List;
 public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -3034995032644947216L;
 
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
-    
 
     public CoreWeaver(ScriptingWeaver... weavers) {
         for (ScriptingWeaver weaver : weavers) {
@@ -53,7 +52,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         throw new RuntimeException("Method not supported from this facade");
     }
 
-    public Object reloadScriptingInstance(Object o,int artefactType) {
+    public Object reloadScriptingInstance(Object o, int artefactType) {
         if (o.getClass().getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
@@ -120,6 +119,9 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         }
     }
 
+    /**
+     * @deprecated, the full recompile now is done at the beginning of a request
+     */
     public void fullRecompile() {
         for (ScriptingWeaver weaver : _weavers) {
             weaver.fullRecompile();
@@ -127,7 +129,9 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void requestRefresh() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        for (ScriptingWeaver weaver : _weavers) {
+            weaver.requestRefresh();
+        }
     }
 
 }

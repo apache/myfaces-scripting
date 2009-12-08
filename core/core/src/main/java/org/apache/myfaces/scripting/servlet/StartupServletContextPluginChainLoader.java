@@ -46,9 +46,11 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);
         servletContext.setAttribute("ScriptingWeaver", loader.getScriptingWeaver());
+        //TODO do a first full recompile here at startup time before the bean etc... instantiation can kick in
    }
 
     public void postInit(ServletContextEvent evt) {
+
     }
 
     public void preDestroy(ServletContextEvent evt) {

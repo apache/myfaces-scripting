@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.servlet;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.context.servlet.ServletExternalContextImpl;
 
 
 import javax.servlet.*;
@@ -43,6 +44,7 @@ public class ScriptingServletFilter implements Filter {
      public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
          WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
+        // WeavingContext.doRequestRefreshes();
          filterChain.doFilter(servletRequest, servletResponse);
      }
 

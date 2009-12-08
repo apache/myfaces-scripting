@@ -222,7 +222,10 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     }
 
     public void requestRefresh() {
-        if (FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA)) {
+        if (
+              FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA) != null &&
+              FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA)
+           ) {
             fullRecompile();
             //TODO if managed beans are tainted we have to do a full drop
             refreshManagedBeans();
@@ -230,6 +233,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     }
 
     private void refreshManagedBeans() {
+        if(FacesContext.getCurrentInstance() == null) {
+            return;//no npe allowed    
+        }
         Set<String> tainted = new HashSet<String>();
         for (Map.Entry<String, ReloadingMetadata> it : FileChangedDaemon.getInstance().getClassMap().entrySet()) {
             if (it.getValue().getScriptingEngine() == ScriptingConst.ENGINE_TYPE_JAVA && it.getValue().isTainted()) {

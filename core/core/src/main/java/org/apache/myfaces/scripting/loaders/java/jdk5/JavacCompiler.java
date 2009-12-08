@@ -97,16 +97,15 @@ class JavacCompiler implements Compiler {
             StringWriter compilerOutput = new StringWriter();
             // Invoke the Javac compiler
             Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
-            Object [] compilerArguments = new Object[]{buildCompilerArguments(sourcePath, targetPath, classPath), new PrintWriter(compilerOutput)};
+            Object[] compilerArguments = new Object[]{buildCompilerArguments(sourcePath, targetPath, classPath), new PrintWriter(compilerOutput)};
             logCommandLine(compilerArguments);
 
-
-            Integer returnCode = (Integer) compile.invoke(null,compilerArguments);
+            Integer returnCode = (Integer) compile.invoke(null, compilerArguments);
 
             CompilationResult result = new CompilationResult(compilerOutput.toString());
             if (returnCode == null || returnCode.intValue() != 0) {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
-                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'."+ compilerOutput.toString()));
+                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
 
             return result;
@@ -141,10 +140,10 @@ class JavacCompiler implements Compiler {
 
             // Invoke the Javac compiler
             Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
-            if(!targetPath.exists()) {
+            if (!targetPath.exists()) {
                 targetPath.mkdirs();
             }
-            Object [] compilerArguments = new Object[]{buildCompilerArguments(sourcePath, targetPath, file, classPath), new PrintWriter(compilerOutput)};
+            Object[] compilerArguments = new Object[]{buildCompilerArguments(sourcePath, targetPath, file, classPath), new PrintWriter(compilerOutput)};
             logCommandLine(compilerArguments);
 
             Integer returnCode = (Integer) compile.invoke(null,
@@ -153,7 +152,7 @@ class JavacCompiler implements Compiler {
             CompilationResult result = new CompilationResult(compilerOutput.toString());
             if (returnCode == null || returnCode.intValue() != 0) {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
-                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'."+ compilerOutput.toString()));
+                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
 
             return result;
@@ -170,15 +169,19 @@ class JavacCompiler implements Compiler {
     }
 
     private void logCommandLine(Object[] compilerArguments) {
-        if(logger.isInfoEnabled()) {
+        if (logger.isDebugEnabled()) {
             StringBuilder commandLine = new StringBuilder();
             commandLine.append("javac ");
-            for(String compilerArgument: (String[]) compilerArguments[0]) {
+            for (String compilerArgument : (String[]) compilerArguments[0]) {
                 commandLine.append(compilerArgument);
                 commandLine.append(" ");
             }
-            logger.info(commandLine.toString());
+            logger.debug(commandLine.toString());
         }
+        if (logger.isInfoEnabled()) {
+            logger.info("compiling java");
+        }
+
     }
 
     // ------------------------------------------ Utility methods
@@ -193,12 +196,12 @@ class JavacCompiler implements Compiler {
      * @return an array of arguments that you have to pass to the Javac compiler
      */
     protected String[] buildCompilerArguments(File sourcePath, File targetPath, String classPath) {
-        List <File> sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.java");
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.java");
 
         List arguments = getDefaultArguments(sourcePath, targetPath, classPath);
 
         // Append the source file that is to be compiled. Note that the user specifies only a relative file location.
-        for(File sourceFile: sourceFiles) {
+        for (File sourceFile : sourceFiles) {
             arguments.add(sourceFile.getAbsolutePath());
         }
         return (String[]) arguments.toArray(new String[0]);

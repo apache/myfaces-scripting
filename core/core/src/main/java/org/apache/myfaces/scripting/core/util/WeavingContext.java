@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
@@ -60,10 +61,15 @@ public class WeavingContext {
 
     static ThreadLocal _eventProcessorHolder = new ThreadLocal();
 
+    static ThreadLocal _externalContextHolder = new ThreadLocal();
+
+
 
     public static void init() {
 
     }
+
+  
 
 
     /**
@@ -116,7 +122,7 @@ public class WeavingContext {
      * some artefacts need a full request refresh
      */
     public static void doRequestRefreshes() {
-
+        getWeaver().requestRefresh();
     }
 
     /**
