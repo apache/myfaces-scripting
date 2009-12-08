@@ -220,87 +220,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         markAsFullyRecompiled();
     }
 
-    public void requestRefresh() {
-        if (
-              FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA) == null ||
-              FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA)
-           ) {
-            fullRecompile();
-            //TODO if managed beans are tainted we have to do a full drop
 
-            refreshManagedBeans();
-        }
-    }
-
-    private void refreshManagedBeans() {
-        if(FacesContext.getCurrentInstance() == null) {
-            return;//no npe allowed    
-        }
-        Set<String> tainted = new HashSet<String>();
-        for (Map.Entry<String, ReloadingMetadata> it : FileChangedDaemon.getInstance().getClassMap().entrySet()) {
-            if (it.getValue().getScriptingEngine() == ScriptingConst.ENGINE_TYPE_JAVA && it.getValue().isTainted()) {
-                tainted.add(it.getKey());
-            }
-        }
-        if (tainted.size() > 0) {
-            boolean managedBeanTainted = false;
-            //We now have to check if the tainted classes belong to the managed beans
-            Set<String> managedBeanClasses = new HashSet<String>();
-            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-            for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
-                managedBeanClasses.add(entry.getValue().getManagedBeanClassName());
-            }
-            for (String taintedClass : tainted) {
-                if (managedBeanClasses.contains(taintedClass)) {
-                    managedBeanTainted = true;
-                    break;
-                }
-            }
-
-            log.info("Tainting all beans to avoid classcast exceptions");
-            if (managedBeanTainted) {
-                for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
-                    Class managedBeanClass = entry.getValue().getManagedBeanClass();
-                    if (WeavingContext.isDynamic(managedBeanClass)) {
-                        //managed bean class found we drop the class from our session
-                        removeBeanReferences(entry.getValue());
-                    }
-                    //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
-                    //exceptions
-                    log.info("Tainting ");
-                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(managedBeanClass.getName());
-                    metaData.setTainted(true);
-                }
-
-            }
-        }
-    }
-
-    /**
-     * removes the references from out static scope
-     * for jsf2 we probably have some kind of notification mechanism
-     * which notifies custom scopes
-     *
-     * @param bean
-     */
-    private void removeBeanReferences(ManagedBean bean) {
-        getLog().info("JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
-
-        String scope = bean.getManagedBeanScope();
-
-        if (scope != null && scope.equalsIgnoreCase("session")) {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
-        } else if (scope != null && scope.equalsIgnoreCase("application")) {
-            FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
-        } else if (scope != null) {
-            Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(scope);
-            if (scopeImpl == null) return; //scope not implemented
-            //we now have to revert to introspection here because scopes are a pure jsf2 construct
-            //so we use a messaging pattern here to cope with it
-            ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
-        }
-    }
-    
+   
 
     private void markAsFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();

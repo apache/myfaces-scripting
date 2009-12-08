@@ -56,36 +56,11 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         _reloadingStrategy = new GlobalReloadingStrategy(this)
     }
 
-
-
     /**
-     * central algorithm which determines which property values are overwritten and which are not
+     * central point for the
+     * loading, loads a class from a given sourceroot
+     * and file
      */
-    protected void mapProperties(Object target, Object src) {
-        src.properties.each {property ->
-            //ok here is the algorithm, basic datatypes usually are not copied but read in anew and then overwritten
-            //later on
-            //all others can be manually overwritten by adding an attribute <attributename>_changed
-
-            try {
-                if (target.properties.containsKey(property.key)
-                    && !property.key.equals("metaClass")        //the class information and meta class information cannot be changed
-                    && !property.key.equals("class")            //otherwise we will get following error
-                    // java.lang.IllegalArgumentException: object is not an instance of declaring class
-                    && !(
-                    target.properties.containsKey(property.key + "_changed") //||
-                    //nothing further needed the phases take care of that
-                    )) {
-                    target.setProperty(property.key, property.value)
-                }
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
-
-
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
 
         File currentClassFile = new File(sourceRoot + File.separator + file)
@@ -156,11 +131,11 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     }
 
     public void fullRecompile() {
-        //TODO implement this
-    }
+        //TODO probably not needed because the groovy classloader takes care of everything itself
+        //the tainting does the rest but we have to check it for the annotations
 
-    public void requestRefresh() {
 
+        FileChangedDaemon.getInstance().getSystemRecompileMap().put(getScriptingEngine(), Boolean.FALSE);
     }
 
 }
