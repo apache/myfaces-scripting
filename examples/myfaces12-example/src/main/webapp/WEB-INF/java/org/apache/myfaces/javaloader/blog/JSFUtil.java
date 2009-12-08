@@ -60,7 +60,6 @@ public class JSFUtil {
              org.apache.myfaces.scripting.java.JAR_PATHS
              pointing towards the lingering jars
              The compiler cannot pick up the implicit containers classpaths
-
             */
             //we use the introspection calls here to achieve our goal that way
             //we can shift the dependency resolution from compile time to runtime

@@ -19,9 +19,10 @@
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 
-
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;
@@ -48,9 +49,8 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
         _delegate = standardJavaFileManager;
-        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader());
+        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
     }
-
 
     @Override
     public JavaFileObject getJavaFileForOutput(Location location, String s, JavaFileObject.Kind kind, FileObject fileObject) throws IOException {
@@ -61,7 +61,8 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     public ClassLoader getClassLoader(Location location) {
         return classLoader;
     }
-     public ClassLoader getClassLoader() {
+
+    public ClassLoader getClassLoader() {
         return classLoader;
     }
 
@@ -86,10 +87,10 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
 
         StringBuilder retVal = new StringBuilder(500);
         while (cls != null) {
-            if(cls instanceof URLClassLoader ) {
+            if (cls instanceof URLClassLoader) {
                 URL[] urls = ((URLClassLoader) cls).getURLs();
                 int len = urls.length;
-                
+
                 for (int cnt = 0; cnt < len; cnt++) {
 
                     retVal.append(urls[cnt].getFile());
@@ -103,7 +104,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
         }
 
         String retStr = retVal.toString();
-        if(retStr.length()>1) {
+        if (retStr.length() > 1) {
             retStr = retStr.substring(0, retStr.length() - 1);
         }
 

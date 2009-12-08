@@ -3,7 +3,7 @@ package org.apache.myfaces.groovyloader.core
 import org.apache.myfaces.scripting.api.ReloadingStrategy
 import org.apache.myfaces.scripting.core.reloading.SimpleReloadingStrategy
 import org.apache.myfaces.scripting.api.BaseWeaver
-import org.apache.myfaces.scripting.core.reloading.RendererReloadingStrategy;
+import org.apache.myfaces.scripting.core.reloading.NoMappingReloadingStrategy;
 
 /**
  * Reloading strategy for the groovy
@@ -14,30 +14,17 @@ import org.apache.myfaces.scripting.core.reloading.RendererReloadingStrategy;
  * some introspection ones which under no circumstances
  * should be overwritten
  *
+ * so er have to set the all others instance var to a specialized reloading strategy
+ * and cope with the rest the standard java way by not doing anything
+ *
  */
-public class GlobalReloadingStrategy  implements ReloadingStrategy {
+public class GlobalReloadingStrategy extends org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy {
 
     private BaseWeaver _weaver = null;
 
-    private ReloadingStrategy _rendererStrategy;
-    private ReloadingStrategy _allOthers;
-
-
     public GlobalReloadingStrategy(weaver) {
-        _weaver = weaver;
-        _rendererStrategy = new RendererReloadingStrategy();
+        super(weaver);
         _allOthers = new StandardGroovyReloadingStrategy();
 
     }
-
-    public Object reload(Object toReload, int artefactType) {
-
-
-        switch (artefactType) {
-            case ScriptingConst.ARTEFACT_TYPE_RENDERER:
-                return _rendererStrategy.reload(toReload, artefactType);
-            //TODO Add other artefact loading strategies on demand here
-            default:
-                return _allOthers.reload(toReload, artefactType);
-        }    }
 }

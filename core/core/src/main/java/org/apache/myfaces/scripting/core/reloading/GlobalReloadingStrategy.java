@@ -33,17 +33,21 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 
 public class GlobalReloadingStrategy implements ReloadingStrategy {
 
-    private BaseWeaver _weaver = null;
+    protected BaseWeaver _weaver = null;
 
-    private ReloadingStrategy _beanStrategy;
-    private ReloadingStrategy _rendererStrategy;
-    private ReloadingStrategy _allOthers;
+    protected ReloadingStrategy _beanStrategy;
+    protected ReloadingStrategy _noMappingStrategy;
+    protected ReloadingStrategy _allOthers;
 
     public GlobalReloadingStrategy(BaseWeaver weaver) {
         _weaver = weaver;
         _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
-        _rendererStrategy = new RendererReloadingStrategy();
+        _noMappingStrategy = new NoMappingReloadingStrategy();
         _allOthers = new SimpleReloadingStrategy(weaver);
+    }
+
+    public GlobalReloadingStrategy() {
+        
     }
 
     /**
@@ -60,7 +64,16 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
             case ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN:
                 return _beanStrategy.reload(toReload, artefactType);
             case ScriptingConst.ARTEFACT_TYPE_RENDERER:
-                return _rendererStrategy.reload(toReload, artefactType);
+                return _noMappingStrategy.reload(toReload, artefactType);
+            case ScriptingConst.ARTEFACT_TYPE_BEHAVIOR:
+                return _noMappingStrategy.reload(toReload, artefactType);
+            case ScriptingConst.ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER:
+                return _noMappingStrategy.reload(toReload, artefactType);
+            case ScriptingConst.ARTEFACT_TYPE_COMPONENT:
+                return _noMappingStrategy.reload(toReload, artefactType);
+            case ScriptingConst.ARTEFACT_TYPE_VALIDATOR:
+                return _noMappingStrategy.reload(toReload, artefactType);
+
             //TODO Add other artefact loading strategies on demand here
             default:
                 return _allOthers.reload(toReload, artefactType);

@@ -30,7 +30,6 @@ import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
  * @date: 01.09.2009
  */
 
-
 public class Blog {
 
     String title        =   "Hello to the myfaces dynamic blogging example";
@@ -50,7 +49,6 @@ public class Blog {
 
     String content      = "";
 
-    
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());
@@ -78,6 +76,8 @@ public class Blog {
         entry.setLastName(lastName);
         entry.setTopic(topic);
         entry.setContent(content);
+
+
 
         if (service != null) {
             /*convenience method to call a method on an object dynamically
