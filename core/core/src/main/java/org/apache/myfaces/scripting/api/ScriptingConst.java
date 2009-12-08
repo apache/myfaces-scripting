@@ -59,5 +59,4 @@ public class ScriptingConst {
     public static final int ARTEFACT_TYPE_RESOURCEHANDLER = 19;
     public static final int ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
 
-    public static final String JAVA_WILDCARD = "*.java ";
 }

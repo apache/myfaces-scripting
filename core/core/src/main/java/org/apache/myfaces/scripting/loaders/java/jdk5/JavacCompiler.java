@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.api.CompilerConst;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -173,7 +173,7 @@ class JavacCompiler implements Compiler {
      * @return an array of arguments that you have to pass to the Javac compiler
      */
     protected String[] buildCompilerArguments(File sourcePath, File targetPath, String classPath) {
-        StringBuilder sourcesList = FileUtils.fetchSourcePaths(sourcePath, ScriptingConst.JAVA_WILDCARD);
+        StringBuilder sourcesList = FileUtils.fetchSourcePaths(sourcePath, CompilerConst.JAVA_WILDCARD);
 
         List arguments = getDefaultArguments(sourcePath, targetPath, classPath);
 
@@ -219,18 +219,18 @@ class JavacCompiler implements Compiler {
 
         // Set both the source code path to search for class or interface
         // definitions and the destination directory for class files.
-        arguments.add("-sourcepath");
+        arguments.add(CompilerConst.JC_SOURCEPATH);
         arguments.add(sourcePath.getAbsolutePath());
-        arguments.add("-d");
+        arguments.add(CompilerConst.JC_TARGET_PATH);
         arguments.add(targetPath.getAbsolutePath());
-        arguments.add("-cp");
+        arguments.add(CompilerConst.JC_CLASSPATH);
         arguments.add(classPath);
 
         // Enable verbose output.
-        arguments.add("-verbose");
+        arguments.add(CompilerConst.JC_VERBOSE);
 
         // Generate all debugging information, including local variables.
-        arguments.add("-g");
+        arguments.add(CompilerConst.JC_DEBUG);
         return arguments;
     }
 
