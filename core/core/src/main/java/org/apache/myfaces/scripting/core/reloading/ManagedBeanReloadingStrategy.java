@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.reloading;
 
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.BaseWeaver;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.commons.beanutils.BeanUtils;
@@ -38,8 +39,11 @@ import java.util.ArrayList;
  * @version $Revision$ $Date$
  *          <p/>
  *          The managed beans have a different reloading
- *          strategy, TODO
- *          we have to figure out which strategy to follow
+ *          strategy. We follow the route of dropping
+ *          all dynamic beans for now which seems to be a middle ground
+ *          between simple (do nothing at all except simple bean reloading)
+ *          and graph dependency check (drop only the dependend objects and the
+ *          referencing objects)
  */
 
 public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
@@ -47,38 +51,20 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
     BaseWeaver _weaver;
     Map<String, List<ManagedBean>> _managedBeanIdx = null;
 
+    static final String RELOAD_PERFORMED = "beanReloadPerformed";
+
 
     public ManagedBeanReloadingStrategy(BaseWeaver weaver) {
         _weaver = weaver;
-        buildupManagedBeanIdx();
     }
 
-
-    private void buildupManagedBeanIdx() {
-        /**
-         * we build up a reverse index for the managed beans to resolve
-         * make it easier for dependency reloading
-         * the current loading strategy is simple
-         * normal attribute, we do shift from the old object to the new one
-         * managed bean we refresh on the managed bean as well
-         * we need the reverse index to identify whether the attribute class justifies for being a
-         * managed bean or not
-         */
-        _managedBeanIdx = new HashMap<String, List<ManagedBean>>();
-        Map<String, ManagedBean> beans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-        for (Map.Entry<String, ManagedBean> entry : beans.entrySet()) {
-            String className = entry.getValue().getManagedBeanClassName();
-            if (!_managedBeanIdx.containsKey(className)) {
-                List<ManagedBean> beanListForClass = new ArrayList<ManagedBean>();
-                _managedBeanIdx.put(className, beanListForClass);
-                beanListForClass.add(entry.getValue());
-            } else {
-                _managedBeanIdx.get(className).add(entry.getValue());
-            }
+    public Object reload(Object scriptingInstance, int artefactType) {
+        Map requestMap = WeavingContext.getRequestAttributesMap();
+        //only one reload per request allowed
+        if (requestMap != null && requestMap.containsKey(RELOAD_PERFORMED)) {
+            return scriptingInstance;
         }
-    }
 
-    public Object reload(Object scriptingInstance) {
         //TODO build up the managed bean idx at request time or make a request blocker
         //so that we build up the idx only once per request
 
@@ -89,6 +75,10 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
             // reload is enabled we can skip the rest now
             return scriptingInstance;
         }
+
+        reloadAllDynamicBeans();
+
+
         getLog().info("possible reload for " + scriptingInstance.getClass().getName());
         /*only recreation of empty constructor classes is possible*/
         try {
@@ -97,14 +87,44 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
             Object newObject = aclass.newInstance();
 
             /*now we shuffle the properties between the objects*/
+            //TODO remove this we wont need it anymore for now
             mapProperties(newObject, scriptingInstance);
 
+            if (requestMap != null) {
+                requestMap.put(RELOAD_PERFORMED, Boolean.TRUE);
+            }
             return newObject;
         } catch (Exception e) {
             getLog().error(e);
         }
         return null;
 
+    }
+
+    private void removeBeanReferences(String beanName) {
+        getLog().info("ManagedBeanReloadingStrategy.removeBeanReferences(" + beanName + ")");
+    }
+
+
+    /**
+     * the simplest solution for now is to dump and reload
+     * all managed beans via the config
+     * ie - we drop the managed beans from all the request, session
+     * and application scope for now by checking the bean maps
+     * for their names and removing the corresponding beans unless they implement
+     * a non droppable annotation
+     */
+    private void reloadAllDynamicBeans() {
+        //TODO iterate over the bean list, identify which classes are dynamic and drop those
+        //via their bean names
+        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+            Class managedBeanClass = entry.getValue().getManagedBeanClass();
+            if (WeavingContext.isDynamic(managedBeanClass)) {
+                //managed bean class found we drop the class from our session
+                removeBeanReferences(entry.getValue().getManagedBeanName());
+            }
+        }
     }
 
 
@@ -116,7 +136,6 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
      */
     protected void mapProperties(Object target, Object src) {
         try {
-            
 
             BeanUtils.copyProperties(target, src);
         } catch (IllegalAccessException e) {
@@ -128,7 +147,7 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
         }
     }
 
-    protected Log getLog() {
+    private final Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
 }

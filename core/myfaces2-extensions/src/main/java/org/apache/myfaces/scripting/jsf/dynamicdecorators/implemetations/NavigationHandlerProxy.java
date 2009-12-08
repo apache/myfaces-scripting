@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.application.NavigationHandler;
@@ -34,7 +35,7 @@ public class NavigationHandlerProxy extends NavigationHandler implements Decorat
     NavigationHandler _delegate;
 
     private void weaveDelegate() {
-        _delegate = (NavigationHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+        _delegate = (NavigationHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_NAVIGATIONHANDLER);
     }
 
     public NavigationHandlerProxy(NavigationHandler delegate) {

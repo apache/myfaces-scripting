@@ -58,16 +58,15 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-        renderer = (Renderer) reloadInstance(renderer);
+        renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_RENDERER);
 
-        
         _delegate.addRenderer(componentFamily, rendererType, renderer);
     }
 
     public Renderer getRenderer(String componentFamily, String rendererType) {
         weaveDelegate();
         Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
-        Renderer rendr2 = (Renderer) reloadInstance(rendr);
+        Renderer rendr2 = (Renderer) reloadInstance(rendr, ScriptingConst.ARTEFACT_TYPE_RENDERER);
         if (rendr != rendr2) {
             rendr2 = _delegate.getRenderer(componentFamily, rendererType);
             if (rendr2 instanceof PurgedRenderer) {
@@ -81,15 +80,15 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
-           ClientBehaviorRenderer rendr2;
-           WeavingContext.getWeaver().fullAnnotationScan();
-           rendr2 = _delegate.getClientBehaviorRenderer(s);
-           if (rendr2 instanceof PurgedClientBehaviorRenderer) {
-               throw new FacesException("Renderer not found");
-           }
-           rendr2 = _delegate.getClientBehaviorRenderer(s);
-           return rendr2;
-       }
+        ClientBehaviorRenderer rendr2;
+        WeavingContext.getWeaver().fullAnnotationScan();
+        rendr2 = _delegate.getClientBehaviorRenderer(s);
+        if (rendr2 instanceof PurgedClientBehaviorRenderer) {
+            throw new FacesException("Renderer not found");
+        }
+        rendr2 = _delegate.getClientBehaviorRenderer(s);
+        return rendr2;
+    }
 
 
     private Renderer handleAnnotationChange(String s, String s1) {
@@ -110,12 +109,12 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public ResponseWriter createResponseWriter(Writer writer, String s, String s1) {
         weaveDelegate();
-        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1));
+        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1), ScriptingConst.ARTEFACT_TYPE_RESPONSEWRITER);
     }
 
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
-        return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream));
+        return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream), ScriptingConst.ARTEFACT_TYPE_RESPONSESTREAM);
     }
 
     //TODO add full support for myfaces 2.0 here
@@ -123,7 +122,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer renderer) {
 
         weaveDelegate();
-        renderer = (ClientBehaviorRenderer) reloadInstance(renderer);
+        renderer = (ClientBehaviorRenderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER);
         _delegate.addClientBehaviorRenderer(s, renderer);
     }
 
@@ -132,7 +131,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     public ClientBehaviorRenderer getClientBehaviorRenderer(String s) {
         weaveDelegate();
         ClientBehaviorRenderer rendr = _delegate.getClientBehaviorRenderer(s);
-        ClientBehaviorRenderer rendr2 = (ClientBehaviorRenderer) reloadInstance(rendr);
+        ClientBehaviorRenderer rendr2 = (ClientBehaviorRenderer) reloadInstance(rendr, ScriptingConst.ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER);
         if (rendr != rendr2) {
             //TODO simplyfy this
             rendr2 = _delegate.getClientBehaviorRenderer(s);
@@ -168,16 +167,16 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
 
     private final void weaveDelegate() {
-        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_RENDERKIT);
     }
 
-    private final Object reloadInstance(Object instance) {
+    private final Object reloadInstance(Object instance, int artefactType) {
         if (instance == null) {
             return null;
         }
         if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
             alreadyWovenInRequest(instance.toString());
-            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
 
             //now the add should be done properly if possible
         }

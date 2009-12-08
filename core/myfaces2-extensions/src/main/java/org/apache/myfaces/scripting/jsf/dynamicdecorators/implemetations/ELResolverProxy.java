@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
@@ -56,7 +57,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         Object newRetVal = null;
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
-            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
+            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
 
             if (newRetVal != retVal) {
@@ -188,7 +189,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
         public Set<Integer> supportsEvents() {
             Set<Integer> supports = new HashSet<Integer>();
-            supports.add(BeanLoadedEvent.ARTEFACT_TYPE_MANAGEDBEAN);
+            supports.add(ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
 
             return supports;  //To change body of implemented methods use File | Settings | File Templates.
         }

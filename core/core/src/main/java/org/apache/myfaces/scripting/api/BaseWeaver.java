@@ -78,7 +78,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param scriptingInstance the object which has to be reloaded
      * @return the reloaded object with all properties transferred or the original object if no reloading was needed
      */
-    public Object reloadScriptingInstance(Object scriptingInstance) {
+    public Object reloadScriptingInstance(Object scriptingInstance, int artefactType) {
         Map<String, ReloadingMetadata> classMap = getClassMap();
         if (classMap.size() == 0) {
             return scriptingInstance;
@@ -91,7 +91,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         //not tained even once == not even considered to be reloaded
         if (isReloadCandidate(reloadMeta)) {
 
-            Object reloaded = _reloadingStrategy.reload(scriptingInstance);
+            Object reloaded = _reloadingStrategy.reload(scriptingInstance, artefactType);
             if (reloaded != null) {
                 return reloaded;
             }

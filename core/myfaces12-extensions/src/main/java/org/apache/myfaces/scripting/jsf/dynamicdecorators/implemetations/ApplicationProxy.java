@@ -75,7 +75,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null) {
-            _delegate = (Application) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (Application) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_APPLICATION);
         }
     }
 
@@ -112,7 +112,7 @@ public class ApplicationProxy extends Application implements Decorated {
          */
         if (WeavingContext.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
             /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) WeavingContext.getWeaver().reloadScriptingInstance(component);
+            component = (UIComponent) WeavingContext.getWeaver().reloadScriptingInstance(component, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
             alreadyWovenInRequest(component.toString());
         }
         return component;
@@ -127,7 +127,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void addELContextListener(ELContextListener elContextListener) {
         weaveDelegate();
         if (WeavingContext.isDynamic(elContextListener.getClass()))
-            elContextListener = (ELContextListener) WeavingContext.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class);
+            elContextListener = (ELContextListener) WeavingContext.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class, ScriptingConst.ARTEFACT_TYPE_ELCONTEXTLISTENER);
         _delegate.addELContextListener(elContextListener);
     }
 
@@ -148,7 +148,7 @@ public class ApplicationProxy extends Application implements Decorated {
         //good place for a dynamic reloading check as well
         Object retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
         if (WeavingContext.isDynamic(retVal.getClass()))
-            retVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal);
+            retVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
         return retVal;
     }
 
@@ -156,14 +156,14 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         ActionListener retVal = _delegate.getActionListener();
         if (WeavingContext.isDynamic(retVal.getClass()))
-            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class);
+            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class, ScriptingConst.ARTEFACT_TYPE_ACTIONLISTENER);
         return retVal;
     }
 
     public void setActionListener(ActionListener actionListener) {
         weaveDelegate();
         if (WeavingContext.isDynamic(actionListener.getClass()))
-            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class);
+            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class, ScriptingConst.ARTEFACT_TYPE_ACTIONLISTENER);
         _delegate.setActionListener(actionListener);
     }
 
@@ -289,7 +289,7 @@ public class ApplicationProxy extends Application implements Decorated {
         * code, in the renderer we do it on method base
         * due to the fact that our renderers are recycled via
         * a flyweight pattern*/
-        return (UIComponent) reloadInstance(component);
+        return (UIComponent) reloadInstance(component, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
     }
 
     public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String s) throws FacesException {
@@ -301,7 +301,7 @@ public class ApplicationProxy extends Application implements Decorated {
          * code, in the renderer we do it on method base
          * due to the fact that our renderers are recycled via
          * a flyweight pattern*/
-        return (UIComponent) reloadInstance(component);
+        return (UIComponent) reloadInstance(component, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
     }
 
     public Iterator<String> getComponentTypes() {
@@ -331,7 +331,7 @@ public class ApplicationProxy extends Application implements Decorated {
          * reloading objects at their interception points
          */
         if (WeavingContext.isDynamic(retVal.getClass())) {
-            retVal = (Converter) WeavingContext.createMethodReloadingProxyFromObject(retVal, Converter.class);
+            retVal = (Converter) WeavingContext.createMethodReloadingProxyFromObject(retVal, Converter.class, ScriptingConst.ARTEFACT_TYPE_CONVERTER);
 
         }
 
@@ -342,7 +342,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         Converter retVal = _delegate.createConverter(aClass);
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
-            retVal = (Converter) WeavingContext.createMethodReloadingProxyFromObject(retVal, Converter.class);
+            retVal = (Converter) WeavingContext.createMethodReloadingProxyFromObject(retVal, Converter.class, ScriptingConst.ARTEFACT_TYPE_CONVERTER);
         }
 
         return retVal;
@@ -384,7 +384,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         Validator retVal = _delegate.createValidator(s);
         if (WeavingContext.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
-            retVal = (Validator) WeavingContext.createMethodReloadingProxyFromObject(retVal, Validator.class);
+            retVal = (Validator) WeavingContext.createMethodReloadingProxyFromObject(retVal, Validator.class, ScriptingConst.ARTEFACT_TYPE_VALIDATOR);
         }
         return retVal;
     }
@@ -404,12 +404,12 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private final Object reloadInstance(Object instance) {
+    private final Object reloadInstance(Object instance, int artefactType) {
         if (instance == null) {
             return null;
         }
         if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
             alreadyWovenInRequest(instance.toString());
         }
         return instance;

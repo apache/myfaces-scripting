@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.el.VariableResolver;
@@ -41,7 +42,7 @@ public class VariableResolverProxy extends VariableResolver implements Decorated
     public Object resolveVariable(FacesContext facesContext, String s) throws EvaluationException {
         Object variable = _delegate.resolveVariable(facesContext, s);
         if (WeavingContext.isDynamic(variable.getClass()))
-            variable = WeavingContext.getWeaver().reloadScriptingInstance(variable);
+            variable = WeavingContext.getWeaver().reloadScriptingInstance(variable, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
         return variable;
     }
 

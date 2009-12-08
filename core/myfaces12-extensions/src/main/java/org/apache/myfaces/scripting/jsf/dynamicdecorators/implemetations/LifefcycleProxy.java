@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.lifecycle.Lifecycle;
@@ -37,7 +38,7 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
 
     private void weaveDelegate() {
         if(_delegate != null)
-            _delegate = (Lifecycle) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (Lifecycle) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_LIFECYCLE);
     }
 
 
@@ -49,7 +50,7 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
         weaveDelegate();
         /*we can put our object weaving code into the add here*/
         if (WeavingContext.isDynamic(phaseListener.getClass()))
-            phaseListener = (PhaseListener)  WeavingContext.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class);
+            phaseListener = (PhaseListener)  WeavingContext.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class,ScriptingConst.ARTEFACT_TYPE_PHASELISTENER);
 
         _delegate.addPhaseListener(phaseListener);
     }

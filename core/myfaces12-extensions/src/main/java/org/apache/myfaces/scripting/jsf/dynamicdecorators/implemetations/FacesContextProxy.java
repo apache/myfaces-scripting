@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
@@ -50,7 +51,7 @@ public class FacesContextProxy extends FacesContext implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null)
-            _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_FACESCONTEXT);
     }
 
 

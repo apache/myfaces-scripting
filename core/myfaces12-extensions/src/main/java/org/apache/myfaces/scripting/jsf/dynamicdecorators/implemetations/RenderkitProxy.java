@@ -53,13 +53,13 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-        renderer = (Renderer) reloadInstance(renderer);
+        renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_RENDERER);
         _delegate.addRenderer(s, s1, renderer);
     }
 
     public Renderer getRenderer(String s, String s1) {
         weaveDelegate();
-        return  (Renderer) reloadInstance(_delegate.getRenderer(s, s1));
+        return  (Renderer) reloadInstance(_delegate.getRenderer(s, s1), ScriptingConst.ARTEFACT_TYPE_RENDERER);
     }
 
     public ResponseStateManager getResponseStateManager() {
@@ -69,12 +69,12 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public ResponseWriter createResponseWriter(Writer writer, String s, String s1) {
         weaveDelegate();
-        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1));
+        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1), ScriptingConst.ARTEFACT_TYPE_RESPONSEWRITER);
     }
 
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
-        return (ResponseStream) reloadInstance( _delegate.createResponseStream(outputStream));
+        return (ResponseStream) reloadInstance( _delegate.createResponseStream(outputStream), ScriptingConst.ARTEFACT_TYPE_RESPONSESTREAM);
     }
 
     public Object getDelegate() {
@@ -83,15 +83,15 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
 
      private final void weaveDelegate() {
-        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_RENDERKIT);
     }
 
-    private final Object reloadInstance(Object instance) {
+    private final Object reloadInstance(Object instance, int artefactType) {
         if(instance == null) {
             return null;
         }
         if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
             alreadyWovenInRequest(instance.toString());
         }
         return instance;

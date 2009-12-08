@@ -30,6 +30,13 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *          <p/>
+ *          A simple implementation of our reloading strategy
+ *          pattern this is the most basic implementation
+ *          covering our reloading.
+ *          <p/>
+ *          Applicable for most artefacts except for now managed beans
+ *          <p/>
  */
 
 public class SimpleReloadingStrategy implements ReloadingStrategy {
@@ -40,7 +47,18 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
         _weaver = weaver;
     }
 
-    public Object reload(Object scriptingInstance) {
+    /**
+     * <p>
+     * the central callback for our strategy here
+     * it has to handle the reload of the scriptingInstance
+     * if possible, otherwise it has to return the
+     * original object if no reload was necessary or possible
+     * </p>
+     *
+     * @param scriptingInstance the instance to be reloaded by the system
+     * @return either the same object or a new instance utilizing the changed code
+     */
+    public Object reload(Object scriptingInstance, int artefactType) {
 
         //reload the class to get new static content if needed
         Class aclass = _weaver.reloadScriptingClass(scriptingInstance.getClass());
@@ -64,12 +82,17 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
             getLog().error(e);
         }
         return null;
-        
+
     }
 
 
     /**
      * helper to map the properties wherever possible
+     * <p/>
+     * This is the simplest solution for now,
+     * we apply only a copy properties here, which should be enough
+     * for all artefacts except the managed beans and the ones
+     * which have to preserve some kind of delegate before instantiation.
      *
      * @param target
      * @param src

@@ -40,7 +40,7 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     public void appendCustomScriptPath(String scriptPaths) {
     }
 
-    public Object reloadScriptingInstance(Object o) {
+    public Object reloadScriptingInstance(Object o, int artefactType) {
         return o;  
     }
 

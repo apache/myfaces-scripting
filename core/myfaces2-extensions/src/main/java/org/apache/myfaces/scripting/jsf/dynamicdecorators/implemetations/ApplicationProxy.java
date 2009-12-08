@@ -39,17 +39,13 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * @author Werner Punz
+ *
  * our decorating applicstion
  * which should resolve our bean issues within a central
  * bean processing interceptor
- * <p/>
- * <p/>
- * TODO at component reload via annotations the component family is lost
- * locate where it is and then add the family handling here
- * so that it is set again!
- * (Line 490 it is lost)
  *
- * @author Werner Punz
+
  */
 public class ApplicationProxy extends Application implements Decorated {
 
@@ -90,7 +86,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null) {
-            _delegate = (Application) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (Application) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_APPLICATION);
         }
     }
 
@@ -128,7 +124,7 @@ public class ApplicationProxy extends Application implements Decorated {
         * maybe in the long run we can make a decorator here instead
         * but for now lets try it this way
         */
-        component = (UIComponent) reloadInstance(component);
+        component = (UIComponent) reloadInstance(component, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
@@ -148,7 +144,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void addELContextListener(ELContextListener elContextListener) {
         weaveDelegate();
         if (WeavingContext.isDynamic(elContextListener.getClass()))
-            elContextListener = (ELContextListener) WeavingContext.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class);
+            elContextListener = (ELContextListener) WeavingContext.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class, ScriptingConst.ARTEFACT_TYPE_ELCONTEXTLISTENER);
         _delegate.addELContextListener(elContextListener);
     }
 
@@ -169,14 +165,14 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         ActionListener retVal = _delegate.getActionListener();
         if (WeavingContext.isDynamic(retVal.getClass()))
-            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class);
+            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class, ScriptingConst.ARTEFACT_TYPE_ACTIONLISTENER);
         return retVal;
     }
 
     public void setActionListener(ActionListener actionListener) {
         weaveDelegate();
         if (WeavingContext.isDynamic(actionListener.getClass()))
-            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class);
+            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class, ScriptingConst.ARTEFACT_TYPE_ACTIONLISTENER);
         _delegate.setActionListener(actionListener);
     }
 
@@ -304,7 +300,7 @@ public class ApplicationProxy extends Application implements Decorated {
         * code, in the renderer we do it on method base
         * due to the fact that our renderers are recycled via
         * a flyweight pattern*/
-        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
@@ -324,7 +320,7 @@ public class ApplicationProxy extends Application implements Decorated {
          * code, in the renderer we do it on method base
          * due to the fact that our renderers are recycled via
          * a flyweight pattern*/
-        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
@@ -373,7 +369,7 @@ public class ApplicationProxy extends Application implements Decorated {
          *
          * reloading objects at their interception points
          */
-        Converter newRetVal = (Converter) reloadInstance(retVal);
+        Converter newRetVal = (Converter) reloadInstance(retVal, ScriptingConst.ARTEFACT_TYPE_CONVERTER);
         if (newRetVal != retVal) {
             return _delegate.createConverter(converterId);
         }
@@ -384,7 +380,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public Converter createConverter(Class aClass) {
         weaveDelegate();
         Converter retVal = _delegate.createConverter(aClass);
-        Converter newRetVal = (Converter) reloadInstance(retVal);
+        Converter newRetVal = (Converter) reloadInstance(retVal, ScriptingConst.ARTEFACT_TYPE_CONVERTER);
         if (newRetVal != retVal) {
             return _delegate.createConverter(aClass);
         }
@@ -440,7 +436,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         Validator retVal = _delegate.createValidator(validatorId);
         //the validators are recreated every request we do not have to deal with them on method level
-        Validator newRetVal = (Validator) reloadInstance(retVal);
+        Validator newRetVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTEFACT_TYPE_VALIDATOR);
         if (newRetVal != retVal) {
             return _delegate.createValidator(validatorId);
         }
@@ -493,7 +489,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we might have casts here against one of the parents
         //of this object
-        Behavior newBehavior = (Behavior) reloadInstance(retVal);
+        Behavior newBehavior = (Behavior) reloadInstance(retVal, ScriptingConst.ARTEFACT_TYPE_BEHAVIOR);
         if (newBehavior != retVal) {
             return _delegate.createBehavior(behaviorId);
         }
@@ -513,7 +509,7 @@ public class ApplicationProxy extends Application implements Decorated {
          * code, in the renderer we do it on method base
          * due to the fact that our renderers are recycled via
          * a flyweight pattern*/
-        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
@@ -534,7 +530,7 @@ public class ApplicationProxy extends Application implements Decorated {
          * code, in the renderer we do it on method base
          * due to the fact that our renderers are recycled via
          * a flyweight pattern*/
-        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
@@ -554,7 +550,7 @@ public class ApplicationProxy extends Application implements Decorated {
      * code, in the renderer we do it on method base
      * due to the fact that our renderers are recycled via
      * a flyweight pattern*/
-        UIComponent component = (UIComponent) reloadInstance(oldComponent);
+        UIComponent component = (UIComponent) reloadInstance(oldComponent, ScriptingConst.ARTEFACT_TYPE_COMPONENT);
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
@@ -570,7 +566,7 @@ public class ApplicationProxy extends Application implements Decorated {
         //good place for a dynamic reloading check as well
         T retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
         if (WeavingContext.isDynamic(retVal.getClass()))
-            retVal = (T) WeavingContext.getWeaver().reloadScriptingInstance(retVal);
+            retVal = (T) WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
         return retVal;
     }
 
@@ -597,7 +593,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-        ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal);
+        ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal, ScriptingConst.ARTEFACT_TYPE_RESOURCEHANDLER);
         if (newHandler != retVal) {
             return _delegate.getResourceHandler();
         }
@@ -655,12 +651,12 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private final Object reloadInstance(Object instance) {
+    private final Object reloadInstance(Object instance, int artefactType) {
         if (instance == null) {
             return null;
         }
         if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
             alreadyWovenInRequest(instance.toString());
         }
         return instance;

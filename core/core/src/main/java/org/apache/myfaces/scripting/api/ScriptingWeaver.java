@@ -41,7 +41,14 @@ public interface ScriptingWeaver {
 
 
     /**
-     * @param o
+     * @param o the object which has to be reloaded
+     * @param artefactType an identifier for the artefact type so that its reloading strategies can
+     * be adjusted depending on the type of artefact which has to be processed, we have to pass down
+     * this artefact because we cannot rely on instanceof here for several reasons first we do not know
+     * if a managed bean does not implement as well one of the artefact interfaces for one reason or the other
+     * secondly how do we deal with future extensions which provide new artefacts we cannot
+     * bind the code to just one implementation, hence we add some kind of type identifier here as well
+     * 
      * 
      * @return reloads an existing objects with its attributes
      *         and assigns the reloaded class to the new object
@@ -49,7 +56,7 @@ public interface ScriptingWeaver {
      *         note, the new object must not be the same as the original one
      *         it can be a shallow clone with a new class instead
      */
-    public Object reloadScriptingInstance(Object o);
+    public Object reloadScriptingInstance(Object o, int artefactType);
 
     /**
      * reloads an existing class if needed

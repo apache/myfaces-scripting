@@ -18,8 +18,9 @@
  */
 package org.apache.myfaces.scripting.core.reloading;
 
-import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.BaseWeaver;
+import org.apache.myfaces.scripting.api.ReloadingStrategy;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -43,9 +44,22 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
         _allOthers = new SimpleReloadingStrategy(weaver);
     }
 
-    public Object reload(Object toReload) {
-        //TODO add the managed bean identification code here
-        //so that we can switch strategies on the fly
-        return _allOthers.reload(toReload);
+    /**
+     * the strategy callback which switches between various strategies
+     * we have in our system
+     *
+     * @param toReload
+     * @param artefactType
+     * @return
+     */
+    public Object reload(Object toReload, int artefactType) {
+
+        switch (artefactType) {
+            case ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN:
+                return _beanStrategy.reload(toReload, artefactType);
+            //TODO Add other artefact loading strategies on demand here
+            default:
+                return _allOthers.reload(toReload, artefactType);
+        }
     }
 }

@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -70,6 +71,6 @@ public class ResourceHandlerProxy extends ResourceHandler {
     }
 
     private final void weaveDelegate() {
-        _delegate = (ResourceHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+        _delegate = (ResourceHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_RESOURCEHANDLER);
     }
 }

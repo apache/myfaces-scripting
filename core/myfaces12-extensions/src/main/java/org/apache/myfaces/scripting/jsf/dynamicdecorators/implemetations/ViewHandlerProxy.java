@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.application.ViewHandler;
@@ -39,7 +40,7 @@ public class ViewHandlerProxy extends ViewHandler implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null) {
-            _delegate = (ViewHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (ViewHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_VIEWHANDLER);
         }
     }
 

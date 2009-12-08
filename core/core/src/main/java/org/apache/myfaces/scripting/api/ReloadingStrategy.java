@@ -12,5 +12,5 @@ package org.apache.myfaces.scripting.api;
  * 
  */
 public interface ReloadingStrategy {
-    public Object reload(Object toReload);
+    public Object reload(Object toReload, int artefactType);
 }

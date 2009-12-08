@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.core.scanEvents.events;
 
 import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -27,19 +28,9 @@ import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
 
 public abstract class BaseEvent implements SystemEvent {
 
-    public static final int ARTEFACT_TYPE_UNKNOWN = -1;
-    public static final int ARTEFACT_TYPE_MANAGEDBEAN = 1;
-    public static final int ARTEFACT_TYPE_MANAGEDPROPERTY = 2;
-    public static final int ARTEFACT_TYPE_RENDERKIT = 3;
-    public static final int ARTEFACT_TYPE_VIEWHANDLER = 4;
-    public static final int ARTEFACT_TYPE_RENDERER = 5;
-    public static final int ARTEFACT_TYPE_COMPONENT = 6;
-    public static final int ARTEFACT_TYPE_VALIDATOR = 7;
-    public static final int ARTEFACT_TYPE_BEHAVIOR = 8;
-
 
     private String _scannedClass = null;
-    private int _artefactType = ARTEFACT_TYPE_UNKNOWN;
+    private int _artefactType = ScriptingConst.ARTEFACT_TYPE_UNKNOWN;
 
     protected BaseEvent(String scannedClass) {
         _scannedClass = scannedClass;

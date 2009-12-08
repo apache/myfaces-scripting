@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.core.scanEvents.events;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -28,7 +30,7 @@ public class ManagedPropertyLoadedEvent extends AnnotatedArtefactLoadedEvent {
     String _propertyName;
 
     public ManagedPropertyLoadedEvent(String affectedClass, String propertyName) {
-        super(affectedClass, ARTEFACT_TYPE_MANAGEDPROPERTY);
+        super(affectedClass, ScriptingConst.ARTEFACT_TYPE_MANAGEDPROPERTY);
         _propertyName = propertyName;
     }
 

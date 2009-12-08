@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.core.scanEvents.events;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -27,7 +29,7 @@ public class BeanRemovedEvent extends AnnotatedArtefactLoadedEvent {
     String _beanName;
 
     public BeanRemovedEvent(String affectedClass, String beanName) {
-        super(affectedClass, ARTEFACT_TYPE_MANAGEDBEAN);
+        super(affectedClass, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
         _beanName = beanName;
     }
 

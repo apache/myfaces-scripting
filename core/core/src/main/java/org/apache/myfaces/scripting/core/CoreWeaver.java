@@ -53,14 +53,14 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         throw new RuntimeException("Method not supported from this facade");
     }
 
-    public Object reloadScriptingInstance(Object o) {
+    public Object reloadScriptingInstance(Object o,int artefactType) {
         if (o.getClass().getName().contains("TestBean2")) {
             System.out.println("Debugpoint found");
         }
 
         for (ScriptingWeaver weaver : _weavers) {
             if (weaver.isDynamic(o.getClass())) {
-                return weaver.reloadScriptingInstance(o);
+                return weaver.reloadScriptingInstance(o, artefactType);
             }
         }
         return o;

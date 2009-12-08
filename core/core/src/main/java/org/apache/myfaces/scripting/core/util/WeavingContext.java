@@ -78,7 +78,7 @@ public class WeavingContext {
      *
      * @return the request map if available, null otherwise
      */
-    public Map<String, Object> getRequestAttributesMap() {
+    public static Map<String, Object> getRequestAttributesMap() {
         FacesContext ctx = FacesContext.getCurrentInstance();
         if (ctx == null) return null;
         return ctx.getExternalContext().getRequestMap();
@@ -152,10 +152,10 @@ public class WeavingContext {
      * @param theInterface the proxying interface
      * @return a proxied reloading object of type theInterface
      */
-    public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface) {
+    public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                                       new Class[]{theInterface},
-                                      new MethodLevelReloadingHandler(o));
+                                      new MethodLevelReloadingHandler(o, artefactType));
     }
 
     /**
@@ -167,10 +167,10 @@ public class WeavingContext {
      * @param theInterface
      * @return
      */
-    public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface) {
+    public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                                       new Class[]{theInterface},
-                                      new MethodLevelReloadingHandler(o));
+                                      new MethodLevelReloadingHandler(o, artefactType));
     }
 
 

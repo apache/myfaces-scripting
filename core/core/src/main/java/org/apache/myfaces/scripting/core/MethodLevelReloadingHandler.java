@@ -41,10 +41,12 @@ import java.lang.reflect.Method;
  */
 public class MethodLevelReloadingHandler extends ReloadingInvocationHandler implements  Serializable {
     ScriptingWeaver _weaver = null;
+    int _artefactType;
 
-    public MethodLevelReloadingHandler(Object rootObject) {
+    public MethodLevelReloadingHandler(Object rootObject, int artefactType) {
         _loadedClass = rootObject.getClass();
         _delegate = rootObject;
+        _artefactType = artefactType;
     }
 
 
@@ -85,7 +87,7 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
             _delegate = (_weaver.reloadScriptingClass(_loadedClass)).newInstance();
         } else {
             //if we are stateful only a tainted artefact is reloaded
-            _delegate = _weaver.reloadScriptingInstance(_delegate);
+            _delegate = _weaver.reloadScriptingInstance(_delegate, _artefactType);
 
             //we work our way through all proxies and fetch the class for further reference
             Object delegate = WeavingContext.getDelegateFromProxy(_delegate);
