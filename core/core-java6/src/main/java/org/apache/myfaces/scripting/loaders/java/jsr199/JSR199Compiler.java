@@ -31,21 +31,38 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
+ * <p>
  * A compiler facade encapsulating the JSR 199
  * so that we can switch the implementations
  * of connecting to javac on the fly
+ * </p>
+ * <p>
+ * This class is applied to systems which can use the JSR199 compiler
+ * API. For older systems we have a javac compiler fallback and
+ * probably in the long run also an eclipse as well.
+ * </p>
+ * <p>
+ * We applied first the apache commons-jci project there, but the state
+ * of the project was not where we needed it to be for our implementation
+ * and fixing and changing it was more work than what was needed for this project.
+ * In the dawn of the usage of JSR 199 it simply did not make any more sense
+ * to use commons-jci so we rolled our own small specialized facade for this
+ * </p>
+ *
+ * TODO move this over to the unified compiler interface
+ *
  *
  * @author Werner Punz (latest modification by $Author: werpu $)
  * @version $Revision: 812255 $ $Date: 2009-09-07 20:51:39 +0200 (Mo, 07 Sep 2009) $
  */
-public class CompilerFacade implements DynamicCompiler {
+public class JSR199Compiler implements DynamicCompiler {
 
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
     ContainerFileManager fileManager = null;
     private static final String FILE_SEPARATOR = File.separator;
 
-    public CompilerFacade() {
+    public JSR199Compiler() {
         super();
         fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(diagnosticCollector, null, null));
         if (javaCompiler == null) {

@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.startup;
 
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import javax.faces.event.SystemEventListener;
@@ -46,7 +46,7 @@ public class IntialScanAnnotationListener implements SystemEventListener {
         }
         //we can rely on being in the same thread as the original
         //startup context listener, so the initial weaver still is activated
-        ScriptingWeaver weaver = ProxyUtils.getWeaver();
+        ScriptingWeaver weaver = WeavingContext.getWeaver();
 
         //we now do a full source or precompiled annotation scan
         //the entire scripting subsystem should be initialized by now

@@ -19,7 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.factories;
 
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations.RenderkitProxy;
 
 import javax.faces.render.RenderKitFactory;
@@ -38,7 +38,7 @@ public class ScriptingRenderkitFactory extends RenderKitFactory implements Decor
 
     public ScriptingRenderkitFactory(RenderKitFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = ProxyUtils.isScriptingEnabled();
+        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void addRenderKit(String s, RenderKit renderKit) {

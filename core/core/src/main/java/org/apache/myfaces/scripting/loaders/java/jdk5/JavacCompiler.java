@@ -3,6 +3,8 @@ package org.apache.myfaces.scripting.loaders.java.jdk5;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.loaders.java.util.DirStrategy;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -43,6 +45,7 @@ class JavacCompiler implements Compiler {
      * The class reference to the internal Javac compiler.
      */
     private Class compilerClass;
+    private static final String JAVA_WILDCARD = "*.java ";
 
     // ------------------------------------------ Constructors
 
@@ -80,6 +83,46 @@ class JavacCompiler implements Compiler {
 
     // ------------------------------------------ Compiler methods
 
+
+    /**
+     * <p>Compiles the given file and creates an according class file in the given target path.</p>
+     *
+     * @param sourcePath the path to the source directory
+     * @param targetPath the path to the target directory
+     * @return the compilation result, i.e. as of now only the compiler output
+     */
+    public CompilationResult compile(File sourcePath, File targetPath, String classPath) throws CompilationException {
+        FileUtils.assertPath(targetPath);
+
+        try {
+            StringWriter compilerOutput = new StringWriter();
+
+            // Invoke the Javac compiler
+            Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
+            Integer returnCode = (Integer) compile.invoke(null,
+                                                          new Object[]{buildCompilerArguments(sourcePath, targetPath, classPath), new PrintWriter(compilerOutput)});
+
+            CompilationResult result = new CompilationResult(compilerOutput.toString());
+            if (returnCode == null || returnCode.intValue() != 0) {
+                result.registerError(new CompilationResult.CompilationMessage(-1,
+                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'."));
+            }
+
+            return result;
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
+                                            "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
+        } catch (InvocationTargetException ex) {
+            throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
+                                            "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+        } catch (IllegalAccessException ex) {
+            throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
+                                            "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+        }
+
+    }
+
+
     /**
      * <p>Compiles the given file and creates an according class file in the given target path.</p>
      *
@@ -90,15 +133,7 @@ class JavacCompiler implements Compiler {
      */
     public CompilationResult compile(File sourcePath, File targetPath, String file, String classPath) throws CompilationException {
         // The destination directory must already exist as javac will not create the destination directory.
-        if (!targetPath.exists()) {
-            if (!targetPath.mkdirs()) {
-                throw new IllegalStateException("It wasn't possible to create the target " +
-                                                "directory for the compiler ['" + targetPath.getAbsolutePath() + "'].");
-            }
-
-            // If we've created the destination directory, we'll delete it as well once the application exits
-            targetPath.deleteOnExit();
-        }
+        FileUtils.assertPath(targetPath);
 
         try {
             StringWriter compilerOutput = new StringWriter();
@@ -130,15 +165,71 @@ class JavacCompiler implements Compiler {
     // ------------------------------------------ Utility methods
 
     /**
+     * <p/>
+     * Creates the arguments for the compiler, i.e. builds up an array of arguments
+     * that one would pass to the javac compiler to compile a full path instead of a single file
+     *
+     * @param sourcePath the path to the source directory
+     * @param targetPath the path to the target directory
+     * @return an array of arguments that you have to pass to the Javac compiler
+     */
+    protected String[] buildCompilerArguments(File sourcePath, File targetPath, String classPath) {
+        DirStrategy dirStrategy = new DirStrategy();
+        FileUtils.listFiles(sourcePath, dirStrategy);
+
+        StringBuilder sourcesList = new StringBuilder(512);
+
+        String root = sourcePath.getAbsolutePath();
+        int rootLen = root.length() + 1;
+        for (File foundDir : dirStrategy.getFoundFiles()) {
+            String dirName = foundDir.getAbsolutePath();
+            dirName = dirName.substring(rootLen);
+            sourcesList.append(dirName);
+            sourcesList.append(File.separator);
+            sourcesList.append(JAVA_WILDCARD);
+        }
+        sourcesList.append(JAVA_WILDCARD);
+
+        List arguments = getDefaultArguments(sourcePath, targetPath, classPath);
+
+        // Append the source file that is to be compiled. Note that the user specifies only a relative file location.
+        arguments.add(sourcesList.toString());
+
+        return (String[]) arguments.toArray(new String[0]);
+    }
+
+    /**
      * <p>Creates the arguments for the compiler, i.e. it builds an array of arguments that one would pass to
      * the Javac compiler on the command line.</p>
      *
      * @param sourcePath the path to the source directory
      * @param targetPath the path to the target directory
+     * @param classPath  the classpath for the compiler
      * @param file       the relative file name of the class you want to compile
      * @return an array of arguments that you have to pass to the Javac compiler
      */
     protected String[] buildCompilerArguments(File sourcePath, File targetPath, String file, String classPath) {
+        List arguments = getDefaultArguments(sourcePath, targetPath, classPath);
+
+        // Append the source file that is to be compiled. Note that the user specifies only a relative file location.
+        arguments.add(new File(sourcePath, file).getAbsolutePath());
+
+        return (String[]) arguments.toArray(new String[0]);
+    }
+
+    /**
+     * <p>
+     * Determination of the default arguments
+     * which have to be the same over all
+     * different compilation strategies
+     * </p>
+     *
+     * @param sourcePath the path to the source directory
+     * @param targetPath the path to the target directory
+     * @param classPath  the classpath for the compiler
+     * @return
+     */
+    private List getDefaultArguments(File sourcePath, File targetPath, String classPath) {
         List arguments = new ArrayList();
 
         // Set both the source code path to search for class or interface
@@ -148,18 +239,14 @@ class JavacCompiler implements Compiler {
         arguments.add("-d");
         arguments.add(targetPath.getAbsolutePath());
         arguments.add("-cp");
-        arguments.add(classPath);       
+        arguments.add(classPath);
 
         // Enable verbose output.
         arguments.add("-verbose");
 
         // Generate all debugging information, including local variables.
         arguments.add("-g");
-
-        // Append the source file that is to be compiled. Note that the user specifies only a relative file location.
-        arguments.add(new File(sourcePath, file).getAbsolutePath());
-
-        return (String[]) arguments.toArray(new String[0]);
+        return arguments;
     }
 
     /**

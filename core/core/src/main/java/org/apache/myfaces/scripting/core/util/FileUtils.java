@@ -50,4 +50,52 @@ public class FileUtils {
         return tempDir;
     }
 
+
+    /**
+     * we roll our own treewalker here
+     * to avoid a dependency into commons fileutils
+     * and to apply an easier pattern than
+     * commons fileutils uses
+     *
+     * @param rootDir
+     * @param strategy
+     */
+    public static void listFiles(File rootDir, Strategy strategy) {
+        if(!rootDir.isDirectory()) {
+            strategy.apply(rootDir);
+            return;
+        }
+
+        //TODO apply a filter here instead of doing the check directly
+        File [] files = rootDir.listFiles();
+        for(File file: files) {
+            boolean isDirectory = file.isDirectory();
+            if(isDirectory && !file.getName().endsWith(".")) {
+                listFiles(file, strategy);
+                strategy.apply(file);
+            } else if (!isDirectory) {
+                strategy.apply(file);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * target path check to check if the targetPath is valid or can be created
+     * </p>
+     *
+     * @param path
+     */
+    public static void assertPath(File path) {
+        // The destination directory must already exist as javac will not create the destination directory.
+        if (!path.exists()) {
+            if (!path.mkdirs()) {
+                throw new IllegalStateException("It wasn't possible to create the target " +
+                                                "directory for the compiler ['" + path.getAbsolutePath() + "'].");
+            }
+
+            // If we've created the destination directory, we'll delete it as well once the application exits
+            path.deleteOnExit();
+        }
+    }
 }

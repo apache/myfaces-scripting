@@ -19,7 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
@@ -29,7 +29,6 @@ import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.render.RenderKit;
 import javax.faces.component.UIViewRoot;
-import javax.faces.lifecycle.Lifecycle;
 import javax.el.ELContext;
 import java.util.Iterator;
 
@@ -51,7 +50,7 @@ public class FacesContextProxy extends FacesContext implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null)
-            _delegate = (FacesContext) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
     }
 
 

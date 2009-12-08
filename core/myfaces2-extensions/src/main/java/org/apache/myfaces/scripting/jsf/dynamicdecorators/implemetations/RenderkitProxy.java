@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedClientBehaviorRenderer;
 
@@ -82,7 +82,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
            ClientBehaviorRenderer rendr2;
-           ProxyUtils.getWeaver().fullAnnotationScan();
+           WeavingContext.getWeaver().fullAnnotationScan();
            rendr2 = _delegate.getClientBehaviorRenderer(s);
            if (rendr2 instanceof PurgedClientBehaviorRenderer) {
                throw new FacesException("Renderer not found");
@@ -94,7 +94,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     private Renderer handleAnnotationChange(String s, String s1) {
         Renderer rendr2;
-        ProxyUtils.getWeaver().fullAnnotationScan();
+        WeavingContext.getWeaver().fullAnnotationScan();
         rendr2 = _delegate.getRenderer(s, s1);
         if (rendr2 instanceof PurgedRenderer) {
             throw new FacesException("Renderer not found");
@@ -168,16 +168,16 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
 
     private final void weaveDelegate() {
-        _delegate = (RenderKit) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
     }
 
     private final Object reloadInstance(Object instance) {
         if (instance == null) {
             return null;
         }
-        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
             alreadyWovenInRequest(instance.toString());
-            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
 
             //now the add should be done properly if possible
         }

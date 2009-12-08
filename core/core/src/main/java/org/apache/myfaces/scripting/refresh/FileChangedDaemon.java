@@ -52,13 +52,23 @@ public class FileChangedDaemon extends Thread {
     // ConcurrentHashMap<String, Renderer>(8, 0.75f, 1)
     // segmented map here because we have to deal with multithreaded access
     Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
-    
+
+    /**
+     * this map is a shortcut for the various scripting engines
+     * it keeps track whether the engines source paths
+     * have dirty files or not and if true we enforce a recompile at the
+     * next refresh!
+     * <p/>
+     * We keep track on engine level to avoid to search the classMap for every refresh
+     * the classMap still is needed for various identification tasks which are reload
+     * related
+     */
+    Map<Integer, Boolean> systemRecompileMap = new ConcurrentHashMap<Integer, Boolean>(8, 0.75f, 1);
 
 
     boolean running = false;
     Log log = LogFactory.getLog(FileChangedDaemon.class);
     ScriptingWeaver _weavers = null;
-
 
 
     public static synchronized FileChangedDaemon getInstance() {
@@ -85,21 +95,37 @@ public class FileChangedDaemon extends Thread {
             if (classMap == null || classMap.size() == 0)
                 continue;
 
+            /**
+             * centrail tainted mark method which keeps
+             * track if some file in one of the supported engines has changed
+             * and if yes marks the file as tainted as well
+             * as marks the engine as having to do a full recompile
+             */
             for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
                 if (!it.getValue().isTainted()) {
 
                     File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
                     it.getValue().setTainted(proxyFile.lastModified() != it.getValue().getTimestamp());
                     if (it.getValue().isTainted()) {
+                        systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
                         it.getValue().setTaintedOnce(true);
-                        log.info("comparing" + it.getKey() + "Dates:" + proxyFile.lastModified() + "-" + it.getValue().getTimestamp());
-                        log.info("Tainting:" + it.getValue().getFileName());
+                        printInfo(it, proxyFile);
                     }
                     it.getValue().setTimestamp(proxyFile.lastModified());
+
                 }
             }
         }
-        log.info("Dynamic reloading watch daemon is shutting down");
+        if (log.isInfoEnabled()) {
+            log.info("Dynamic reloading watch daemon is shutting down");
+        }
+    }
+
+    private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
+        if (log.isInfoEnabled()) {
+            log.info("comparing" + it.getKey() + "Dates:" + proxyFile.lastModified() + "-" + it.getValue().getTimestamp());
+            log.info("Tainting:" + it.getValue().getFileName());
+        }
     }
 
     public boolean isRunning() {
@@ -110,6 +136,14 @@ public class FileChangedDaemon extends Thread {
         this.running = running;
     }
 
+
+    public Map<Integer, Boolean> getSystemRecompileMap() {
+        return systemRecompileMap;
+    }
+
+    public void setSystemRecompileMap(Map<Integer, Boolean> systemRecompileMap) {
+        this.systemRecompileMap = systemRecompileMap;
+    }
 
     public Map<String, ReloadingMetadata> getClassMap() {
         return classMap;

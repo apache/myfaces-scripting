@@ -26,7 +26,7 @@ import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
 import org.apache.myfaces.scripting.core.scanEvents.events.BeanRemovedEvent;
 import org.apache.myfaces.scripting.core.scanEvents.events.ManagedPropertyLoadedEvent;
@@ -77,7 +77,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         _alreadyRegistered.put(beanName, mbean);
         config.addManagedBean(beanName, mbean);
 
-        ProxyUtils.getEventProcessor().dispatchEvent(new BeanLoadedEvent(clazz.getName(), beanName));
+        WeavingContext.getEventProcessor().dispatchEvent(new BeanLoadedEvent(clazz.getName(), beanName));
     }
 
     private void resolveScope(Class clazz, ManagedBean mbean) {
@@ -128,7 +128,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
 
         config.addManagedBean(beanName, mbean);
 
-        ProxyUtils.getEventProcessor().dispatchEvent(new BeanLoadedEvent(clazz.getFullyQualifiedName(), beanName));
+        WeavingContext.getEventProcessor().dispatchEvent(new BeanLoadedEvent(clazz.getFullyQualifiedName(), beanName));
     }
 
     private void resolveScope(JavaClass clazz, ManagedBean mbean) {
@@ -187,7 +187,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
                 mpc.setValue(property.value());
                 mbean.addProperty(mpc);
-                ProxyUtils.getEventProcessor().dispatchEvent(new ManagedPropertyLoadedEvent(field.getType().getName(), name));
+                WeavingContext.getEventProcessor().dispatchEvent(new ManagedPropertyLoadedEvent(field.getType().getName(), name));
 
                 continue;
             }
@@ -217,7 +217,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                         managedProperty.setPropertyClass(field.getType().getValue()); // FIXME - primitives, arrays, etc.
                         managedProperty.setValue((String) ann.getPropertyMap().get("value"));
                         mbean.addProperty(managedProperty);
-                        ProxyUtils.getEventProcessor().dispatchEvent(new ManagedPropertyLoadedEvent(field.getType().getValue(), name));
+                        WeavingContext.getEventProcessor().dispatchEvent(new ManagedPropertyLoadedEvent(field.getType().getValue(), name));
                     }
                 }
             }
@@ -326,9 +326,9 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             if (mbeanFound instanceof ManagedBean) {
                 ManagedBean mbeanToDispatch = (ManagedBean) mbeanFound;
                 for (org.apache.myfaces.config.impl.digester.elements.ManagedProperty prop : mbeanToDispatch.getManagedProperties()) {
-                    ProxyUtils.getEventProcessor().dispatchEvent(new ManagedPropertyRemovedEvent(prop.getPropertyClass(), prop.getPropertyName()));
+                    WeavingContext.getEventProcessor().dispatchEvent(new ManagedPropertyRemovedEvent(prop.getPropertyClass(), prop.getPropertyName()));
                 }
-                ProxyUtils.getEventProcessor().dispatchEvent(new BeanRemovedEvent(className, mbeanToDispatch.getManagedBeanName()));
+                WeavingContext.getEventProcessor().dispatchEvent(new BeanRemovedEvent(className, mbeanToDispatch.getManagedBeanName()));
 
             }
             for (String toRemove : mbeanKey) {

@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.el.*;
 import javax.faces.FacesException;
@@ -75,7 +75,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null) {
-            _delegate = (Application) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (Application) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
         }
     }
 
@@ -110,9 +110,9 @@ public class ApplicationProxy extends Application implements Decorated {
          * maybe in the long run we can make a decorator here instead
          * but for now lets try it this way
          */
-        if (ProxyUtils.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
+        if (WeavingContext.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
             /*once it was tainted we have to recreate all the time*/
-            component = (UIComponent) ProxyUtils.getWeaver().reloadScriptingInstance(component);
+            component = (UIComponent) WeavingContext.getWeaver().reloadScriptingInstance(component);
             alreadyWovenInRequest(component.toString());
         }
         return component;
@@ -126,8 +126,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addELContextListener(ELContextListener elContextListener) {
         weaveDelegate();
-        if (ProxyUtils.isDynamic(elContextListener.getClass()))
-            elContextListener = (ELContextListener) ProxyUtils.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class);
+        if (WeavingContext.isDynamic(elContextListener.getClass()))
+            elContextListener = (ELContextListener) WeavingContext.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class);
         _delegate.addELContextListener(elContextListener);
     }
 
@@ -147,23 +147,23 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         //good place for a dynamic reloading check as well
         Object retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
-        if (ProxyUtils.isDynamic(retVal.getClass()))
-            retVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+        if (WeavingContext.isDynamic(retVal.getClass()))
+            retVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal);
         return retVal;
     }
 
     public ActionListener getActionListener() {
         weaveDelegate();
         ActionListener retVal = _delegate.getActionListener();
-        if (ProxyUtils.isDynamic(retVal.getClass()))
-            retVal = (ActionListener) ProxyUtils.createMethodReloadingProxyFromObject(retVal, ActionListener.class);
+        if (WeavingContext.isDynamic(retVal.getClass()))
+            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class);
         return retVal;
     }
 
     public void setActionListener(ActionListener actionListener) {
         weaveDelegate();
-        if (ProxyUtils.isDynamic(actionListener.getClass()))
-            actionListener = (ActionListener) ProxyUtils.createMethodReloadingProxyFromObject(actionListener, ActionListener.class);
+        if (WeavingContext.isDynamic(actionListener.getClass()))
+            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class);
         _delegate.setActionListener(actionListener);
     }
 
@@ -201,14 +201,14 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         //defined in the setter to speed things up a little
         NavigationHandler retVal = _delegate.getNavigationHandler();
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass()))
+        if (retVal != null && WeavingContext.isDynamic(retVal.getClass()))
             retVal = new NavigationHandlerProxy(retVal);
         return retVal;
     }
 
     public void setNavigationHandler(NavigationHandler navigationHandler) {
         weaveDelegate();
-        if (navigationHandler != null && ProxyUtils.isDynamic(navigationHandler.getClass()))
+        if (navigationHandler != null && WeavingContext.isDynamic(navigationHandler.getClass()))
             navigationHandler = new NavigationHandlerProxy(navigationHandler);
         _delegate.setNavigationHandler(navigationHandler);
     }
@@ -249,7 +249,7 @@ public class ApplicationProxy extends Application implements Decorated {
         java all our groovy reloading code is lost
         hence we have to work with proxies here
         */
-        if (ProxyUtils.isDynamic(handler.getClass()))
+        if (WeavingContext.isDynamic(handler.getClass()))
             handler = (ViewHandlerProxy) new ViewHandlerProxy(handler);
         return handler;
     }
@@ -257,7 +257,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void setViewHandler(ViewHandler viewHandler) {
         weaveDelegate();
         /*make sure you have the delegates as well in properties*/
-        if (ProxyUtils.isDynamic(viewHandler.getClass()))
+        if (WeavingContext.isDynamic(viewHandler.getClass()))
             viewHandler = (ViewHandlerProxy) new ViewHandlerProxy(viewHandler);
 
         _delegate.setViewHandler(viewHandler);
@@ -330,8 +330,8 @@ public class ApplicationProxy extends Application implements Decorated {
          *
          * reloading objects at their interception points
          */
-        if (ProxyUtils.isDynamic(retVal.getClass())) {
-            retVal = (Converter) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Converter.class);
+        if (WeavingContext.isDynamic(retVal.getClass())) {
+            retVal = (Converter) WeavingContext.createMethodReloadingProxyFromObject(retVal, Converter.class);
 
         }
 
@@ -341,8 +341,8 @@ public class ApplicationProxy extends Application implements Decorated {
     public Converter createConverter(Class aClass) {
         weaveDelegate();
         Converter retVal = _delegate.createConverter(aClass);
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            retVal = (Converter) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Converter.class);
+        if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
+            retVal = (Converter) WeavingContext.createMethodReloadingProxyFromObject(retVal, Converter.class);
         }
 
         return retVal;
@@ -383,8 +383,8 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
 
         Validator retVal = _delegate.createValidator(s);
-        if (ProxyUtils.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
-            retVal = (Validator) ProxyUtils.createMethodReloadingProxyFromObject(retVal, Validator.class);
+        if (WeavingContext.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
+            retVal = (Validator) WeavingContext.createMethodReloadingProxyFromObject(retVal, Validator.class);
         }
         return retVal;
     }
@@ -408,8 +408,8 @@ public class ApplicationProxy extends Application implements Decorated {
         if (instance == null) {
             return null;
         }
-        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
             alreadyWovenInRequest(instance.toString());
         }
         return instance;

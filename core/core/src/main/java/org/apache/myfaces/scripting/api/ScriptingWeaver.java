@@ -42,6 +42,7 @@ public interface ScriptingWeaver {
 
     /**
      * @param o
+     * 
      * @return reloads an existing objects with its attributes
      *         and assigns the reloaded class to the new object
      *         <p/>

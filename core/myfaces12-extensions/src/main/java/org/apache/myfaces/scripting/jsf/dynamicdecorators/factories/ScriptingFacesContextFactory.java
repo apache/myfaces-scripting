@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.factories;
 
 import org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations.FacesContextProxy;
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
@@ -40,7 +40,7 @@ public class ScriptingFacesContextFactory extends javax.faces.context.FacesConte
 
     public ScriptingFacesContextFactory(FacesContextFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = ProxyUtils.isScriptingEnabled();
+        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void setDelegate(FacesContextFactory delegate) {

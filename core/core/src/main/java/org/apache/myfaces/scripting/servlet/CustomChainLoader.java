@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.servlet;
 
 import org.apache.myfaces.groovyloader.core.GroovyWeaver;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
@@ -67,7 +67,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         this.scriptingWeaver = new CoreWeaver(groovyWeaver, javaWeaver);
         //we have to store it because our filter
         //does not trigger upon initialisation
-        ProxyUtils.setWeaver(this.scriptingWeaver);
+        WeavingContext.setWeaver(this.scriptingWeaver);
     }
 
     private void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) {

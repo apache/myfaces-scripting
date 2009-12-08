@@ -4,6 +4,8 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
+import org.apache.myfaces.scripting.core.reloading.SimpleReloadingStrategy;
+import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,9 +29,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     protected List<String> scriptPaths = new LinkedList<String>();
 
+    ReloadingStrategy _reloadingStrategy = null;
+
 
     public BaseWeaver() {
-        //work around for yet another groovy bug
+        _reloadingStrategy = new GlobalReloadingStrategy(this);
     }
 
     public BaseWeaver(String fileEnding, int scriptingEngine) {
@@ -55,7 +59,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     /**
      * condition which marks a metadata as reload candidate
      */
-    protected boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
+    public boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
         return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.isTaintedOnce();
     }
 
@@ -87,27 +91,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         //not tained even once == not even considered to be reloaded
         if (isReloadCandidate(reloadMeta)) {
 
-            //reload the class to get new static content if needed
-            Class aclass = reloadScriptingClass(scriptingInstance.getClass());
-            if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
-                //class of this object has not changed although
-                // reload is enabled we can skip the rest now
-                return scriptingInstance;
+            Object reloaded = _reloadingStrategy.reload(scriptingInstance);
+            if (reloaded != null) {
+                return reloaded;
             }
-            getLog().info("possible reload for " + scriptingInstance.getClass().getName());
-            /*only recreation of empty constructor classes is possible*/
-            try {
-                //reload the object by instiating a new class and
-                // assigning the attributes properly
-                Object newObject = aclass.newInstance();
 
-                /*now we shuffle the properties between the objects*/
-                mapProperties(newObject, scriptingInstance);
-
-                return newObject;
-            } catch (Exception e) {
-                getLog().error(e);
-            }
         }
         return scriptingInstance;
 
@@ -234,7 +222,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass) {
-        if(getClass().equals(weaverClass)) return this;
+        if (getClass().equals(weaverClass)) return this;
 
         return null;
     }

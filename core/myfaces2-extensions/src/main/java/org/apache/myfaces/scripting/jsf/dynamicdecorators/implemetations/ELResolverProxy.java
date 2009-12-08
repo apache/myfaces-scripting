@@ -27,12 +27,11 @@ import javax.el.ELResolver;
 import javax.el.PropertyNotFoundException;
 import javax.el.PropertyNotWritableException;
 import javax.faces.context.FacesContext;
-import javax.faces.bean.ManagedBean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
 import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
@@ -56,8 +55,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         Object retVal = _delegate.getValue(elContext, base, property);
         Object newRetVal = null;
 
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
-            newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
+        if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
+            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
 
             if (newRetVal != retVal) {
@@ -95,7 +94,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
                     _delegate.setValue(elContext, base, property, null);
 
                     //we only trigger this if the bean was deregistered, we now can reregister it again
-                    ProxyUtils.getWeaver().fullAnnotationScan();
+                    WeavingContext.getWeaver().fullAnnotationScan();
                     newRetVal = _delegate.getValue(elContext, base, property);
                 }
             }
@@ -108,8 +107,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
-        if (retVal != null && ProxyUtils.isDynamic((Class) retVal)) {
-            return ProxyUtils.getWeaver().reloadScriptingClass((Class) retVal);
+        if (retVal != null && WeavingContext.isDynamic((Class) retVal)) {
+            return WeavingContext.getWeaver().reloadScriptingClass((Class) retVal);
         }
         return retVal;
     }

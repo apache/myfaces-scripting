@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.*;
 
 import javax.el.*;
@@ -28,7 +28,6 @@ import javax.faces.FacesException;
 import javax.faces.application.*;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.component.behavior.BehaviorBase;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.*;
@@ -36,7 +35,6 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.validator.Validator;
-import java.lang.reflect.Proxy;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -92,7 +90,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null) {
-            _delegate = (Application) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+            _delegate = (Application) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
         }
     }
 
@@ -149,8 +147,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addELContextListener(ELContextListener elContextListener) {
         weaveDelegate();
-        if (ProxyUtils.isDynamic(elContextListener.getClass()))
-            elContextListener = (ELContextListener) ProxyUtils.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class);
+        if (WeavingContext.isDynamic(elContextListener.getClass()))
+            elContextListener = (ELContextListener) WeavingContext.createMethodReloadingProxyFromObject(elContextListener, ELContextListener.class);
         _delegate.addELContextListener(elContextListener);
     }
 
@@ -170,15 +168,15 @@ public class ApplicationProxy extends Application implements Decorated {
     public ActionListener getActionListener() {
         weaveDelegate();
         ActionListener retVal = _delegate.getActionListener();
-        if (ProxyUtils.isDynamic(retVal.getClass()))
-            retVal = (ActionListener) ProxyUtils.createMethodReloadingProxyFromObject(retVal, ActionListener.class);
+        if (WeavingContext.isDynamic(retVal.getClass()))
+            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class);
         return retVal;
     }
 
     public void setActionListener(ActionListener actionListener) {
         weaveDelegate();
-        if (ProxyUtils.isDynamic(actionListener.getClass()))
-            actionListener = (ActionListener) ProxyUtils.createMethodReloadingProxyFromObject(actionListener, ActionListener.class);
+        if (WeavingContext.isDynamic(actionListener.getClass()))
+            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class);
         _delegate.setActionListener(actionListener);
     }
 
@@ -217,7 +215,7 @@ public class ApplicationProxy extends Application implements Decorated {
         //defined in the setter to speed things up a little
         NavigationHandler retVal = _delegate.getNavigationHandler();
         //TODO add annotatiom support for the navigation handler as well
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass()))
+        if (retVal != null && WeavingContext.isDynamic(retVal.getClass()))
             retVal = new NavigationHandlerProxy(retVal);
         return retVal;
     }
@@ -225,7 +223,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void setNavigationHandler(NavigationHandler navigationHandler) {
         weaveDelegate();
         //TODO add annotatiom support for the navigation handler as well
-        if (navigationHandler != null && ProxyUtils.isDynamic(navigationHandler.getClass()))
+        if (navigationHandler != null && WeavingContext.isDynamic(navigationHandler.getClass()))
             navigationHandler = new NavigationHandlerProxy(navigationHandler);
         _delegate.setNavigationHandler(navigationHandler);
     }
@@ -266,7 +264,7 @@ public class ApplicationProxy extends Application implements Decorated {
         java all our groovy reloading code is lost
         hence we have to work with proxies here
         */
-        if (ProxyUtils.isDynamic(handler.getClass()))
+        if (WeavingContext.isDynamic(handler.getClass()))
             handler = (ViewHandlerProxy) new ViewHandlerProxy(handler);
         return handler;
     }
@@ -274,7 +272,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void setViewHandler(ViewHandler viewHandler) {
         weaveDelegate();
         /*make sure you have the delegates as well in properties*/
-        if (ProxyUtils.isDynamic(viewHandler.getClass()))
+        if (WeavingContext.isDynamic(viewHandler.getClass()))
             viewHandler = (ViewHandlerProxy) new ViewHandlerProxy(viewHandler);
 
         _delegate.setViewHandler(viewHandler);
@@ -345,7 +343,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         if (converterClass.equals(PurgedConverter.class.getName())) {
             //purged case we do a full rescane
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             Converter componentToChange = _delegate.createConverter(converterId);
             if (componentToChange instanceof PurgedConverter) {
                 //Null not allowed here, but we set a purted converter to make
@@ -424,7 +422,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         if (validatorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescane
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             Validator componentToChange = _delegate.createValidator(validatorId);
             if (componentToChange instanceof PurgedValidator) {
                 //Null not allowed here, but we set a purted validator to make
@@ -466,7 +464,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         if (behaviorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescane
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             Behavior behavior = (Behavior) _delegate.createBehavior(behaviorId);
             _behaviors.put(behaviorId, behaviorClass);
             if (behavior instanceof PurgedBehavior) {
@@ -571,8 +569,8 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         //good place for a dynamic reloading check as well
         T retVal = _delegate.evaluateExpressionGet(facesContext, s, aClass);
-        if (ProxyUtils.isDynamic(retVal.getClass()))
-            retVal = (T) ProxyUtils.getWeaver().reloadScriptingInstance(retVal);
+        if (WeavingContext.isDynamic(retVal.getClass()))
+            retVal = (T) WeavingContext.getWeaver().reloadScriptingInstance(retVal);
         return retVal;
     }
 
@@ -624,7 +622,7 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.setResourceHandler(resourceHandler);
         ResourceHandler handler = _delegate.getResourceHandler();
         if (handler instanceof PurgedResourceHandler) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
         }
     }
 
@@ -661,8 +659,8 @@ public class ApplicationProxy extends Application implements Decorated {
         if (instance == null) {
             return null;
         }
-        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
             alreadyWovenInRequest(instance.toString());
         }
         return instance;
@@ -682,7 +680,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
         if (componentToChange instanceof PurgedComponent) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
@@ -697,7 +695,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(componentType);
         if (componentToChange instanceof PurgedComponent) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(componentType);
@@ -710,7 +708,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueBinding valueBinding, FacesContext context, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueBinding, context, componentType);
         if (componentToChange instanceof PurgedComponent) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueBinding, context, componentType);
@@ -723,7 +721,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, Resource resource) {
         UIComponent componentToChange = _delegate.createComponent(context, resource);
         if (componentToChange instanceof PurgedComponent) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, resource);
@@ -736,7 +734,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, String componentType, String rendererType) {
         UIComponent componentToChange = _delegate.createComponent(context, componentType, rendererType);
         if (componentToChange instanceof PurgedComponent) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, componentType, rendererType);
@@ -750,7 +748,7 @@ public class ApplicationProxy extends Application implements Decorated {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
         String family = oldComponent.getFamily();
         if (componentToChange instanceof PurgedComponent) {
-            ProxyUtils.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullAnnotationScan();
 
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed

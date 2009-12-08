@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
@@ -83,15 +83,15 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
 
      private final void weaveDelegate() {
-        _delegate = (RenderKit) ProxyUtils.getWeaver().reloadScriptingInstance(_delegate);
+        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate);
     }
 
     private final Object reloadInstance(Object instance) {
         if(instance == null) {
             return null;
         }
-        if (ProxyUtils.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            instance = ProxyUtils.getWeaver().reloadScriptingInstance(instance);
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance);
             alreadyWovenInRequest(instance.toString());
         }
         return instance;

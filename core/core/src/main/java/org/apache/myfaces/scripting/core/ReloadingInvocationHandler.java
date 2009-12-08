@@ -1,12 +1,9 @@
 package org.apache.myfaces.scripting.core;
 
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationHandler;
-import java.util.Collection;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

@@ -24,10 +24,9 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.AnnotationScanner;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 import org.apache.myfaces.scripting.core.scanEvents.events.AnnotatedArtefactRemovedEvent;
@@ -212,7 +211,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                 if (listener.supportsAnnotation(registeredAnnotation)) {
                     listener.purge(clazz.getFullyQualifiedName());
                     _registeredAnnotations.remove(clazz.getFullyQualifiedName());
-                    ProxyUtils.getEventProcessor().dispatchEvent(new AnnotatedArtefactRemovedEvent(clazz.getFullyQualifiedName()));
+                    WeavingContext.getEventProcessor().dispatchEvent(new AnnotatedArtefactRemovedEvent(clazz.getFullyQualifiedName()));
                     FileChangedDaemon.getInstance().getClassMap().remove(clazz.getFullyQualifiedName());
                 }
             }

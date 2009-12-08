@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 
 import javax.servlet.*;
@@ -42,12 +42,13 @@ public class ScriptingServletFilter implements Filter {
 
      public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-         ProxyUtils.setWeaver(context.getAttribute("ScriptingWeaver"));
+         WeavingContext.cleanOnRequest();
+         WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
          filterChain.doFilter(servletRequest, servletResponse);
      }
 
      public void destroy() {
-         ProxyUtils.clean();
+         WeavingContext.clean();
      }
 
 }

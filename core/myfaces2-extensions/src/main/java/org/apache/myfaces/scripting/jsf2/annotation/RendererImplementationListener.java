@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf2.annotation;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 
 import javax.faces.FactoryFinder;
@@ -154,7 +154,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
         try {
             //recompile the class here because we cannot deal with the renderer otherwise
-            renderKit.addRenderer(getAnnotatedStringParam(params,PAR_FAMILY), getAnnotatedStringParam(params, PAR_RENDERERTYPE), (Renderer) ProxyUtils.getWeaver().loadScriptingClassFromName(clazz.getFullyQualifiedName()).newInstance());
+            renderKit.addRenderer(getAnnotatedStringParam(params,PAR_FAMILY), getAnnotatedStringParam(params, PAR_RENDERERTYPE), (Renderer) WeavingContext.getWeaver().loadScriptingClassFromName(clazz.getFullyQualifiedName()).newInstance());
         } catch (InstantiationException e) {
             log.error(e);
         } catch (IllegalAccessException e) {

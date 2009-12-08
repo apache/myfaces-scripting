@@ -158,7 +158,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
          * //we only deal with class level reloading here
          * //the deregistration notification should happen on artefact level (which will be the next subtask)
          */
-        if(_scanner != null) {
+        if (_scanner != null) {
             _scanner.scanClass(retVal);
         }
 
@@ -203,6 +203,11 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         for (String scriptPath : getScriptPaths()) {
             //compile via javac dynamically, also after this block dynamic compilation
             //for the entire length of the request,
+            try {
+                compiler.compileAllFiles(scriptPath, classPath);
+            } catch (ClassNotFoundException e) {
+                log.error(e);
+            }
 
         }
 

@@ -20,7 +20,6 @@ package org.apache.myfaces.scripting.core;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,6 +40,8 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     private static final long serialVersionUID = -3034995032644947216L;
 
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
+
+    
 
     public CoreWeaver(ScriptingWeaver... weavers) {
         for (ScriptingWeaver weaver : weavers) {

@@ -32,7 +32,7 @@ import javax.el.PropertyNotWritableException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
 import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
@@ -52,10 +52,10 @@ public class ELResolverProxy extends ELResolver implements Decorated, SystemEven
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
         Object retVal = _delegate.getValue(elContext, base, property);
 
-        if (retVal != null && ProxyUtils.isDynamic(retVal.getClass())) {
+        if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
 
 
-            Object newRetVal = ProxyUtils.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
+            Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
             if (newRetVal != retVal) {
                 _delegate.setValue(elContext, base, property, newRetVal);
@@ -70,8 +70,8 @@ public class ELResolverProxy extends ELResolver implements Decorated, SystemEven
 
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
-        if (retVal != null && ProxyUtils.isDynamic((Class) retVal)) {
-            return ProxyUtils.getWeaver().reloadScriptingClass((Class) retVal);
+        if (retVal != null && WeavingContext.isDynamic((Class) retVal)) {
+            return WeavingContext.getWeaver().reloadScriptingClass((Class) retVal);
         }
         return retVal;
     }

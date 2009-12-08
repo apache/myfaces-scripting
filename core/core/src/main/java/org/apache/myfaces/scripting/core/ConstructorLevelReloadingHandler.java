@@ -18,12 +18,11 @@
  */
 package org.apache.myfaces.scripting.core;
 
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -61,7 +60,7 @@ public class ConstructorLevelReloadingHandler extends ReloadingInvocationHandler
 
     protected Object reloadInvoke(Method method, Object[] objects) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         if (_weaver == null)
-            _weaver = ProxyUtils.getWeaver();
+            _weaver = WeavingContext.getWeaver();
 
         if (_delegate == null) {
             //stateless or lost state due to a lifecycle iteration we trigger anew
@@ -80,7 +79,7 @@ public class ConstructorLevelReloadingHandler extends ReloadingInvocationHandler
 
     private void unmapProxies(Object[] objects) {
         for (int cnt = 0; cnt < objects.length; cnt++) {
-            objects[cnt] = ProxyUtils.getDelegateFromProxy(objects[cnt]);
+            objects[cnt] = WeavingContext.getDelegateFromProxy(objects[cnt]);
         }
     }
 

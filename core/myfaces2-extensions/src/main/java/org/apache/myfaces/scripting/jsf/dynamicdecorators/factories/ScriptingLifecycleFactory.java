@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.factories;
 
 import org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations.LifefcycleProxy;
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.lifecycle.Lifecycle;
@@ -40,7 +40,7 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
 
     public ScriptingLifecycleFactory(LifecycleFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = ProxyUtils.isScriptingEnabled();
+        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void addLifecycle(String s, Lifecycle lifecycle) {

@@ -19,13 +19,10 @@
 package org.apache.myfaces.scripting.core;
 
 
-import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -81,7 +78,7 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
 
     protected Object reloadInvoke(Method method, Object[] objects) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         if (_weaver == null)
-            _weaver = ProxyUtils.getWeaver();
+            _weaver = WeavingContext.getWeaver();
 
         if (_delegate == null) {
             //stateless or lost state due to a lifecycle iteration we trigger anew
@@ -91,7 +88,7 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
             _delegate = _weaver.reloadScriptingInstance(_delegate);
 
             //we work our way through all proxies and fetch the class for further reference
-            Object delegate = ProxyUtils.getDelegateFromProxy(_delegate);
+            Object delegate = WeavingContext.getDelegateFromProxy(_delegate);
             _loadedClass = delegate.getClass();
         }
         //check for proxies and unproxy them before calling the methods
@@ -112,7 +109,7 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
     private void unmapProxies(Object[] objects) {
         if (objects == null) return;
         for (int cnt = 0; cnt < objects.length; cnt++) {
-            objects[cnt] = ProxyUtils.getDelegateFromProxy(objects[cnt]);
+            objects[cnt] = WeavingContext.getDelegateFromProxy(objects[cnt]);
         }
     }
 }

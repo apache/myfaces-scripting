@@ -90,6 +90,107 @@ and then do a full reregistration scan of all annotations (note we also should k
 track of the annotation states so that we can unregister deleted ones )
 
 
+----------------
+
+idea of a better compile cycle...
+problem currently, we do a class by class compile
+this strategy has been proven to be problematic, too many sidedependencies are not
+found and result in way too many classcast exceptions
+
+better option, since we cannot exchange the classes fully without getting exceptions
+from time to time on existing objects we try to minimize the problem the following ways
+
+beans: reload the classes which need to be reloaded, full bean tree reload with probably an annotation
+for beans which should be kept
+
+others full reload
+
+full recompilation if we have dirty classes at the beginning of the lifecycle so that
+we get fresh compilates at the time we access the page, no more on demand reload.
+
+We should keep a dirty marker centrally for artefacts which have changed.
+
+Additional advantage of the full recompile, we can deal with annotation scans on
+binary level instead of source level because and hence can support annotations
+on the fly,
+
+We still can get classcast exceptions because we cannot reload all artefacts newly compiled
+but we have less problems with classcasts than in our single file reloading strategy
+
+--------------
+
+clearing of the managed bean map:
+
+   public Object getValue(final ELContext context, final Object base, final Object property)
+        throws NullPointerException, PropertyNotFoundException, ELException
+    {
+
+        if (base != null)
+            return null;
+
+        if (property == null)
+        {
+            throw new PropertyNotFoundException();
+        }
+
+        final ExternalContext extContext = externalContext(context);
+
+        if (extContext == null)
+            return null;
+        if (extContext.getRequestMap().containsKey(property))
+            return null;
+        if (extContext.getSessionMap().containsKey(property))
+            return null;
+        if (extContext.getApplicationMap().containsKey(property))
+            return null;
+
+        if (!(property instanceof String))
+            return null;
+
+        final String strProperty = (String)property;
+
+        final ManagedBean managedBean = runtimeConfig(context).getManagedBean(strProperty);
+        Object beanInstance = null;
+        if (managedBean != null)
+        {
+            FacesContext facesContext = facesContext(context);
+            context.setPropertyResolved(true);
+            beanInstance = createManagedBean(managedBean, facesContext);
+        }
+
+        return beanInstance;
+
+        we have to clear the entire property from the request map, the session map and the application
+        map, once we have identified which managed beans are invalidated, so that
+        we can refresh all of them at request.
+
+        We also drop all properties there so and do not keep anything
+
+Ok lets sum everything up
+a) Strategy 1: we reload only the object affected and keep the properties intact,
+  positive: simple
+  negative: too limiting
+
+b) fine grained control of the reloading, we cascade over the entire object tree and invalidate the objects
+  touched by the dependency resolution while trying to keep the properties intact
+  positive: probably the best control over everything which has to be reloaded
+  negative: very complicated and slowest
+
+c) we drop all managed beans we have in the system only the ones we mark as not droppable are kept
+  (login handlers for testing etc...)
+  positive: very simple to implement by simply nulling all managed bean entries in the session application and request map
+  and then simply assigning the new managed beans to the objects kept
+  negative, way too much data loss in this case, we cannot keep the properties
+  
+
+
+
+
+
+
+
+
+
 
 
 

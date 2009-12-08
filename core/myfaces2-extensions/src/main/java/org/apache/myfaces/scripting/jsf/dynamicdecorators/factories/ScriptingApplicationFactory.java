@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.factories;
 
 import org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations.ApplicationProxy;
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.Application;
@@ -48,7 +48,7 @@ public class ScriptingApplicationFactory extends ApplicationFactory implements D
 
     public ScriptingApplicationFactory(ApplicationFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = ProxyUtils.isScriptingEnabled();
+        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public Application getApplication() {

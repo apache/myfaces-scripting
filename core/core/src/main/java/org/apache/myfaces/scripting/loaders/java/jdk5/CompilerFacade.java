@@ -49,6 +49,31 @@ public class CompilerFacade implements DynamicCompiler {
     }
 
 
+    /**
+     * does a compilation of all files one compile per request
+     * is allowed for performance reasons, the request blocking will be done
+     * probably on the caller side of things
+     *
+     * @param sourceRoot
+     * @param classPath
+     */
+    public void compileAll(String sourceRoot, String classPath) {
+        try {
+            //TODO do a full compile and block the compile for the rest of the request
+            //so that we do not run into endless compile cycles
+
+            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
+            displayMessages(result);
+            if(result.hasErrors()) {
+                log.error("Compiler output:" + result.getCompilerOutput());
+            }
+
+        } catch (CompilationException e) {
+            log.error(e);
+        }
+    }
+
+
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
 
         String className = filePath.replaceAll(File.separator, ".");
@@ -59,7 +84,7 @@ public class CompilerFacade implements DynamicCompiler {
 
             displayMessages(result);
 
-            if (result.getErrors().size() == 0) {
+            if (!result.hasErrors()) {
                 ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
                 if (!(oldClassLoader instanceof RecompiledClassLoader)) {
                     try {
@@ -74,7 +99,7 @@ public class CompilerFacade implements DynamicCompiler {
                     }
                 }
             } else {
-                log.error("Compiler output:"+result.getCompilerOutput());
+                log.error("Compiler output:" + result.getCompilerOutput());
             }
 
         } catch (CompilationException e) {
@@ -89,7 +114,7 @@ public class CompilerFacade implements DynamicCompiler {
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.error(error.getLineNumber()+"-"+error.getMessage());
+            log.error(error.getLineNumber() + "-" + error.getMessage());
 
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {

@@ -20,8 +20,8 @@ package org.apache.myfaces.groovyloader.core
 
 import org.apache.myfaces.groovyloader.core.GroovyWeaver
 import org.apache.myfaces.scripting.loaders.groovy.MetaclassStubcompilerFix
-import org.apache.myfaces.scripting.core.util.ProxyUtils
-import org.apache.myfaces.scripting.core.util.ProxyUtils
+import org.apache.myfaces.scripting.core.util.WeavingContext
+import org.apache.myfaces.scripting.core.util.WeavingContext
 
 /**
  * A proxying class doing constructor interceoption
@@ -85,7 +85,7 @@ we have to derive from our own object here
         Object a_object = super.invokeConstructor(objects);    //To change body of overridden methods use File | Settings | File Templates.
 
         if (weaver == null)
-            weaver = ProxyUtils.getWeaver();
+            weaver = WeavingContext.getWeaver();
 
         a_object = weaver.reloadScriptingInstance(a_object);
 

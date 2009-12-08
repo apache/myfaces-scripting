@@ -26,7 +26,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -165,7 +164,7 @@ public class ReflectUtil {
         if (obj instanceof InvocationHandler) {
             InvocationHandler objToInvoke = (InvocationHandler) obj;
 
-            Object realTarget = ProxyUtils.getDelegateFromProxy(objToInvoke);
+            Object realTarget = WeavingContext.getDelegateFromProxy(objToInvoke);
 
             //first we try only the public because they are the most likely ones
             //to be accessed

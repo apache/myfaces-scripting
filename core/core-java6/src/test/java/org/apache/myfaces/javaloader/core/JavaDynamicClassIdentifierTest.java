@@ -21,10 +21,8 @@ package org.apache.myfaces.javaloader.core;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.CoreWeaver;
-import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.loaders.java.DynamicClassIdentifier;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 
 
@@ -43,14 +41,14 @@ public class JavaDynamicClassIdentifierTest {
         probe1 = new Probe1();
         probe2 = new Probe2();
         weaver = new CoreWeaver(new JavaScriptingWeaver());
-        ProxyUtils.setWeaver(weaver); 
+        WeavingContext.setWeaver(weaver);
     }
 
 
      @Test
      public void isDynamic() {
-        assertFalse("Class should be static",ProxyUtils.isDynamic(probe1.getClass()));
-        assertTrue("Class should be dynamic",ProxyUtils.isDynamic(probe2.getClass()));
+        assertFalse("Class should be static", WeavingContext.isDynamic(probe1.getClass()));
+        assertTrue("Class should be dynamic", WeavingContext.isDynamic(probe2.getClass()));
      }
 
 

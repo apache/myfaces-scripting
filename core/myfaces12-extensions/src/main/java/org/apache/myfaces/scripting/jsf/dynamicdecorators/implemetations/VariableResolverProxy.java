@@ -19,7 +19,7 @@
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
-import org.apache.myfaces.scripting.core.util.ProxyUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.el.VariableResolver;
 import javax.faces.el.EvaluationException;
@@ -40,8 +40,8 @@ public class VariableResolverProxy extends VariableResolver implements Decorated
 
     public Object resolveVariable(FacesContext facesContext, String s) throws EvaluationException {
         Object variable = _delegate.resolveVariable(facesContext, s);
-        if (ProxyUtils.isDynamic(variable.getClass()))
-            variable = ProxyUtils.getWeaver().reloadScriptingInstance(variable);
+        if (WeavingContext.isDynamic(variable.getClass()))
+            variable = WeavingContext.getWeaver().reloadScriptingInstance(variable);
         return variable;
     }
 
