@@ -42,7 +42,7 @@ public abstract class BaseEvent implements SystemEvent {
     }
 
     public String getAffectedClassName() {
-        return _scannedClass;  
+        return _scannedClass;
     }
 
     public Integer getEventType() {

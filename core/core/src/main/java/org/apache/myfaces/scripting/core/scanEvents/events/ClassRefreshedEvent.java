@@ -23,7 +23,7 @@ package org.apache.myfaces.scripting.core.scanEvents.events;
  * @version $Revision$ $Date$
  */
 
-public class ClassRefreshedEvent extends BaseEvent  {
+public class ClassRefreshedEvent extends BaseEvent {
     public static final int EVT_TYPE_CLASSREFRESH = 2;
 
     public ClassRefreshedEvent(String className) {

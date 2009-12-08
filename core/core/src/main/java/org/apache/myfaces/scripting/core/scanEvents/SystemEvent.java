@@ -6,6 +6,8 @@ package org.apache.myfaces.scripting.core.scanEvents;
  */
 public interface SystemEvent {
     public Integer getEventType();
+
     public String getAffectedClassName();
+
     public Integer getArtefactType();
 }

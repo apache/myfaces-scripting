@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.loaders.java.util.DirStrategy;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -45,7 +45,6 @@ class JavacCompiler implements Compiler {
      * The class reference to the internal Javac compiler.
      */
     private Class compilerClass;
-    private static final String JAVA_WILDCARD = "*.java ";
 
     // ------------------------------------------ Constructors
 
@@ -174,21 +173,7 @@ class JavacCompiler implements Compiler {
      * @return an array of arguments that you have to pass to the Javac compiler
      */
     protected String[] buildCompilerArguments(File sourcePath, File targetPath, String classPath) {
-        DirStrategy dirStrategy = new DirStrategy();
-        FileUtils.listFiles(sourcePath, dirStrategy);
-
-        StringBuilder sourcesList = new StringBuilder(512);
-
-        String root = sourcePath.getAbsolutePath();
-        int rootLen = root.length() + 1;
-        for (File foundDir : dirStrategy.getFoundFiles()) {
-            String dirName = foundDir.getAbsolutePath();
-            dirName = dirName.substring(rootLen);
-            sourcesList.append(dirName);
-            sourcesList.append(File.separator);
-            sourcesList.append(JAVA_WILDCARD);
-        }
-        sourcesList.append(JAVA_WILDCARD);
+        StringBuilder sourcesList = FileUtils.fetchSourcePaths(sourcePath, ScriptingConst.JAVA_WILDCARD);
 
         List arguments = getDefaultArguments(sourcePath, targetPath, classPath);
 

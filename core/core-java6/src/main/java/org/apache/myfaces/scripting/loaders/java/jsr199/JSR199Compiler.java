@@ -19,7 +19,9 @@
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.scripting.loaders.java.jsr199.ContainerFileManager;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +31,7 @@ import javax.tools.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.List;
 
 /**
  * <p>
@@ -49,9 +52,6 @@ import java.util.Locale;
  * to use commons-jci so we rolled our own small specialized facade for this
  * </p>
  *
- * TODO move this over to the unified compiler interface
- *
- *
  * @author Werner Punz (latest modification by $Author: werpu $)
  * @version $Revision: 812255 $ $Date: 2009-09-07 20:51:39 +0200 (Mo, 07 Sep 2009) $
  */
@@ -70,8 +70,20 @@ public class JSR199Compiler implements DynamicCompiler {
         }
     }
 
-    //ok this is a point of no return we cannot avoid it thanks to the dreaded
-    //windows file locking, but since this is not for production we can live with it
+    /**
+     * Compile a single file
+     *
+     * @param sourceRoot       the source search path (root of our source)
+     * @param classPath
+     * @param relativeFileName
+     * @return
+     * @throws ClassNotFoundException
+     * @deprecated note we will move over to a single
+     *             compile step in the beginning in the long run
+     *             we will deprecate it as soon as the full
+     *             compile at the beginning of the request
+     *             is implemented
+     */
     public Class compileFile(String sourceRoot, String classPath, String relativeFileName) throws ClassNotFoundException {
 
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + relativeFileName);
@@ -101,25 +113,67 @@ public class JSR199Compiler implements DynamicCompiler {
     }
 
 
+    /**
+     * compile all files starting from a given root
+     * <p/>
+     * note, the java compiler interface does not allow per se
+     * wildcards due to its file object indirection
+     * we deal with that problem by determine all files manually and then
+     * push the list into the jsr compiler interface
+     *
+     * @param sourceRoot the root for all java sources to be compiled
+     * @param classPath  the classpath for the compilation
+     * @throws ClassNotFoundException in case of a compilation error
+     */
     public void compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        //TODO implement this
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourceRoot), ScriptingConst.JAVA_WILDCARD);
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[0]));
+        String[] options = new String[]{"-cp", fileManager.getClassPath(), "-d", fileManager.getTempDir().getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
+        javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
+        handleDiagnostics(diagnosticCollector);
     }
 
+
+    /**
+     * internal diagnostics handler
+     * which just logs the errors
+     *
+     * @param diagnosticCollector the compilation results, the jsr 199 uses a DiagnosticsCollector object
+     *                            to keep the errors and warnings of the compiler
+     * @throws ClassNotFoundException in case of an error (this is enforced by the compiler interface
+     *                                and probably will be overhauled in the long run)
+     */
     private void handleDiagnostics(DiagnosticCollector<JavaFileObject> diagnosticCollector) throws ClassNotFoundException {
         if (diagnosticCollector.getDiagnostics().size() > 0) {
             Log log = LogFactory.getLog(this.getClass());
             StringBuilder errors = new StringBuilder();
             for (Diagnostic diagnostic : diagnosticCollector.getDiagnostics()) {
-                String error = "Error on line" +
-                               diagnostic.getMessage(Locale.getDefault()) + "------" +
-                               diagnostic.getLineNumber() + " File:" +
-                               diagnostic.getSource().toString();
+                String error = createErrorMessage(diagnostic);
                 log.error(error);
                 errors.append(error);
 
             }
             throw new ClassNotFoundException("Compile error of java file:" + errors.toString());
         }
+    }
+
+    /**
+     * creates a standardized error message
+     *
+     * @param diagnostic the diagnostic of the compiler containing the error data
+     * @return a formatted string with the standardized error message which then later
+     *         can be processed by the user
+     */
+    private String createErrorMessage(Diagnostic diagnostic) {
+        StringBuilder retVal = new StringBuilder(256);
+        retVal.append("Java Compiler, Error on line: ");
+        retVal.append(diagnostic.getMessage(Locale.getDefault()));
+        retVal.append(diagnostic.getLineNumber());
+
+        retVal.append("\n\n");
+        retVal.append(diagnostic.getSource().toString());
+
+        return retVal.toString();
     }
 
 }

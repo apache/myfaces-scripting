@@ -39,6 +39,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     public BaseWeaver(String fileEnding, int scriptingEngine) {
         this.fileEnding = fileEnding;
         this.scriptingEngine = scriptingEngine;
+        _reloadingStrategy = new GlobalReloadingStrategy(this);
     }
 
 

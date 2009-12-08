@@ -41,15 +41,13 @@ public interface ScriptingWeaver {
 
 
     /**
-     * @param o the object which has to be reloaded
+     * @param o            the object which has to be reloaded
      * @param artefactType an identifier for the artefact type so that its reloading strategies can
-     * be adjusted depending on the type of artefact which has to be processed, we have to pass down
-     * this artefact because we cannot rely on instanceof here for several reasons first we do not know
-     * if a managed bean does not implement as well one of the artefact interfaces for one reason or the other
-     * secondly how do we deal with future extensions which provide new artefacts we cannot
-     * bind the code to just one implementation, hence we add some kind of type identifier here as well
-     * 
-     * 
+     *                     be adjusted depending on the type of artefact which has to be processed, we have to pass down
+     *                     this artefact because we cannot rely on instanceof here for several reasons first we do not know
+     *                     if a managed bean does not implement as well one of the artefact interfaces for one reason or the other
+     *                     secondly how do we deal with future extensions which provide new artefacts we cannot
+     *                     bind the code to just one implementation, hence we add some kind of type identifier here as well
      * @return reloads an existing objects with its attributes
      *         and assigns the reloaded class to the new object
      *         <p/>
@@ -110,5 +108,13 @@ public interface ScriptingWeaver {
      * simply compile per file
      */
     public void fullRecompile();
+
+
+    /**
+     * callback for artefacting request refreshes
+     * some artefacts should be refreshed or cleared upon
+     * request time, others can be dealt with on on demand time
+     */
+    public void requestRefresh();
 
 }

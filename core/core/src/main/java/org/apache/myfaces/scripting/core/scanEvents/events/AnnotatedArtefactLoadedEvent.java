@@ -23,7 +23,7 @@ package org.apache.myfaces.scripting.core.scanEvents.events;
  * @version $Revision$ $Date$
  */
 
-public class AnnotatedArtefactLoadedEvent extends BaseEvent  {
+public class AnnotatedArtefactLoadedEvent extends BaseEvent {
     private static final int EVT_TYPE_BEAN_ADDED = 1;
 
 

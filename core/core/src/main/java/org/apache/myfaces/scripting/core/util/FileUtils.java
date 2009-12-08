@@ -18,7 +18,11 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
+import org.apache.myfaces.scripting.loaders.java.util.DirStrategy;
+import org.apache.myfaces.scripting.loaders.java.util.FileStrategy;
+
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -27,6 +31,9 @@ import java.io.File;
 
 public class FileUtils {
     static double _tempMarker = Math.random();
+
+
+    
 
     public static File getTempDir() {
         File tempDir = null;
@@ -97,5 +104,48 @@ public class FileUtils {
             // If we've created the destination directory, we'll delete it as well once the application exits
             path.deleteOnExit();
         }
+    }
+
+
+    /**
+     * fetches recursively the files under the current root
+     *
+     * @param sourcePath the source path from which the walker should start from
+     * @param fileType the pattern upon which the file has to be matched to aka *.java etc...
+     * @return
+     */
+    public static List<File> fetchSourceFiles(File sourcePath, String fileType) {
+        FileStrategy strategy = new FileStrategy(fileType);
+        listFiles(sourcePath, strategy);
+
+        return strategy.getFoundFiles();
+    }
+
+
+    /**
+     * fetches the source paths from a given root directory in the format
+     * <path>/<appendix>;...
+     *
+     * @param sourcePath the sourcePath from which the directory traversal should happen from
+     * @param appendix the appendix which has to be appended to every path found
+     * @return a string builder of the paths found
+     */
+    public static StringBuilder fetchSourcePaths(File sourcePath,  String appendix) {
+        DirStrategy dirStrategy = new DirStrategy();
+        listFiles(sourcePath, dirStrategy);
+
+        StringBuilder sourcesList = new StringBuilder(512);
+
+        String root = sourcePath.getAbsolutePath();
+        int rootLen = root.length() + 1;
+        for (File foundDir : dirStrategy.getFoundFiles()) {
+            String dirName = foundDir.getAbsolutePath();
+            dirName = dirName.substring(rootLen);
+            sourcesList.append(dirName);
+            sourcesList.append( File.separator);
+            sourcesList.append(appendix);
+        }
+        sourcesList.append(appendix);
+        return sourcesList;
     }
 }

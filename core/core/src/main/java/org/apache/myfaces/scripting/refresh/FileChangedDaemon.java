@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author werpu
  *         Reimplementation of the file changed daemon thread
- *         in java, the original one was done in groovy
+ *         in java. The original one was done in groovy
  *         this threads purpose is to watch the files
  *         loaded by the various engine loaders for
  *         for file changes and then if one has changed we have to mark
@@ -42,15 +42,6 @@ public class FileChangedDaemon extends Thread {
 
     static FileChangedDaemon instance = null;
 
-    //TODO replace the synchronized map with a segmented map to reduce
-    //the number of synchronisation locks on parallel access
-    //we have to have in mind that the compiler facades access this map
-    //in a writable way as well to update their meta data so we
-    //should replace the map with something segmented, probably
-    //a balanced tree of depth 2
-
-    // ConcurrentHashMap<String, Renderer>(8, 0.75f, 1)
-    // segmented map here because we have to deal with multithreaded access
     Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
 
     /**
@@ -105,20 +96,24 @@ public class FileChangedDaemon extends Thread {
                 if (!it.getValue().isTainted()) {
 
                     File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
-                    it.getValue().setTainted(proxyFile.lastModified() != it.getValue().getTimestamp());
-                    if (it.getValue().isTainted()) {
+                    if(!it.getValue().isTainted() && isModified(it, proxyFile)) {
+                        it.getValue().setTainted(true);
+
                         systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
                         it.getValue().setTaintedOnce(true);
                         printInfo(it, proxyFile);
+                        it.getValue().setTimestamp(proxyFile.lastModified());
                     }
-                    it.getValue().setTimestamp(proxyFile.lastModified());
-
-                }
+               }
             }
         }
         if (log.isInfoEnabled()) {
             log.info("Dynamic reloading watch daemon is shutting down");
         }
+    }
+
+    private final boolean isModified(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
+        return proxyFile.lastModified() != it.getValue().getTimestamp();
     }
 
     private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {

@@ -22,7 +22,11 @@ import org.apache.myfaces.scripting.core.util.Strategy;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.io.File;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -32,14 +36,27 @@ import java.io.File;
  *          so that we can recompile them
  */
 
-public class JavaFileStrategy implements Strategy {
+public class FileStrategy implements Strategy {
+    Pattern rePattern;
+
+    public FileStrategy( String pattern) {
+        pattern = pattern.replace("\\.", "\\.");
+        pattern = "^.*"+pattern+"$";
+
+
+        rePattern = Pattern.compile("[+-]?[0-9]+");
+
+    }
+
 
     List<File> _foundFiles = new LinkedList<File>();
 
     public void apply(Object element) {
         File foundFile = (File) element;
         String fileName = foundFile.getName().toLowerCase();
-        if (!fileName.endsWith(".java")) return;
+        Matcher matcher = rePattern.matcher(fileName);
+
+        if (!matcher.matches()) return;
         _foundFiles.add(foundFile);
     }
 

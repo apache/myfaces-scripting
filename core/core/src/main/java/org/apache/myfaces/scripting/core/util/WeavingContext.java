@@ -113,6 +113,13 @@ public class WeavingContext {
     }
 
     /**
+     * some artefacts need a full request refresh
+     */
+    public static void doRequestRefreshes() {
+
+    }
+
+    /**
      * checks whether the system
      * has scripting enabled or not
      *

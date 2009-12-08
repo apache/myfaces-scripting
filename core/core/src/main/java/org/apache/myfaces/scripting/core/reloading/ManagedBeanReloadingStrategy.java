@@ -18,21 +18,22 @@
  */
 package org.apache.myfaces.scripting.core.reloading;
 
-import org.apache.myfaces.scripting.api.ReloadingStrategy;
-import org.apache.myfaces.scripting.api.BaseWeaver;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.config.element.ManagedBean;
-import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.config.RuntimeConfig;
+import org.apache.myfaces.config.annotation.LifecycleProvider;
+import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
+import org.apache.myfaces.config.element.ManagedBean;
+import org.apache.myfaces.scripting.api.BaseWeaver;
+import org.apache.myfaces.scripting.api.ReloadingStrategy;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.List;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -58,96 +59,16 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
         _weaver = weaver;
     }
 
+    /**
+     * In our case the dropping already has happend at request time
+     * no need for another reloading here
+     * 
+     * @param scriptingInstance
+     * @param artefactType
+     * @return
+     */
     public Object reload(Object scriptingInstance, int artefactType) {
-        Map requestMap = WeavingContext.getRequestAttributesMap();
-        //only one reload per request allowed
-        if (requestMap != null && requestMap.containsKey(RELOAD_PERFORMED)) {
-            return scriptingInstance;
-        }
-
-        //TODO build up the managed bean idx at request time or make a request blocker
-        //so that we build up the idx only once per request
-
-        //reload the class to get new static content if needed
-        Class aclass = _weaver.reloadScriptingClass(scriptingInstance.getClass());
-        if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
-            //class of this object has not changed although
-            // reload is enabled we can skip the rest now
-            return scriptingInstance;
-        }
-
-        reloadAllDynamicBeans();
-
-
-        getLog().info("possible reload for " + scriptingInstance.getClass().getName());
-        /*only recreation of empty constructor classes is possible*/
-        try {
-            //reload the object by instiating a new class and
-            // assigning the attributes properly
-            Object newObject = aclass.newInstance();
-
-            /*now we shuffle the properties between the objects*/
-            //TODO remove this we wont need it anymore for now
-            mapProperties(newObject, scriptingInstance);
-
-            if (requestMap != null) {
-                requestMap.put(RELOAD_PERFORMED, Boolean.TRUE);
-            }
-            return newObject;
-        } catch (Exception e) {
-            getLog().error(e);
-        }
-        return null;
-
+        return scriptingInstance;
     }
 
-    private void removeBeanReferences(String beanName) {
-        getLog().info("ManagedBeanReloadingStrategy.removeBeanReferences(" + beanName + ")");
-    }
-
-
-    /**
-     * the simplest solution for now is to dump and reload
-     * all managed beans via the config
-     * ie - we drop the managed beans from all the request, session
-     * and application scope for now by checking the bean maps
-     * for their names and removing the corresponding beans unless they implement
-     * a non droppable annotation
-     */
-    private void reloadAllDynamicBeans() {
-        //TODO iterate over the bean list, identify which classes are dynamic and drop those
-        //via their bean names
-        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
-            Class managedBeanClass = entry.getValue().getManagedBeanClass();
-            if (WeavingContext.isDynamic(managedBeanClass)) {
-                //managed bean class found we drop the class from our session
-                removeBeanReferences(entry.getValue().getManagedBeanName());
-            }
-        }
-    }
-
-
-    /**
-     * helper to map the properties wherever possible
-     *
-     * @param target
-     * @param src
-     */
-    protected void mapProperties(Object target, Object src) {
-        try {
-
-            BeanUtils.copyProperties(target, src);
-        } catch (IllegalAccessException e) {
-            getLog().debug(e);
-            //this is wanted
-        } catch (InvocationTargetException e) {
-            getLog().debug(e);
-            //this is wanted
-        }
-    }
-
-    private final Log getLog() {
-        return LogFactory.getLog(this.getClass());
-    }
 }

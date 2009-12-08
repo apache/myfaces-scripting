@@ -24,6 +24,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.config.element.ManagedBean;
+import org.apache.myfaces.config.RuntimeConfig;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
@@ -33,6 +38,8 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author werpu
@@ -47,7 +54,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     DynamicClassIdentifier identifier = new DynamicClassIdentifier();
 
     private static final String JAVA_FILE_ENDING = ".java";
-    private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.CompilerFacade";
+    private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.JSR199Compiler";
     private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
 
     AnnotationScanner _scanner = null;
@@ -213,6 +220,74 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
         markAsFullyRecompiled();
     }
+
+    public void requestRefresh() {
+        if (FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA)) {
+            fullRecompile();
+            //TODO if managed beans are tainted we have to do a full drop
+            refreshManagedBeans();
+        }
+    }
+
+    private void refreshManagedBeans() {
+        Set<String> tainted = new HashSet<String>();
+        for (Map.Entry<String, ReloadingMetadata> it : FileChangedDaemon.getInstance().getClassMap().entrySet()) {
+            if (it.getValue().getScriptingEngine() == ScriptingConst.ENGINE_TYPE_JAVA && it.getValue().isTainted()) {
+                tainted.add(it.getValue().getAClass().getName());
+            }
+        }
+        if (tainted.size() > 0) {
+            boolean managedBeanTainted = false;
+            //We now have to check if the tainted classes belong to the managed beans
+            Set<String> managedBeanClasses = new HashSet<String>();
+            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+            for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+                managedBeanClasses.add(entry.getValue().getManagedBeanClassName());
+            }
+            for (String taintedClass : tainted) {
+                if (managedBeanClasses.contains(taintedClass)) {
+                    managedBeanTainted = true;
+                    break;
+                }
+            }
+            if (managedBeanTainted) {
+                for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+                    Class managedBeanClass = entry.getValue().getManagedBeanClass();
+                    if (WeavingContext.isDynamic(managedBeanClass)) {
+                        //managed bean class found we drop the class from our session
+                        removeBeanReferences(entry.getValue());
+                    }
+                }
+
+            }
+        }
+    }
+
+    /**
+     * removes the references from out static scope
+     * for jsf2 we probably have some kind of notification mechanism
+     * which notifies custom scopes
+     *
+     * @param bean
+     */
+    private void removeBeanReferences(ManagedBean bean) {
+        getLog().info("JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
+
+        String scope = bean.getManagedBeanScope();
+
+        if (scope != null && scope.equalsIgnoreCase("session")) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
+        } else if (scope != null && scope.equalsIgnoreCase("application")) {
+            FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
+        } else if (scope != null) {
+            Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(scope);
+            if (scopeImpl == null) return; //scope not implemented
+            //we now have to revert to introspection here because scopes are a pure jsf2 construct
+            //so we use a messaging pattern here to cope with it
+            ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
+        }
+    }
+    
 
     private void markAsFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();

@@ -37,7 +37,7 @@ public class ObjectRefreshedEvent extends BaseEvent {
         _target = target;
     }
 
-    public ObjectRefreshedEvent( int artefactType, Object origin, Object target) {
+    public ObjectRefreshedEvent(int artefactType, Object origin, Object target) {
         super(origin.getClass().getName(), artefactType);
         _origin = origin;
         _target = target;
