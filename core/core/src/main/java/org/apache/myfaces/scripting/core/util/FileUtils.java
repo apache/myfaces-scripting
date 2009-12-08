@@ -140,12 +140,10 @@ public class FileUtils {
         int rootLen = root.length() + 1;
         for (File foundDir : dirStrategy.getFoundFiles()) {
             String dirName = foundDir.getAbsolutePath();
-            dirName = dirName.substring(rootLen);
             sourcesList.append(dirName);
             sourcesList.append( File.separator);
             sourcesList.append(appendix);
         }
-        sourcesList.append(appendix);
         return sourcesList;
     }
 }

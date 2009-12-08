@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.api;
 
+import java.io.File;
+
 /**
  * @author Werner Punz
  *         Interface marking generic compiler facades which can
@@ -32,6 +34,7 @@ package org.apache.myfaces.scripting.api;
  */
 public interface DynamicCompiler {
     /**
+     * 
      * compiles a single file into a class
      *
      * @param sourceRoot the source search path (root of our source)
@@ -42,6 +45,5 @@ public interface DynamicCompiler {
      */
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException;
 
-    public void compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException;
-
+    public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException;
 }

@@ -40,11 +40,11 @@ public class FileStrategy implements Strategy {
     Pattern rePattern;
 
     public FileStrategy( String pattern) {
-        pattern = pattern.replace("\\.", "\\.");
-        pattern = "^.*"+pattern+"$";
+        pattern = pattern.trim().replaceAll("\\.", "\\\\.");
+        pattern = "."+pattern;
 
 
-        rePattern = Pattern.compile("[+-]?[0-9]+");
+        rePattern = Pattern.compile(pattern);
 
     }
 

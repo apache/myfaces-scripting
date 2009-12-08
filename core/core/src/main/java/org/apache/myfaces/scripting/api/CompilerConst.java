@@ -27,11 +27,12 @@ package org.apache.myfaces.scripting.api;
  */
 
 public class CompilerConst {
-    public static final String STD_ERROR_HEAD = "Java Compiler, Error on line: ";
-    public static final String JC_CLASSPATH = "-cp";
-    public static final String JC_TARGET_PATH = "-d";
-    public static final String JC_SOURCEPATH = "-sourcepath";
-    public static final String JC_DEBUG = "-g";
-    public static final String JAVA_WILDCARD = "*.java ";
-    public static final String JC_VERBOSE = "-verbose";
+    public static final String STD_ERROR_HEAD   = "Java Compiler, Error on line: ";
+    public static final String JC_CLASSPATH     = "-cp";
+    public static final String JC_TARGET_PATH   = "-d";
+    public static final String JC_SOURCEPATH    = "-sourcepath";
+    public static final String JC_DEBUG         = "-g";
+    public static final String JAVA_WILDCARD    = "*.java ";
+    public static final String JC_VERBOSE       = "-verbose";
+    public static final String JC_SOURCE = "-source";
 }

@@ -157,4 +157,8 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //TODO implement this
     }
 
+    public void requestRefresh() {
+        
+    }
+
 }

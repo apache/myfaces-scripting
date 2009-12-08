@@ -90,7 +90,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
                 Map<String, org.apache.myfaces.config.element.ManagedBean> mbeans = config.getManagedBeans();
                 if (!mbeans.containsKey(property.toString())) {
                     if (log.isDebugEnabled()) {
-                        log.debug("ElResolverProxy.getValue bean removed we have to issue a recompile and then try to load the bean anew");
+                        log.debug("ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
                     }
                     _delegate.setValue(elContext, base, property, null);
 

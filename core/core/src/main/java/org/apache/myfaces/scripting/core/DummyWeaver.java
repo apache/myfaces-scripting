@@ -70,6 +70,9 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     public void fullRecompile() {
 
     }
-        
+
+    public void requestRefresh() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
 }

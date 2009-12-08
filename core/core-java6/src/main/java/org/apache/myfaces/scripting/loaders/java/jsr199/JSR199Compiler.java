@@ -18,20 +18,19 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
-import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
-import org.apache.myfaces.scripting.loaders.java.jsr199.ContainerFileManager;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 import javax.tools.*;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * <p>
@@ -57,10 +56,12 @@ import java.util.List;
  */
 public class JSR199Compiler implements DynamicCompiler {
 
+    private static final String FILE_SEPARATOR = File.separator;
+
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
     ContainerFileManager fileManager = null;
-    private static final String FILE_SEPARATOR = File.separator;
+
 
     public JSR199Compiler() {
         super();
@@ -88,7 +89,7 @@ public class JSR199Compiler implements DynamicCompiler {
 
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + relativeFileName);
         fileManager.getTempDir().setLastModified(0);
-        String[] options = new String[]{"-cp", fileManager.getClassPath(), "-d", fileManager.getTempDir().getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
+        String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot, CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         handleDiagnostics(diagnosticCollector);
 
@@ -125,12 +126,13 @@ public class JSR199Compiler implements DynamicCompiler {
      * @param classPath  the classpath for the compilation
      * @throws ClassNotFoundException in case of a compilation error
      */
-    public void compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourceRoot), ScriptingConst.JAVA_WILDCARD);
+    public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourceRoot), CompilerConst.JAVA_WILDCARD);
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[0]));
-        String[] options = new String[]{"-cp", fileManager.getClassPath(), "-d", fileManager.getTempDir().getAbsolutePath(), "-sourcepath", sourceRoot, "-g"};
+        String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot, CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         handleDiagnostics(diagnosticCollector);
+        return fileManager.getTempDir();
     }
 
 
@@ -166,7 +168,7 @@ public class JSR199Compiler implements DynamicCompiler {
      */
     private String createErrorMessage(Diagnostic diagnostic) {
         StringBuilder retVal = new StringBuilder(256);
-        retVal.append("Java Compiler, Error on line: ");
+        retVal.append(CompilerConst.STD_ERROR_HEAD);
         retVal.append(diagnostic.getMessage(Locale.getDefault()));
         retVal.append(diagnostic.getLineNumber());
 

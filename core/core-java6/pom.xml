@@ -11,6 +11,7 @@
         myfaces extension core java6 lib
     </description>
 
+
     
     <parent>
         <groupId>org.apache.myfaces.extension-scripting</groupId>

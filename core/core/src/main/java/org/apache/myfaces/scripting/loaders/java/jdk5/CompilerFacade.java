@@ -64,7 +64,7 @@ public class CompilerFacade implements DynamicCompiler {
 
             CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
             displayMessages(result);
-            if(result.hasErrors()) {
+            if (result.hasErrors()) {
                 log.error("Compiler output:" + result.getCompilerOutput());
             }
 
@@ -108,8 +108,25 @@ public class CompilerFacade implements DynamicCompiler {
         return null;
     }
 
-    public void compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        //TODO implement this
+    /**
+     * compiles all files
+     *
+     * @param sourceRoot
+     * @param classPath
+     * @return the root target path for the classes which are compiled
+     * so that they later can be picked up by the classloader
+     * @throws ClassNotFoundException
+     */
+    public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+        try {
+            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
+
+            displayMessages(result);
+            return fileManager.getTempDir();
+        } catch (CompilationException e) {
+            log.error(e);
+        }
+        return null;
     }
 
     private void displayMessages(CompilationResult result) {

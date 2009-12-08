@@ -28,6 +28,8 @@ import javax.el.ELException;
 import javax.el.ELResolver;
 import javax.el.PropertyNotFoundException;
 import javax.el.PropertyNotWritableException;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,13 +48,25 @@ public class ELResolverProxy extends ELResolver implements Decorated, SystemEven
     Log log = LogFactory.getLog(ELResolverProxy.class);
 
 
-    //Map reinstantiated = new HashMap();
-
 
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
+        //request, class is loaded anew hence we already have picked up the new code
+
         Object retVal = _delegate.getValue(elContext, base, property);
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
+            //now here we have something special which is implicit
+            //if the bean is only request scoped we dont have to reload anything
+            //so just run through this code without having anything happening here
+            //reloadScriptingInstance will return the same object we already had before
+            //the reason is for request or none scoped beans we get a new
+            //freshly reloaded and compiled instance on every request
+            //the problem starts with session application or custom scoped beans
+            //There nothing is compiled and we have to do the further bean processing
+
+            //TODO move the bean dropping into the beginning of the lifecycle instead of on demand
+            //That way we have a cleaner control over the refresh per request
+            
 
 
             Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
@@ -61,7 +75,6 @@ public class ELResolverProxy extends ELResolver implements Decorated, SystemEven
                 _delegate.setValue(elContext, base, property, newRetVal);
             }
             return newRetVal;
-            //reinstantiated.put(retVal.getClass().getName(), retVal.getClass());
         }
 
         return retVal;

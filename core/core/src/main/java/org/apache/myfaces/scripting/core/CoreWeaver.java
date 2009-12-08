@@ -125,5 +125,10 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
             weaver.fullRecompile();
         }
     }
+
+    public void requestRefresh() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }
 
