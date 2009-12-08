@@ -27,6 +27,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.apache.myfaces.scripting.core.util.ClassUtils.*;
+import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
+
 
 /**
  * @author werpu2
@@ -52,7 +54,6 @@ public class JSFUtil {
         Object elContext = executeMethod(facesContext, "getELContext");
         Object elResolver = executeMethod(elContext, "getELResolver");
 
-        try {
 
             /*
              if you want to enable this then use
@@ -60,17 +61,12 @@ public class JSFUtil {
              pointing towards the lingering jars
              The compiler cannot pick up the implicit containers classpaths
 
-
-
             */
             //we use the introspection calls here to achieve our goal that way
             //we can shift the dependency resolution from compile time to runtime
-            return executeMethod(elResolver, "getValue",  elContext, null,  beanName);
+         return executeMethod(elResolver, "getValue",  elContext, null,  beanName);
             // return FacesContext.getCurrentInstance().getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().getELContext(), null, beanName);
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.myfaces.webapp.StartupListener;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
@@ -45,7 +46,10 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);
-        servletContext.setAttribute("ScriptingWeaver", loader.getScriptingWeaver());
+        ScriptingWeaver weaver =  loader.getScriptingWeaver();
+        servletContext.setAttribute("ScriptingWeaver",weaver);
+        log.info("Compiling all sources for the first time");
+        weaver.requestRefresh();
         //TODO do a first full recompile here at startup time before the bean etc... instantiation can kick in
    }
 

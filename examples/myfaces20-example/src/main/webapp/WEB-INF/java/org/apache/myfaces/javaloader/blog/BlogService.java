@@ -52,6 +52,8 @@ public class BlogService {
     }
 
 
+
+
     public List<Object> getBlogEntries() {
         return blogEntries;
     }
@@ -61,7 +63,7 @@ public class BlogService {
     }
 
     public String getTest() {
-        return "aaaaaaaaaaaaaaa";
+        return "ddd";
     }
 
 }

@@ -73,6 +73,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.JavaAnnotationScanner");
             this._scanner = (AnnotationScanner) scanner.newInstance();
 
+            FileChangedDaemon.getInstance().getSystemRecompileMap().put(ScriptingConst.ENGINE_TYPE_JAVA, Boolean.TRUE);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -223,7 +224,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
     public void requestRefresh() {
         if (
-              FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA) != null &&
+              FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA) == null ||
               FileChangedDaemon.getInstance().getSystemRecompileMap().get(ScriptingConst.ENGINE_TYPE_JAVA)
            ) {
             fullRecompile();
@@ -304,6 +305,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
                 requestMap.put(JavaScriptingWeaver.class.getName() + "_recompiled", Boolean.TRUE);
             }
         }
+        FileChangedDaemon.getInstance().getSystemRecompileMap().put(ScriptingConst.ENGINE_TYPE_JAVA,Boolean.FALSE);
     }
 
     private boolean isFullyRecompiled() {

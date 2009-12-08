@@ -40,7 +40,7 @@ public class Blog {
     String title3 = "bla";
     String title4 = "bla2";
 
-    String title5 = "test from title5";
+    String title5 = "test  from title5";
 
 
 
@@ -60,14 +60,16 @@ public class Blog {
     public String addEntry2 () {
         getLog().info("adding entry");
 
-        Object service = JSFUtil.resolveVariable("javaBlogService");
+        BlogService service = (BlogService) JSFUtil.resolveVariable("javaBlogService");
 
-        
+
+
         if (service == null) {
-            getLog().error("service not found");
+            getLog().error("service   not found");
         } else {
             getLog().info("service found");
         }
+
 
         BlogEntry entry = new BlogEntry();
         //we now map it in the verbose way, the lean way would be to do direct introspection attribute mapping
@@ -99,12 +101,14 @@ public class Blog {
 
 
     public String getTitle() {
-        return title;
+        return  title;
     }
+    
 
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getTitle1() {
         return title1;
@@ -148,7 +152,7 @@ public class Blog {
     }
 
     public String getTitle3() {
-        return "title 3 from java blog";
+        return "title 3 xxx from java blog";
     }
 
     public void setTitle3(String title3) {

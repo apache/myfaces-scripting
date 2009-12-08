@@ -50,8 +50,10 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     public GroovyWeaver() {
         super();
         //super with params in java classes not superbly callable
+        //FIXME this is private in super class
         scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
         fileEnding = ".groovy"
+        _reloadingStrategy = new GroovyReloadingStrategy(this)
     }
 
 
@@ -59,7 +61,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     /**
      * central algorithm which determines which property values are overwritten and which are not
      */
-    protected void mapProperties(def target, def src) {
+    protected void mapProperties(Object target, Object src) {
         src.properties.each {property ->
             //ok here is the algorithm, basic datatypes usually are not copied but read in anew and then overwritten
             //later on

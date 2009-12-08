@@ -51,6 +51,17 @@ public class RecompiledClassLoader extends ClassLoader {
     }
 
 
+    /*
+     * TODO the classcast excepton is caused by a loadClassIntrnal triggered
+     * at the time the referencing class is loaded and then by another classload
+     * at the time the bean is refreshed
+     *
+     * we have to check if a class is loaded by loadClassInternal then
+     * no other refresh should happen but the loaded class should be issued again)
+     *
+     * Dont know how to resolve that for now
+     */
+
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
@@ -65,6 +76,9 @@ public class RecompiledClassLoader extends ClassLoader {
                 iStream = new FileInputStream(target);
                 iStream.read(fileContent);
                 // Erzeugt aus dem byte Feld ein Class Object.
+                Class retVal = null;
+                
+
                 return super.defineClass(className, fileContent, 0, fileLength);
 
             } catch (Exception e) {
@@ -79,7 +93,15 @@ public class RecompiledClassLoader extends ClassLoader {
             }
         }
 
+        
+
         return super.loadClass(className);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        return super.findClass(name);
     }
 
     public File getClassFile(String className) {

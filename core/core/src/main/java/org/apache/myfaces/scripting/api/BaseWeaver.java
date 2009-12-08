@@ -29,7 +29,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     protected List<String> scriptPaths = new LinkedList<String>();
 
-    ReloadingStrategy _reloadingStrategy = null;
+    protected ReloadingStrategy _reloadingStrategy = null;
 
 
     public BaseWeaver() {

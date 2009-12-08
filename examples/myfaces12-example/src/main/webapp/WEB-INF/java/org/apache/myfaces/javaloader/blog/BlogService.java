@@ -49,6 +49,7 @@ public class BlogService {
         if (entry != null) {
             blogEntries.add(entry);
         }
+       
     }
 
 

@@ -47,6 +47,9 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
         _weaver = weaver;
     }
 
+    public SimpleReloadingStrategy() {
+    }
+
     /**
      * <p>
      * the central callback for our strategy here
