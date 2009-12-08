@@ -70,7 +70,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
 
     AnnotationScanner _scanner = null;
-
+    DynamicCompiler compiler = null;
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -136,8 +136,11 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         try {
             //we initialize the compiler lazy
             //because the facade itself is lazy
-            DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
+            if(compiler == null) {
+                compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
+            }
             retVal = compiler.compileFile(sourceRoot, classPath, file);
+
         } catch (ClassNotFoundException e) {
             //can be safely ignored
         }
@@ -199,7 +202,10 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             return;
         }
 
-        DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
+        if(compiler == null) {
+            compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
+        }
+        
         for (String scriptPath : getScriptPaths()) {
             //compile via javac dynamically, also after this block dynamic compilation
             //for the entire length of the request,
@@ -221,6 +227,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
            ) {
             fullRecompile();
             //TODO if managed beans are tainted we have to do a full drop
+
             refreshManagedBeans();
         }
     }
@@ -249,6 +256,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
                     break;
                 }
             }
+
+            log.info("Tainting all beans to avoid classcast exceptions");
             if (managedBeanTainted) {
                 for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
                     Class managedBeanClass = entry.getValue().getManagedBeanClass();
@@ -256,6 +265,11 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
                         //managed bean class found we drop the class from our session
                         removeBeanReferences(entry.getValue());
                     }
+                    //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
+                    //exceptions
+                    log.info("Tainting ");
+                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(managedBeanClass.getName());
+                    metaData.setTainted(true);
                 }
 
             }

@@ -39,6 +39,10 @@ public class ContainerFileManager {
     RecompiledClassLoader classLoader = null;
 
     public ContainerFileManager() {
+        refreshClassloader();
+    }
+
+    public void refreshClassloader() {
         classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
     }
 

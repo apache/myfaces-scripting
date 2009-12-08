@@ -92,6 +92,7 @@ public class RecompiledClassLoader extends ClassLoader {
                 //a dependend class is loaded as well we run into classcast exceptions
                 if(data != null) {
                     data.setTainted(false);
+                    
                     return super.defineClass(className, fileContent, 0, fileLength);
                 } else {
                     //we store the initial reloading meta data information so that it is refreshed

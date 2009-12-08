@@ -84,36 +84,11 @@ public class JSR199Compiler implements DynamicCompiler {
      *             we will deprecate it as soon as the full
      *             compile at the beginning of the request
      *             is implemented
+     *
+     * TODO move this code over to the weaver instead of the compiler
+     * we do not do a single compile step anymore
      */
     public Class compileFile(String sourceRoot, String classPath, String relativeFileName) throws ClassNotFoundException {
-
-     /*   Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceRoot + FILE_SEPARATOR + relativeFileName);
-        fileManager.getTempDir().setLastModified(0);
-        String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot, CompilerConst.JC_DEBUG};
-        javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
-        handleDiagnostics(diagnosticCollector);
-
-        //now we do a dynamic bytecode reingeneering, to add the needed interfaces
-        //so that we can locate the dynamically compiled jsf artefact in a non blocking way.
-        String className = ClassUtils.relativeFileToClassName(relativeFileName);
-
-        ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        if (!(oldClassLoader instanceof RecompiledClassLoader)) {
-            try {
-                RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader(null);
-                Thread.currentThread().setContextClassLoader(classLoader);
-
-                ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
-
-                return classLoader.loadClass(className);
-            } finally {
-                Thread.currentThread().setContextClassLoader(oldClassLoader);
-            }
-        }
-        return null; */
-
-        
-
 
         String className = ClassUtils.relativeFileToClassName(relativeFileName);
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
@@ -152,6 +127,7 @@ public class JSR199Compiler implements DynamicCompiler {
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot, CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         handleDiagnostics(diagnosticCollector);
+        fileManager.refreshClassloader();
         return fileManager.getTempDir();
     }
 

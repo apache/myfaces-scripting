@@ -49,6 +49,10 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
         _delegate = standardJavaFileManager;
+        refreshClassloader();
+    }
+
+    public void refreshClassloader() {
         classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
     }
 

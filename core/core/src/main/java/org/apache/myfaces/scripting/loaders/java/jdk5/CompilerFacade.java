@@ -120,7 +120,7 @@ public class CompilerFacade implements DynamicCompiler {
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
         try {
             CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
-
+            fileManager.refreshClassloader();
             displayMessages(result);
             return fileManager.getTempDir();
         } catch (CompilationException e) {

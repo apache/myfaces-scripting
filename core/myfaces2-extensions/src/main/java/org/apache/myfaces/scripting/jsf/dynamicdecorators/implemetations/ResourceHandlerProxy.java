@@ -57,7 +57,7 @@ public class ResourceHandlerProxy extends ResourceHandler {
         return _delegate.getRendererTypeForResourceName(resourceName);
     }
 
-    public void handleResourceRequest(FacesContext context) {
+    public void handleResourceRequest(FacesContext context) throws java.io.IOException {
         weaveDelegate();
         _delegate.handleResourceRequest(context);
     }

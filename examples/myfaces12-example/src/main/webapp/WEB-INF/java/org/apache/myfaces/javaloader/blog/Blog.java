@@ -32,7 +32,8 @@ import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
 
 public class Blog {
 
-    String title        =   "Hello to the myfaces dynamic blogging example";
+
+    String title        =   "aaa Hello to the myfaces dynamic blogging example";
     String title1       =   "You can alter the code for this small blogging application on the fly, " +
                             "you even can add new classes on the fly and Java will pick it up";
 
@@ -152,7 +153,7 @@ public class Blog {
     }
 
     public String getTitle3() {
-        return "title 3 xxx from java blog";
+        return "title 3 from java blog";
     }
 
     public void setTitle3(String title3) {
