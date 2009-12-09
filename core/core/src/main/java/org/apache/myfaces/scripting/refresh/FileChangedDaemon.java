@@ -78,37 +78,45 @@ public class FileChangedDaemon extends Thread {
     public void run() {
         while (running) {
             try {
-                Thread.sleep(ScriptingConst.TAINT_INTERVAL);
-            } catch (InterruptedException e) {
-                //if the server shuts down while we are in sleep we get an error
-                //which we better should swallow
-            }
-            if (classMap == null || classMap.size() == 0)
-                continue;
+                try {
+                    Thread.sleep(ScriptingConst.TAINT_INTERVAL);
+                } catch (InterruptedException e) {
+                    //if the server shuts down while we are in sleep we get an error
+                    //which we better should swallow
+                }
+                if (classMap == null || classMap.size() == 0)
+                    continue;
 
-            /**
-             * centrail tainted mark method which keeps
-             * track if some file in one of the supported engines has changed
-             * and if yes marks the file as tainted as well
-             * as marks the engine as having to do a full recompile
-             */
-            for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
-                if (!it.getValue().isTainted()) {
-
-                    File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
-                    if(!it.getValue().isTainted() && isModified(it, proxyFile)) {
-                        it.getValue().setTainted(true);
-
-                        systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
-                        it.getValue().setTaintedOnce(true);
-                        printInfo(it, proxyFile);
-                        it.getValue().setTimestamp(proxyFile.lastModified());
-                    }
-               }
+                checkForChanges();
+            } catch (Throwable e) {
+                log.error(e.getMessage());
             }
         }
         if (log.isInfoEnabled()) {
-            log.info("Dynamic reloading watch daemon is shutting down");
+            log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
+        }
+    }
+
+    /**
+     * central tainted mark method which keeps
+     * track if some file in one of the supported engines has changed
+     * and if yes marks the file as tainted as well
+     * as marks the engine as having to do a full recompile
+     */
+    private final void checkForChanges() {
+        for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
+            if (!it.getValue().isTainted()) {
+
+                File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
+                if (!it.getValue().isTainted() && isModified(it, proxyFile)) {
+                    it.getValue().setTainted(true);
+
+                    systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
+                    it.getValue().setTaintedOnce(true);
+                    printInfo(it, proxyFile);
+                    it.getValue().setTimestamp(proxyFile.lastModified());
+                }
+            }
         }
     }
 
@@ -118,8 +126,8 @@ public class FileChangedDaemon extends Thread {
 
     private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
         if (log.isInfoEnabled()) {
-            log.info("comparing" + it.getKey() + "Dates:" + proxyFile.lastModified() + "-" + it.getValue().getTimestamp());
-            log.info("Tainting:" + it.getValue().getFileName());
+            log.info("[EXT-SCRIPTING] comparing" + it.getKey() + "Dates:" + proxyFile.lastModified() + "-" + it.getValue().getTimestamp());
+            log.info("[EXT-SCRIPTING] Tainting:" + it.getValue().getFileName());
         }
     }
 

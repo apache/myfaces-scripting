@@ -75,7 +75,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         }
 
         if (log.isInfoEnabled()) {
-            log.info("Loading Groovy file:" + file);
+            log.info("[EXT-SCRIPTING] Loading Groovy file:" + file);
         }
         //lazy instantiation to avoid threading problems
         //and locking related speed bumps

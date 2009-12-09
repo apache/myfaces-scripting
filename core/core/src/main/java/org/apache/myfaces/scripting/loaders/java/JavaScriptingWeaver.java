@@ -127,7 +127,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         }
 
         if (log.isInfoEnabled()) {
-            log.info("Loading Java file:" + file);
+            log.info("[EXT-SCRIPTING] Loading Java file:" + file);
         }
 
         Iterator<String> it = scriptPaths.iterator();

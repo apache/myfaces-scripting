@@ -84,9 +84,9 @@ public class JSR199Compiler implements DynamicCompiler {
      *             we will deprecate it as soon as the full
      *             compile at the beginning of the request
      *             is implemented
-     *
-     * TODO move this code over to the weaver instead of the compiler
-     * we do not do a single compile step anymore
+     *             <p/>
+     *             TODO move this code over to the weaver instead of the compiler
+     *             we do not do a single compile step anymore
      */
     public Class compileFile(String sourceRoot, String classPath, String relativeFileName) throws ClassNotFoundException {
         fileManager.refreshClassloader();
@@ -123,6 +123,8 @@ public class JSR199Compiler implements DynamicCompiler {
      * @throws ClassNotFoundException in case of a compilation error
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+        getLog().info("[EXT-SCRIPTING] Doing a full recompile");
+
         List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourceRoot), CompilerConst.JAVA_WILDCARD);
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[0]));
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot, CompilerConst.JC_DEBUG};
@@ -173,6 +175,10 @@ public class JSR199Compiler implements DynamicCompiler {
         retVal.append(diagnostic.getSource().toString());
 
         return retVal.toString();
+    }
+
+    private final Log getLog() {
+        return LogFactory.getLog(this.getClass());
     }
 
 }

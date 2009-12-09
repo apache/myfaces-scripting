@@ -76,7 +76,7 @@ public class TestCompilerAPI {
         int major = Integer.parseInt(versionArr[Math.min(versionArr.length, 1)]);
 
         Log log = LogFactory.getLog(this.getClass());
-        log.info("Java Version = "+major);
+        log.info("[EXT-SCRIPTING] Java Version = "+major);
 
         if (major > 5 && allowJSR199) {
             //jsr199 compliant jdk

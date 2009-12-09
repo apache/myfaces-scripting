@@ -270,7 +270,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 }
             }
 
-            getLog().info("Tainting all beans to avoid classcast exceptions");
+            getLog().info("[EXT-SCRIPTING] Tainting all beans to avoid classcast exceptions");
             if (managedBeanTainted) {
                 for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
                     Class managedBeanClass = entry.getValue().getManagedBeanClass();
@@ -280,7 +280,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                     }
                     //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
                     //exceptions
-                    getLog().info("Tainting ");
+                    getLog().info("[EXT-SCRIPTING] Tainting ");
                     ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(managedBeanClass.getName());
                     if(metaData != null) {
                         metaData.setTainted(true);
@@ -299,7 +299,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param bean
      */
     private void removeBeanReferences(ManagedBean bean) {
-        getLog().info("JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
+        getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
 
         String scope = bean.getManagedBeanScope();
 

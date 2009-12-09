@@ -35,7 +35,7 @@ public class StartupServletContextPlugin implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         Log log = LogFactory.getLog(this.getClass());
 
-        log.info("Instantiating StartupServletContextPluginChainLoader");
+        log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
 
         ServletContext servletContext = servletContextEvent.getServletContext();
         if (servletContext == null) return;

@@ -179,7 +179,7 @@ class JavacCompiler implements Compiler {
             logger.debug(commandLine.toString());
         }
         if (logger.isInfoEnabled()) {
-            logger.info("compiling java");
+            logger.info("[EXT-SCRIPTING] compiling java");
         }
 
     }

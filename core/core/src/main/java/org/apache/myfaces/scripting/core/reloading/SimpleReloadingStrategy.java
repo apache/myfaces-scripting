@@ -73,7 +73,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
             // reload is enabled we can skip the rest now
             return scriptingInstance;
         }
-        getLog().info("possible reload for " + scriptingInstance.getClass().getName());
+        getLog().info("[EXT-SCRIPTING] possible reload for " + scriptingInstance.getClass().getName());
         /*only recreation of empty constructor classes is possible*/
         try {
             //reload the object by instiating a new class and

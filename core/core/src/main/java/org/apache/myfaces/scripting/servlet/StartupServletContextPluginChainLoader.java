@@ -39,7 +39,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     public void preInit(ServletContextEvent servletContextEvent) {
         Log log = LogFactory.getLog(this.getClass());
 
-        log.info("Instantiating StartupServletContextPluginChainLoader");
+        log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
 
         ServletContext servletContext = servletContextEvent.getServletContext();
         if (servletContext == null) return;
@@ -48,7 +48,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         ClassUtils.addClassLoadingExtension(loader, true);
         ScriptingWeaver weaver =  loader.getScriptingWeaver();
         servletContext.setAttribute("ScriptingWeaver",weaver);
-        log.info("Compiling all sources for the first time");
+        log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
         weaver.requestRefresh();
         //TODO do a first full recompile here at startup time before the bean etc... instantiation can kick in
    }
