@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.loaders.java;
 
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -74,7 +75,7 @@ public class RecompiledClassLoader extends ClassLoader {
         //check if our class exists in the tempDir
         File target = getClassFile(className);
         if (target.exists()) {
-            ReloadingMetadata data = FileChangedDaemon.getInstance().getClassMap().get(className);
+            ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
             if(data != null && !data.isTainted()) {
                 return data.getAClass();
             }
@@ -134,7 +135,7 @@ public class RecompiledClassLoader extends ClassLoader {
         reloadingMetaData.setTaintedOnce(true);
         reloadingMetaData.setScriptingEngine(_scriptingEngine);
 
-        FileChangedDaemon.getInstance().getClassMap().put(className, reloadingMetaData);
+        WeavingContext.getFileChangedDaemon().getClassMap().put(className, reloadingMetaData);
         return retVal;
     }
 

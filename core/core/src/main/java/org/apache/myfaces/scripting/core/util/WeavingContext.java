@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.scripting.core.DummyWeaver;
 import org.apache.myfaces.scripting.core.scanEvents.SystemEventProcessor;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
+import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
@@ -57,19 +58,20 @@ public class WeavingContext {
      * a reference in the context and a threadLocal variable
      * </p>
      */
-    static ThreadLocal _weaverHolder = new ThreadLocal();
+    static protected ThreadLocal _weaverHolder = new ThreadLocal();
 
-    static ThreadLocal _eventProcessorHolder = new ThreadLocal();
+    static protected ThreadLocal _eventProcessorHolder = new ThreadLocal();
 
-    static ThreadLocal _externalContextHolder = new ThreadLocal();
+    static protected ThreadLocal _externalContextHolder = new ThreadLocal();
 
+    static protected ThreadLocal _refreshContextHolder = new ThreadLocal();
 
 
     public static void init() {
 
     }
 
-  
+
 
 
     /**
@@ -77,6 +79,14 @@ public class WeavingContext {
      */
     public static void clean() {
         _weaverHolder.set(null);
+    }
+
+    public static void setRefreshContext(RefreshContext rContext) {
+        _refreshContextHolder.set(rContext);
+    }
+
+    public static RefreshContext getRefreshContext() {
+       return (RefreshContext) _refreshContextHolder.get();
     }
 
     /**
@@ -104,6 +114,8 @@ public class WeavingContext {
     }
 
 
+   
+
     /**
      * the weavers are set from outside
      * we have to provide the weaver facade
@@ -113,9 +125,7 @@ public class WeavingContext {
      */
     public static void setWeaver(Object weaver) {
         _weaverHolder.set(weaver);
-        if (FileChangedDaemon.getInstance().getWeavers() == null) {
-            FileChangedDaemon.getInstance().setWeavers((ScriptingWeaver) weaver);
-        }
+
     }
 
     /**
@@ -186,6 +196,13 @@ public class WeavingContext {
                                       new MethodLevelReloadingHandler(o, artefactType));
     }
 
+    public static FileChangedDaemon getFileChangedDaemon() {
+        FileChangedDaemon daemon = getRefreshContext().getDaemon();
+        if (daemon.getWeavers() == null) {
+            daemon.setWeavers((ScriptingWeaver) getWeaver());
+        }
+        return daemon;
+    }
 
     /**
      * unmapping of a proxied object

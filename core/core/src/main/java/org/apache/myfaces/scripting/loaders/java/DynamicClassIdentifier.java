@@ -27,6 +27,12 @@ import java.util.HashMap;
 /**
  * @author werpu
  *         A dynamic class identifier for java classes
+ *
+ * TODO the algorithm of this class probably is obsolete, normally
+ * a check for the classloader of the class being an instance
+ * of our custom classloader ought to be enough, this has to be tested
+ * though
+ *
  */
 public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.DynamicClassIdentifier {
     static ThreadLocal _checked = new ThreadLocal();

@@ -26,6 +26,7 @@ import org.apache.myfaces.scripting.api.BaseWeaver
 import org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier
 import org.apache.myfaces.scripting.api.BaseWeaver
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon
+import org.apache.myfaces.scripting.core.util.WeavingContext
 
 /**
  * Weaver  which does dynamic class reloading
@@ -135,7 +136,9 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //TODO probably not needed because the groovy classloader takes care of everything itself
         //the tainting does the rest but we have to check it for the annotations
 
-        FileChangedDaemon.getInstance().getSystemRecompileMap().put(getScriptingEngine(), Boolean.FALSE);
+        WeavingContext.getFileChangedDaemon().getSystemRecompileMap().put(getScriptingEngine(), Boolean.FALSE);
     }
+
+    
 
 }

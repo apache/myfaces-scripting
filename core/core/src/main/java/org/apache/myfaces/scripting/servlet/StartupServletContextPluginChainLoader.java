@@ -24,7 +24,9 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.myfaces.webapp.StartupListener;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
@@ -46,12 +48,16 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);
-        ScriptingWeaver weaver =  loader.getScriptingWeaver();
-        servletContext.setAttribute("ScriptingWeaver",weaver);
+        ScriptingWeaver weaver = loader.getScriptingWeaver();
+
+        servletContext.setAttribute("ScriptingWeaver", weaver);
+        RefreshContext rContext = new RefreshContext();
+        servletContext.setAttribute("RefreshContext", rContext);
+        WeavingContext.setRefreshContext(rContext);
         log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
         weaver.requestRefresh();
         //TODO do a first full recompile here at startup time before the bean etc... instantiation can kick in
-   }
+    }
 
     public void postInit(ServletContextEvent evt) {
 
@@ -61,6 +67,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     }
 
     public void postDestroy(ServletContextEvent evt) {
+        //context is destroyed we have to shut down our daemon as well
+        RefreshContext rContext = (RefreshContext) evt.getServletContext().getAttribute("RefreshContext");
+        rContext.getDaemon().setRunning(false);
     }
 
 }

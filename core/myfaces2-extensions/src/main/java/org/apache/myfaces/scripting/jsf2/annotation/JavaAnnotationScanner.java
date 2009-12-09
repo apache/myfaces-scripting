@@ -164,7 +164,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                             clazz, ann.getType().getValue(), ann.getPropertyMap());
 
                     _registeredAnnotations.put(clazz.getFullyQualifiedName(), ann.getType().getValue());
-                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(clazz.getFullyQualifiedName());
+                    ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(clazz.getFullyQualifiedName());
                     if (metaData != null) {
                         metaData.setAnnotated(true);
                     }
@@ -188,7 +188,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
 
                     _registeredAnnotations.put(clazz.getName(), ann.annotationType().getName());
 
-                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(clazz.getName());
+                    ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(clazz.getName());
                     if (metaData != null) {
                         metaData.setAnnotated(true);
                     }
@@ -212,7 +212,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                     listener.purge(clazz.getFullyQualifiedName());
                     _registeredAnnotations.remove(clazz.getFullyQualifiedName());
                     WeavingContext.getEventProcessor().dispatchEvent(new AnnotatedArtefactRemovedEvent(clazz.getFullyQualifiedName()));
-                    FileChangedDaemon.getInstance().getClassMap().remove(clazz.getFullyQualifiedName());
+                    WeavingContext.getFileChangedDaemon().getClassMap().remove(clazz.getFullyQualifiedName());
                 }
             }
         }
@@ -232,7 +232,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                 if (listener.supportsAnnotation(registeredAnnotation)) {
                     listener.purge(clazz.getName());
                     _registeredAnnotations.remove(clazz.getName());
-                    FileChangedDaemon.getInstance().getClassMap().remove(clazz.getName());
+                    WeavingContext.getFileChangedDaemon().getClassMap().remove(clazz.getName());
                 }
             }
         }

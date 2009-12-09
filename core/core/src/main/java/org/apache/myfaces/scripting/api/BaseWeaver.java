@@ -73,7 +73,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @return
      */
     protected Map<String, ReloadingMetadata> getClassMap() {
-        return FileChangedDaemon.getInstance().getClassMap();
+        return WeavingContext.getFileChangedDaemon().getClassMap();
     }
 
     /**
@@ -235,8 +235,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     public void requestRefresh() {
         if (  //startup or full recompile conditionr reached
-                FileChangedDaemon.getInstance().getSystemRecompileMap().get(getScriptingEngine()) == null ||
-                FileChangedDaemon.getInstance().getSystemRecompileMap().get(getScriptingEngine())
+                WeavingContext.getFileChangedDaemon().getSystemRecompileMap().get(getScriptingEngine()) == null ||
+                WeavingContext.getFileChangedDaemon().getSystemRecompileMap().get(getScriptingEngine())
                 ) {
             fullRecompile();
             //TODO if managed beans are tainted we have to do a full drop
@@ -245,12 +245,23 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         }
     }
 
+    protected void refreshSessionBeans() {
+       // long lastGlobalRefreshTime = WeavingContext.getDelegateFromProxy()
+       //TODO get the shared bean refresh time from the weaving context (which itself just uses a context attribute to store it and restore it)
+        //then compar it with the own refresh time in the session
+        //if the last refresh time is set and younger than the current refresh time stored in the session
+        //we have to drop all our session beans, that way we can
+        //drop all session beans over all users if no session time is set we forget
+        //About the dropping and just set the session time
+    }
+
+
     protected void refreshManagedBeans() {
         if (FacesContext.getCurrentInstance() == null) {
             return;//no npe allowed
         }
         Set<String> tainted = new HashSet<String>();
-        for (Map.Entry<String, ReloadingMetadata> it : FileChangedDaemon.getInstance().getClassMap().entrySet()) {
+        for (Map.Entry<String, ReloadingMetadata> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
             if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().isTainted()) {
                 tainted.add(it.getKey());
             }
@@ -281,7 +292,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                     //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
                     //exceptions
                     getLog().info("[EXT-SCRIPTING] Tainting ");
-                    ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(managedBeanClass.getName());
+                    ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
                     if(metaData != null) {
                         metaData.setTainted(true);
                     }    
@@ -316,4 +327,5 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         }
     }
 
+ 
 }

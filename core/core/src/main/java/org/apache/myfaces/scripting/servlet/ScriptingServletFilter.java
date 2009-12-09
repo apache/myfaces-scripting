@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.servlet;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.context.servlet.ServletExternalContextImpl;
 
 
@@ -33,23 +34,22 @@ import java.io.IOException;
  */
 public class ScriptingServletFilter implements Filter {
 
-     ServletContext context = null;
+    ServletContext context = null;
 
-     public void init(FilterConfig filterConfig) throws ServletException {
-         //To change body of implemented methods use File | Settings | File Templates.
-       //  if (context == null && filterConfig.getServletContext() instanceof StartupServletContextListener)
-             context = filterConfig.getServletContext();
-     }
+    public void init(FilterConfig filterConfig) throws ServletException {
+        context = filterConfig.getServletContext();
+    }
 
-     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-         WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
-        // WeavingContext.doRequestRefreshes();
-         filterChain.doFilter(servletRequest, servletResponse);
-     }
+        WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
+        WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
 
-     public void destroy() {
-         WeavingContext.clean();
-     }
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    public void destroy() {
+        WeavingContext.clean();
+    }
 
 }
