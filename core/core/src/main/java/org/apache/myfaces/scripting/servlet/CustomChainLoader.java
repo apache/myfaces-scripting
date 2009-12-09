@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.ServletContext;
 
 /**
- * a custom chainloader which adds a groovy loading    F
+ * a custom chainloader which adds a groovy loading    
  * facility to our myfaces loading plugin system
  *
  * @author Werner Punz
