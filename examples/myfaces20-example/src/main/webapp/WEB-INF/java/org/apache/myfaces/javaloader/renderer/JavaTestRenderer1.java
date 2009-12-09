@@ -43,11 +43,11 @@ import java.io.IOException;
  * class to the other
  */
  @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
- public class JavaTestRenderer1 extends HtmlTextRendererBase {
+  public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
-    private static final String MSG2 = "Hello world from Renderer 1 aaa ";
+    private static final String MSG2 = " Hello world from Renderer 1  ";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
