@@ -36,7 +36,7 @@ public class TestBean2 {
 
     }
     
-    public String getResource() {
+    public String getResource() throws java.io.IOException {
            ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
            Resource resource = handler.createResource("testResource");
            InputStream istr = resource.getInputStream();

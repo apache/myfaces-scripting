@@ -48,7 +48,7 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
-    private static final String MSG2 = "Hello world from Renderer 1 <br /> line 2fgdklsnflkdfhglksgdfh";
+    private static final String MSG2 = "Hello world from Renderer 1 <br />  ";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {

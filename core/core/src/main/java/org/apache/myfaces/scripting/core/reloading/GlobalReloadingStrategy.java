@@ -42,7 +42,7 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
     public GlobalReloadingStrategy(BaseWeaver weaver) {
         _weaver = weaver;
         _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
-        _noMappingStrategy = new NoMappingReloadingStrategy();
+        _noMappingStrategy = new NoMappingReloadingStrategy(weaver);
         _allOthers = new SimpleReloadingStrategy(weaver);
     }
 

@@ -25,6 +25,7 @@ import org.codehaus.groovy.runtime.InvokerHelper
 import org.apache.myfaces.scripting.api.BaseWeaver
 import org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier
 import org.apache.myfaces.scripting.api.BaseWeaver
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon
 
 /**
  * Weaver  which does dynamic class reloading
@@ -133,7 +134,6 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     public void fullRecompile() {
         //TODO probably not needed because the groovy classloader takes care of everything itself
         //the tainting does the rest but we have to check it for the annotations
-
 
         FileChangedDaemon.getInstance().getSystemRecompileMap().put(getScriptingEngine(), Boolean.FALSE);
     }

@@ -68,8 +68,8 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
         Renderer rendr2 = (Renderer) reloadInstance(rendr, ScriptingConst.ARTEFACT_TYPE_RENDERER);
         if (rendr != rendr2) {
-            rendr2 = _delegate.getRenderer(componentFamily, rendererType);
-            if (rendr2 instanceof PurgedRenderer) {
+            Renderer tempRenderer = _delegate.getRenderer(componentFamily, rendererType);
+            if (tempRenderer instanceof PurgedRenderer) {
                 return handleAnnotationChange(componentFamily, rendererType);
             }
 

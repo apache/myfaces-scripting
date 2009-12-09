@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.core.reloading;
 
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
+import org.apache.myfaces.scripting.api.BaseWeaver;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -42,6 +43,11 @@ import org.apache.myfaces.scripting.api.ReloadingStrategy;
  * which keep delegates, like the NavHandler
  */
 public class NoMappingReloadingStrategy extends SimpleReloadingStrategy {
+
+    public NoMappingReloadingStrategy(BaseWeaver weaver) {
+        super(weaver);
+    }
+
     @Override
     protected void mapProperties(Object target, Object src) {
         return;

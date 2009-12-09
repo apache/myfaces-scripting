@@ -134,6 +134,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         Class retVal = null;
 
         try {
+            if(file.contains("JavaTestRenderer1")) {
+                getLog().debug("debugpoint found");
+            }
             //we initialize the compiler lazy
             //because the facade itself is lazy
             if(compiler == null) {

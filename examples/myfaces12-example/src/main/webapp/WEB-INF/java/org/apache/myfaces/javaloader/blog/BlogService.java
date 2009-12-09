@@ -50,9 +50,7 @@ public class BlogService {
     public void addEntry(Object entry) {
         if (entry != null) {
             blogEntries.add(entry);
-            System.out.println("add entry");
         }
-       
     }
 
 

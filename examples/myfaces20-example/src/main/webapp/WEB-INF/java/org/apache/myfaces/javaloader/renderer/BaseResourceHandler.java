@@ -51,7 +51,7 @@ public class BaseResourceHandler extends ResourceHandler {
         return _delegate.getRendererTypeForResourceName(resourceName);
     }
 
-    public void handleResourceRequest(FacesContext context) {
+    public void handleResourceRequest(FacesContext context) throws java.io.IOException {
         _delegate.handleResourceRequest(context);
     }
 
