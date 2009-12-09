@@ -46,18 +46,17 @@ import java.util.HashSet;
  *         <p/>
  *         The Scripting Weaver for the java core which reloads the java scripts
  *         dynamically upon change
- *
- * <p />
- * Note this is the central focus point for all reloading related activity
- * this class introduces the correct class loader
- * it manages the bean reloading on the proper stage of the lifecyle,
- * calls the compilers single and all compile,
- * it adds the strategies for the property handling of the reloaded instance
- * <p />
- * Every language implementation has to implement this weaver
- * and (if not done differently) also the proper compiler bindings
- * and property handling strategies.
- *
+ *         <p/>
+ *         <p/>
+ *         Note this is the central focus point for all reloading related activity
+ *         this class introduces the correct class loader
+ *         it manages the bean reloading on the proper stage of the lifecyle,
+ *         calls the compilers single and all compile,
+ *         it adds the strategies for the property handling of the reloaded instance
+ *         <p/>
+ *         Every language implementation has to implement this weaver
+ *         and (if not done differently) also the proper compiler bindings
+ *         and property handling strategies.
  */
 public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, Serializable {
 
@@ -133,12 +132,12 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         Class retVal = null;
 
         try {
-            if(file.contains("JavaTestRenderer1")) {
+            if (file.contains("JavaTestRenderer1")) {
                 getLog().debug("debugpoint found");
             }
             //we initialize the compiler lazy
             //because the facade itself is lazy
-            if(compiler == null) {
+            if (compiler == null) {
                 compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
             }
             retVal = compiler.compileFile(sourceRoot, classPath, file);
@@ -204,10 +203,10 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             return;
         }
 
-        if(compiler == null) {
+        if (compiler == null) {
             compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
         }
-        
+
         for (String scriptPath : getScriptPaths()) {
             //compile via javac dynamically, also after this block dynamic compilation
             //for the entire length of the request,
@@ -223,8 +222,6 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     }
 
 
-   
-
     private void markAsFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context != null) {
@@ -234,7 +231,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
                 requestMap.put(JavaScriptingWeaver.class.getName() + "_recompiled", Boolean.TRUE);
             }
         }
-        WeavingContext.getFileChangedDaemon().getSystemRecompileMap().put(ScriptingConst.ENGINE_TYPE_JAVA,Boolean.FALSE);
+        WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_JAVA, Boolean.FALSE);
     }
 
     private boolean isFullyRecompiled() {

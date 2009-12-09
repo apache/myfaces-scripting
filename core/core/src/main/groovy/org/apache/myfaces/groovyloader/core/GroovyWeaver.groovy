@@ -136,7 +136,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //TODO probably not needed because the groovy classloader takes care of everything itself
         //the tainting does the rest but we have to check it for the annotations
 
-        WeavingContext.getFileChangedDaemon().getSystemRecompileMap().put(getScriptingEngine(), Boolean.FALSE);
+        WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_JAVA, Boolean.FALSE);
     }
 
     

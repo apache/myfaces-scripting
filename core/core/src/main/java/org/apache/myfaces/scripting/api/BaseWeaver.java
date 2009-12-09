@@ -235,16 +235,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
 
     public void requestRefresh() {
-        if (  //startup or full recompile conditionr reached
-                //TODO move this into the refreshcontext, we already have
-                //an instance var there which should notify the system to do a full recompile
-                
-                WeavingContext.getFileChangedDaemon().getSystemRecompileMap().get(getScriptingEngine()) == null ||
-                WeavingContext.getFileChangedDaemon().getSystemRecompileMap().get(getScriptingEngine())
-                ) {
+        if ( WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
             fullRecompile();
-            //TODO if managed beans are tainted we have to do a full drop
-
             refreshAllManagedBeans();
         } else {
             //shortcut to avoid heavier operations in the beginning

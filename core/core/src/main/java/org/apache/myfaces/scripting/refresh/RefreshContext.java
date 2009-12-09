@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.refresh;
 
+import org.apache.myfaces.scripting.core.util.WeavingContext;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -44,12 +46,13 @@ public class RefreshContext {
         this.personalScopedBeanRefresh = personalScopedBeanRefresh;
     }
 
-    public boolean isRecompileRecommended() {
-        return recompileRecommended;
+    public boolean isRecompileRecommended(int scriptingEngine) {
+        Boolean recommended = daemon.getSystemRecompileMap().get(scriptingEngine);
+        return recommended == null || recommended.booleanValue();
     }
 
-    public void setRecompileRecommended(boolean recompileRecommended) {
-        this.recompileRecommended = recompileRecommended;
+    public void setRecompileRecommended(int scriptingEngine, boolean recompileRecommended) {
+        daemon.getSystemRecompileMap().put(scriptingEngine, recompileRecommended);
     }
 
     public FileChangedDaemon getDaemon() {
