@@ -3,8 +3,6 @@ package org.apache.myfaces.scripting.api;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
-import org.apache.myfaces.scripting.core.reloading.SimpleReloadingStrategy;
 import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
@@ -33,6 +31,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     protected List<String> scriptPaths = new LinkedList<String>();
 
     protected ReloadingStrategy _reloadingStrategy = null;
+    private static final String SCOPE_SESSION = "session";
+    private static final String SCOPE_APPLICATION = "application";
+    private static final String SCOPE_REQUEST = "request";
 
 
     public BaseWeaver() {
@@ -235,28 +236,31 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     public void requestRefresh() {
         if (  //startup or full recompile conditionr reached
+                //TODO move this into the refreshcontext, we already have
+                //an instance var there which should notify the system to do a full recompile
+                
                 WeavingContext.getFileChangedDaemon().getSystemRecompileMap().get(getScriptingEngine()) == null ||
                 WeavingContext.getFileChangedDaemon().getSystemRecompileMap().get(getScriptingEngine())
                 ) {
             fullRecompile();
             //TODO if managed beans are tainted we have to do a full drop
 
-            refreshManagedBeans();
+            refreshAllManagedBeans();
+        } else {
+            //shortcut to avoid heavier operations in the beginning
+            long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
+            if (globalBeanRefreshTimeout == -1l) return;
+
+            Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+            Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
+            if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
+                refreshPersonalScopedBeans();
+            }
         }
     }
 
-    protected void refreshSessionBeans() {
-       // long lastGlobalRefreshTime = WeavingContext.getDelegateFromProxy()
-       //TODO get the shared bean refresh time from the weaving context (which itself just uses a context attribute to store it and restore it)
-        //then compar it with the own refresh time in the session
-        //if the last refresh time is set and younger than the current refresh time stored in the session
-        //we have to drop all our session beans, that way we can
-        //drop all session beans over all users if no session time is set we forget
-        //About the dropping and just set the session time
-    }
 
-
-    protected void refreshManagedBeans() {
+    protected void refreshAllManagedBeans() {
         if (FacesContext.getCurrentInstance() == null) {
             return;//no npe allowed
         }
@@ -281,6 +285,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 }
             }
 
+            markSessionBeanRefreshRecommended();
+
             getLog().info("[EXT-SCRIPTING] Tainting all beans to avoid classcast exceptions");
             if (managedBeanTainted) {
                 for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
@@ -293,13 +299,57 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                     //exceptions
                     getLog().info("[EXT-SCRIPTING] Tainting ");
                     ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
-                    if(metaData != null) {
+                    if (metaData != null) {
                         metaData.setTainted(true);
-                    }    
+                    }
                 }
 
             }
         }
+    }
+
+
+    private void updateBeanRefreshTime() {
+        long sessionRefreshTime = System.currentTimeMillis();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
+    }
+
+    private void markSessionBeanRefreshRecommended() {
+        long sessionRefreshTime = System.currentTimeMillis();
+        WeavingContext.getRefreshContext().setPersonalScopedBeanRefresh(sessionRefreshTime);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
+    }
+
+    /**
+     * refreshes all personal scoped beans (aka beans which
+     * have an assumed lifecycle <= session)
+     * <p/>
+     * This is needed for multiuser purposes because if one user alters some beans
+     * other users have to drop their non application scoped beans as well!
+     */
+    private void refreshPersonalScopedBeans() {
+        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+
+            Class managedBeanClass = entry.getValue().getManagedBeanClass();
+            if (WeavingContext.isDynamic(managedBeanClass)) {
+                String scope = entry.getValue().getManagedBeanScope();
+
+                if (scope != null && !scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
+                    if (scope.equalsIgnoreCase(SCOPE_REQUEST)) {
+                        //request, nothing has to be done here
+                        return;
+                    }
+                    if (scope.equalsIgnoreCase(SCOPE_SESSION)) {
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
+                    } else {
+                        removeCustomScopedBean(entry.getValue());
+                    }
+                }
+
+            }
+        }
+        updateBeanRefreshTime();
     }
 
     /**
@@ -314,18 +364,28 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
         String scope = bean.getManagedBeanScope();
 
-        if (scope != null && scope.equalsIgnoreCase("session")) {
+        if (scope != null && scope.equalsIgnoreCase(SCOPE_SESSION)) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
-        } else if (scope != null && scope.equalsIgnoreCase("application")) {
+        } else if (scope != null && scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
             FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
-        } else if (scope != null) {
-            Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(scope);
-            if (scopeImpl == null) return; //scope not implemented
-            //we now have to revert to introspection here because scopes are a pure jsf2 construct
-            //so we use a messaging pattern here to cope with it
-            ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
+            //other scope
+        } else if (scope != null && !scope.equals(SCOPE_REQUEST)) {
+            removeCustomScopedBean(bean);
         }
     }
 
- 
+    /**
+     * jsf2 helper to remove custom scoped beans
+     *
+     * @param bean
+     */
+    private void removeCustomScopedBean(ManagedBean bean) {
+        Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(bean.getManagedBeanScope());
+        if (scopeImpl == null) return; //scope not implemented
+        //we now have to revert to introspection here because scopes are a pure jsf2 construct
+        //so we use a messaging pattern here to cope with it
+
+        ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
+    }
+
 }

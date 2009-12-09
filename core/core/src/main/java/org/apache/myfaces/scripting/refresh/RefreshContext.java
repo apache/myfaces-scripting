@@ -31,17 +31,17 @@ package org.apache.myfaces.scripting.refresh;
  */
 
 public class RefreshContext {
-    private long sessionRefreshRecommended = -1l;
+    private long personalScopedBeanRefresh = -1l;
     private boolean recompileRecommended = false;
 
     FileChangedDaemon daemon = FileChangedDaemon.getInstance();
 
-    public long getSessionRefreshRecommended() {
-        return sessionRefreshRecommended;
+    public long getPersonalScopedBeanRefresh() {
+        return personalScopedBeanRefresh;
     }
 
-    public void setSessionRefreshRecommended(long sessionRefreshRecommended) {
-        this.sessionRefreshRecommended = sessionRefreshRecommended;
+    public void setPersonalScopedBeanRefresh(long personalScopedBeanRefresh) {
+        this.personalScopedBeanRefresh = personalScopedBeanRefresh;
     }
 
     public boolean isRecompileRecommended() {

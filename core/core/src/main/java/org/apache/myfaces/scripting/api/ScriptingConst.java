@@ -30,6 +30,8 @@ public class ScriptingConst {
     public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.SCRIPTING_REQUSINGLETON";
 
     public static final String RELOAD_MAP = "reloadMap";
+    public static final String SESS_BEAN_REFRESH_TIMER = "sessbeanrefrsh";
+
     public static final int TAINT_INTERVAL = 2000;
 
     public static final int ENGINE_TYPE_ALL = -2;
