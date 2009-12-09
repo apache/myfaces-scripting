@@ -40,7 +40,7 @@ public class TestBean2 {
     }
     
     public String getResource() throws java.io.IOException {
-           ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
+         /*  ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
            Resource resource = handler.createResource("testResource");
            InputStream istr = resource.getInputStream();
            BufferedReader rdr = new BufferedReader(new InputStreamReader(istr));
@@ -53,7 +53,8 @@ public class TestBean2 {
            } catch (IOException ex) {
 
            };
-           return strBuf.toString();
+           return strBuf.toString(); */
+           return "hello world";
        }
     
 

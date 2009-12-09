@@ -18,12 +18,12 @@ import java.nio.CharBuffer;
 @ManagedBean(name = "javatestbean")
 @SessionScoped
 public class TestBean3 {
-    String sayHello = "hello worldgggg";
+    String sayHello = "hello world";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 
     public String getSayHello() {
-        return "Java dynamic  bean Testbean3 - " + TestClass2.hello2 + hello3;
+        return "Java dynamic bean Testbean3 - " + TestClass2.hello2 + hello3;
     }
 
     public String getSayHello2() {

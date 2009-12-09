@@ -31,6 +31,7 @@ import java.util.Collections;
 public class BlogService {
 
 
+
     /**
      * note we cannot cast on dynamically referenced
      * and recompiled objects which are shared between beans
@@ -50,7 +51,6 @@ public class BlogService {
             blogEntries.add(entry);
         }
     }
-
 
 
 

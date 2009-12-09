@@ -38,6 +38,7 @@ public class RecompiledClassLoader extends ClassLoader {
     static double _tempMarker = Math.random();
     int _scriptingEngine;
 
+    String sourceRoot;
 
     public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine) {
         super(classLoader);
@@ -122,8 +123,11 @@ public class RecompiledClassLoader extends ClassLoader {
         retVal = super.defineClass(className, fileContent, 0, fileLength);
         ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
         reloadingMetaData.setAClass(retVal);
+        //find the source for the given class and then
+        //store the filename
+        String fileName = className.replaceAll("\\.", File.separator)+".java";
 
-        reloadingMetaData.setFileName(target.getAbsolutePath());
+        reloadingMetaData.setFileName(sourceRoot+File.separator+fileName);
         reloadingMetaData.setSourcePath("");
         reloadingMetaData.setTimestamp(target.lastModified());
         reloadingMetaData.setTainted(false);
@@ -150,5 +154,13 @@ public class RecompiledClassLoader extends ClassLoader {
 
     public void setTempDir(File tempDir) {
         this.tempDir = tempDir;
+    }
+
+    public String getSourceRoot() {
+        return sourceRoot;
+    }
+
+    public void setSourceRoot(String sourceRoot) {
+        this.sourceRoot = sourceRoot;
     }
 }

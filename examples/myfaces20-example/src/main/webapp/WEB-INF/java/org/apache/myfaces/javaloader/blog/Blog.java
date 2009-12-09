@@ -63,10 +63,7 @@ public class Blog {
 
 
     public String addEntry2 () {
-
-
-
-        getLog().info("adding entryxxx");
+        getLog().info("xxxadding entry");
 
         BlogService service = (BlogService) JSFUtil.resolveVariable("javaBlogService");
 
@@ -99,13 +96,14 @@ public class Blog {
             * 
             */
             //service.addEntry(entry);
-            executeMethod(service, "addEntry",  entry);
+            //executeMethod(service, "addEntry",  entry);
+            service.addEntry(entry);
         }
 
-        throw new javax.faces.FacesException("bla bla bla");
+      
         
         //we stay on the same page
- //       return null;
+        return null;
     }
 
 

@@ -42,13 +42,12 @@ import java.io.IOException;
  * the annotation is dynamic you can change it on the fly or move it from one
  * class to the other
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-    
-public class JavaTestRenderer1 extends HtmlTextRendererBase {
+ @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
+ public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
-    private static final String MSG2 = "Hello world from Renderer 1 <br />  ";
+    private static final String MSG2 = "Hello world from Renderer 1 aaa ";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {

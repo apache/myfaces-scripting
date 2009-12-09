@@ -95,6 +95,7 @@ public class JSR199Compiler implements DynamicCompiler {
         if (!(oldClassLoader instanceof RecompiledClassLoader)) {
             try {
                 RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader(null);
+                classLoader.setSourceRoot(sourceRoot);
                 Thread.currentThread().setContextClassLoader(classLoader);
 
                 ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
