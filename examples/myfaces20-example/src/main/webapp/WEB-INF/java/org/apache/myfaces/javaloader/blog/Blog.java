@@ -66,9 +66,9 @@ public class Blog {
 
 
 
-        getLog().info("adding entry");
+        getLog().info("adding entryxxx");
 
-        Object service = JSFUtil.resolveVariable("javaBlogService");
+        BlogService service = (BlogService) JSFUtil.resolveVariable("javaBlogService");
 
 
         

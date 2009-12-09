@@ -89,7 +89,7 @@ public class JSR199Compiler implements DynamicCompiler {
      * we do not do a single compile step anymore
      */
     public Class compileFile(String sourceRoot, String classPath, String relativeFileName) throws ClassNotFoundException {
-
+        fileManager.refreshClassloader();
         String className = ClassUtils.relativeFileToClassName(relativeFileName);
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         if (!(oldClassLoader instanceof RecompiledClassLoader)) {

@@ -282,7 +282,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                     //exceptions
                     getLog().info("Tainting ");
                     ReloadingMetadata metaData = FileChangedDaemon.getInstance().getClassMap().get(managedBeanClass.getName());
-                    metaData.setTainted(true);
+                    if(metaData != null) {
+                        metaData.setTainted(true);
+                    }    
                 }
 
             }

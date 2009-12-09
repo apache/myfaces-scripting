@@ -57,6 +57,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         Object newRetVal = null;
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
+           
             newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
 
