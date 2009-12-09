@@ -46,7 +46,7 @@ public class BlogService {
      */
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
 
-    public void addEntry(Object entry) {
+    public void addEntry(BlogEntry entry) {
         if (entry != null) {
             blogEntries.add(entry);
         }

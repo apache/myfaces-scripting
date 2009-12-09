@@ -83,6 +83,7 @@ public class Blog {
         entry.setTopic(topic);
         entry.setContent(content);
 
+
         if (service != null) {
             /*convenience method to call a method on an object dynamically
             * executeMethod and cast are static imports which encapsule the
