@@ -71,7 +71,8 @@ public class ReloadingClassLoader extends URLClassLoader {
      * would loose the possibility to override them then, which is the reason why
      * each class has got its own class loader.
      */
-    private Map classLoaders = new HashMap();
+    private Map<String, ThrowAwayClassLoader> classLoaders =
+                        new HashMap<String, ThrowAwayClassLoader>();
 
     /**
      * The target directory for the compiler, i.e. the directory that contains the
@@ -134,8 +135,7 @@ public class ReloadingClassLoader extends URLClassLoader {
                 // Check if the class loader is already outdated, i.e. there is a newer class file available
                 // for the class we want to load than the class file we've already loaded. If that's the case
                 // we're going to throw away this ClassLoader and create a new one for linkage reasons.
-                ThrowAwayClassLoader classLoader =
-                        (ThrowAwayClassLoader) classLoaders.get(className);
+                ThrowAwayClassLoader classLoader = classLoaders.get(className);
                 if (classLoader.isOutdated(classFile.lastModified())) {
                     // If the class loader is outdated, create a new one. Otherwise the same class loader
                     // would have to load the same class twice or more often which would cause severe
@@ -155,16 +155,14 @@ public class ReloadingClassLoader extends URLClassLoader {
                 reloadClass(className);
             }
 
-            ThrowAwayClassLoader classLoader =
-                    (ThrowAwayClassLoader) classLoaders.get(className);
+            ThrowAwayClassLoader classLoader = classLoaders.get(className);
             return classLoader.loadClass(className, resolve);
         }
         else {
             // Even though there is no class file available, there's still a chance that this
             // class loader has forcefully reloaded a statically compiled class.
             if (classLoaders.containsKey(className)) {
-                ThrowAwayClassLoader classLoader =
-                        (ThrowAwayClassLoader) classLoaders.get(className);
+                ThrowAwayClassLoader classLoader = classLoaders.get(className);
                 return classLoader.loadClass(className, resolve);
             }
             else {
@@ -244,8 +242,7 @@ public class ReloadingClassLoader extends URLClassLoader {
             classLoader = new OverridingClassLoader(className, this);
         }
 
-        ThrowAwayClassLoader oldClassLoader =
-                (ThrowAwayClassLoader) classLoaders.put(className, classLoader);
+        ThrowAwayClassLoader oldClassLoader = classLoaders.put(className, classLoader);
         if (logger.isInfoEnabled()) {
             if (oldClassLoader != null) {
                 logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
@@ -276,7 +273,7 @@ public class ReloadingClassLoader extends URLClassLoader {
         // are immutable anyway (they are only supposed to load a single class) and additionally
         // this map doesn't contain any classes that have been loaded using the current parent
         // class loader!
-        classLoader.classLoaders = new HashMap(classLoaders);
+        classLoader.classLoaders = new HashMap<String, ThrowAwayClassLoader>(classLoaders);
 
         return classLoader;
     }
