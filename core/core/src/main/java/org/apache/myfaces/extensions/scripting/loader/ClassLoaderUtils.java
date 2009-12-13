@@ -41,6 +41,38 @@ public class ClassLoaderUtils {
     // ------------------------------------------ Public methods
 
     /**
+     * <p>Returns the default class loader to use.</p>
+     * 
+     * @return the default class loader to use
+     */
+    public static ClassLoader getDefaultClassLoader() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader != null) {
+            return classLoader;
+        } else {
+            return ClassLoaderUtils.class.getClassLoader();
+        }
+    }
+
+    /**
+     * <p>Determines whether the given class is loadable by the given class loader.</p>
+     * 
+     * @param className the class you want to check
+     * @param classLoader the class loader to use for that check
+     * 
+     * @return <code>true</code>, if the given class is loadable by the given class loader
+     */
+    public static boolean isClassAvailable(String className, ClassLoader classLoader) {
+        try {
+            classLoader.loadClass(className);
+            return true;
+        }
+        catch (Throwable ex) {
+            return false;
+        }
+    }
+
+    /**
      * <p>Resolves the classpath by walking up the hierachy of class loaders. Assuming
      * that we're only dealing with URLClassLoaders it's possible to determine the
      * classpath. This method, however, returns the classpath as a String, where each
