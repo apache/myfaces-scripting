@@ -23,17 +23,16 @@ package org.apache.myfaces.extensions.scripting.compiler;
  * set of source files. However, note that it doesn't mean that the source files
  * themselves contained errors but rather that the system couldn't managed to
  * find an appropriate compiler implementation, etc.</p>
- *
+ * <p/>
  * <p>In order to determine whether the compiler sucessfully compiled a certain
  * source file you have to look for the compilation result instead.</p>
- *
  */
 public class CompilationException extends Exception {
 
     // ------------------------------------------ Constructors
 
     /**
-     * <p>Constructs a new compilation exception with the specified detail message.</p> 
+     * <p>Constructs a new compilation exception with the specified detail message.</p>
      *
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
@@ -73,6 +72,6 @@ public class CompilationException extends Exception {
     public CompilationException(Throwable cause) {
         super(cause);
     }
-    
+
 }
 

@@ -22,7 +22,6 @@ import java.io.File;
 
 /**
  * <p>An abstract compiler interface that enables you to compile one particular file at a time.</p>
- *
  */
 public interface Compiler {
 
@@ -36,9 +35,7 @@ public interface Compiler {
      * @param targetPath  the path to the target directory
      * @param file        the file of the class you want to compile
      * @param classLoader the class loader for dependent classes
-     * 
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
-     *
      * @throws CompilationException if a severe error occured while trying to compile a file
      */
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
@@ -54,9 +51,7 @@ public interface Compiler {
      * @param targetPath  the path to the target directory
      * @param file        the relative file name of the class you want to compile
      * @param classLoader the class loader for dependent classes
-     * 
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
-     *
      * @throws CompilationException if a severe error occured while trying to compile a file
      */
     public CompilationResult compile(File sourcePath, File targetPath, String file, ClassLoader classLoader)
