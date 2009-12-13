@@ -29,7 +29,6 @@ import java.io.InputStream;
  * instances of a dynamically compiled class. Once the dynamically compiled class changes,
  * the class of the factory bean has to be reloaded as well even though it somehow didn't
  * really change.</p>
- * 
  */
 public class OverridingClassLoader extends AbstractThrowAwayClassLoader {
 
@@ -61,5 +60,5 @@ public class OverridingClassLoader extends AbstractThrowAwayClassLoader {
     protected InputStream openStreamForClass(String className) throws IOException {
         return getParent().getResourceAsStream(className.replace('.', '/') + ".class");
     }
-    
+
 }
