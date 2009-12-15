@@ -26,10 +26,12 @@ import org.apache.myfaces.webapp.StartupListener;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author werpu
@@ -45,6 +47,8 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         ServletContext servletContext = servletContextEvent.getServletContext();
         if (servletContext == null) return;
+
+        servletContext.setAttribute(ScriptingConst.CTX_REQUEST_CNT, new AtomicInteger(0));
 
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);

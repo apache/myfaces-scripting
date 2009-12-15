@@ -18,13 +18,13 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
-import org.apache.myfaces.context.servlet.ServletExternalContextImpl;
-
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -36,11 +36,13 @@ public class ScriptingServletFilter implements Filter {
 
     ServletContext context = null;
 
+
     public void init(FilterConfig filterConfig) throws ServletException {
         context = filterConfig.getServletContext();
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        markRequestStart();
 
         WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
         WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
@@ -49,7 +51,28 @@ public class ScriptingServletFilter implements Filter {
     }
 
     public void destroy() {
+        markRequestEnd();
         WeavingContext.clean();
+    }
+
+
+
+    //we mark the request beginning and end for further synchronisation issues
+    private final AtomicInteger getRequestCnt() {
+        return (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
+    }
+
+
+    private int markRequestStart() {
+        return getRequestCnt().incrementAndGet();
+    }
+
+    private int markRequestEnd() {
+        return getRequestCnt().decrementAndGet();
+    }
+
+    private int concurrentRequests() {
+        return getRequestCnt().get();
     }
 
 }
