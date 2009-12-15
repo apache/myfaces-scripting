@@ -21,15 +21,14 @@ package org.apache.myfaces.scripting.core.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
+import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-
 
 import java.io.*;
 import java.util.LinkedList;
@@ -150,7 +149,9 @@ public class ClassUtils {
     }
 
     private static String classNameToRelativeFileName(String className) {
-        return className.replaceAll("\\.", File.separator) + ".class";
+        String separator = FileUtils.getFileSeparatorForRegex();
+
+        return className.replaceAll("\\.", separator) + ".class";
     }
 
     public static String relativeFileToClassName(String relativeFileName) {

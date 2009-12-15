@@ -6,7 +6,6 @@
     <packaging>jar</packaging>
     <name>groovy core</name>
 
-    
     <description>
         groovy myfaces core lib
     </description>

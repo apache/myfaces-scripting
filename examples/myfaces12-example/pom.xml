@@ -9,7 +9,7 @@
     <groupId>org.apache.myfaces.extension-scripting</groupId>
     <artifactId>myfaces12-example</artifactId>
     <packaging>war</packaging>
-    <name>A custom project using myfaces</name>
+    <name>A custom project using myfaces 1.2</name>
     <version>1.0-SNAPSHOT</version>
     <url>http://www.apache.org</url>
 
@@ -64,11 +64,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.myfaces.extension-scripting</groupId>
-            <artifactId>core-java6</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
             <version>1.2.8</version>
@@ -86,7 +81,6 @@
             <version>1.0</version>
         </dependency>
       
-
         <dependency>
             <groupId>com.sun.facelets</groupId>
             <artifactId>jsf-facelets</artifactId>

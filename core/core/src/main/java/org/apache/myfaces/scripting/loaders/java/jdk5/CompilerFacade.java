@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
 import java.io.File;
@@ -76,7 +77,8 @@ public class CompilerFacade implements DynamicCompiler {
 
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
 
-        String className = filePath.replaceAll(File.separator, ".");
+        String separator = FileUtils.getFileSeparatorForRegex();
+        String className = filePath.replaceAll(separator, ".");
         className = ClassUtils.relativeFileToClassName(className);
 
         try {

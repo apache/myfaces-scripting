@@ -32,8 +32,27 @@ import java.util.List;
 public class FileUtils {
     static double _tempMarker = Math.random();
 
+    /**
+     * Get the file separator for this platform.
+     * @return The file separator.
+     */
+    public static String getFileSeparator() {
+        return File.separator;
+    }
 
-    
+    /**
+     * Get the file separator for this platform, properly escaped for usage in a regular expression.
+     * @return The file separator, escaped for in a regex.
+     */
+    public static String getFileSeparatorForRegex() {
+        String sep = getFileSeparator();
+
+        if ("\\".equals(sep)) {
+            sep = "\\\\";
+        }
+
+        return sep;
+    }
 
     public static File getTempDir() {
         File tempDir = null;

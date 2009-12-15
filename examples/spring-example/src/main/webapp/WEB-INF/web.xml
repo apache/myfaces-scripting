@@ -56,14 +56,19 @@
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
 
-    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
         of the deployment dir</description>
         <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>/home/werpu/development/workspace/myfaces-groovy/examples/src/main/webapp/WEB-INF/groovy</param-value>
+        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/groovy</param-value>
     </context-param>
-    -->
+
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+        of the deployment dir</description>
+        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
+        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/java</param-value>
+    </context-param>
 
     <context-param>
         <description>State saving method: "client" or "server" (= default)
@@ -243,11 +248,11 @@
     </filter>
 
     <filter>
-        <filter-name>scritpingFilter</filter-name>
+        <filter-name>scriptingFilter</filter-name>
         <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>scritpingFilter</filter-name>
+        <filter-name>scriptingFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
@@ -265,10 +270,9 @@
     </filter-mapping>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
-    <!--    <listener>
-            <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-        </listener>
-    -->
+    <listener>
+        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+    </listener>
 
 
     <!-- Faces Servlet -->

@@ -9,7 +9,7 @@
     <groupId>org.apache.myfaces.extension-scripting</groupId>
     <artifactId>myfaces20-example</artifactId>
     <packaging>war</packaging>
-    <name>A custom project using myfaces</name>
+    <name>A custom project using myfaces 2.0</name>
     <version>1.0-SNAPSHOT</version>
     <url>http://www.apache.org</url>
 

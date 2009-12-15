@@ -21,9 +21,7 @@ package org.apache.myfaces.scripting.loaders.java;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
-import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -126,7 +124,8 @@ public class RecompiledClassLoader extends ClassLoader {
         reloadingMetaData.setAClass(retVal);
         //find the source for the given class and then
         //store the filename
-        String fileName = className.replaceAll("\\.", File.separator)+".java";
+        String separator = FileUtils.getFileSeparatorForRegex();
+        String fileName = className.replaceAll("\\.", separator)+".java";
 
         reloadingMetaData.setFileName(sourceRoot+File.separator+fileName);
         reloadingMetaData.setSourcePath("");

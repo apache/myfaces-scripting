@@ -1,19 +1,18 @@
 package org.apache.myfaces.scripting.api;
 
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
-import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.config.element.ManagedBean;
-import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.config.RuntimeConfig;
+import org.apache.myfaces.config.element.ManagedBean;
+import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
+import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
-import java.util.*;
 import java.io.File;
+import java.util.*;
 
 /**
  * @author Werner Punz
@@ -148,7 +147,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         Map<String, ReloadingMetadata> classMap = getClassMap();
         ReloadingMetadata metadata = classMap.get(className);
         if (metadata == null) {
-            String fileName = className.replaceAll("\\.", File.separator) + getFileEnding();
+            String separator = FileUtils.getFileSeparatorForRegex();
+            String fileName = className.replaceAll("\\.", separator) + getFileEnding();
 
             for (String pathEntry : getScriptPaths()) {
 
