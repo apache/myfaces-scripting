@@ -18,10 +18,13 @@
  */
 package org.apache.myfaces.extensions.scripting.compiler;
 
+import org.junit.Ignore;
+
 /**
  * <p>Test class for
  * <code>org.apache.myfaces.extensions.scripting.compiler.Jsr199Compiler</code></p>
  */
+@Ignore
 public class Jsr199CompilerTest extends AbstractJavaCompilerTestCase {
 
     // ------------------------------------------ AbstractJavaCompilerTestCase methods

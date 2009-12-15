@@ -21,11 +21,13 @@ package org.apache.myfaces.extensions.scripting.compiler;
 import java.io.File;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
+import org.junit.Ignore;
 
 /**
  * <p>Test class for all Java implementations of
  * <code>org.apache.myfaces.extensions.scripting.compiler.Compiler</code>.</p>
  */
+@Ignore
 public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTestCase {
 
     // ------------------------------------------ Test methods

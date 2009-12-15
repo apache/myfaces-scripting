@@ -19,6 +19,7 @@
 package org.apache.myfaces.extensions.scripting.loader;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
+import org.junit.Ignore;
 
 import java.io.File;
 
@@ -26,6 +27,7 @@ import java.io.File;
  * <p>Test class for
  * <code>org.apache.myfaces.extensions.scripting.loader.ReloadingClassLoader</code></p>
  */
+@Ignore
 public class ReloadingClassLoaderTest extends AbstractGeneratorTestCase {
 
     // ------------------------------------------ Test methods

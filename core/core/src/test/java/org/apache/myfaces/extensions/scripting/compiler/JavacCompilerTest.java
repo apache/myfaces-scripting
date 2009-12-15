@@ -18,10 +18,13 @@
  */
 package org.apache.myfaces.extensions.scripting.compiler;
 
+import org.junit.Ignore;
+
 /**
  * <p>Test class for
  * <code>org.apache.myfaces.extensions.scripting.compiler.JavacCompiler</code></p>
  */
+@Ignore
 public class JavacCompilerTest extends AbstractJavaCompilerTestCase {
 
     // ------------------------------------------ AbstractJavaCompilerTestCase methods
