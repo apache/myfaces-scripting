@@ -36,10 +36,7 @@ import javax.faces.event.ActionListener;
 import javax.faces.validator.Validator;
 import javax.servlet.ServletRequest;
 import java.lang.reflect.Proxy;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * our decorating applicstion
@@ -384,7 +381,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
         Validator retVal = _delegate.createValidator(s);
         if (WeavingContext.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
-            retVal = (Validator) WeavingContext.createMethodReloadingProxyFromObject(retVal, Validator.class, ScriptingConst.ARTEFACT_TYPE_VALIDATOR);
+            //todo bypass the serialisation problem on validators
+            retVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTEFACT_TYPE_VALIDATOR); //WeavingContext.createMethodReloadingProxyFromObject(retVal, Validator.class, ScriptingConst.ARTEFACT_TYPE_VALIDATOR);
         }
         return retVal;
     }
@@ -418,9 +416,9 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private final boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
-            req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
+        Map reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        if (reqMap.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+            reqMap.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
             return false;
         }
         return true;

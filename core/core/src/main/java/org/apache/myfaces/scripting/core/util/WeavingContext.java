@@ -32,10 +32,14 @@ import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A set of weaving context class called
  * by the various subsystems
+ *
+ * TODO move this away from static methods into a singleton which is kept
+ * in the application context, to keep the context pattern.
  *
  * @author Werner Punz
  */
@@ -64,10 +68,12 @@ public class WeavingContext {
 
     static protected ThreadLocal _refreshContextHolder = new ThreadLocal();
 
+    
 
     public static void init() {
 
     }
+
 
 
     /**

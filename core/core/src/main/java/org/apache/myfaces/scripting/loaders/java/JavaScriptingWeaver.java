@@ -119,6 +119,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     @Override
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
         //we load the scripting class from the given className
+        if(file.indexOf("TestBean2") != -1) {
+            System.out.println("debugpoint found");
+        }
         File currentClassFile = new File(sourceRoot + File.separator + file);
         if (!currentClassFile.exists()) {
             return null;
