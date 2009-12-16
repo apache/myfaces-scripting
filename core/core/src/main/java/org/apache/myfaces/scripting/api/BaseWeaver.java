@@ -19,6 +19,22 @@ import java.util.*;
  * @author Werner Punz
  *         <p/>
  *         Refactored the common weaver code into a base class
+ *         <p/>
+ *         <p/>
+ *         note we added a bean dropping code, the bean dropping works that way
+ *         if we are the first request after a compile issued
+ *         we drop all beans
+ *         <p/>
+ *         every other request has to drop only the session
+ *         and custom scoped beans
+ *         <p/>
+ *         we set small mutexes to avoid at least in our code synchronisation issues
+ *         the mutexes are as atomic as possible to avoid speed problems.
+ *         <p/>
+ *         Unfortunately if someone alters the beanmap from outside while we reload
+ *         we for now cannot do anything until we have covered that in the myfaces core!
+ *         <p/>
+ *         Since all weavers are applicatin scoped we can handle the mutexes properly
  */
 public abstract class BaseWeaver implements ScriptingWeaver {
 
@@ -35,6 +51,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     private static final String SCOPE_APPLICATION = "application";
     private static final String SCOPE_REQUEST = "request";
 
+    private static Boolean BEAN_LOCK = new Boolean(true);
 
     public BaseWeaver() {
         _reloadingStrategy = new GlobalReloadingStrategy(this);
@@ -262,22 +279,25 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             return;//no npe allowed
         }
         Set<String> tainted = new HashSet<String>();
-        synchronized (this) {
-            for (Map.Entry<String, ReloadingMetadata> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
-                if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().isTainted()) {
-                    tainted.add(it.getKey());
-                }
+        for (Map.Entry<String, ReloadingMetadata> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
+            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().isTainted()) {
+                tainted.add(it.getKey());
             }
         }
         if (tainted.size() > 0) {
             boolean managedBeanTainted = false;
             //We now have to check if the tainted classes belong to the managed beans
             Set<String> managedBeanClasses = new HashSet<String>();
-            synchronized (this) {
-                Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-                for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
-                    managedBeanClasses.add(entry.getValue().getManagedBeanClassName());
-                }
+
+            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+            Map<String, ManagedBean> workCopy = null;
+
+            synchronized (BEAN_LOCK) {
+                workCopy = makeSnapshot(mbeans);
+            }
+
+            for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
+                managedBeanClasses.add(entry.getValue().getManagedBeanClassName());
             }
             for (String taintedClass : tainted) {
                 if (managedBeanClasses.contains(taintedClass)) {
@@ -291,25 +311,22 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             getLog().info("[EXT-SCRIPTING] Tainting all beans to avoid classcast exceptions");
             if (managedBeanTainted) {
 
-                synchronized (this) {
-                    Map<String, ManagedBean> workCopy = makeSnapshot(mbeans);
-
-                    for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
-                        Class managedBeanClass = entry.getValue().getManagedBeanClass();
-                        if (WeavingContext.isDynamic(managedBeanClass)) {
-                            //managed bean class found we drop the class from our session
+                for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
+                    Class managedBeanClass = entry.getValue().getManagedBeanClass();
+                    if (WeavingContext.isDynamic(managedBeanClass)) {
+                        //managed bean class found we drop the class from our session
+                        synchronized (BEAN_LOCK) {
                             removeBeanReferences(entry.getValue());
                         }
-                        //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
-                        //exceptions
-                        getLog().info("[EXT-SCRIPTING] Tainting ");
-                        ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
-                        if (metaData != null) {
-                            metaData.setTainted(true);
-                        }
+                    }
+                    //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
+                    //exceptions
+                    getLog().info("[EXT-SCRIPTING] Tainting ");
+                    ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
+                    if (metaData != null) {
+                        metaData.setTainted(true);
                     }
                 }
-
             }
         }
 
@@ -325,10 +342,13 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @return
      */
     private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
-        Map<String, ManagedBean> workCopy = new HashMap<String, ManagedBean>(mbeans.size());
+        Map<String, ManagedBean> workCopy = null;
+
+        workCopy = new HashMap<String, ManagedBean>(mbeans.size());
         for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
             workCopy.put(entry.getKey(), entry.getValue());
         }
+
         return workCopy;
     }
 
@@ -352,37 +372,41 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     private void refreshPersonalScopedBeans() {
 
-        synchronized (this) {
-            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-            //the map is immutable but in between scanning might change it so we make a full copy of the map
+        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+        //the map is immutable but in between scanning might change it so we make a full copy of the map
 
-            //We can synchronized the refresh, but if someone alters
-            //the bean map from outside we still get race conditions
-            //But for most cases this mutex should be enough 
-            Map<String, ManagedBean> workCopy = makeSnapshot(mbeans);
+        //We can synchronized the refresh, but if someone alters
+        //the bean map from outside we still get race conditions
+        //But for most cases this mutex should be enough
 
-            for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
+        Map<String, ManagedBean> workCopy = null;
+        synchronized (BEAN_LOCK) {
+            workCopy = makeSnapshot(mbeans);
+        }
 
-                Class managedBeanClass = entry.getValue().getManagedBeanClass();
-                if (WeavingContext.isDynamic(managedBeanClass)) {
-                    String scope = entry.getValue().getManagedBeanScope();
+        for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
 
-                    if (scope != null && !scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
-                        if (scope.equalsIgnoreCase(SCOPE_REQUEST)) {
-                            //request, nothing has to be done here
-                            return;
-                        }
+            Class managedBeanClass = entry.getValue().getManagedBeanClass();
+            if (WeavingContext.isDynamic(managedBeanClass)) {
+                String scope = entry.getValue().getManagedBeanScope();
+
+                if (scope != null && !scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
+                    if (scope.equalsIgnoreCase(SCOPE_REQUEST)) {
+                        //request, nothing has to be done here
+                        return;
+                    }
+                    synchronized (BEAN_LOCK) {
                         if (scope.equalsIgnoreCase(SCOPE_SESSION)) {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
                         } else {
                             removeCustomScopedBean(entry.getValue());
                         }
                     }
-
                 }
 
-                updateBeanRefreshTime();
             }
+
+            updateBeanRefreshTime();
         }
 
     }
