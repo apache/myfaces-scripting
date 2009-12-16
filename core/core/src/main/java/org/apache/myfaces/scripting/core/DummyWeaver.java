@@ -23,6 +23,7 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -72,7 +73,10 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void requestRefresh() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Collection<String> loadPossibleDynamicClasses() {
+        return null; 
     }
 
 }

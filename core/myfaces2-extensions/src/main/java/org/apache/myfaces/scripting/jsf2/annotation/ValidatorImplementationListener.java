@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedValidator;
 
@@ -107,16 +106,7 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         getApplication().addValidator(entry.getValue(), clazz.getName());
     }
 
-    @Override
-    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        String value = getAnnotatedStringParam(params, PAR_VALUE);
-        Boolean theDefault = getAnnotatedBolleanParam(params, PAR_DEFAULT);
-
-        AnnotationEntry entry = new AnnotationEntry(value, theDefault);
-        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
-
-        getApplication().addValidator(entry.getValue(), clazz.getFullyQualifiedName());
-    }
+   
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -133,21 +123,7 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         return alreadyRegistered.equals(entry);
     }
 
-    @Override
-    protected boolean hasToReregister(Map params, JavaClass clazz) {
-        String value = getAnnotatedStringParam(params, PAR_VALUE);
-        Boolean theDefault = getAnnotatedBolleanParam(params, PAR_DEFAULT);
-
-        AnnotationEntry entry = new AnnotationEntry(value, theDefault);
-
-        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
-        if (alreadyRegistered == null) {
-            return true;
-        }
-
-        return alreadyRegistered.equals(entry);
-    }
-
+    
 
     @Override
     public void purge(String className) {

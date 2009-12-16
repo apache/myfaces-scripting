@@ -24,6 +24,8 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author werpu
@@ -134,5 +136,11 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         }
     }
 
+    public Collection<String> loadPossibleDynamicClasses() {
+        LinkedList<String> retVal = new LinkedList<String>();
+        for (ScriptingWeaver weaver : _weavers) {
+            retVal.addAll(weaver.loadPossibleDynamicClasses());
+        }
+        return retVal;
+    }
 }
-

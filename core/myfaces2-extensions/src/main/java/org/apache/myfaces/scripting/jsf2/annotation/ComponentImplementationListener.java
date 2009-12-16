@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
@@ -54,16 +53,7 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
         _alreadyRegistered.put(clazz.getName(), val);
     }
 
-    protected void addEntity(JavaClass clazz, String val) {
-        if (log.isTraceEnabled()) {
-            log.trace("addComponent(" + val + ","
-                      + clazz.getFullyQualifiedName() + ")");
-        }
-        WeavingContext.getWeaver().loadScriptingClassFromName(clazz.getFullyQualifiedName());
-        getApplication().addComponent(val, clazz.getFullyQualifiedName());
-        _alreadyRegistered.put(clazz.getFullyQualifiedName(), val);
-    }
-
+   
     @Override
     public void purge(String className) {
         super.purge(className);

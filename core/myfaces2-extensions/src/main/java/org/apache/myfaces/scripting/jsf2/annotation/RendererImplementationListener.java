@@ -18,9 +18,7 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 
 import javax.faces.FactoryFinder;
@@ -103,8 +101,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
     @Override
     protected void addEntity(Class clazz, Map<String, Object> params) {
-        String value = (String) getAnnotatedStringParam(params, PAR_FAMILY);
-        String theDefault = (String) getAnnotatedStringParam(params, PAR_RENDERERTYPE);
+        String value = (String) params.get(PAR_FAMILY);
+        String theDefault = (String) params.get(PAR_RENDERERTYPE);
 
         String renderKitId = getRenderKitId(params);
         RenderKit renderKit = getRenderkit(renderKitId);
@@ -131,36 +129,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
     }
 
-    @Override
-    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        String value = getAnnotatedStringParam(params, PAR_FAMILY);
-        String theDefault = getAnnotatedStringParam(params, PAR_RENDERERTYPE);
 
-        String renderKitId = getRenderKitId(params);
-        RenderKit renderKit = getRenderkit(renderKitId);
-        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
-        _alreadyRegistered.put(clazz.getName(), entry);
-
-        if (renderKit == null) {
-            log.error("addEntity(): Renderkit with id " + renderKitId + " not found ");
-            return;
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace("addRenderer(" + renderKitId + ", "
-                      + entry.getComponentFamily() + ", " + entry.getRendererType()
-                      + ", " + clazz.getFullyQualifiedName() + ")");
-        }
-
-        try {
-            //recompile the class here because we cannot deal with the renderer otherwise
-            renderKit.addRenderer(getAnnotatedStringParam(params,PAR_FAMILY), getAnnotatedStringParam(params, PAR_RENDERERTYPE), (Renderer) WeavingContext.getWeaver().loadScriptingClassFromName(clazz.getFullyQualifiedName()).newInstance());
-        } catch (InstantiationException e) {
-            log.error(e);
-        } catch (IllegalAccessException e) {
-            log.error(e);
-        }
-    }
 
 
     @Override
@@ -179,21 +148,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return alreadyRegistered.equals(entry);
     }
 
-    @Override
-    protected boolean hasToReregister(Map params, JavaClass clazz) {
-        String value = getAnnotatedStringParam(params, PAR_FAMILY);
-        String theDefault = (String) getAnnotatedStringParam(params, PAR_RENDERERTYPE);
-        String renderKitId = (String) getAnnotatedStringParam(params, PAR_RENDERKITID);
-
-        AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
-
-        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
-        if (alreadyRegistered != null) {
-            return !alreadyRegistered.equals(entry);
-        }
-
-        return true;
-    }
+  
 
 
     private String getRenderKitId(Map<String, Object> params) {

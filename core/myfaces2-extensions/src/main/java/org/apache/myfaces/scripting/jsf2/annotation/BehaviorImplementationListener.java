@@ -19,7 +19,6 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 
-import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedBehavior;
@@ -50,13 +49,7 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
         getApplication().addBehavior(val, clazz.getName());
     }
 
-    protected void addEntity(JavaClass clazz, String val) {
-        if (log.isTraceEnabled()) {
-            log.trace("addBehavior (" + val + ","
-                      + clazz.getFullyQualifiedName() + ")");
-        }
-        getApplication().addBehavior(val, clazz.getFullyQualifiedName());
-    }
+    
 
     @Override
     public void purge(String className) {

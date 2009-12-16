@@ -18,14 +18,11 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedConverter;
 
-import javax.faces.convert.FacesConverter;
-import javax.faces.render.RenderKit;
 import javax.faces.application.Application;
+import javax.faces.convert.FacesConverter;
 import java.util.Map;
 
 /**
@@ -43,6 +40,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         Class forClass;
 
         AnnotationEntry(String value, Class forClass) {
+
             this.value = value;
             this.forClass = forClass;
         }
@@ -86,7 +84,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
     }
 
     public ConverterImplementationListener() {
-        super();
+         super(PAR_VALUE, PAR_DEFAULT);
     }
 
     @Override
@@ -100,16 +98,6 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         getApplication().addConverter(entry.getValue(), clazz.getName());
     }
 
-    @Override
-    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        String value = getAnnotatedStringParam(params, PAR_VALUE);
-        Class forClass = getAnnotatedClassParam(params, PAR_DEFAULT);
-
-        AnnotationEntry entry = new AnnotationEntry(value, forClass);
-        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
-
-        getApplication().addConverter(entry.getValue(), clazz.getFullyQualifiedName());
-    }
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -126,20 +114,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         return alreadyRegistered.equals(entry);
     }
 
-    @Override
-    protected boolean hasToReregister(Map params, JavaClass clazz) {
-        String value = getAnnotatedStringParam(params, PAR_VALUE);
-        Class forClass = getAnnotatedClassParam(params, PAR_DEFAULT);
-
-        AnnotationEntry entry = new AnnotationEntry(value, forClass);
-
-        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
-        if (alreadyRegistered == null) {
-            return true;
-        }
-
-        return !alreadyRegistered.equals(entry);
-    }
+   
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesConverter.class.getName());

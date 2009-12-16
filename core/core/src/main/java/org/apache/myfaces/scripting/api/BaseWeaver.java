@@ -8,6 +8,7 @@ import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
@@ -387,4 +388,29 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
     }
 
+    /**
+     * Loads a list of possible dynamic classNames
+     * for this scripting engine
+     *
+     * @return a list of classNames which are dynamic classes
+     *         for the current compile state on the filesystem
+     */
+    public Collection<String> loadPossibleDynamicClasses() {
+
+        List<String> scriptPaths = getScriptPaths();
+        List<String> retVal = new LinkedList<String>();
+
+        for (String scriptPath : scriptPaths) {
+            List<File> tmpList = FileUtils.fetchSourceFiles(new File(scriptPath), "*"+getFileEnding());
+            int lenRoot = scriptPath.length();
+            //ok O(n2) but we are lazy for now if this imposes a problem we can flatten the inner loop out
+            for (File sourceFile : tmpList) {
+                String relativeFile = sourceFile.getAbsolutePath().substring(lenRoot+1);
+                String className = ClassUtils.relativeFileToClassName(relativeFile);
+                retVal.add(className);
+            }
+        }
+        return retVal;
+
+    }
 }

@@ -22,9 +22,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.*;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.core.util.*;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.myfaces.config.element.ManagedBean;
@@ -36,10 +34,7 @@ import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @author werpu
@@ -82,12 +77,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         //url classloader at the time myfaces is initialized
         try {
             Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.JavaAnnotationScanner");
-            this._scanner = (AnnotationScanner) scanner.newInstance();
+            this._scanner = (AnnotationScanner) ReflectUtil.instantiate(scanner, new Cast(ScriptingWeaver.class, this));
 
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
             //we do nothing here
         }
@@ -119,7 +110,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     @Override
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
         //we load the scripting class from the given className
-        if(file.indexOf("TestBean2") != -1) {
+        if (file.indexOf("TestBean2") != -1) {
             System.out.println("debugpoint found");
         }
         File currentClassFile = new File(sourceRoot + File.separator + file);
@@ -145,6 +136,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             }
             retVal = compiler.compileFile(sourceRoot, classPath, file);
 
+            if(retVal == null) {
+                return retVal;
+            }
         } catch (ClassNotFoundException e) {
             //can be safely ignored
         }
@@ -165,7 +159,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
          * //we only deal with class level reloading here
          * //the deregistration notification should happen on artefact level (which will be the next subtask)
          */
-        if (_scanner != null) {
+        if (_scanner != null && retVal != null) {
             _scanner.scanClass(retVal);
         }
 

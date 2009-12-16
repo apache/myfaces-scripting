@@ -18,12 +18,9 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.Annotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.AnnotationScanner;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import java.io.File;
@@ -46,10 +43,13 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 public class JavaAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
 
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
-    JavaDocBuilder _builder = new JavaDocBuilder();
+
     Map<String, String> _registeredAnnotations = new HashMap<String, String>();
     LinkedList<String> _sourcePaths = new LinkedList<String>();
     private static final String JAVAX_FACES = "javax.faces";
+
+    ScriptingWeaver _weaver = null;
+
 
     public JavaAnnotationScanner() {
         initDefaultListeners();
@@ -63,23 +63,17 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
         initDefaultListeners();
     }
 
+
+    public JavaAnnotationScanner(ScriptingWeaver weaver) {
+        _weaver = weaver;
+         initDefaultListeners();
+    }
+
     public void addScanPath(String sourcePath) {
         _sourcePaths.addFirst(sourcePath);
     }
 
-    Collection<Annotation> filterAnnotations(Annotation[] anns) {
-        List<Annotation> retVal = new ArrayList<Annotation>(anns.length);
-        if (anns == null) {
-            return retVal;
-        }
-        for (Annotation ann : anns) {
-            if (ann.getType().getValue().startsWith(JAVAX_FACES)) {
-                retVal.add(ann);
-            }
-        }
-        return retVal;
-    }
-
+   
     Collection<java.lang.annotation.Annotation> filterAnnotations(java.lang.annotation.Annotation[] anns) {
         List<java.lang.annotation.Annotation> retVal = new ArrayList<java.lang.annotation.Annotation>(anns.length);
         if (anns == null) {
@@ -95,9 +89,8 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     }
 
     public void scanClass(Class clazz) {
-        //java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
-
         java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+
         Collection<java.lang.annotation.Annotation> annCol = filterAnnotations(anns);
         if (!annCol.isEmpty()) {
             addOrMoveAnnotations(clazz);
@@ -105,20 +98,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
             removeAnnotations(clazz);
         }
     }
-
-
-    private void initSourcePaths() {
-        _builder = new JavaDocBuilder();
-        for (String sourcePath : _sourcePaths) {
-            File source = new File(sourcePath);
-            if (source.exists()) {
-
-                _builder.addSourceTree(source);
-
-            }
-        }
-    }
-
+   
     private void initDefaultListeners() {
         _listeners.add(new BeanImplementationListener());
         _listeners.add(new BehaviorImplementationListener());
@@ -133,6 +113,23 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
      * on the found data
      */
     public void scanPaths() {
+        //TODO move this over to a binary scan system
+        //https://issues.apache.org/jira/browse/EXTSCRIPT-33
+        for(String className : _weaver.loadPossibleDynamicClasses()) {
+            Class clazz = _weaver.loadScriptingClassFromName(className);
+            //called already by loadScriptingClassFromName
+            /*if(clazz != null) {
+               java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+                if (anns != null && anns.length > 0) {
+                    addOrMoveAnnotations(clazz);
+                } else {
+                    removeAnnotations(clazz);
+                }
+            }*/
+        }
+
+
+        /*
         initSourcePaths();
         JavaSource[] sources = _builder.getSources();
         for (JavaSource source : sources) {
@@ -146,32 +143,9 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
                 }
             }
 
-        }
+        }*/
     }
 
-    /**
-     * add or moves a class level annotation
-     * to a new place
-     *
-     * @param clazz
-     * @param anns
-     */
-    private void addOrMoveAnnotations(JavaClass clazz, Annotation[] anns) {
-        for (Annotation ann : anns) {
-            for (AnnotationScanListener listener : _listeners) {
-                if (listener.supportsAnnotation(ann.getType().getValue())) {
-                    listener.registerSource(
-                            clazz, ann.getType().getValue(), ann.getPropertyMap());
-
-                    _registeredAnnotations.put(clazz.getFullyQualifiedName(), ann.getType().getValue());
-                    ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(clazz.getFullyQualifiedName());
-                    if (metaData != null) {
-                        metaData.setAnnotated(true);
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * add or moves a class level annotation
@@ -204,27 +178,6 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
      *
      * @param clazz
      */
-    private void removeAnnotations(JavaClass clazz) {
-        String registeredAnnotation = _registeredAnnotations.get(clazz.getFullyQualifiedName());
-        if (registeredAnnotation != null) {
-            for (AnnotationScanListener listener : _listeners) {
-                if (listener.supportsAnnotation(registeredAnnotation)) {
-                    listener.purge(clazz.getFullyQualifiedName());
-                    _registeredAnnotations.remove(clazz.getFullyQualifiedName());
-                    WeavingContext.getEventProcessor().dispatchEvent(new AnnotatedArtefactRemovedEvent(clazz.getFullyQualifiedName()));
-                    WeavingContext.getFileChangedDaemon().getClassMap().remove(clazz.getFullyQualifiedName());
-                }
-            }
-        }
-    }
-
-    /**
-     * use case annotation removed
-     * we have to entirely remove the annotation
-     * from our internal registry and the myfaces registry
-     *
-     * @param clazz
-     */
     private void removeAnnotations(Class clazz) {
         String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
         if (registeredAnnotation != null) {
@@ -239,22 +192,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     }
 
 
-    /**
-     * use case annotation moved
-     * we have to remove the annotation from the myfaces registry of the old
-     * listeners place, the new entry is done in the first step add or move
-     *
-     * @param clazz
-     * @param ann
-     * @param listener
-     */
-    private void annotationMoved(JavaClass clazz, Annotation ann, AnnotationScanListener listener) {
-        //case class exists but it has been moved to anoter annotation
-        String registeredAnnotation = _registeredAnnotations.get(clazz.getFullyQualifiedName());
-        if (registeredAnnotation != null && registeredAnnotation.equals(ann.getType().getValue())) {
-            removeAnnotations(clazz);
-        }
-    }
+  
 
     private void annotationMoved(Class clazz, java.lang.annotation.Annotation ann, AnnotationScanListener listener) {
         //case class exists but it has been moved to anoter annotation

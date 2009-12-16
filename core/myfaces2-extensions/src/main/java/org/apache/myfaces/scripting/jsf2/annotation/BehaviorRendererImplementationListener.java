@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedClientBehaviorRenderer;
 
 import javax.faces.FactoryFinder;
@@ -102,17 +101,7 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
         getApplication().addConverter(entry.getRendererType(), clazz.getName());
     }
 
-    @Override
-    protected void addEntity(JavaClass clazz, Map<String, Object> params) {
-        String value = getAnnotatedStringParam(params, PAR_RENDERERTYPE);
-        String renderKitId = getAnnotatedStringParam(params, PAR_RENDERKITID);
-
-        AnnotationEntry entry = new AnnotationEntry(value, renderKitId);
-        _alreadyRegistered.put(clazz.getFullyQualifiedName(), entry);
-
-        getApplication().addConverter(entry.getRendererType(), clazz.getFullyQualifiedName());
-    }
-
+   
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
         String value = (String) params.get(PAR_RENDERERTYPE);
@@ -128,20 +117,6 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
         return alreadyRegistered.equals(entry);
     }
 
-    @Override
-    protected boolean hasToReregister(Map params, JavaClass clazz) {
-        String value = getAnnotatedStringParam(params, PAR_RENDERERTYPE);
-        String renderKitId = getAnnotatedStringParam(params, PAR_RENDERKITID);
-
-        AnnotationEntry entry = new AnnotationEntry(value, renderKitId);
-
-        AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getFullyQualifiedName());
-        if (alreadyRegistered == null) {
-            return true;
-        }
-
-        return !alreadyRegistered.equals(entry);
-    }
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesBehaviorRenderer.class.getName());

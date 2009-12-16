@@ -40,16 +40,7 @@ public interface AnnotationScanListener {
      */
     public boolean supportsAnnotation(String annotation);
 
-    /**
-     * registers the class within the myfaces runtime system
-     * within a neutral source representation of this class
-     *
-     * @param clazz          the class as neutral definition (currently qdox JavaClass only)
-     * @param annotationName the annotation name
-     * @param params         a map of annotation params
-     */
-    public void registerSource(Object clazz, String annotationName, Map<String, Object> params);
-
+ 
     /**
      * class file registration of the supported annotation
      *

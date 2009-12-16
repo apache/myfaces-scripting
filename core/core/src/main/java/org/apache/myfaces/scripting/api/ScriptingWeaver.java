@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.api;
 
+import java.util.Collection;
+
 /**
  * @author werpu
  * @date: 15.08.2009
@@ -118,6 +120,12 @@ public interface ScriptingWeaver {
     public void requestRefresh();
 
 
-   
+    /**
+     * loads a list of possible dynamic classes
+     * for the current given state of the source dirs
+     * 
+     * @return a list of classes representing the current source state
+     */
+    public Collection<String> loadPossibleDynamicClasses();
 
 }

@@ -29,7 +29,7 @@ import javax.faces.component.FacesComponent;
 /**
  * Simple component to be picked up by
  */
-
+@FacesComponent("at.irian.JavaTestComponent")
 public class JavaTestComponent extends UIInput implements Markable {
 
     enum PropertyKeys {

@@ -32,7 +32,6 @@ import java.io.IOException;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
- 
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "Hello world from Renderer 2  ";

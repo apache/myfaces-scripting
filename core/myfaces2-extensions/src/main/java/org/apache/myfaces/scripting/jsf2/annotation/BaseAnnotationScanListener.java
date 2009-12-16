@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import com.thoughtworks.qdox.model.annotation.AnnotationConstant;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.config.RuntimeConfig;
@@ -46,39 +45,6 @@ public class BaseAnnotationScanListener {
     protected Application getApplication() {
         return FacesContext.getCurrentInstance().getApplication();
     }
-
-    protected String getAnnotatedStringParam(Map<String, Object> propMap, String key) {
-        Object tempPropVal = propMap.get(key);
-        if(tempPropVal == null) {
-            return null;
-        }
-        if(tempPropVal instanceof String) {
-            return (String) tempPropVal;
-        }
-        AnnotationConstant propVal = (AnnotationConstant) tempPropVal;
-      
-        String val = (String) propVal.getParameterValue();
-        if (val == null) {
-            return null;
-        }
-        val = val.replaceAll("\"", "");
-        return val;
-    }
-
-    protected Boolean getAnnotatedBolleanParam(Map<String, Object> propMap, String key) {
-        AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
-        if(propVal == null) return null;
-        Boolean val = (Boolean) propVal.getParameterValue();
-        return val;
-    }
-
-    protected Class getAnnotatedClassParam(Map<String, Object> propMap, String key) {
-        AnnotationConstant propVal = (AnnotationConstant) propMap.get(key);
-        if(propVal == null) return null;
-        Class val = (Class) propVal.getParameterValue();
-        return val;
-    }
-
 
     /**
      * unregisters this class in the central registry
