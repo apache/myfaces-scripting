@@ -309,7 +309,16 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     }
 
-    private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
+    /**
+     * myfaces 2.0 keeps an immutable map over the session
+     * and request scoped beans
+     * if we alter that during our loop we get a concurrent modification exception
+     * taking a snapshot in time fixes that
+     *
+     * @param mbeans
+     * @return
+     */
+    private synchronized Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
         Map<String, ManagedBean> workCopy = new HashMap<String, ManagedBean>(mbeans.size());
         for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
             workCopy.put(entry.getKey(), entry.getValue());
