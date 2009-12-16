@@ -254,26 +254,38 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     public void requestRefresh() {
         if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
-            fullRecompile();
-            refreshAllManagedBeans();
-        } else {
-            //shortcut to avoid heavier operations in the beginning
-            long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
-            if (globalBeanRefreshTimeout == -1l) return;
-
-            Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-            Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
-            if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
-                refreshPersonalScopedBeans();
+            // we set a lock over the compile and bean refresh
+            //and an inner check again to avoid unneeded compile triggers
+            synchronized (BEAN_LOCK) {
+                if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
+                    recompileRefresh();
+                    return;
+                }
             }
         }
+        personalScopeRefresh();
+
+    }
+
+    private void personalScopeRefresh() {
+        //shortcut to avoid heavier operations in the beginning
+        long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
+        if (globalBeanRefreshTimeout == -1l) return;
+
+        Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+        Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
+        if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
+            refreshPersonalScopedBeans();
+        }
+    }
+
+    private void recompileRefresh() {
+        fullRecompile();
+        refreshAllManagedBeans();
     }
 
 
     protected void refreshAllManagedBeans() {
-        //TODO set a mutex and a double check here to avoid
-        //double dropping the entire managed beans
-        //in case of multiuser access
 
         if (FacesContext.getCurrentInstance() == null) {
             return;//no npe allowed
@@ -315,9 +327,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                     Class managedBeanClass = entry.getValue().getManagedBeanClass();
                     if (WeavingContext.isDynamic(managedBeanClass)) {
                         //managed bean class found we drop the class from our session
-                        synchronized (BEAN_LOCK) {
-                            removeBeanReferences(entry.getValue());
-                        }
+                        removeBeanReferences(entry.getValue());
                     }
                     //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
                     //exceptions

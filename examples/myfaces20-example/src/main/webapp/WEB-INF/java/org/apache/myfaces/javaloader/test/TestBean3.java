@@ -15,8 +15,8 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
-@ManagedBean(name = "javatestbean")
-@SessionScoped
+
+
 public class TestBean3 {
     String sayHello = "hello world";
     String hello2 = "hello from added attribute";
