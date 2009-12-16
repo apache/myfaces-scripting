@@ -38,8 +38,10 @@ class TestBean {
 
 
     public String doit() {
-        print "doit called"
-        return null
+        System.out.println("doit called")
+
+        return "success"
+        
     }
 
 

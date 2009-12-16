@@ -29,6 +29,7 @@ public class StandardGroovyReloadingStrategy extends SimpleReloadingStrategy {
         super(weaver);
     }
 
+    
     /**
      * central algorithm which determines which property values are overwritten and which are not
      */

@@ -27,6 +27,7 @@ import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
@@ -49,14 +50,17 @@ import java.util.Map;
 
 public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
 
-    BaseWeaver _weaver;
+    ScriptingWeaver _weaver;
     Map<String, List<ManagedBean>> _managedBeanIdx = null;
 
     static final String RELOAD_PERFORMED = "beanReloadPerformed";
 
 
-    public ManagedBeanReloadingStrategy(BaseWeaver weaver) {
+    public ManagedBeanReloadingStrategy(ScriptingWeaver weaver) {
         _weaver = weaver;
+    }
+
+    public ManagedBeanReloadingStrategy() {
     }
 
     /**
@@ -69,6 +73,14 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
      */
     public Object reload(Object scriptingInstance, int artefactType) {
         return scriptingInstance;
+    }
+
+    public ScriptingWeaver getWeaver() {
+        return _weaver;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setWeaver(ScriptingWeaver weaver) {
+        _weaver = weaver;
     }
 
 }

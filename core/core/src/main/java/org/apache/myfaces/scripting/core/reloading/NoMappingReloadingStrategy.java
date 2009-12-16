@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.reloading;
 
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.BaseWeaver;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -44,9 +45,11 @@ import org.apache.myfaces.scripting.api.BaseWeaver;
  */
 public class NoMappingReloadingStrategy extends SimpleReloadingStrategy {
 
-    public NoMappingReloadingStrategy(BaseWeaver weaver) {
+    public NoMappingReloadingStrategy(ScriptingWeaver weaver) {
         super(weaver);
     }
+
+
 
     @Override
     protected void mapProperties(Object target, Object src) {

@@ -32,17 +32,20 @@ class TestNavigationHandler extends NavigationHandler {
 
     }
 
+    
     public TestNavigationHandler(NavigationHandler delegate) {
         super();
         _delegate = delegate
+        
     }
 
 
 
     public void handleNavigation(FacesContext facesContext, String s, String s1) {
         // if(delegate != null)
+        System.out.println("handle navigation")
+      
         _delegate.handleNavigation(facesContext, s, s1)
-        print " handle navigation"
     }
 
 }

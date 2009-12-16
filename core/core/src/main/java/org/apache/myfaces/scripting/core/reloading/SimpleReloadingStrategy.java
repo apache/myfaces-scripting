@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.reloading;
 
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.BaseWeaver;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,14 +42,16 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SimpleReloadingStrategy implements ReloadingStrategy {
 
-    BaseWeaver _weaver;
+    protected ScriptingWeaver _weaver;
 
-    public SimpleReloadingStrategy(BaseWeaver weaver) {
+    public SimpleReloadingStrategy(ScriptingWeaver weaver) {
         _weaver = weaver;
     }
 
     public SimpleReloadingStrategy() {
+
     }
+
 
     /**
      * <p>
@@ -64,8 +67,8 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
     public Object reload(Object scriptingInstance, int artefactType) {
 
         //reload the class to get new static content if needed
-        if(scriptingInstance == null || _weaver == null) {
-            getLog().debug("debugpoint found");    
+        if (scriptingInstance == null || _weaver == null) {
+            getLog().debug("debugpoint found");
         }
         Class aclass = _weaver.reloadScriptingClass(scriptingInstance.getClass());
         if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
@@ -117,6 +120,15 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
 
     protected Log getLog() {
         return LogFactory.getLog(this.getClass());
+    }
+
+
+    public ScriptingWeaver getWeaver() {
+        return _weaver;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setWeaver(ScriptingWeaver weaver) {
+        _weaver =  weaver;
     }
 
 }

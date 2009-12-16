@@ -21,6 +21,7 @@ package org.apache.myfaces.scripting.core.reloading;
 import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -33,18 +34,16 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 
 public class GlobalReloadingStrategy implements ReloadingStrategy {
 
-    protected BaseWeaver _weaver = null;
+    protected ScriptingWeaver _weaver = null;
 
     protected ReloadingStrategy _beanStrategy;
     protected ReloadingStrategy _noMappingStrategy;
     protected ReloadingStrategy _allOthers;
 
-    public GlobalReloadingStrategy(BaseWeaver weaver) {
-        _weaver = weaver;
-        _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
-        _noMappingStrategy = new NoMappingReloadingStrategy(weaver);
-        _allOthers = new SimpleReloadingStrategy(weaver);
+    public GlobalReloadingStrategy(ScriptingWeaver weaver) {
+        setWeaver(weaver);
     }
+
 
     public GlobalReloadingStrategy() {
         
@@ -73,10 +72,21 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
                 return _noMappingStrategy.reload(toReload, artefactType);
             case ScriptingConst.ARTEFACT_TYPE_VALIDATOR:
                 return _noMappingStrategy.reload(toReload, artefactType);
-
             //TODO Add other artefact loading strategies on demand here
             default:
                 return _allOthers.reload(toReload, artefactType);
         }
     }
+
+    public void setWeaver(ScriptingWeaver weaver) {
+        _weaver = weaver;
+        _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
+        _noMappingStrategy = new NoMappingReloadingStrategy(weaver);
+        _allOthers = new SimpleReloadingStrategy(weaver);
+    }
+
+    public ScriptingWeaver getWeaver() {
+        return _weaver;
+    }
+
 }

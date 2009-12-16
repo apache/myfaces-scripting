@@ -27,6 +27,7 @@ import org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier
 import org.apache.myfaces.scripting.api.BaseWeaver
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon
 import org.apache.myfaces.scripting.core.util.WeavingContext
+import org.apache.myfaces.groovyloader.core.GroovyGlobalReloadingStrategy
 
 /**
  * Weaver  which does dynamic class reloading
@@ -55,7 +56,11 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //FIXME this is private in super class
         scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
         fileEnding = ".groovy"
-        _reloadingStrategy = new GlobalReloadingStrategy(this)
+
+        //the super pass down between groovy and java is broken for the current
+        //version we work around that with setters
+        _reloadingStrategy = new GroovyGlobalReloadingStrategy()
+        _reloadingStrategy.weaver = this
     }
 
     /**
