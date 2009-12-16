@@ -286,7 +286,10 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
             getLog().info("[EXT-SCRIPTING] Tainting all beans to avoid classcast exceptions");
             if (managedBeanTainted) {
-                for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+
+                Map<String, ManagedBean> workCopy = makeSnapshot(mbeans);
+
+                for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
                     Class managedBeanClass = entry.getValue().getManagedBeanClass();
                     if (WeavingContext.isDynamic(managedBeanClass)) {
                         //managed bean class found we drop the class from our session
@@ -304,6 +307,14 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             }
         }
 
+    }
+
+    private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
+        Map<String, ManagedBean> workCopy = new HashMap<String, ManagedBean>(mbeans.size());
+        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+            workCopy.put(entry.getKey(), entry.getValue());
+        }
+        return workCopy;
     }
 
     private void updateBeanRefreshTime() {
@@ -327,8 +338,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     private void refreshPersonalScopedBeans() {
 
         Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+        //the map is immutable but in between scanning might change it so we make a full copy of the map
 
-        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+        Map<String, ManagedBean> workCopy = makeSnapshot(mbeans);
+
+        for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
 
             Class managedBeanClass = entry.getValue().getManagedBeanClass();
             if (WeavingContext.isDynamic(managedBeanClass)) {
@@ -401,11 +415,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         List<String> retVal = new LinkedList<String>();
 
         for (String scriptPath : scriptPaths) {
-            List<File> tmpList = FileUtils.fetchSourceFiles(new File(scriptPath), "*"+getFileEnding());
+            List<File> tmpList = FileUtils.fetchSourceFiles(new File(scriptPath), "*" + getFileEnding());
             int lenRoot = scriptPath.length();
             //ok O(n2) but we are lazy for now if this imposes a problem we can flatten the inner loop out
             for (File sourceFile : tmpList) {
-                String relativeFile = sourceFile.getAbsolutePath().substring(lenRoot+1);
+                String relativeFile = sourceFile.getAbsolutePath().substring(lenRoot + 1);
                 String className = ClassUtils.relativeFileToClassName(relativeFile);
                 retVal.add(className);
             }
