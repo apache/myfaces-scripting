@@ -40,7 +40,7 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
  *          wherever possible
  */
 
-public class JavaAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
+public class GenericAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
 
     List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
 
@@ -51,20 +51,11 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
     ScriptingWeaver _weaver = null;
 
 
-    public JavaAnnotationScanner() {
+    public GenericAnnotationScanner() {
         initDefaultListeners();
     }
 
-    public JavaAnnotationScanner(String... sourcePaths) {
-
-        for (String source : sourcePaths) {
-            _sourcePaths.addFirst(source);
-        }
-        initDefaultListeners();
-    }
-
-
-    public JavaAnnotationScanner(ScriptingWeaver weaver) {
+    public GenericAnnotationScanner(ScriptingWeaver weaver) {
         _weaver = weaver;
          initDefaultListeners();
     }
@@ -128,23 +119,7 @@ public class JavaAnnotationScanner extends BaseAnnotationScanListener implements
             }*/
         }
 
-
-        /*
-        initSourcePaths();
-        JavaSource[] sources = _builder.getSources();
-        for (JavaSource source : sources) {
-            JavaClass[] classes = source.getClasses();
-            for (JavaClass clazz : classes) {
-                Annotation[] anns = clazz.getAnnotations();
-                if (anns != null && anns.length > 0) {
-                    addOrMoveAnnotations(clazz, anns);
-                } else {
-                    removeAnnotations(clazz);
-                }
-            }
-
-        }*/
-    }
+   }
 
 
     /**

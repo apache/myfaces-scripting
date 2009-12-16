@@ -28,6 +28,10 @@ import org.apache.myfaces.scripting.api.BaseWeaver
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon
 import org.apache.myfaces.scripting.core.util.WeavingContext
 import org.apache.myfaces.groovyloader.core.GroovyGlobalReloadingStrategy
+import org.apache.myfaces.scripting.api.AnnotationScanner
+import org.apache.myfaces.scripting.core.util.Cast
+import org.apache.myfaces.scripting.core.util.ReflectUtil
+import org.apache.myfaces.scripting.core.util.ClassUtils
 
 /**
  * Weaver  which does dynamic class reloading
@@ -48,6 +52,8 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
 
     static ThreadLocal _groovyClassLoaderHolder = new ThreadLocal();
     DynamicClassIdentifier identifier = new DynamicClassIdentifier()
+    AnnotationScanner _scanner = null;
+
 
 
     public GroovyWeaver() {
@@ -61,6 +67,20 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //version we work around that with setters
         _reloadingStrategy = new GroovyGlobalReloadingStrategy()
         _reloadingStrategy.setWeaver(this)
+
+         //init classpath removed we can resolve that over the
+        //url classloader at the time myfaces is initialized
+        try {
+            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
+            Class [] params = new Class[1];
+            params[0] =  ScriptingWeaver.class ;
+            this._scanner = scanner.getConstructor(params).newInstance(this);
+            //this._scanner = (AnnotationScanner) ReflectUtil.instantiate(scanner, params);
+
+        } catch (ClassNotFoundException e) {
+            //we do nothing here
+        }
+
     }
 
     /**
@@ -108,6 +128,9 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
             refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_GROOVY);
         }
 
+        if (_scanner != null && retVal != null) {
+            _scanner.scanClass(retVal);
+        }
 
         return retVal
 
@@ -138,12 +161,19 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     }
 
     public void fullRecompile() {
-        //TODO probably not needed because the groovy classloader takes care of everything itself
-        //the tainting does the rest but we have to check it for the annotations
+        // We do not have to do a full recompile here
+        //the groovy classloader takes care of the issue
+        //instead we just set the recompile recommended to false
 
         WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_GROOVY, Boolean.FALSE);
     }
 
-    
+
+    public void fullAnnotationScan() {
+        if (_scanner == null) {
+            return;
+        }
+        _scanner.scanPaths();
+    }
 
 }

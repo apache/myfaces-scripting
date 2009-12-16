@@ -43,17 +43,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 -->    
-    <managed-bean>
-        <managed-bean-name>blogView</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.groovyloader.blog.Blog</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
 
-    <managed-bean>
-        <managed-bean-name>blogService</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.groovyloader.blog.BlogService</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
 
     <managed-bean>
         <managed-bean-name>javaBlogView</managed-bean-name>

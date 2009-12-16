@@ -21,8 +21,14 @@ package org.apache.myfaces.groovyloader.blog
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.myfaces.groovyloader.blog.JSFUtil;
-import org.apache.myfaces.groovyloader.blog.BlogService;
+import org.apache.myfaces.groovyloader.blog.BlogService
+import javax.faces.bean.ManagedBean
+import javax.faces.bean.SessionScoped
+import javax.faces.bean.RequestScoped;
 
+
+@ManagedBean(name = "blogView")
+@RequestScoped
 
 public class Blog {
     //bug application and session scoped beans  are not refreshed structurally yet
@@ -51,7 +57,7 @@ public class Blog {
 
         }
 
-        def entry = new BlogEntry()
+        BlogEntry entry = new BlogEntry()
         //we now map it in the verbose way, the lean way would be to do direct introspection attribute mapping
 
         entry.firstName = firstName
@@ -60,6 +66,7 @@ public class Blog {
         entry.content = content
 
 
+        
         service.addEntry(entry)
 
         //we stay on the same page

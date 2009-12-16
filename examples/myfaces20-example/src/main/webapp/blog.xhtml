@@ -30,11 +30,11 @@
             </h:panelGrid>
             <h:panelGrid columns = "1">
                 <h:outputText value = "Blog Entries" />
-                <t:dataList value = "#{blogService.blogEntries}" var = "item">
-
+                <ui:repeat value = "#{blogService.blogEntries}" var = "item">
+                    
                     <h:outputText value = "#{item.topic}" />
                     <h:outputText value = "#{item.content}" /><br />
-                </t:dataList>
+                </ui:repeat>
             </h:panelGrid>
 
         </h:form>

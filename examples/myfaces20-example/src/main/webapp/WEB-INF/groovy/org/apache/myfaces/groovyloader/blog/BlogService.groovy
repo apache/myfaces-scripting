@@ -21,18 +21,26 @@ package org.apache.myfaces.groovyloader.blog
 import org.apache.myfaces.groovyloader.blog.BlogEntry;
 import java.util.List
 import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.LogFactory
+import javax.faces.bean.ManagedBean
+import javax.faces.bean.ApplicationScoped;
 
 
-
-
+@ManagedBean(name = "blogService")
+@ApplicationScoped
 public class BlogService {
     List blogEntries = new ArrayList()
 
-    public void addEntry(def entry) {
+    public java.util.List getBlogEntries() {
+        return blogEntries
+    }
+
+    public void addEntry(BlogEntry entry) {
         Log log = LogFactory.getLog(BlogService.class)
-        log.info("Adding entry reloaded 3")
-        blogEntries << entry
+        log.info("Adding entry, topic: " + entry.topic)
+        blogEntries.add (entry)
+
+        log.info("blogentries size"+blogEntries.size())
     }
 
 }

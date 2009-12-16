@@ -59,7 +59,12 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         String annotationName = ann.getClass().getName();
 
         RuntimeConfig config = getRuntimeConfig();
-        String beanName = (String) ReflectUtil.executeMethod(ann.annotationType(), "getName");
+
+        javax.faces.bean.ManagedBean annCasted = (javax.faces.bean.ManagedBean) ann;
+
+        String beanName = annCasted.name();
+
+        
         beanName = beanName.replaceAll("\"", "");
         if (!hasToReregister(beanName, clazz)) {
             return;

@@ -76,7 +76,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         //init classpath removed we can resolve that over the
         //url classloader at the time myfaces is initialized
         try {
-            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.JavaAnnotationScanner");
+            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
             this._scanner = (AnnotationScanner) ReflectUtil.instantiate(scanner, new Cast(ScriptingWeaver.class, this));
 
         } catch (ClassNotFoundException e) {

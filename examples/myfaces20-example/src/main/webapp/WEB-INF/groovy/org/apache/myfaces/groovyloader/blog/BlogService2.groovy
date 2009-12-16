@@ -16,21 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.blog;
+package org.apache.myfaces.groovyloader.blog
 
-/**
- * The entry class 
- */
-public class BlogEntry {
+import org.apache.myfaces.groovyloader.blog.BlogEntry;
+import java.util.List
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
+import javax.faces.bean.ManagedBean
+import javax.faces.bean.ApplicationScoped;
 
-    String firstName = ""
-    String lastName = ""
-    String topic = ""
-    String content = ""
 
-    public String getTopic() {
-        return topic;
+
+
+public class BlogService2 {
+    List blogEntries = new ArrayList()
+
+    public java.util.List getBlogEntries() {
+        return blogEntries
+    }
+
+    public void addEntry(def entry) {
+        Log log = LogFactory.getLog(BlogService.class)
+        log.info("Adding entry, topic xxx: " + entry.topic)
+        blogEntries.add (entry)
+
+        log.info("blogentries size"+blogEntries.size())
     }
 
 
+    
 }
