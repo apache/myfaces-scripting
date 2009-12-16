@@ -21,17 +21,12 @@ package org.apache.myfaces.scripting.core.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AnnotationNode;
-import org.objectweb.asm.tree.ClassNode;
 
-import java.io.*;
-import java.util.LinkedList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 /**
@@ -68,7 +63,7 @@ public class ClassUtils {
      * @param className the className from the class which has to be rewritten
      * @throws ClassNotFoundException
      */
-    public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
+ /*   public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
         FileInputStream fIstr = null;
         FileOutputStream foStream = null;
         try {
@@ -117,7 +112,7 @@ public class ClassUtils {
             closeStreams(fIstr, foStream);
         }
 
-    }
+    }    */
 
     private static void logError(IOException e) {
         Log log = LogFactory.getLog(ClassUtils.class);

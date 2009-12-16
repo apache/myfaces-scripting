@@ -37,6 +37,7 @@ public class Blog {
     String title1       =   "You can alter the code for this small blogging application on the fly, " +
                             "you even can add new classes on the fly and Java will pick it up";
 
+    
     String title3 = "bla";
     String title4 = "bla2";
 

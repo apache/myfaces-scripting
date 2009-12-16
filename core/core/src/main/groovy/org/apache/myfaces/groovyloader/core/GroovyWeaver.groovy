@@ -60,7 +60,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         //the super pass down between groovy and java is broken for the current
         //version we work around that with setters
         _reloadingStrategy = new GroovyGlobalReloadingStrategy()
-        _reloadingStrategy.weaver = this
+        _reloadingStrategy.setWeaver(this)
     }
 
     /**

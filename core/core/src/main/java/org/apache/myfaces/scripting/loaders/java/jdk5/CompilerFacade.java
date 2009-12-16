@@ -94,7 +94,8 @@ public class CompilerFacade implements DynamicCompiler {
                         classLoader.setSourceRoot(sourceRoot);
                         Thread.currentThread().setContextClassLoader(classLoader);
 
-                        ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
+                        //Not needed anymore due to change in the dynamic class detection system
+                        //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
 
                         return classLoader.loadClass(className);
                     } finally {
@@ -117,7 +118,7 @@ public class CompilerFacade implements DynamicCompiler {
      * @param sourceRoot
      * @param classPath
      * @return the root target path for the classes which are compiled
-     * so that they later can be picked up by the classloader
+     *         so that they later can be picked up by the classloader
      * @throws ClassNotFoundException
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {

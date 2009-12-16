@@ -32,6 +32,7 @@ import java.io.FileInputStream;
  *
  * Classloader which loads the compilates for the scripting engine
  */
+@JavaThrowAwayClassloader
 public class RecompiledClassLoader extends ClassLoader {
     static File tempDir = null;
     static double _tempMarker = Math.random();

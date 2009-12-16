@@ -16,25 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.core;
+package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  *
- * A helper to bypass an app server startup which otherwise would be enforced
+ * A marker interface which marks throw away classloaders
+ * which only load java classes (we replace the current
+ * class altering code with the one for
  */
 
-public class TWeavingContext extends WeavingContext {
-     public static void setWeaverForTesting(Object weaver) {
-        _weaverHolder.set(weaver);
-        if (FileChangedDaemon.getInstance().getWeavers() == null) {
-            FileChangedDaemon.getInstance().setWeavers((ScriptingWeaver) weaver);
-        }
-    }
-
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface JavaThrowAwayClassloader {
 }
