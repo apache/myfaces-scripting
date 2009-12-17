@@ -24,8 +24,12 @@ public class TestBean3 {
     String hello3 = "hello from  added attribute 2";
 
 
+    private String myNewString() {
+        return "hello world";
+    }
+
     public String getSayHello() {
-        return "Java dynamic bean Testbean3 - " + TestClass2.hello2 + hello3;
+        return myNewString();
     }
 
     public String getSayHello2() {

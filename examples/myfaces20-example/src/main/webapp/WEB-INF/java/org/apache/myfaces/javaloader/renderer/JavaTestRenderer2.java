@@ -33,9 +33,8 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  */
 
- @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
- 
-public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
+
+ public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "Hello world from Renderer 2  ";
 

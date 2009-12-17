@@ -52,6 +52,7 @@ public class TestRenderer extends HtmlTextRendererBase {
 
             Test for attribute: $uiComponent.testattr
         """
+        
         super.encodeBegin(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
