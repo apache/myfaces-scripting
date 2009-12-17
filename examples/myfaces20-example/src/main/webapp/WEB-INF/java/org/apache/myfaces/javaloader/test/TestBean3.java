@@ -23,6 +23,7 @@ public class TestBean3 {
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 
+
     public String getSayHello() {
         return "Java dynamic bean Testbean3 - " + TestClass2.hello2 + hello3;
     }
