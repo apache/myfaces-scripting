@@ -67,9 +67,6 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
     public Object reload(Object scriptingInstance, int artefactType) {
 
         //reload the class to get new static content if needed
-        if (scriptingInstance == null || _weaver == null) {
-            getLog().debug("debugpoint found");
-        }
         Class aclass = _weaver.reloadScriptingClass(scriptingInstance.getClass());
         if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
             //class of this object has not changed although

@@ -55,9 +55,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public Object reloadScriptingInstance(Object o, int artefactType) {
-        if (o.getClass().getName().contains("TestBean2")) {
-            System.out.println("Debugpoint found");
-        }
+
 
         for (ScriptingWeaver weaver : _weavers) {
             if (weaver.isDynamic(o.getClass())) {
@@ -69,9 +67,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public Class reloadScriptingClass(Class aclass) {
-        if (aclass.getName().contains("TestBean2")) {
-            System.out.println("Debugpoint found");
-        }
 
         for (ScriptingWeaver weaver : _weavers) {
             if (weaver.isDynamic(aclass)) {

@@ -18,26 +18,18 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import java.beans.FeatureDescriptor;
-import java.util.*;
-
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.PropertyNotFoundException;
-import javax.el.PropertyNotWritableException;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
-import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
-import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
-import org.apache.myfaces.scripting.core.scanEvents.events.BeanRemovedEvent;
-import org.apache.myfaces.config.RuntimeConfig;
+
+import javax.el.*;
+import javax.faces.context.FacesContext;
+import java.beans.FeatureDescriptor;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * EL Resolver which is scripting enabled
@@ -141,78 +133,5 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    //TODO replace the stack with a direct check for the bean name,
-    //this should be sufficient and should make the code much easier to deal with
-    /**
-     * We stack our event listeners, because only the one currently
-     * active should receive the bean events
-     * This is because the IOC Resolving can happen during reload
-     * and only the current level within the object
-     * resolution should trigger the recompile and reload!
-     */
-    class StackingBeanEventListener implements SystemEventListener {
-        private LinkedList<BeanEventListener> _stack = new LinkedList<BeanEventListener>();
-
-
-        public void pushListener(BeanEventListener listener) {
-            _stack.addFirst(listener);
-        }
-
-        public BeanEventListener popListener() {
-            return _stack.removeFirst();
-        }
-
-        public Set<Integer> supportsEvents() {
-            if (_stack.isEmpty()) {
-                return Collections.EMPTY_SET;
-            }
-            return _stack.getFirst().supportsEvents();  //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        public void handleEvent(SystemEvent evt) {
-            if (_stack.isEmpty()) {
-                return;
-            }
-            _stack.getFirst().handleEvent(evt);
-        }
-    }
-
-
-    class BeanEventListener implements SystemEventListener {
-
-        private LinkedList<SystemEvent> _beanEventIssued = new LinkedList<SystemEvent>();
-        //Map reinstantiated = new HashMap();
-
-
-        BeanEventListener() {
-        }
-
-        public Set<Integer> supportsEvents() {
-            Set<Integer> supports = new HashSet<Integer>();
-            supports.add(ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
-
-            return supports;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        /**
-         * bean loaded and unloaded can trigger an applicationState
-         *
-         * @param evt
-         */
-        public void handleEvent(SystemEvent evt) {
-            if (evt instanceof BeanLoadedEvent || evt instanceof BeanRemovedEvent) {
-                _beanEventIssued.addFirst(evt);
-            }
-        }
-
-
-        public LinkedList<SystemEvent> getBeanEventIssued() {
-            return _beanEventIssued;
-        }
-
-        public void setBeanEventIssued(LinkedList<SystemEvent> beanEventIssued) {
-            _beanEventIssued = beanEventIssued;
-        }
-    }
+   
 }

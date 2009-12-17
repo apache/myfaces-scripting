@@ -22,12 +22,7 @@ import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.core.scanEvents.events.BeanLoadedEvent;
-import org.apache.myfaces.scripting.core.scanEvents.events.BeanRemovedEvent;
-import org.apache.myfaces.scripting.core.scanEvents.events.ManagedPropertyLoadedEvent;
-import org.apache.myfaces.scripting.core.scanEvents.events.ManagedPropertyRemovedEvent;
 
 import javax.faces.bean.*;
 import java.lang.reflect.Field;
@@ -79,7 +74,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         _alreadyRegistered.put(beanName, mbean);
         config.addManagedBean(beanName, mbean);
 
-        WeavingContext.getEventProcessor().dispatchEvent(new BeanLoadedEvent(clazz.getName(), beanName));
     }
 
     private void resolveScope(Class clazz, ManagedBean mbean) {
@@ -124,7 +118,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
                 mpc.setValue(property.value());
                 mbean.addProperty(mpc);
-                WeavingContext.getEventProcessor().dispatchEvent(new ManagedPropertyLoadedEvent(field.getType().getName(), name));
 
                 continue;
             }
@@ -194,14 +187,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             }
         }
         if (mbeanFound != null) {
-            if (mbeanFound instanceof ManagedBean) {
-                ManagedBean mbeanToDispatch = (ManagedBean) mbeanFound;
-                for (org.apache.myfaces.config.impl.digester.elements.ManagedProperty prop : mbeanToDispatch.getManagedProperties()) {
-                    WeavingContext.getEventProcessor().dispatchEvent(new ManagedPropertyRemovedEvent(prop.getPropertyClass(), prop.getPropertyName()));
-                }
-                WeavingContext.getEventProcessor().dispatchEvent(new BeanRemovedEvent(className, mbeanToDispatch.getManagedBeanName()));
-
-            }
             for (String toRemove : mbeanKey) {
                 _alreadyRegistered.remove(toRemove);
             }

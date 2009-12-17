@@ -12,8 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-@ManagedBean(name = "javatestbean")
-@SessionScoped
+
 public class TestBean2 {
 
 

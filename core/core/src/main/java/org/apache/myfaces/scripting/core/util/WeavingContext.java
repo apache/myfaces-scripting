@@ -24,7 +24,6 @@ import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.DummyWeaver;
 import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
-import org.apache.myfaces.scripting.core.scanEvents.SystemEventProcessor;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 
@@ -32,7 +31,6 @@ import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A set of weaving context class called
@@ -103,17 +101,7 @@ public class WeavingContext {
     }
 
 
-    /**
-     * @return returns the thread bound system event processor
-     */
-    public static SystemEventProcessor getEventProcessor() {
-        SystemEventProcessor retVal = (SystemEventProcessor) _eventProcessorHolder.get();
-        if (retVal == null) {
-            retVal = new SystemEventProcessor();
-            _eventProcessorHolder.set(retVal);
-        }
-        return retVal;
-    }
+    
 
 
     /**

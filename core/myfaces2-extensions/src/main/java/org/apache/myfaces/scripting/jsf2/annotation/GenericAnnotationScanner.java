@@ -22,13 +22,9 @@ import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.AnnotationScanner;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-
-import java.io.File;
-import java.util.*;
-
-import org.apache.myfaces.scripting.core.scanEvents.events.AnnotatedArtefactRemovedEvent;
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
+
+import java.util.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

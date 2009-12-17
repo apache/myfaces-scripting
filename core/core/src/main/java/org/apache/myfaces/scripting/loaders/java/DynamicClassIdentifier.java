@@ -66,9 +66,7 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
     private final boolean checkForAnnotation(Class clazz) {
         //Annotation identifier = clazz.getAnnotation(ScriptingClass.class);
         if(clazz.getClassLoader() == null) return false;
-        if(clazz.getName().contains("Test")) {
-            System.out.println("debugpoint found");
-        }
+        
         Annotation identifier = clazz.getClassLoader().getClass().getAnnotation(JavaThrowAwayClassloader.class);
         boolean annotated = identifier != null;
         

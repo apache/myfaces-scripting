@@ -5,10 +5,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
@@ -158,9 +158,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @return a valid class if the sources could be found null if nothing could be found
      */
     public Class loadScriptingClassFromName(String className) {
-        if (className.contains("TestBean2")) {
-            getLog().debug("debugpoint found");
-        }
 
         Map<String, ReloadingMetadata> classMap = getClassMap();
         ReloadingMetadata metadata = classMap.get(className);

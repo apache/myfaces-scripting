@@ -18,33 +18,24 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
-
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.PropertyNotFoundException;
-import javax.el.PropertyNotWritableException;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.core.scanEvents.SystemEventListener;
-import org.apache.myfaces.scripting.core.scanEvents.SystemEvent;
+
+import javax.el.*;
+import java.beans.FeatureDescriptor;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * EL Resolver which is scripting enabled
  *
  * @author Werner Punz
  */
-public class ELResolverProxy extends ELResolver implements Decorated, SystemEventListener {
+public class ELResolverProxy extends ELResolver implements Decorated {
     Log log = LogFactory.getLog(ELResolverProxy.class);
 
 
@@ -122,7 +113,5 @@ public class ELResolverProxy extends ELResolver implements Decorated, SystemEven
         return supports;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void handleEvent(SystemEvent evt) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+    
 }

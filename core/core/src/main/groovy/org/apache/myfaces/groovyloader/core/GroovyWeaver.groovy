@@ -68,12 +68,12 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
         _reloadingStrategy = new GroovyGlobalReloadingStrategy()
         _reloadingStrategy.setWeaver(this)
 
-         //init classpath removed we can resolve that over the
+        //init classpath removed we can resolve that over the
         //url classloader at the time myfaces is initialized
         try {
             Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
-            Class [] params = new Class[1];
-            params[0] =  ScriptingWeaver.class ;
+            Class[] params = new Class[1];
+            params[0] = ScriptingWeaver.class;
             this._scanner = scanner.getConstructor(params).newInstance(this);
             //this._scanner = (AnnotationScanner) ReflectUtil.instantiate(scanner, params);
 
@@ -91,10 +91,6 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
 
         File currentClassFile = new File(sourceRoot + File.separator + file)
-
-        if (file.contains("TestNavigationHandler")) {
-            log.debug("debugpoint found");
-        }
 
         if (!currentClassFile.exists()) {
             return null;
