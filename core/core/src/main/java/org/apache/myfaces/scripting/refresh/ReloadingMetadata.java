@@ -28,14 +28,14 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
  */
 public class ReloadingMetadata {
 
-    boolean tainted = false;
-    boolean annotated = false;
-    boolean taintedOnce = false;
-    String fileName = "";
-    String sourcePath = "";
-    Class aClass = null;
-    long timestamp = 0l;
-    int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+    volatile boolean tainted = false;
+    volatile boolean annotated = false;
+    volatile boolean taintedOnce = false;
+    volatile String fileName = "";
+    volatile String sourcePath = "";
+    volatile Class aClass = null;
+    volatile long timestamp = 0l;
+    volatile int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
 
 
     public boolean isTainted() {
