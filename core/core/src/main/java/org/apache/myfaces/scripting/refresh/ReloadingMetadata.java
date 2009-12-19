@@ -28,6 +28,10 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
  */
 public class ReloadingMetadata {
 
+    /*
+     * volatile due to the ram concurrency behavior
+     * of the instance vars jdk 5+
+     */
     volatile boolean tainted = false;
     volatile boolean annotated = false;
     volatile boolean taintedOnce = false;
