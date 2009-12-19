@@ -49,17 +49,24 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
 
-    public void addRenderer(String s, String s1, Renderer renderer) {
+    public void addRenderer(String componentFamily, String rendererType, Renderer renderer) {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_RENDERER);
-        _delegate.addRenderer(s, s1, renderer);
+        _delegate.addRenderer(componentFamily, rendererType, renderer);
+
+        /**
+         * we save the component family and the renderer class name
+         * so that if a component of
+         */
+
+        WeavingContext.getRefreshContext().getRendererComponentDependencies().put(renderer.getClass().getName(), componentFamily);
     }
 
-    public Renderer getRenderer(String s, String s1) {
+    public Renderer getRenderer(String componentFamily, String rendererType) {
         weaveDelegate();
-        return  (Renderer) reloadInstance(_delegate.getRenderer(s, s1), ScriptingConst.ARTEFACT_TYPE_RENDERER);
+        return  (Renderer) reloadInstance(_delegate.getRenderer(componentFamily, rendererType), ScriptingConst.ARTEFACT_TYPE_RENDERER);
     }
 
     public ResponseStateManager getResponseStateManager() {

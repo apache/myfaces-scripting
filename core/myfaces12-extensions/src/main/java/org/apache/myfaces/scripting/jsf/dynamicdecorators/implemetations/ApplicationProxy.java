@@ -37,17 +37,34 @@ import javax.faces.validator.Validator;
 import javax.servlet.ServletRequest;
 import java.lang.reflect.Proxy;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * our decorating applicstion
  * which should resolve our bean issues within a central
  * bean processing interceptor
  *
+ *
+ * component
+ *
+ *   komponente A Šndert sich
+ *   Renderer Šndert sich nicht
+ *
+ *   class Renderer {
+ *          public method (UIComponent myComp) {
+ *                  ((MyComponent)myComp)
+ }
+ }
+ *
+ *
+ *
  * @author Werner Punz
  */
 public class ApplicationProxy extends Application implements Decorated {
 
-    Application _delegate = null;
+    volatile Application _delegate;
+
+
 
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
@@ -86,6 +103,7 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
     //TOD add a weaving for resource bundles
+
     public ResourceBundle getResourceBundle(FacesContext facesContext, String s) throws FacesException, NullPointerException {
         weaveDelegate();
         return _delegate.getResourceBundle(facesContext, s);
@@ -270,9 +288,11 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.setStateManager(stateManager);
     }
 
-    public void addComponent(String s, String s1) {
+    public void addComponent(String componentType, String componentClass) {
         weaveDelegate();
-        _delegate.addComponent(s, s1);
+        _delegate.addComponent(componentType, componentClass);
+        //TODO handle this properly
+       // WeavingContext.getRefreshContext().getComponentRendererDependencies(componentClass, "");
     }
 
     public UIComponent createComponent(String s) throws FacesException {

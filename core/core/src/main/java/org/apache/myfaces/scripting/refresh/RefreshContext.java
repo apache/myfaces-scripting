@@ -20,6 +20,9 @@ package org.apache.myfaces.scripting.refresh;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -42,16 +45,40 @@ public class RefreshContext {
      * application scoped beans are refreshed at the first refresh cycle
      * by the calling request issuing the compile
      */
-    private long personalScopedBeanRefresh = -1l;
+    private volatile long personalScopedBeanRefresh = -1l;
 
     /**
      * the daemon thread which marks the scripting classes
      * depending on the state, changed => tainted == true, not changed
      * tainted == false!
      */
-    FileChangedDaemon daemon = FileChangedDaemon.getInstance();
-    public static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
-    public static Boolean RELOAD_SYNC_MONITOR = new Boolean(true);
+    volatile FileChangedDaemon daemon = FileChangedDaemon.getInstance();
+
+    /*
+     * we have to keep the component data as shadow data reachable
+     * from various parts of the system to resolve
+     * the component <-> renderer dependencies
+     * we do not resolve the dependencies between the tag handlers
+     * and the components for now
+     *
+     * resolving those dependencies means
+     * renderer changes <-> taint all component classes which use
+     * the renderer
+     *
+     * component changes <-> taint all renderer classes as well
+     *
+     * This is needed to avoid intra component <-> renderer
+     * classcast exceptions
+     *
+     * the content of this map is the component class
+     * and the value is the renderer class
+     */
+    private volatile Map<String, String> _componentRendererDependencies = new ConcurrentHashMap<String, String>();
+    private volatile Map<String, String> _rendererComponentDependencies = new ConcurrentHashMap<String, String>();
+
+
+    public volatile static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
+    public volatile static Boolean RELOAD_SYNC_MONITOR = new Boolean(true);
 
     public long getPersonalScopedBeanRefresh() {
         return personalScopedBeanRefresh;
@@ -111,6 +138,15 @@ public class RefreshContext {
         //TODO implement synchronized locking logic to avoid
         //race conditions in multiuser environments
         return true;
+    }
+
+    public Map<String, String> getComponentRendererDependencies() {
+        return _componentRendererDependencies;
+    }
+
+
+    public Map<String, String> getRendererComponentDependencies() {
+        return _rendererComponentDependencies;
     }
 
 }

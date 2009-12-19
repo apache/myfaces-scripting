@@ -51,6 +51,13 @@
             <version>1.8.0</version>
         </dependency>
 
+        <!-- asm dependency readded for class scanning -->
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.2</version>
+            
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
