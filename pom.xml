@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns = "http://maven.apache.org/POM/4.0.0" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extension-scripting</groupId>
     <artifactId>root</artifactId>
@@ -28,7 +28,7 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <snapshots />
+            <snapshots/>
             <id>apache-maven-snapshots</id>
             <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </repository>
@@ -69,35 +69,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.2.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-el</groupId>
-            <artifactId>commons-el</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.3</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- provided dependencies -->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -105,13 +76,12 @@
             <version>2.3</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.myfaces.tomahawk</groupId>
-            <artifactId>tomahawk</artifactId>
-            <version>1.1.6</version>
-            <scope>provided</scope>
-        </dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>
         <!-- test dependencies -->
 
         <dependency>
@@ -121,42 +91,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.struts.shale</groupId>
-            <artifactId>shale-test</artifactId>
-            <version>1.0.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.myfaces.tomahawk</groupId>
-            <artifactId>tomahawk</artifactId>
-            <version>1.1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.5.6</version>
-        </dependency>
-        <dependency>
-            <groupId>velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.5</version>
-        </dependency>
-
-
-
-        <!--
-         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-jci-jsr199</artifactId>
-            <version>1.0</version>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-jci-javac</artifactId>
-            <version>1.0</version>
-        </dependency>
 
     </dependencies>
 

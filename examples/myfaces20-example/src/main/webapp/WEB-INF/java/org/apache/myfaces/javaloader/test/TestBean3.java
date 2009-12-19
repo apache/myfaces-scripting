@@ -24,12 +24,13 @@ public class TestBean3 {
     String hello3 = "hello from  added attribute 2";
 
 
-    private String myNewString() {
-        return "hello world";
+
+    private String myText() {
+        return "hello world from bean3 from the new method";
     }
 
     public String getSayHello() {
-        return myNewString();
+        return myText();
     }
 
     public String getSayHello2() {

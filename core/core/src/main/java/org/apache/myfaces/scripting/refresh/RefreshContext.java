@@ -50,6 +50,8 @@ public class RefreshContext {
      * tainted == false!
      */
     FileChangedDaemon daemon = FileChangedDaemon.getInstance();
+    public static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
+    public static Boolean RELOAD_SYNC_MONITOR = new Boolean(true);
 
     public long getPersonalScopedBeanRefresh() {
         return personalScopedBeanRefresh;

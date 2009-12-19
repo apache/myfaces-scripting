@@ -17,12 +17,12 @@ import java.io.IOException;
 public class TestBean2 {
 
 
-    String sayHello = "hello worldgggg";
+    String sayHello = "hello world test";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
  
     public String getSayHello() {
-        return "Testbean2 Java dynamic  bean - "+TestClass2.hello2 + hello3;
+        return sayHello;
     }
 
     public String getSayHello2() {

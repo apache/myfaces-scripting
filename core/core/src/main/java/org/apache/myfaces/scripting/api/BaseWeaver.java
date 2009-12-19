@@ -10,6 +10,7 @@ import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.faces.context.FacesContext;
 import java.io.File;
@@ -50,8 +51,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     private static final String SCOPE_SESSION = "session";
     private static final String SCOPE_APPLICATION = "application";
     private static final String SCOPE_REQUEST = "request";
-
-    private static Boolean BEAN_LOCK = new Boolean(true);
 
     public BaseWeaver() {
         _reloadingStrategy = new GlobalReloadingStrategy(this);
@@ -140,7 +139,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //if not tained then we can recycle the last class loaded
             return metadata.getAClass();
         }
-        synchronized (BaseWeaver.class) {
+        synchronized (RefreshContext.RELOAD_SYNC_MONITOR) {
             //another chance just in case someone has reloaded between
             //the last if and synchronized, that way we can reduce the number of waiting threads
             if (!metadata.isTainted()) {
@@ -171,7 +170,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                  * the reload has to be performed synchronized
                  * hence there is no chance to do it unsynchronized
                  */
-                synchronized (BaseWeaver.class) {
+                synchronized (RefreshContext.RELOAD_SYNC_MONITOR) {
                     metadata = classMap.get(className);
                     if (metadata != null) {
                         return reloadScriptingClass(metadata.getAClass());
@@ -253,7 +252,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
             // we set a lock over the compile and bean refresh
             //and an inner check again to avoid unneeded compile triggers
-            synchronized (BEAN_LOCK) {
+            synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
                     recompileRefresh();
                     return;
@@ -301,7 +300,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
             Map<String, ManagedBean> workCopy = null;
 
-            synchronized (BEAN_LOCK) {
+            synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 workCopy = makeSnapshot(mbeans);
             }
 
@@ -387,7 +386,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         //But for most cases this mutex should be enough
 
         Map<String, ManagedBean> workCopy = null;
-        synchronized (BEAN_LOCK) {
+        synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
             workCopy = makeSnapshot(mbeans);
         }
 
@@ -402,7 +401,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                         //request, nothing has to be done here
                         return;
                     }
-                    synchronized (BEAN_LOCK) {
+                    synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                         if (scope.equalsIgnoreCase(SCOPE_SESSION)) {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
                         } else {
@@ -426,7 +425,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param bean
      */
     private void removeBeanReferences(ManagedBean bean) {
-        getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
+        if(getLog().isInfoEnabled()) {
+            getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
+        }
 
         String scope = bean.getManagedBeanScope();
 

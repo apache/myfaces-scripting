@@ -36,13 +36,16 @@ import java.io.IOException;
 
  public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
-    private static final String MSG = "Hello world from Renderer 2  ";
+    private static final String MSG = "aaa Hello world from Renderer 2  ";
+
+    private static final String MSG2 =" hello world second var";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ResponseWriter writer = context.getResponseWriter();
         writer.write(MSG);
+        writer.write(MSG2);
         writer.write((String)ReflectUtil.executeMethod(component, "getMarker"));
     }
 
