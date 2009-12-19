@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
+
     <parent>
         <artifactId>examples</artifactId>
         <groupId>org.apache.myfaces.extension-scripting</groupId>
