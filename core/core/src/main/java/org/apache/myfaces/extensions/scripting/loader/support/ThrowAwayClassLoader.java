@@ -23,7 +23,7 @@ package org.apache.myfaces.extensions.scripting.loader.support;
  * Well, to be more precise, no class loader is really able to do that, but you can get this
  * behaviour by just throwing away this class loader. Note that a class loader implementing
  * this interface is supposed to load just a single class definition, i.e. there's a 1:1
- * relationship between the classloader and the class. In doing so, we're somehow able to
+ * relationship between the class loader and the class. In doing so, we're somehow able to
  * throw away class definitions and replace them with newer versions.</p>
  */
 public interface ThrowAwayClassLoader {

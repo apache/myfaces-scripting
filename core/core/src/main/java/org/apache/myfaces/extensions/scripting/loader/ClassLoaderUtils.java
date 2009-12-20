@@ -28,8 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Utility class for classloading purposes, e.g. to determine the classpath of a
- * class loader hierachy.</p>
+ * <p>Utility class for class loading purposes, e.g. to determine the classpath of a
+ * class loader hierarchy.</p>
+ * 
  */
 public class ClassLoaderUtils {
 
@@ -99,7 +100,7 @@ public class ClassLoaderUtils {
     }
 
     /**
-     * <p>Resolves the classpath by walking up the hierachy of class loaders. Assuming
+     * <p>Resolves the classpath by walking up the hierarchy of class loaders. Assuming
      * that we're only dealing with URLClassLoaders it's possible to determine the
      * classpath.</p>
      *
