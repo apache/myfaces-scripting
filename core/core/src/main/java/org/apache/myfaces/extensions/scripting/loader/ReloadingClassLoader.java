@@ -52,10 +52,10 @@ public class ReloadingClassLoader extends URLClassLoader {
      * The system-dependent default name-separator character. Note that it's safe to
      * use this version of the file separator in regex methods, like replaceAll().
      */
-    private static String FILE_SEPERATOR = File.separator;
+    private static String FILE_SEPARATOR = File.separator;
     static {
-        if ("\\".equals(FILE_SEPERATOR)) {
-            FILE_SEPERATOR = "\\\\";
+        if ("\\".equals(FILE_SEPARATOR)) {
+            FILE_SEPARATOR = "\\\\";
         }
     }
 
@@ -297,7 +297,7 @@ public class ReloadingClassLoader extends URLClassLoader {
         // This method just has to look in the specified compilation directory. The
         // relative class file path can be computed from the class name.
         return new File(compilationDirectory,
-                className.replaceAll("\\.", FILE_SEPERATOR).concat(".class"));
+                className.replaceAll("\\.", FILE_SEPARATOR).concat(".class"));
     }
 
 }

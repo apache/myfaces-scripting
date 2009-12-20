@@ -78,11 +78,11 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
     public Class loadClass(String className, boolean resolve) throws ClassNotFoundException {
         Class c;
 
-        // Note that this classloader is only supposed to load a specific Class reference,
-        // hence the check agains the class name. Otherwise this class loader would try to
+        // Note that this class loader is only supposed to load a specific Class reference,
+        // hence the check against the class name. Otherwise this class loader would try to
         // resolve class files for dependent classes as well, which means that there would
         // be different versions of the same Class reference in the system.
-        if (this.className.equals(className)) {
+        if (isEligibleForLoading(className)) {
             // First, check if the class has already been loaded
             c = findLoadedClass(className);
             if (c == null) {
@@ -112,18 +112,30 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
 
     /**
      * <p>Returns <code>true</code> if the given "last modified"-timestamp is
-     * more recent than the timestamp of this class loader, i.e. if this class loader
+     * more recent than the time stamp of this class loader, i.e. if this class loader
      * is to be destroyed as there is a newer class file available.
      *
      * @param lastModified the "last modified"-timestamp of the class file you want to load
      * @return <code>true</code> if the given "last modified"-timestamp is
-     *         more recent than the timestamp of this ClassLoader
+     *         more recent than the time stamp of this ClassLoader
      */
     public boolean isOutdated(long lastModified) {
         return timestamp < lastModified;
     }
 
     // ------------------------------------------ Utility methods
+
+    /**
+     * <p>Determines whether this class loader is supposed to load the given class.</p>
+     * 
+     * @param className the name of the class
+     * 
+     * @return <code>true</code>, if this class loader is supposed to load the
+     *          given class, <code>false</code> otherwise
+     */
+    protected boolean isEligibleForLoading(String className) {
+        return getClassName().equals(className);
+    }
 
     /**
      * <p>Finds and loads the class with the specified name from the compilation path.</p>
@@ -133,7 +145,7 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
      * @throws ClassNotFoundException if the class could not be found
      */
     protected Class findClass(final String className) throws ClassNotFoundException {
-        if (getClassName().equals(className)) {
+        if (isEligibleForLoading(className)) {
             try {
                 return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
                     public Class<?> run() throws Exception {

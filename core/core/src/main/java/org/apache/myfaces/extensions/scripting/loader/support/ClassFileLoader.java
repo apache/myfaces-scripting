@@ -42,7 +42,7 @@ public class ClassFileLoader extends AbstractThrowAwayClassLoader {
     private static final Log logger = LogFactory.getLog(ClassFileLoader.class);
 
     /**
-     * The .class file that contains the bytecode for the class that this class loader is going to load.
+     * The .class file that contains the byte code for the class that this class loader is going to load.
      */
     private final File classFile;
 
@@ -78,7 +78,7 @@ public class ClassFileLoader extends AbstractThrowAwayClassLoader {
      */
     public URL[] getURLs() {
         try {
-            return new URL[]{classFile.toURI().toURL()};
+            return new URL[]{ classFile.toURI().toURL() };
         }
         catch (IOException ex) {
             logger.error("Couldn't resolve the URL to the class file '"
