@@ -85,7 +85,7 @@ public class JavacCompiler implements Compiler {
             classLoader = createJavacAwareClassLoader(toolsJar);
         }
         catch (MalformedURLException ex) {
-            throw new IllegalStateException("An error occured while trying to load the Javac compiler class.", ex);
+            throw new IllegalStateException("An error occurred while trying to load the Javac compiler class.", ex);
         }
 
         try {
@@ -105,7 +105,7 @@ public class JavacCompiler implements Compiler {
      *
      * @param sourcePath the path to the source directory
      * @param targetPath the path to the target directory
-     * @param file       the file of the class you want to compile
+     * @param file       the relative file name of the class you want to compile
      * @return the compilation result, i.e. as of now only the compiler output
      */
     public CompilationResult compile(File sourcePath, File targetPath, String file, ClassLoader classLoader)
@@ -118,7 +118,7 @@ public class JavacCompiler implements Compiler {
      *
      * @param sourcePath the path to the source directory
      * @param targetPath the path to the target directory
-     * @param file       the relative file name of the class you want to compile
+     * @param file       the file of the class you want to compile
      * @return the compilation result, i.e. as of now only the compiler output
      */
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
@@ -140,7 +140,7 @@ public class JavacCompiler implements Compiler {
             // Invoke the Javac compiler
             Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
             Integer returnCode = (Integer) compile.invoke(null,
-                    new Object[]{buildCompilerArguments(sourcePath, targetPath, file, classLoader),
+                    new Object[]{ buildCompilerArguments(sourcePath, targetPath, file, classLoader),
                             new PrintWriter(compilerOutput)});
 
             CompilationResult result = new CompilationResult(compilerOutput.toString());
@@ -192,7 +192,7 @@ public class JavacCompiler implements Compiler {
         arguments.add("-d");
         arguments.add(targetPath.getAbsolutePath());
 
-        // Specify the classpath of the given classloader. This enables the user to write new Java
+        // Specify the classpath of the given class loader. This enables the user to write new Java
         // "scripts" that depend on classes that have already been loaded previously. Otherwise he
         // wouldn't be able to use for example classes that are available in a library.
         arguments.add("-classpath");
@@ -251,7 +251,7 @@ public class JavacCompiler implements Compiler {
                     if (logger.isDebugEnabled()) {
                         logger.debug(
                                 "The required JAR file '$JAVA_HOME$/lib/tools.jar' has been found ['" + toolsJarFile.getAbsolutePath()
-                                        + "']. A custom URL classloader will be created for the Javac compiler.");
+                                        + "']. A custom URL class loader will be created for the Javac compiler.");
                     }
 
                     return new URLClassLoader(
@@ -264,7 +264,7 @@ public class JavacCompiler implements Compiler {
             } else {
                 if (logger.isDebugEnabled()) {
                     logger.debug("The user has specified the required JAR file '$JAVA_HOME$/lib/tools.jar' ['"
-                            + toolsJar.toExternalForm() + "']. A custom URL classloader will be created for the Javac compiler.");
+                            + toolsJar.toExternalForm() + "']. A custom URL class loader will be created for the Javac compiler.");
                 }
 
                 return new URLClassLoader(new URL[]{toolsJar}, ClassLoaderUtils.getDefaultClassLoader());
