@@ -135,7 +135,7 @@ public class Jsr199Compiler implements Compiler {
     protected List<String> buildCompilerOptions(File sourcePath, File targetPath, ClassLoader classLoader) {
         List<String> arguments = new ArrayList<String>();
 
-        // Note that we're knowingly not specifying the sourcepath as the compiler really should compile
+        // Note that we're knowingly not specifying the source path as the compiler really should compile
         // only a single file (see 'file'). The dependent classes are available on the classpath anyway.
         // Otherwise the compiler would also compile dependent classes, which we want to avoid! This
         // would result in different versions of a Class file being in use (the system doesn't know that
@@ -148,7 +148,7 @@ public class Jsr199Compiler implements Compiler {
         arguments.add("-d");
         arguments.add(targetPath.getAbsolutePath());
 
-        // Specify the classpath of the given classloader. This enables the user to write new Java
+        // Specify the classpath of the given class loader. This enables the user to write new Java
         // "scripts" that depend on classes that have already been loaded previously. Otherwise he
         // wouldn't be able to use for example classes that are available in a library.
         arguments.add("-classpath");

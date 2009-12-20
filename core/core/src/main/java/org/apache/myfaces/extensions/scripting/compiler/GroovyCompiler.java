@@ -1,18 +1,48 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.myfaces.extensions.scripting.compiler;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.extensions.scripting.loader.ClassLoaderUtils;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.ErrorCollector;
+import org.codehaus.groovy.control.messages.Message;
+import org.codehaus.groovy.control.messages.SimpleMessage;
+import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * 
+ * <p>A compiler implementation that can be used to compile Groovy source files.</p>
  *
  */
 public class GroovyCompiler implements Compiler {
+
+    /**
+     * The logger instance for this class.
+     */
+    private static final Log logger = LogFactory.getLog(GroovyCompiler.class);
 
     // ------------------------------------------ Compiler methods
 
@@ -21,8 +51,9 @@ public class GroovyCompiler implements Compiler {
      *
      * @param sourcePath the path to the source directory
      * @param targetPath the path to the target directory
-     * @param file       the relative file name of the class you want to compile
-     * @return the compilation result, i.e. as of now only the compiler output
+     * @param file       the file of the class you want to compile
+     * @param classLoader the class loader to use to determine the classpath
+     * @return the compilation result
      */
     public CompilationResult compile(File sourcePath, File targetPath, String file, ClassLoader classLoader)
             throws CompilationException {
@@ -35,7 +66,8 @@ public class GroovyCompiler implements Compiler {
      * @param sourcePath the path to the source directory
      * @param targetPath the path to the target directory
      * @param file       the file of the class you want to compile
-     * @return the compilation result, i.e. as of now only the compiler output
+     * @param classLoader the class loader to use to determine the classpath
+     * @return the compilation result
      */
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
             throws CompilationException {
@@ -45,13 +77,68 @@ public class GroovyCompiler implements Compiler {
                 buildCompilerConfiguration(sourcePath, targetPath, file, classLoader));
         compilationUnit.getConfiguration().setOutput(new PrintWriter(compilerOutput));
         compilationUnit.addSource(file);
-        compilationUnit.compile();
 
-        return new CompilationResult(compilerOutput.toString());
+        CompilationResult result;
+
+        try {
+            compilationUnit.compile();
+
+            result = new CompilationResult(compilerOutput.toString());
+        } catch (CompilationFailedException ex) {
+            // Register all collected error messages from the Groovy compiler
+            result = new CompilationResult(compilerOutput.toString());
+            ErrorCollector collector = compilationUnit.getErrorCollector();
+            for (int i = 0; i < collector.getErrorCount(); ++i) {
+                result.registerError(convertMessage(collector.getError(i)));
+            }
+        }
+
+        // Register all collected warnings from the Groovy compiler
+        ErrorCollector collector = compilationUnit.getErrorCollector();
+        for (int i = 0; i < collector.getWarningCount(); ++i) {
+            result.registerWarning(convertMessage(collector.getWarning(i)));
+        }
+
+        return result;
     }
 
     // ------------------------------------------ Utility methods
 
+    /**
+     * <p>Converts the given Groovy compiler message into a compilation message that
+     * our compilation API consists of.</p>
+     *
+     * @param message the Groovy compiler message you want to convert
+     *
+     * @return the final converted compilation message
+     */
+    protected CompilationResult.CompilationMessage convertMessage(Message message) {
+        if (message instanceof SimpleMessage) {
+            SimpleMessage simpleMessage = (SimpleMessage) message;
+            return new CompilationResult.CompilationMessage(-1, simpleMessage.getMessage());
+        } else if (message instanceof SyntaxErrorMessage) {
+            SyntaxErrorMessage syntaxErrorMessage = (SyntaxErrorMessage) message;
+            return new CompilationResult.CompilationMessage(
+                    syntaxErrorMessage.getCause().getLine(), syntaxErrorMessage.getCause().getMessage());
+        } else {
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "This compiler came across an unknown message kind ['" + message + "']. It will be ignored.");
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * <p>Configures the compiler by building its configuration object.</p>
+     *
+     * @param sourcePath the path to the source directory
+     * @param targetPath the path to the target directory
+     * @param file       the file of the class you want to compile
+     * @param classLoader the class loader to use to determine the classpath
+     * @return the compiler configuration
+     */
     protected CompilerConfiguration buildCompilerConfiguration(File sourcePath, File targetPath, File file, ClassLoader classLoader) {
         CompilerConfiguration configuration = new CompilerConfiguration();
 

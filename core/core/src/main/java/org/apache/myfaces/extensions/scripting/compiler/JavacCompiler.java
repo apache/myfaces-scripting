@@ -156,11 +156,11 @@ public class JavacCompiler implements Compiler {
                     "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
         }
         catch (InvocationTargetException ex) {
-            throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
+            throw new IllegalStateException("An error occurred while invoking the compile(String, PrintWriter) method of the " +
                     "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         }
         catch (IllegalAccessException ex) {
-            throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
+            throw new IllegalStateException("An error occurred while invoking the compile(String, PrintWriter) method of the " +
                     "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         }
     }
@@ -211,7 +211,7 @@ public class JavacCompiler implements Compiler {
     }
 
     /**
-     * <p>Returns a possibly newly created classloader that you can use in order to load the
+     * <p>Returns a possibly newly created class loader that you can use in order to load the
      * Javac compiler class. Usually the user would have to put the JAR file
      * '$JAVA_HOME$/lib/tools.jar' on the classpath but this method recognizes this on its own
      * and loads the JAR file if necessary. However, it's not guaranteed that the Javac compiler
@@ -220,7 +220,7 @@ public class JavacCompiler implements Compiler {
      *
      * @param toolsJar the location of the JAR file '$JAVA_HOME$/lib/tools.jar' or <code>null</code>
      *                 if you want it to be searched for automatically
-     * @return a classloader that you can use in order to load the Javac compiler class
+     * @return a class loader that you can use in order to load the Javac compiler class
      * @throws MalformedURLException if an error occurred while constructing the URL
      */
     private static ClassLoader createJavacAwareClassLoader(URL toolsJar) throws MalformedURLException {
@@ -230,7 +230,7 @@ public class JavacCompiler implements Compiler {
             if (logger.isDebugEnabled()) {
                 logger.debug("Seemingly the required JAR file '$JAVA_HOME$/lib/tools.jar' has already been "
                         + "put on the classpath as the class '" + JAVAC_MAIN + "' is present. So there's no "
-                        + "need to create a custom classloader for the Javac compiler.");
+                        + "need to create a custom class loader for the Javac compiler.");
             }
 
             return ClassLoaderUtils.getDefaultClassLoader();
