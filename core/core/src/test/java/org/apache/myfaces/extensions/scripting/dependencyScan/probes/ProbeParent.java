@@ -21,26 +21,10 @@ package org.apache.myfaces.extensions.scripting.dependencyScan.probes;
 import org.junit.Ignore;
 
 /**
+ * Testing probe for inheritance dependency checks
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Probe for class scanning
  */
 @Ignore
-public class Probe extends ProbeParent{
-    String prop1;
-
-    public static int myTest(StringBuilder myBuilder, Object val2) {
-        return (Integer) 1;
-    }
-
-    public Object myTest2(Object parm) {
-        try {
-            Probe4 [] probes = new Probe4[1];
-            return (Probe2) parm;
-        } catch (RuntimeException ex) {
-            return (Probe3) parm;
-        }
-    }
-
+public class ProbeParent {
 }

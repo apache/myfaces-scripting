@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
 import org.junit.Test;
 
 import java.util.Set;
@@ -34,7 +34,7 @@ public class DependencyScannerTest {
 
     @Test
     public void testScan() {
-        Set<String> retVal = DependencyScanner.fetchDependencies("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe");
+        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe");
         assertTrue(retVal.size() > 0);
 
         assertFalse(retVal.contains("java.lang.String"));
@@ -42,5 +42,7 @@ public class DependencyScannerTest {
         assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe2"));
         assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3"));
         assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe4"));
+        assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.ProbeParent"));
+
     }
 }
