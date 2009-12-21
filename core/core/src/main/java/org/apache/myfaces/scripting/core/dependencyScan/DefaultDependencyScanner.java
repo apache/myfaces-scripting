@@ -19,6 +19,8 @@
 
 package org.apache.myfaces.scripting.core.dependencyScan;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tools.ant.taskdefs.Classloader;
 import org.objectweb.asm.ClassReader;
 
@@ -39,8 +41,8 @@ import java.util.Set;
 public class DefaultDependencyScanner implements DependencyScanner {
 
     final ClassScanVisitor cp = new ClassScanVisitor();
-    Set<String> whiteList;
-    String className;
+    Log log = LogFactory.getLog(this.getClass().getName());
+
 
     /**
      * @param className
@@ -48,9 +50,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
      */
     public synchronized final Set<String> fetchDependencies(String className, final Set<String> whiteList) {
         Set<String> retVal = new HashSet<String>();
-        this.whiteList = whiteList;
-        this.className = className;
-        investigateInheritanceHierarchy(retVal);
+        investigateInheritanceHierarchy(retVal, className, whiteList);
         return retVal;
     }
 
@@ -64,22 +64,21 @@ public class DefaultDependencyScanner implements DependencyScanner {
      *
      * @param retVal
      */
-    private void investigateInheritanceHierarchy(Set<String> retVal) {
+    private final void investigateInheritanceHierarchy(Set<String> retVal, String className, Set<String> whiteList) {
         //we now have to fetch the parent hierarchy
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try {
             Class toCheck = loader.loadClass(className);
-            scanCurrentClass(retVal, className);
+            scanCurrentClass(retVal, className, whiteList);
             Class parent = toCheck.getSuperclass();
 
             while (parent != null && !ClassLogUtils.isStandard(parent.getName())) {
-                //retVal.add(parent.getName());
-                scanCurrentClass(retVal, parent.getName());
+                scanCurrentClass(retVal, parent.getName(), whiteList);
                 parent = parent.getSuperclass();
             }
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace(); 
+            log.error(e);
         }
     }
 
@@ -89,7 +88,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * @param retVal
      * @param currentClassName
      */
-    private void scanCurrentClass(Set<String> retVal, String currentClassName) {
+    private final void scanCurrentClass(Set<String> retVal, String currentClassName, Set<String> whiteList) {
         cp.setDependencyTarget(retVal);
         cp.setWhiteList(whiteList);
         ClassReader cr = null;
@@ -98,7 +97,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             cr = new ClassReader(currentClassName);
             cr.accept(cp, 0);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
