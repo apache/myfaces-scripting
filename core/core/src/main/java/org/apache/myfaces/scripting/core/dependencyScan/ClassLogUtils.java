@@ -35,6 +35,11 @@ class ClassLogUtils {
     private static final String DOMAIN_COM_SUN = "com.sun";
     private static final String DOMAIN_APACHE = "org.apache.";
     private static final String DOMAIN_MYFACES = "org.apache.myfaces";
+    private static final String DOMAIN_JBOSS = "org.jboss";
+    private static final String DOMAIN_SPRING = "org.springframework";
+    private static final String DOMAIN_JUNIT = "org.junit";
+    private static final String DOMAIN_ECLIPSE = "org.eclipse";
+    private static final String DOMAIN_NETBEANS = "org.netbeans";
 
 
     /**
@@ -49,10 +54,21 @@ class ClassLogUtils {
         //We dont use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
         //a precompiled regexp with match
 
-        return in.startsWith(DOMAIN_JAVA) || in.startsWith(DOMAIN_JAVAX) || in.startsWith(DOMAIN_COM_SUN) ||
+        //shortcuts for a faster killing of the add before going into the heavier
+        //whitelist check, this one kills off classes which belong to standard
+        //and semi standard namespaces before whitelisting the rest
+        return in.startsWith(DOMAIN_JAVA) ||
+                in.startsWith(DOMAIN_JAVAX) ||
+                in.startsWith(DOMAIN_COM_SUN) ||
+                in.startsWith(DOMAIN_JBOSS) ||
+                in.startsWith(DOMAIN_SPRING) ||
+                in.startsWith(DOMAIN_JUNIT)  ||
+                in.startsWith(DOMAIN_ECLIPSE) ||
+                in.startsWith(DOMAIN_NETBEANS) ||
                 //apache domain has to be treated specially myfaces can be referenced due to our tests and demos, otherwise this one
                 //is also treated as taboo zone
-                ((in.startsWith(DOMAIN_APACHE) && !in.startsWith(DOMAIN_MYFACES)));
+                ((in.startsWith(DOMAIN_APACHE) &&
+                        !in.startsWith(DOMAIN_MYFACES)));
     }
 
     /**

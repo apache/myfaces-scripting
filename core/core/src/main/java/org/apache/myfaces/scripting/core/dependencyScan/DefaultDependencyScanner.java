@@ -32,22 +32,26 @@ import java.util.Set;
  *          <p/>
  *          A dependency scanner for
  *          our classes
+ *          <p /> this class is thread save on object level
+ *          and can be used as a singleton
+ *          <p/>
  */
 public class DefaultDependencyScanner implements DependencyScanner {
 
     final ClassScanVisitor cp = new ClassScanVisitor();
     Set<String> whiteList;
     String className;
+
     /**
      * @param className
      * @return
      */
-    public final Set<String> fetchDependencies(String className, Set<String> whiteList) {
+    public synchronized final Set<String> fetchDependencies(String className, final Set<String> whiteList) {
         Set<String> retVal = new HashSet<String>();
         this.whiteList = whiteList;
         this.className = className;
         investigateInheritanceHierarchy(retVal);
-      return retVal;
+        return retVal;
     }
 
 
@@ -75,13 +79,13 @@ public class DefaultDependencyScanner implements DependencyScanner {
             }
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace(); 
         }
     }
 
     /**
      * scans one level of the inheritance hierarchy
-     * 
+     *
      * @param retVal
      * @param currentClassName
      */
@@ -97,7 +101,6 @@ public class DefaultDependencyScanner implements DependencyScanner {
             e.printStackTrace();
         }
     }
-
 
 
 }

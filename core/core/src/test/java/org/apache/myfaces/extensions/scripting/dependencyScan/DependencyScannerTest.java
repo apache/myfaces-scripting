@@ -41,12 +41,12 @@ public class DependencyScannerTest {
         whiteList.add("org.apache.xxx");
         whiteList.add("org.apache.myfaces.extensions.scripting");
 
-        //long before = System.currentTimeMillis();
+        long before = System.currentTimeMillis();
 
         Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe", whiteList);
-        //long after = System.currentTimeMillis();
+        long after = System.currentTimeMillis();
 
-        //System.out.println(after-before);
+        System.out.println(after-before);
 
         assertTrue(retVal.size() > 0);
 
