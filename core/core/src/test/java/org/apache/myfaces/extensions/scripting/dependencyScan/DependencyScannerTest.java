@@ -18,15 +18,18 @@
  */
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
 import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -34,28 +37,55 @@ import static org.junit.Assert.assertTrue;
  */
 public class DependencyScannerTest {
 
+    Log log = LogFactory.getLog(DependencyScannerTest.class.getName());
+    private static final String PROBE1 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe";
+    private static final String PROBE2 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe2";
+    private static final String PROBE3 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3";
+    private static final String PROBE4 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe4";
+    private static final String PROBE_PAR = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.ProbeParent";
+    private static final String STRING = "java.lang.String";
+    private static final String DUMMY = "org.apache.xxx";
+    private static final String PROBE_NAMESPACE = "org.apache.myfaces.extensions.scripting";
+
     @Test
     public void testScan() {
         Set<String> whiteList = new HashSet<String>();
-
-        whiteList.add("org.apache.xxx");
-        whiteList.add("org.apache.myfaces.extensions.scripting");
+        whiteList.add(DUMMY);
+        whiteList.add(PROBE_NAMESPACE);
 
         long before = System.currentTimeMillis();
 
-        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe", whiteList);
+        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(PROBE1, whiteList);
         long after = System.currentTimeMillis();
 
-        System.out.println(after-before);
+        log.info("execution time" + (after - before));
 
         assertTrue(retVal.size() > 0);
 
-        assertFalse(retVal.contains("java.lang.String"));
+        assertFalse(retVal.contains(STRING));
 
-        assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe2"));
-        assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3"));
-        assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe4"));
-        assertTrue(retVal.contains("org.apache.myfaces.extensions.scripting.dependencyScan.probes.ProbeParent"));
+        assertTrue(retVal.contains(PROBE2));
+        assertTrue(retVal.contains(PROBE3));
+        assertTrue(retVal.contains(PROBE4));
+        assertTrue(retVal.contains(PROBE_PAR));
 
     }
+
+    public void testClassDependencies() {
+        Set<String> whiteList = new HashSet<String>();
+        whiteList.add(DUMMY);
+        whiteList.add(PROBE_NAMESPACE);
+
+        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(PROBE1, whiteList);
+        ClassDependencies dependencyMap = new ClassDependencies();
+
+        dependencyMap.addDependencies(PROBE1, retVal);
+
+        assertTrue("Dependency Test1", dependencyMap.getReferencedClasses(PROBE2).contains(PROBE1));
+        assertTrue("Dependency Test2", dependencyMap.getReferencedClasses(PROBE3).contains(PROBE1));
+        assertTrue("Dependency Test3", dependencyMap.getReferencedClasses(PROBE4).contains(PROBE1));
+        assertTrue("Dependency Test4", dependencyMap.getReferencedClasses(PROBE_PAR).contains(PROBE1));
+
+    }
+
 }
