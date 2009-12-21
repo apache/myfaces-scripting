@@ -113,11 +113,15 @@ class ClassLogUtils {
 
     /**
      * logs a dependency if it does not belong to the standard namespaces
+     * and also it only is added if it belongs to our whitelist of
+     * non standard namespaces (the standard check is just a short circuiting
+     * for performance reasons, before going into the heavier whitelist
+     * namespace check)
      *
      * @param dependencies the target which has to recieve the dependency in source format
      * @param parms        the list of dependencies which have to be added
      */
-    public static final void logParmList(Collection<String> dependencies, Set<String> whiteList, String... parms) {
+    public static final void logParmList(Collection<String> dependencies,final Set<String> whiteList,final String... parms) {
         for (String parm : parms) {
             if (parm == null) continue;
             if (parm.equals("")) continue;
