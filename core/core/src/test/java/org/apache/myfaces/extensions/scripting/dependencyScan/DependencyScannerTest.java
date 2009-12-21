@@ -21,6 +21,8 @@ package org.apache.myfaces.extensions.scripting.dependencyScan;
 import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
@@ -34,7 +36,13 @@ public class DependencyScannerTest {
 
     @Test
     public void testScan() {
-        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe");
+        Set<String> whiteList = new HashSet<String>();
+
+        whiteList.add("org.apache.xxx");
+        whiteList.add("org.apache.myfaces.extensions.scripting");
+
+
+        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe", whiteList);
         assertTrue(retVal.size() > 0);
 
         assertFalse(retVal.contains("java.lang.String"));

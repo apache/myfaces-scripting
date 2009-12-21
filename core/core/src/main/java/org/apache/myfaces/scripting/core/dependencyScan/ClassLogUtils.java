@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.core.dependencyScan;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -32,6 +33,8 @@ class ClassLogUtils {
     private static final String DOMAIN_JAVA = "java.";
     private static final String DOMAIN_JAVAX = "javax.";
     private static final String DOMAIN_COM_SUN = "com.sun";
+    private static final String DOMAIN_APACHE = "org.apache.";
+    private static final String DOMAIN_MYFACES = "org.apache.myfaces";
 
 
     /**
@@ -45,7 +48,11 @@ class ClassLogUtils {
     public static final boolean isStandard(String in) {
         //We dont use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
         //a precompiled regexp with match
-        return in.startsWith(DOMAIN_JAVA) || in.startsWith(DOMAIN_JAVAX) || in.startsWith(DOMAIN_COM_SUN);
+
+        return in.startsWith(DOMAIN_JAVA) || in.startsWith(DOMAIN_JAVAX) || in.startsWith(DOMAIN_COM_SUN) ||
+                //apache domain has to be treated specially myfaces can be referenced due to our tests and demos, otherwise this one
+                //is also treated as taboo zone
+                ((in.startsWith(DOMAIN_APACHE) && !in.startsWith(DOMAIN_MYFACES)));
     }
 
     /**
@@ -110,14 +117,31 @@ class ClassLogUtils {
      * @param dependencies the target which has to recieve the dependency in source format
      * @param parms        the list of dependencies which have to be added
      */
-    public static final void logParmList(Collection<String> dependencies, String... parms) {
+    public static final void logParmList(Collection<String> dependencies, Set<String> whiteList, String... parms) {
         for (String parm : parms) {
             if (parm == null) continue;
             if (parm.equals("")) continue;
             parm = internalClassDescriptorToSource(parm);
             if (parm == null || isStandard(parm)) continue;
 
-            dependencies.add(parm);
+            String[] packages = parm.split("\\.");
+
+            StringBuilder fullPackage = null;
+            for (String currPackage : packages) {
+                if (fullPackage != null) {
+                    fullPackage.append(".");
+                    fullPackage.append(currPackage);
+                } else {
+                    fullPackage = new StringBuilder(parm.length());
+                    fullPackage.append(currPackage);
+                }
+
+                String tempPackage = fullPackage.toString();
+                if (whiteList.contains(tempPackage)) {
+                    dependencies.add(parm);
+                    break;
+                }
+            }
         }
     }
 

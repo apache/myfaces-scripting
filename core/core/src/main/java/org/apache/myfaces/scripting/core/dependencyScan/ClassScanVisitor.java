@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 class ClassScanVisitor implements ClassVisitor {
 
     Set<String> dependencies;
+    Set<String> whiteList;
     //static final Logger log = Logger.getLogger("ClassScanVisitor");
 
     public ClassScanVisitor() {
@@ -52,7 +53,7 @@ class ClassScanVisitor implements ClassVisitor {
                       String signature, String superName, String[] interfaces) {
         //log.log(Level.INFO, "{0} extends {1} ", new String[]{name, superName});
 
-        ClassLogUtils.logParmList(dependencies, superName);
+        ClassLogUtils.logParmList(dependencies, whiteList, superName);
     }
 
     public void visitSource(String source, String debug) {
@@ -82,7 +83,7 @@ class ClassScanVisitor implements ClassVisitor {
     public FieldVisitor visitField(int access, String name, String desc,
                                    String signature, Object value) {
         //log.log(Level.INFO, "Field:{0} {1} ", new Object[]{desc, name});
-        ClassLogUtils.logParmList(dependencies, desc);
+        ClassLogUtils.logParmList(dependencies, whiteList, desc);
 
         return null;
     }
@@ -96,12 +97,15 @@ class ClassScanVisitor implements ClassVisitor {
         //ClassLogUtils.logParmList(dependencies, parms);
 
         //we now have to dig into the method to cover more, the parms are covered by our method scanner
-        return new MethodScanVisitor(dependencies);
+        return new MethodScanVisitor(dependencies, whiteList);
     }
 
     public void visitEnd() {
         //log.info("}");
     }
 
+    public void setWhiteList(Set<String> whiteList) {
+        this.whiteList = whiteList;
+    }
 }
 

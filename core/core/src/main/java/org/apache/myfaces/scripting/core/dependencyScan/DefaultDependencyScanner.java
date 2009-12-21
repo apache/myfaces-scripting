@@ -35,15 +35,18 @@ import java.util.Set;
  */
 public class DefaultDependencyScanner implements DependencyScanner {
 
-    static final ClassScanVisitor cp = new ClassScanVisitor();
-
+    final ClassScanVisitor cp = new ClassScanVisitor();
+    Set<String> whiteList;
+    String className;
     /**
      * @param className
      * @return
      */
-    public final Set<String> fetchDependencies(String className) {
+    public final Set<String> fetchDependencies(String className, Set<String> whiteList) {
         Set<String> retVal = new HashSet<String>();
-        investigateInheritanceHierarchy(retVal, className);
+        this.whiteList = whiteList;
+        this.className = className;
+        investigateInheritanceHierarchy(retVal);
       return retVal;
     }
 
@@ -57,12 +60,12 @@ public class DefaultDependencyScanner implements DependencyScanner {
      *
      * @param retVal
      */
-    private void investigateInheritanceHierarchy(Set<String> retVal, String className) {
+    private void investigateInheritanceHierarchy(Set<String> retVal) {
         //we now have to fetch the parent hierarchy
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try {
             Class toCheck = loader.loadClass(className);
-            scanCurrentClass(retVal,className);
+            scanCurrentClass(retVal, className);
             Class parent = toCheck.getSuperclass();
 
             while (parent != null && !ClassLogUtils.isStandard(parent.getName())) {
@@ -80,14 +83,15 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * scans one level of the inheritance hierarchy
      * 
      * @param retVal
-     * @param clazz
+     * @param currentClassName
      */
-    private void scanCurrentClass(Set<String> retVal, String clazz) {
+    private void scanCurrentClass(Set<String> retVal, String currentClassName) {
         cp.setDependencyTarget(retVal);
+        cp.setWhiteList(whiteList);
         ClassReader cr = null;
 
         try {
-            cr = new ClassReader(clazz);
+            cr = new ClassReader(currentClassName);
             cr.accept(cp, 0);
         } catch (IOException e) {
             e.printStackTrace();
