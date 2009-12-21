@@ -34,13 +34,6 @@ public class Probe extends ProbeParent{
         return (Integer) 1;
     }
 
-    public Object myTest2(Object parm) {
-        try {
-            Probe4 [] probes = new Probe4[1];
-            return (Probe2) parm;
-        } catch (RuntimeException ex) {
-            return (Probe3) parm;
-        }
-    }
+   
 
 }

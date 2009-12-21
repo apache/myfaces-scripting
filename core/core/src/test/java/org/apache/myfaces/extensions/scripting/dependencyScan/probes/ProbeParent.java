@@ -22,9 +22,18 @@ import org.junit.Ignore;
 
 /**
  * Testing probe for inheritance dependency checks
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 @Ignore
 public class ProbeParent {
+    public Object myTest2(Object parm) {
+        try {
+            Probe4[] probes = new Probe4[1];
+            return (Probe2) parm;
+        } catch (RuntimeException ex) {
+            return (Probe3) parm;
+        }
+    }
 }

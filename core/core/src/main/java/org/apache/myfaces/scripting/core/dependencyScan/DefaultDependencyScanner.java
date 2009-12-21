@@ -43,21 +43,10 @@ public class DefaultDependencyScanner implements DependencyScanner {
      */
     public final Set<String> fetchDependencies(String className) {
         Set<String> retVal = new HashSet<String>();
-
-        cp.setDependencyTarget(retVal);
-        ClassReader cr = null;
-
-        try {
-            cr = new ClassReader("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe");
-            cr.accept(cp, 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        investigateInheritanceHierarchy(retVal);
-
-
-        return retVal;
+        investigateInheritanceHierarchy(retVal, className);
+      return retVal;
     }
+
 
     /**
      * this investigates the classes inheritance hierarchy for
@@ -68,15 +57,17 @@ public class DefaultDependencyScanner implements DependencyScanner {
      *
      * @param retVal
      */
-    private void investigateInheritanceHierarchy(Set<String> retVal) {
+    private void investigateInheritanceHierarchy(Set<String> retVal, String className) {
         //we now have to fetch the parent hierarchy
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try {
-            Class toCheck = loader.loadClass("org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe");
+            Class toCheck = loader.loadClass(className);
+            scanCurrentClass(retVal,className);
             Class parent = toCheck.getSuperclass();
 
             while (parent != null && !ClassLogUtils.isStandard(parent.getName())) {
-                retVal.add(parent.getName());
+                //retVal.add(parent.getName());
+                scanCurrentClass(retVal, parent.getName());
                 parent = parent.getSuperclass();
             }
 
@@ -84,6 +75,25 @@ public class DefaultDependencyScanner implements DependencyScanner {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
+
+    /**
+     * scans one level of the inheritance hierarchy
+     * 
+     * @param retVal
+     * @param clazz
+     */
+    private void scanCurrentClass(Set<String> retVal, String clazz) {
+        cp.setDependencyTarget(retVal);
+        ClassReader cr = null;
+
+        try {
+            cr = new ClassReader(clazz);
+            cr.accept(cp, 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
