@@ -116,7 +116,10 @@ public class RecompiledClassLoader extends ClassLoader {
                 if (data != null) {
                     data.setTainted(false);
 
-                    return super.defineClass(className, fileContent, 0, fileLength);
+                    //storeReloadableDefinitions(className, target, fileLength, fileContent)
+                    retVal = super.defineClass(className, fileContent, 0, fileLength);
+                    data.setAClass(retVal);
+                    return retVal;
                 } else {
                     //we store the initial reloading meta data information so that it is refreshed
                     //later on, this we we cover dependend classes on the initial load
