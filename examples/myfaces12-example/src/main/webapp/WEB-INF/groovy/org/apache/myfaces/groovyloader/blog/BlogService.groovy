@@ -31,7 +31,7 @@ public class BlogService {
 
     public void addEntry(def entry) {
         Log log = LogFactory.getLog(BlogService.class)
-        log.info("Adding entry reloaded 3")
+        log.info("Adding entry")
         blogEntries << entry
     }
 

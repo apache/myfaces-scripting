@@ -91,9 +91,7 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
-        if(className.contains("Blog")) {
-            System.out.println("Debugpoint found");
-        }
+       
         File target = getClassFile(className);
         if (target.exists()) {
             ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);

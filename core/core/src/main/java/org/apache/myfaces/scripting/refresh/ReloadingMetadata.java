@@ -95,9 +95,7 @@ public class ReloadingMetadata {
     }
 
     public void setSourcePath(String sourcePath) {
-        if(sourcePath.endsWith(".java")) {
-            System.out.println("Debugpoint found");
-        }
+        
         this.sourcePath = sourcePath;
     }
 

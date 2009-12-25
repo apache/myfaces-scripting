@@ -79,8 +79,8 @@ public class ApplicationProxy extends Application implements Decorated {
         //we might get 2 of our proxies in the delegate stack
 
         //the same goes for the rest of the factory stuff
-        if (!(elResolver instanceof ELResolverProxy_))
-            elResolver = new ELResolverProxy_(elResolver);
+        if (!(elResolver instanceof ELResolverProxy))
+            elResolver = new ELResolverProxy(elResolver);
         _delegate.addELResolver(elResolver);
     }
 
@@ -93,8 +93,8 @@ public class ApplicationProxy extends Application implements Decorated {
     public ELResolver getELResolver() {
         weaveDelegate();
         ELResolver retVal = _delegate.getELResolver();
-        if (!(retVal instanceof ELResolverProxy_)) {
-            retVal = new ELResolverProxy_(retVal);
+        if (!(retVal instanceof ELResolverProxy)) {
+            retVal = new ELResolverProxy(retVal);
         }
         return retVal;
 

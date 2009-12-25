@@ -21,8 +21,6 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 import org.objectweb.asm.*;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -53,7 +51,7 @@ class ClassScanVisitor implements ClassVisitor {
                       String signature, String superName, String[] interfaces) {
         //log.log(Level.INFO, "{0} extends {1} ", new String[]{name, superName});
 
-        ClassLogUtils.logParmList(dependencies, whiteList, superName);
+        ClassScanUtils.logParmList(dependencies, whiteList, superName);
     }
 
     public void visitSource(String source, String debug) {
@@ -83,7 +81,7 @@ class ClassScanVisitor implements ClassVisitor {
     public FieldVisitor visitField(int access, String name, String desc,
                                    String signature, Object value) {
         //log.log(Level.INFO, "Field:{0} {1} ", new Object[]{desc, name});
-        ClassLogUtils.logParmList(dependencies, whiteList, desc);
+        ClassScanUtils.logParmList(dependencies, whiteList, desc);
 
         return null;
     }
@@ -94,7 +92,7 @@ class ClassScanVisitor implements ClassVisitor {
         //String subDesc = desc.substring(desc.indexOf('(') + 1, desc.lastIndexOf(")"));
         //String[] parms = subDesc.split(";");
 
-        //ClassLogUtils.logParmList(dependencies, parms);
+        //ClassScanUtils.logParmList(dependencies, parms);
 
         //we now have to dig into the method to cover more, the parms are covered by our method scanner
         return new MethodScanVisitor(dependencies, whiteList);

@@ -23,8 +23,6 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.Label;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.util.Set;
 
 /**
@@ -81,18 +79,18 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTypeInsn(int i, String castType) {
         //cast
         //log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
-        ClassLogUtils.logParmList(dependencies, whiteList, castType);
+        ClassScanUtils.logParmList(dependencies, whiteList, castType);
     }
 
     public void visitFieldInsn(int i, String s, String s1, String s2) {
         //log.log(Level.INFO, "visitFieldInsn {0} {1} {2}", new Object[]{s, s1, s2});
-        //ClassLogUtils.logParmList(dependencies, castType);
-        ClassLogUtils.logParmList(dependencies, whiteList, s2);
+        //ClassScanUtils.logParmList(dependencies, castType);
+        ClassScanUtils.logParmList(dependencies, whiteList, s2);
     }
 
     public void visitMethodInsn(int i, String s, String s1, String s2) {
         //log.log(Level.INFO, "visitMethodIsn {0} {1} {2}", new Object[]{s, s1, s2});
-        ClassLogUtils.logParmList(dependencies, whiteList, s2);
+        ClassScanUtils.logParmList(dependencies, whiteList, s2);
     }
 
     public void visitJumpInsn(int i, Label label) {
@@ -126,14 +124,14 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTryCatchBlock(Label label, Label label1, Label label2, String catchType) {
         //try catch block type information in the last string
         //log.log(Level.INFO, "visitTryCatchBlock: {0} {1} {2} {3}", new Object[]{label.toString(), label1.toString(), label2.toString(), catchType});
-        ClassLogUtils.logParmList(dependencies, whiteList, catchType);
+        ClassScanUtils.logParmList(dependencies, whiteList, catchType);
 
     }
 
     public void visitLocalVariable(String s, String referenceType, String s2, Label label, Label label1, int i) {
         //local variable on method level
         //log.log(Level.INFO, "LocalVar: {0} {1} {2}", new String[]{s, referenceType, s2});
-        ClassLogUtils.logParmList(dependencies, whiteList, referenceType);
+        ClassScanUtils.logParmList(dependencies, whiteList, referenceType);
 
     }
 

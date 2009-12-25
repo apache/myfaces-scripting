@@ -39,6 +39,10 @@ public class BaseAnnotationScanListener {
 
     protected RuntimeConfig getRuntimeConfig() {
         final FacesContext facesContext = FacesContext.getCurrentInstance();
+        //runtime config not started
+        if(facesContext == null) {
+            return null;
+        }
         return RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
     }
 

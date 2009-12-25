@@ -23,10 +23,7 @@ import org.apache.commons.logging.LogFactory;
 
 
 import javax.faces.context.FacesContext;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 
-import static org.apache.myfaces.scripting.core.util.ClassUtils.*;
 import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
 
 

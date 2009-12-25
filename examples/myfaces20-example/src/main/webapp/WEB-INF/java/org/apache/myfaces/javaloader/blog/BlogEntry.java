@@ -60,6 +60,7 @@ public class BlogEntry {
         return content;
     }
 
+    
     public void setContent(String content) {
         this.content = content;
     }

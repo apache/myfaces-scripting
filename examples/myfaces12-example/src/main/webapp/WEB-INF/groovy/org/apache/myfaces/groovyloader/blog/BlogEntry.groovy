@@ -28,4 +28,5 @@ public class BlogEntry {
     String topic = ""
     String content = ""
 
+  
 }

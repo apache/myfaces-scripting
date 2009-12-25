@@ -190,11 +190,11 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
      */
     public void fullClassScan() {
         _dependencyScanner.scanPaths();
+
         
-        if (_annotationScanner == null) {
+        if (_annotationScanner == null || FacesContext.getCurrentInstance() == null) {
             return;
         }
-
         _annotationScanner.scanPaths();
 
     }

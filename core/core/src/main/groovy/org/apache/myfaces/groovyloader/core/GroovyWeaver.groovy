@@ -30,6 +30,7 @@ import org.apache.myfaces.scripting.api.ClassScanner
 
 import org.apache.myfaces.scripting.core.util.ClassUtils
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata
+import org.apache.myfaces.scripting.loaders.groovy.GroovyDependencyScanner
 
 /**
  * Weaver  which does dynamic class reloading
@@ -48,145 +49,144 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata
  */
 public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingWeaver {
 
-    static ThreadLocal _groovyClassLoaderHolder = new ThreadLocal();
-    DynamicClassIdentifier identifier = new DynamicClassIdentifier()
-    ClassScanner _scanner = null;
+  static ThreadLocal _groovyClassLoaderHolder = new ThreadLocal();
+  DynamicClassIdentifier identifier = new DynamicClassIdentifier()
+  ClassScanner _scanner = null;
+  ClassScanner _dependencyScanner = new GroovyDependencyScanner(this)
 
 
+  public GroovyWeaver() {
+    super();
+    //super with params in java classes not superbly callable
+    //FIXME this is private in super class
+    scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
+    fileEnding = ".groovy"
 
-    public GroovyWeaver() {
-        super();
-        //super with params in java classes not superbly callable
-        //FIXME this is private in super class
-        scriptingEngine = ScriptingConst.ENGINE_TYPE_GROOVY
-        fileEnding = ".groovy"
+    //the super pass down between groovy and java is broken for the current
+    //version we work around that with setters
+    _reloadingStrategy = new GroovyGlobalReloadingStrategy()
+    _reloadingStrategy.setWeaver(this)
 
-        //the super pass down between groovy and java is broken for the current
-        //version we work around that with setters
-        _reloadingStrategy = new GroovyGlobalReloadingStrategy()
-        _reloadingStrategy.setWeaver(this)
+    //init classpath removed we can resolve that over the
+    //url classloader at the time myfaces is initialized
+    try {
+      Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
+      Class[] params = new Class[1];
+      params[0] = ScriptingWeaver.class;
+      this._scanner = scanner.getConstructor(params).newInstance(this);
+      //this._scanner = (ClassScanner) ReflectUtil.instantiate(scanner, params);
 
-        //init classpath removed we can resolve that over the
-        //url classloader at the time myfaces is initialized
-        try {
-            Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
-            Class[] params = new Class[1];
-            params[0] = ScriptingWeaver.class;
-            this._scanner = scanner.getConstructor(params).newInstance(this);
-            //this._scanner = (ClassScanner) ReflectUtil.instantiate(scanner, params);
-
-        } catch (ClassNotFoundException e) {
-            //we do nothing here
-        }
-
+    } catch (ClassNotFoundException e) {
+      //we do nothing here
     }
 
-    /**
-     * central point for the
-     * loading, loads a class from a given sourceroot
-     * and file
-     */
-    protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
+  }
 
-        File currentClassFile = new File(sourceRoot + File.separator + file)
+  /**
+   * central point for the
+   * loading, loads a class from a given sourceroot
+   * and file
+   */
+  protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
 
-        if (!currentClassFile.exists()) {
-            return null;
-        }
+    File currentClassFile = new File(sourceRoot + File.separator + file)
 
-        if (log.isInfoEnabled()) {
-            log.info("[EXT-SCRIPTING] Loading Groovy file:" + file);
-        }
-        //lazy instantiation to avoid threading problems
-        //and locking related speed bumps
-
-        //TODO replace the classloader detection with the one from the myfaces utils class
-        GroovyClassLoader gcl = _groovyClassLoaderHolder.get()
-
-        if (gcl == null) {
-            gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
-            //we have to add the script path so that groovy can work out the kinks of other source files added
-            _groovyClassLoaderHolder.set(gcl)
-
-            WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY).each {
-                gcl.addClasspath(it)
-            }
-        }
-
-        Class retVal = gcl.parseClass(new FileInputStream(currentClassFile))
-
-
-        weaveGroovyReloadingCode(retVal)
-
-        if (retVal != null) {
-            refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_GROOVY);
-        }
-
-        if (_scanner != null && retVal != null) {
-            _scanner.scanClass(retVal);
-        }
-
-        return retVal
-
+    if (!currentClassFile.exists()) {
+      return null;
     }
 
+    if (log.isInfoEnabled()) {
+      log.info("[EXT-SCRIPTING] Loading Groovy file:" + file);
+    }
+    //lazy instantiation to avoid threading problems
+    //and locking related speed bumps
 
-    private void refreshReloadingMetaData(String sourceRoot, String file, File currentClassFile, Class retVal, int engineType) {
-        if(sourceRoot.endsWith(".java")) {
-            System.out.println("Debugpoint found");
-        }
-      ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
-        reloadingMetaData.setAClass(retVal);
+    //TODO replace the classloader detection with the one from the myfaces utils class
+    GroovyClassLoader gcl = _groovyClassLoaderHolder.get()
 
-        reloadingMetaData.setFileName(file);
-        reloadingMetaData.setSourcePath(sourceRoot);
-        reloadingMetaData.setTimestamp(currentClassFile.lastModified());
-        reloadingMetaData.setTainted(false);
-        reloadingMetaData.setScriptingEngine(engineType);
-        //ReloadingMetadata oldMetadata = getClassMap().get(retVal.getName());
-        reloadingMetaData.setTaintedOnce(getClassMap().containsKey(retVal.getName()));
+    if (gcl == null) {
+      gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
+      //we have to add the script path so that groovy can work out the kinks of other source files added
+      _groovyClassLoaderHolder.set(gcl)
 
-        getClassMap().put(retVal.getName(), reloadingMetaData);
+      WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY).each {
+        gcl.addClasspath(it)
+      }
     }
 
+    Class retVal = gcl.parseClass(new FileInputStream(currentClassFile))
 
 
-    /**
-     * creates a proxy specify object reloading proxy
-     * this works very well in a groovy only specific
-     * context, unfortunately as soon as the object
-     * is pushed into java land the proxy is dropped
-     * nevertheless we add this behavior for a groovy
-     * only context, for now, in the long run we might
-     * have to drop it entirely
-     */
-    private final void weaveGroovyReloadingCode(Class aclass) {
-        //TODO this only works in a groovy 2 groovy specific
-        //surrounding lets check if this is not obsolete
+    weaveGroovyReloadingCode(retVal)
 
-        def myMetaClass = new Groovy2GroovyObjectReloadingProxy(aclass)
-        def invoker = InvokerHelper.instance
-        invoker.metaRegistry.setMetaClass(aclass, myMetaClass)
+    if (retVal != null) {
+      refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_GROOVY);
     }
 
-    public boolean isDynamic(Class clazz) {
-        return identifier.isDynamic(clazz)
+    if (_scanner != null && retVal != null) {
+      _scanner.scanClass(retVal);
     }
 
-    public void fullRecompile() {
-        // We do not have to do a full recompile here
-        //the groovy classloader takes care of the issue
-        //instead we just set the recompile recommended to false
+    return retVal
 
-        WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_GROOVY, Boolean.FALSE);
+  }
+
+
+  private void refreshReloadingMetaData(String sourceRoot, String file, File currentClassFile, Class retVal, int engineType) {
+
+    ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
+    reloadingMetaData.setAClass(retVal);
+
+    reloadingMetaData.setFileName(file);
+    reloadingMetaData.setSourcePath(sourceRoot);
+    reloadingMetaData.setTimestamp(currentClassFile.lastModified());
+    reloadingMetaData.setTainted(false);
+    reloadingMetaData.setScriptingEngine(engineType);
+    //ReloadingMetadata oldMetadata = getClassMap().get(retVal.getName());
+    reloadingMetaData.setTaintedOnce(getClassMap().containsKey(retVal.getName()));
+
+    getClassMap().put(retVal.getName(), reloadingMetaData);
+  }
+
+  /**
+   * creates a proxy specify object reloading proxy
+   * this works very well in a groovy only specific
+   * context, unfortunately as soon as the object
+   * is pushed into java land the proxy is dropped
+   * nevertheless we add this behavior for a groovy
+   * only context, for now, in the long run we might
+   * have to drop it entirely
+   */
+  private final void weaveGroovyReloadingCode(Class aclass) {
+    //TODO this only works in a groovy 2 groovy specific
+    //surrounding lets check if this is not obsolete
+
+    def myMetaClass = new Groovy2GroovyObjectReloadingProxy(aclass)
+    def invoker = InvokerHelper.instance
+    invoker.metaRegistry.setMetaClass(aclass, myMetaClass)
+  }
+
+  public boolean isDynamic(Class clazz) {
+    return identifier.isDynamic(clazz)
+  }
+
+  public void fullRecompile() {
+    // We do not have to do a full recompile here
+    //the groovy classloader takes care of the issue
+    //instead we just set the recompile recommended to false
+
+    WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_GROOVY, Boolean.FALSE);
+  }
+
+
+  public void fullClassScan() {
+    //does not work yet due to the groovy classloader
+    //_dependencyScanner.scanPaths()
+    if (_scanner == null) {
+      return;
     }
 
-
-    public void fullClassScan() {
-        if (_scanner == null) {
-            return;
-        }
-        _scanner.scanPaths();
-    }
+    _scanner.scanPaths()
+  }
 
 }

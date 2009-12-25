@@ -112,9 +112,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
             return null;
         }
-        if(name.contains("Blog")) {
-            System.out.println("Debugpoint found");
-        }
+       
         return scriptingWeaver.loadScriptingClassFromName(name);
     }
 

@@ -36,9 +36,9 @@ import java.util.Map;
  *
  * @author Werner Punz
  */
-public class ELResolverProxy_ extends ELResolver implements Decorated {
+public class ELResolverProxy extends ELResolver implements Decorated {
 
-    Log log = LogFactory.getLog(ELResolverProxy_.class);
+    Log log = LogFactory.getLog(ELResolverProxy.class);
     ELResolver _delegate = null;
 
     static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
@@ -124,7 +124,7 @@ public class ELResolverProxy_ extends ELResolver implements Decorated {
     }
 
 
-    public ELResolverProxy_(ELResolver delegate) {
+    public ELResolverProxy(ELResolver delegate) {
         _delegate = delegate;
     }
 

@@ -26,17 +26,10 @@ package org.apache.myfaces.javaloader.blog;
  */
 public class BlogEntry {
 
-
-
-
-    
-    
-    String firstName = "";
-
-    String lastName = "";
-    String topic = "";
-
-    String content = "";
+    String firstName    =   "";
+    String lastName     =   "";
+    String topic        =   "";
+    String content      =   "";
 
     
     public String getFirstName() {

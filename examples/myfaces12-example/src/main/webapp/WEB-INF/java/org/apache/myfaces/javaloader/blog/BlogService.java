@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.javaloader.blog;
 
-import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
-
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;

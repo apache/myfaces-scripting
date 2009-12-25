@@ -24,22 +24,30 @@ import java.util.Set;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          Utils which store the shared code
+ *
+ * Utils which store the shared code
+ * 
+ *
  */
-class ClassLogUtils {
+class ClassScanUtils {
     public static final String BINARY_PACKAGE = "\\/";
 
 
-    private static final String DOMAIN_JAVA = "java.";
-    private static final String DOMAIN_JAVAX = "javax.";
-    private static final String DOMAIN_COM_SUN = "com.sun";
-    private static final String DOMAIN_APACHE = "org.apache.";
-    private static final String DOMAIN_MYFACES = "org.apache.myfaces";
-    private static final String DOMAIN_JBOSS = "org.jboss";
-    private static final String DOMAIN_SPRING = "org.springframework";
-    private static final String DOMAIN_JUNIT = "org.junit";
-    private static final String DOMAIN_ECLIPSE = "org.eclipse";
-    private static final String DOMAIN_NETBEANS = "org.netbeans";
+    private static final String DOMAIN_JAVA         = "java.";
+    private static final String DOMAIN_JAVAX        = "javax.";
+    private static final String DOMAIN_COM_SUN      = "com.sun";
+    private static final String DOMAIN_APACHE       = "org.apache.";
+    private static final String DOMAIN_MYFACES      = "org.apache.myfaces";
+    private static final String DOMAIN_JBOSS        = "org.jboss";
+    private static final String DOMAIN_SPRING       = "org.springframework";
+    private static final String DOMAIN_JUNIT        = "org.junit";
+    private static final String DOMAIN_ECLIPSE      = "org.eclipse";
+    private static final String DOMAIN_NETBEANS     = "org.netbeans";
+    private static final String DOMAIN_GROOVY       = "groovy.";
+    private static final String DOMAIN_SCALA        = "scala.";
+    private static final String DOMAIN_JYTHON       = "jython.";
+    private static final String DOMAIN_JRUBY        = "jruby.";
+
 
 
     /**
@@ -50,7 +58,7 @@ class ClassLogUtils {
      * @param in the page or fully qualified classname
      * @return true if it belongs to one of the standard namespaces, false if not
      */
-    public static final boolean isStandard(String in) {
+    public static final boolean isStandardNamespace(String in) {
         //We dont use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
         //a precompiled regexp with match
 
@@ -60,11 +68,16 @@ class ClassLogUtils {
         return in.startsWith(DOMAIN_JAVA) ||
                 in.startsWith(DOMAIN_JAVAX) ||
                 in.startsWith(DOMAIN_COM_SUN) ||
+                in.startsWith(DOMAIN_GROOVY) ||
+                in.startsWith(DOMAIN_JYTHON) ||
+                in.startsWith(DOMAIN_JRUBY) ||
+                in.startsWith(DOMAIN_SCALA) ||
                 in.startsWith(DOMAIN_JBOSS) ||
                 in.startsWith(DOMAIN_SPRING) ||
-                in.startsWith(DOMAIN_JUNIT)  ||
+                in.startsWith(DOMAIN_JUNIT) ||
                 in.startsWith(DOMAIN_ECLIPSE) ||
                 in.startsWith(DOMAIN_NETBEANS) ||
+
                 //apache domain has to be treated specially myfaces can be referenced due to our tests and demos, otherwise this one
                 //is also treated as taboo zone
                 ((in.startsWith(DOMAIN_APACHE) &&
@@ -103,7 +116,7 @@ class ClassLogUtils {
         //we strip the meta information which is not needed
         //aka start mit ( alles strippen bis )
 
-        //([A-Za-u]{0,1})
+        //()means usually beginning of a native type
         if (parm.startsWith("(")) {
             parm = parm.substring(parm.lastIndexOf(')') + 1);
         }
@@ -137,12 +150,12 @@ class ClassLogUtils {
      * @param dependencies the target which has to recieve the dependency in source format
      * @param parms        the list of dependencies which have to be added
      */
-    public static final void logParmList(Collection<String> dependencies,final Set<String> whiteList,final String... parms) {
+    public static final void logParmList(Collection<String> dependencies, final Set<String> whiteList, final String... parms) {
         for (String parm : parms) {
             if (parm == null) continue;
             if (parm.equals("")) continue;
             parm = internalClassDescriptorToSource(parm);
-            if (parm == null || isStandard(parm)) continue;
+            if (parm == null || isStandardNamespace(parm)) continue;
 
             String[] packages = parm.split("\\.");
 

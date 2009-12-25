@@ -29,6 +29,8 @@ import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.faces.context.FacesContext;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
@@ -44,6 +46,16 @@ import java.util.Map;
  */
 public class WeavingContext {
 
+    /**
+     * data we can pass for other threads
+     */
+    static class ThreadLocalData {
+        public Object _weaverHolder;
+        public Object _refreshContextHolder;
+        public Object _configurtion;
+    }
+
+    static ThreadLocalData _referenceThreadHolder = null;
 
     /**
      * <p>
@@ -206,6 +218,32 @@ public class WeavingContext {
 
     public static boolean isDynamic(Class clazz) {
         return getWeaver().isDynamic(clazz);
+    }
+
+
+    /**
+     * we push the threading data into
+     * a shared queue
+     */
+    public static void pushThreadingData() {
+        ThreadLocalData data = new ThreadLocalData();
+        data._configurtion = getConfiguration();
+        data._refreshContextHolder = getRefreshContext();
+        data._weaverHolder = getWeaver();
+
+        _referenceThreadHolder = data;
+    }
+
+    public static void popThreadingData() {
+        ThreadLocalData data = _referenceThreadHolder;
+        setConfiguration((Configuration) data._configurtion);
+        setRefreshContext((RefreshContext) data._refreshContextHolder);
+        setWeaver((ScriptingWeaver) data._weaverHolder);
+    }
+
+    public static void cleanThreadingData() {
+        //we can enforce a prematurely cleanup that way
+        _referenceThreadHolder = null;
     }
 
 }

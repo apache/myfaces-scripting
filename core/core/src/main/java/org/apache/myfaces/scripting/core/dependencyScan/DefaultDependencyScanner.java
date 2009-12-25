@@ -21,7 +21,6 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.ant.taskdefs.Classloader;
 import org.objectweb.asm.ClassReader;
 
 import java.io.IOException;
@@ -74,7 +73,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             scanCurrentClass(loader, retVal, className, whiteList);
             Class parent = toCheck.getSuperclass();
 
-            while (parent != null && !ClassLogUtils.isStandard(parent.getName())) {
+            while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
                 scanCurrentClass(loader, retVal, parent.getName(), whiteList);
                 parent = parent.getSuperclass();
             }
