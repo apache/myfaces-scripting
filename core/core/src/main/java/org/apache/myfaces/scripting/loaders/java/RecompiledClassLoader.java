@@ -91,6 +91,9 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
+        if(className.contains("Blog")) {
+            System.out.println("Debugpoint found");
+        }
         File target = getClassFile(className);
         if (target.exists()) {
             ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
@@ -147,9 +150,11 @@ public class RecompiledClassLoader extends ClassLoader {
         String fileName = className.replaceAll("\\.", separator) + ".java";
         Collection<String> sourceDirs = WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA);
         String rootDir = null;
+        File sourceFile = null;
         for (String sourceDir : sourceDirs) {
             String fullPath = sourceDir + File.separator + fileName;
-            if ((new File(fullPath)).exists()) {
+            sourceFile = new File(fullPath);
+            if (sourceFile.exists()) {
                 rootDir = sourceDir;
                 break;
             }
@@ -164,7 +169,7 @@ public class RecompiledClassLoader extends ClassLoader {
 
         reloadingMetaData.setFileName(fileName);
         reloadingMetaData.setSourcePath(rootDir);
-        reloadingMetaData.setTimestamp(target.lastModified());
+        reloadingMetaData.setTimestamp(sourceFile.lastModified());
         reloadingMetaData.setTainted(false);
         reloadingMetaData.setTaintedOnce(true);
         reloadingMetaData.setScriptingEngine(_scriptingEngine);

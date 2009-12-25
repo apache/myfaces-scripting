@@ -68,50 +68,59 @@ public class JavaDependencyScanner implements ClassScanner {
         final Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
         //TODO we have to probably set the context classloader upfront
         //otherwise the classes are not found
-        final ClassLoader loader = new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
-
-        String[] dynamicClassArr = new String[3];
-        for (String dynamicClass : possibleDynamicClasses) {
-            final String dynaClass = dynamicClass;
-
-            //TODO parallize this
-            //we have to shift the threadlocal data of the weaving context into
-            //every thread there is and push it into the threadlocals there
-            //I will leave this for now open for the next performance round
-
-            //prefill an array which keeps the in params
-            //try {
-            // threadCtrl.acquire();
-            //problem with the thread locals set we have to shift all the needed constats
-            //in and pass them into the thread
-
-            //  (new Thread() {
-            //      public void run()
-            //      {
-           
-            DependencyScanner depScanner = dependencyScanner.pop();
-            try {
-                Set<String> referrers = depScanner.fetchDependencies(loader, dynaClass, possibleDynamicClasses);
-                //we make it in two ops because if we do the self dependency
-                //removal in the scanner itself the code  should not break
-                referrers.remove(dynaClass);
-                if (!referrers.isEmpty()) {
-                    WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(dynaClass, referrers);
-                }
-            } finally {
-                dependencyScanner.push(depScanner);
-                //threadCtrl.release();
-            }
-            //    }
-            // }).start();
-            //} catch (InterruptedException e) {
-            //    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            //}
-
+        //final ClassLoader loader = new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (!(loader instanceof RecompiledClassLoader)) {
+            Thread.currentThread().setContextClassLoader(new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA));
         }
-        long end = System.currentTimeMillis();
-        if (log.isInfoEnabled()) {
-            log.info("[EXT-SCRITPING] class dependency scan finished, duration: " + (end - start) + " ms");
+        try {
+
+            String[] dynamicClassArr = new String[3];
+            for (String dynamicClass : possibleDynamicClasses) {
+                final String dynaClass = dynamicClass;
+
+                //TODO parallize this
+                //we have to shift the threadlocal data of the weaving context into
+                //every thread there is and push it into the threadlocals there
+                //I will leave this for now open for the next performance round
+
+                //prefill an array which keeps the in params
+                //try {
+                // threadCtrl.acquire();
+                //problem with the thread locals set we have to shift all the needed constats
+                //in and pass them into the thread
+
+                //  (new Thread() {
+                //      public void run()
+                //      {
+
+                DependencyScanner depScanner = dependencyScanner.pop();
+                try {
+                    Set<String> referrers = depScanner.fetchDependencies(Thread.currentThread().getContextClassLoader(), dynaClass, possibleDynamicClasses);
+                    //we make it in two ops because if we do the self dependency
+                    //removal in the scanner itself the code  should not break
+                    referrers.remove(dynaClass);
+                    if (!referrers.isEmpty()) {
+                        WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(dynaClass, referrers);
+                    }
+                } finally {
+                    dependencyScanner.push(depScanner);
+                    //threadCtrl.release();
+                }
+
+                //    }
+                // }).start();
+                //} catch (InterruptedException e) {
+                //    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                //}
+
+            }
+            long end = System.currentTimeMillis();
+            if (log.isInfoEnabled()) {
+                log.info("[EXT-SCRITPING] class dependency scan finished, duration: " + (end - start) + " ms");
+            }
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
         }
 
     }
