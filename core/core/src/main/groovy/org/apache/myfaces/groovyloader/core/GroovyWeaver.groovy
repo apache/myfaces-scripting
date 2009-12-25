@@ -29,6 +29,7 @@ import org.apache.myfaces.scripting.core.util.WeavingContext
 import org.apache.myfaces.scripting.api.ClassScanner
 
 import org.apache.myfaces.scripting.core.util.ClassUtils
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata
 
 /**
  * Weaver  which does dynamic class reloading
@@ -127,6 +128,25 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
 
         return retVal
 
+    }
+
+
+    private void refreshReloadingMetaData(String sourceRoot, String file, File currentClassFile, Class retVal, int engineType) {
+        if(sourceRoot.endsWith(".java")) {
+            System.out.println("Debugpoint found");
+        }
+      ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
+        reloadingMetaData.setAClass(retVal);
+
+        reloadingMetaData.setFileName(file);
+        reloadingMetaData.setSourcePath(sourceRoot);
+        reloadingMetaData.setTimestamp(currentClassFile.lastModified());
+        reloadingMetaData.setTainted(false);
+        reloadingMetaData.setScriptingEngine(engineType);
+        //ReloadingMetadata oldMetadata = getClassMap().get(retVal.getName());
+        reloadingMetaData.setTaintedOnce(getClassMap().containsKey(retVal.getName()));
+
+        getClassMap().put(retVal.getName(), reloadingMetaData);
     }
 
 

@@ -188,25 +188,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
-    //TODO move this into the classloader to cover dependend classes as well
-
-    protected void refreshReloadingMetaData(String sourceRoot, String file, File currentClassFile, Class retVal, int engineType) {
-        if(sourceRoot.endsWith(".java")) {
-            System.out.println("Debugpoint found");
-        }
-        ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
-        reloadingMetaData.setAClass(retVal);
-
-        reloadingMetaData.setFileName(file);
-        reloadingMetaData.setSourcePath(sourceRoot);
-        reloadingMetaData.setTimestamp(currentClassFile.lastModified());
-        reloadingMetaData.setTainted(false);
-        reloadingMetaData.setScriptingEngine(engineType);
-        //ReloadingMetadata oldMetadata = getClassMap().get(retVal.getName());
-        reloadingMetaData.setTaintedOnce(getClassMap().containsKey(retVal.getName()));
-
-        getClassMap().put(retVal.getName(), reloadingMetaData);
-    }
+   
 
     protected Log getLog() {
         return LogFactory.getLog(this.getClass());

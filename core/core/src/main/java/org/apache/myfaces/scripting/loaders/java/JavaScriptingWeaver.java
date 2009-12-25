@@ -140,9 +140,12 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             //can be safely ignored
         }
 
-        if (retVal != null) {
-            refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
-        }
+
+      //no refresh needed because this is done in the case of java already by
+      //the classloader  
+      //  if (retVal != null) {
+       //     refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
+      //  }
 
         /**
          * we now scan the return value and update its configuration parameters if needed
