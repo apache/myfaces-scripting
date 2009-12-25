@@ -25,12 +25,14 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Classloader which loads the compilates for the scripting engine
+ *          <p/>
+ *          Classloader which loads the compilates for the scripting engine
  */
 @JavaThrowAwayClassloader
 public class RecompiledClassLoader extends ClassLoader {
@@ -70,12 +72,25 @@ public class RecompiledClassLoader extends ClassLoader {
      */
 
     @Override
+    public InputStream getResourceAsStream(String name) {
+        File resource = new File(tempDir.getAbsolutePath() + File.separator + name);
+        if (resource.exists()) {
+            try {
+                return new FileInputStream(resource);
+            } catch (FileNotFoundException e) {
+                return super.getResourceAsStream(name);
+            }
+        }
+        return super.getResourceAsStream(name);    
+    }
+
+    @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
         File target = getClassFile(className);
         if (target.exists()) {
             ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
-            if(data != null && !data.isTainted()) {
+            if (data != null && !data.isTainted()) {
                 return data.getAClass();
             }
 
@@ -88,12 +103,12 @@ public class RecompiledClassLoader extends ClassLoader {
                 iStream.read(fileContent);
                 // Erzeugt aus dem byte Feld ein Class Object.
                 Class retVal = null;
-                
+
                 //we have to do it here because just in case
                 //a dependend class is loaded as well we run into classcast exceptions
-                if(data != null) {
+                if (data != null) {
                     data.setTainted(false);
-                    
+
                     return super.defineClass(className, fileContent, 0, fileLength);
                 } else {
                     //we store the initial reloading meta data information so that it is refreshed
@@ -113,7 +128,6 @@ public class RecompiledClassLoader extends ClassLoader {
             }
         }
 
-        
 
         return super.loadClass(className);    //To change body of overridden methods use File | Settings | File Templates.
     }
@@ -126,9 +140,9 @@ public class RecompiledClassLoader extends ClassLoader {
         //find the source for the given class and then
         //store the filename
         String separator = FileUtils.getFileSeparatorForRegex();
-        String fileName = className.replaceAll("\\.", separator)+".java";
+        String fileName = className.replaceAll("\\.", separator) + ".java";
 
-        reloadingMetaData.setFileName(sourceRoot+File.separator+fileName);
+        reloadingMetaData.setFileName(sourceRoot + File.separator + fileName);
         reloadingMetaData.setSourcePath("");
         reloadingMetaData.setTimestamp(target.lastModified());
         reloadingMetaData.setTainted(false);

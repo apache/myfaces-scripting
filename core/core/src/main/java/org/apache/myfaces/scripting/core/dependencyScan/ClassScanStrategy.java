@@ -15,9 +15,10 @@ public class ClassScanStrategy implements Strategy {
     Set<String> _whiteList;
     DependencyScanner _scanner;
     String _rootDir;
+    ClassLoader _loader;
 
 
-    public ClassScanStrategy(String rootDir, Set<String> whiteList, DependencyScanner scanner) {
+    public ClassScanStrategy(ClassLoader loader, String rootDir, Set<String> whiteList, DependencyScanner scanner) {
         this._scanner = scanner;
         this._rootDir = rootDir;
         this._whiteList = whiteList;
@@ -29,7 +30,7 @@ public class ClassScanStrategy implements Strategy {
         if (!fileName.endsWith(".class")) return;
 
         String className = ClassUtils.relativeFileToClassName(fileName.substring(_rootDir.length() + 1));
-        Set<String> classDependencies = _scanner.fetchDependencies(className, _whiteList);
+        Set<String> classDependencies = _scanner.fetchDependencies(_loader, className, _whiteList);
 
         WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(className, classDependencies);
     }

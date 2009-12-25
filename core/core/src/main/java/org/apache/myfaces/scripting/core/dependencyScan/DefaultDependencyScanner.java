@@ -48,9 +48,9 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * @param className
      * @return
      */
-    public synchronized final Set<String> fetchDependencies(String className, final Set<String> whiteList) {
+    public synchronized final Set<String> fetchDependencies(ClassLoader loader, String className, final Set<String> whiteList) {
         Set<String> retVal = new HashSet<String>();
-        investigateInheritanceHierarchy(retVal, className, whiteList);
+        investigateInheritanceHierarchy(loader, retVal, className, whiteList);
         return retVal;
     }
 
@@ -64,21 +64,21 @@ public class DefaultDependencyScanner implements DependencyScanner {
      *
      * @param retVal
      */
-    private final void investigateInheritanceHierarchy(Set<String> retVal, String className, Set<String> whiteList) {
+    private final void investigateInheritanceHierarchy(ClassLoader loader, Set<String> retVal, String className, Set<String> whiteList) {
         //we now have to fetch the parent hierarchy
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try {
+
+       try {
             Class toCheck = loader.loadClass(className);
-            scanCurrentClass(retVal, className, whiteList);
+            scanCurrentClass(loader, retVal, className, whiteList);
             Class parent = toCheck.getSuperclass();
 
             while (parent != null && !ClassLogUtils.isStandard(parent.getName())) {
-                scanCurrentClass(retVal, parent.getName(), whiteList);
+                scanCurrentClass(loader, retVal, parent.getName(), whiteList);
                 parent = parent.getSuperclass();
             }
 
         } catch (ClassNotFoundException e) {
-            log.error(e);
+            log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" +e);
         }
     }
 
@@ -88,13 +88,13 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * @param retVal
      * @param currentClassName
      */
-    private final void scanCurrentClass(Set<String> retVal, String currentClassName, Set<String> whiteList) {
+    private final void scanCurrentClass(ClassLoader loader, Set<String> retVal, String currentClassName, Set<String> whiteList) {
         cp.setDependencyTarget(retVal);
         cp.setWhiteList(whiteList);
         ClassReader cr = null;
 
         try {
-            cr = new ClassReader(currentClassName);
+            cr = new ExtendedClassReader(loader, currentClassName);
             cr.accept(cp, 0);
         } catch (IOException e) {
             log.error(e);

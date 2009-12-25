@@ -19,5 +19,5 @@ import java.util.Set;
  *          classes from dynamically loaded packages
  */
 public interface DependencyScanner {
-    public Set<String> fetchDependencies(String className, Set<String> whiteList);
+    public Set<String> fetchDependencies(ClassLoader loader, String className, Set<String> whiteList);
 }

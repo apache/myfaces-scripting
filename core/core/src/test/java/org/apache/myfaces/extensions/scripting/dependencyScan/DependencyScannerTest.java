@@ -55,7 +55,7 @@ public class DependencyScannerTest {
 
         long before = System.currentTimeMillis();
 
-        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(PROBE1, whiteList);
+        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, whiteList);
         long after = System.currentTimeMillis();
 
         log.info("execution time" + (after - before));
@@ -76,7 +76,7 @@ public class DependencyScannerTest {
         whiteList.add(DUMMY);
         whiteList.add(PROBE_NAMESPACE);
 
-        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(PROBE1, whiteList);
+        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, whiteList);
         ClassDependencies dependencyMap = new ClassDependencies();
 
         dependencyMap.addDependencies(PROBE1, retVal);

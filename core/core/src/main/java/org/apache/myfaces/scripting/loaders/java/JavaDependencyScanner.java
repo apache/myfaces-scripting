@@ -20,17 +20,16 @@ package org.apache.myfaces.scripting.loaders.java;
 
 import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.dependencyScan.ClassScanStrategy;
 import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
-import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.java.util.PackageStrategy;
 
-import java.io.File;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -55,14 +54,19 @@ public class JavaDependencyScanner implements ClassScanner {
         Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
         //TODO we have to probably set the context classloader upfront
         //otherwise the classes are not found
-        try {
-            for (String dynamicClass : possibleDynamicClasses) {
-                Set<String> referrers = dependencyScanner.fetchDependencies(dynamicClass, possibleDynamicClasses);
+        ClassLoader loader = new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
+
+
+        for (String dynamicClass : possibleDynamicClasses) {
+            Set<String> referrers = dependencyScanner.fetchDependencies(loader, dynamicClass, possibleDynamicClasses);
+            //we make it in two ops because if we do the self dependency
+            //removal in the scanner itself the code  should not break
+            referrers.remove(dynamicClass);
+            if (!referrers.isEmpty()) {
                 WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(dynamicClass, referrers);
             }
-        } finally {
-
         }
+
     }
 
 
