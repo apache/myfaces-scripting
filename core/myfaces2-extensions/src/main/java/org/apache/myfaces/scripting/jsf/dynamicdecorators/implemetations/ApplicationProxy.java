@@ -339,7 +339,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         if (converterClass.equals(PurgedConverter.class.getName())) {
             //purged case we do a full rescane
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             Converter componentToChange = _delegate.createConverter(converterId);
             if (componentToChange instanceof PurgedConverter) {
                 //Null not allowed here, but we set a purted converter to make
@@ -418,7 +418,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         if (validatorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescane
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             Validator componentToChange = _delegate.createValidator(validatorId);
             if (componentToChange instanceof PurgedValidator) {
                 //Null not allowed here, but we set a purted validator to make
@@ -460,7 +460,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         if (behaviorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescane
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             Behavior behavior = (Behavior) _delegate.createBehavior(behaviorId);
             _behaviors.put(behaviorId, behaviorClass);
             if (behavior instanceof PurgedBehavior) {
@@ -618,7 +618,7 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.setResourceHandler(resourceHandler);
         ResourceHandler handler = _delegate.getResourceHandler();
         if (handler instanceof PurgedResourceHandler) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
         }
     }
 
@@ -676,7 +676,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
         if (componentToChange instanceof PurgedComponent) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
@@ -691,7 +691,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(componentType);
         if (componentToChange instanceof PurgedComponent) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(componentType);
@@ -704,7 +704,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueBinding valueBinding, FacesContext context, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueBinding, context, componentType);
         if (componentToChange instanceof PurgedComponent) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueBinding, context, componentType);
@@ -717,7 +717,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, Resource resource) {
         UIComponent componentToChange = _delegate.createComponent(context, resource);
         if (componentToChange instanceof PurgedComponent) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, resource);
@@ -730,7 +730,7 @@ public class ApplicationProxy extends Application implements Decorated {
     private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, String componentType, String rendererType) {
         UIComponent componentToChange = _delegate.createComponent(context, componentType, rendererType);
         if (componentToChange instanceof PurgedComponent) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(context, componentType, rendererType);
@@ -744,7 +744,7 @@ public class ApplicationProxy extends Application implements Decorated {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
         String family = oldComponent.getFamily();
         if (componentToChange instanceof PurgedComponent) {
-            WeavingContext.getWeaver().fullAnnotationScan();
+            WeavingContext.getWeaver().fullClassScan();
 
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed

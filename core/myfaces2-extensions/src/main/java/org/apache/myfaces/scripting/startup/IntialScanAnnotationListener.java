@@ -51,6 +51,6 @@ public class IntialScanAnnotationListener implements SystemEventListener {
         weaver.fullRecompile();
         //we now do a full source or precompiled annotation scan
         //the entire scripting subsystem should be initialized by now
-        weaver.fullAnnotationScan();
+        weaver.fullClassScan();
     }
 }

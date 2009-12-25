@@ -88,7 +88,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
                     _delegate.setValue(elContext, base, property, null);
 
                     //we only trigger this if the bean was deregistered, we now can reregister it again
-                    WeavingContext.getWeaver().fullAnnotationScan();
+                    WeavingContext.getWeaver().fullClassScan();
                     newRetVal = _delegate.getValue(elContext, base, property);
                 }
             }

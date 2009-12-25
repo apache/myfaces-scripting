@@ -18,22 +18,16 @@
  */
 package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.*;
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
-import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
-import org.apache.myfaces.config.element.ManagedBean;
-import org.apache.myfaces.config.RuntimeConfig;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
 import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -63,7 +57,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.JSR199Compiler";
     private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
 
-    AnnotationScanner _scanner = null;
+    ClassScanner _annotationScanner = null;
+    ClassScanner _dependencyScanner = null;
+
     DynamicCompiler compiler = null;
 
     /**
@@ -77,20 +73,24 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         //url classloader at the time myfaces is initialized
         try {
             Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
-            this._scanner = (AnnotationScanner) ReflectUtil.instantiate(scanner, new Cast(ScriptingWeaver.class, this));
-
+            this._annotationScanner = (ClassScanner) ReflectUtil.instantiate(scanner, new Cast(ScriptingWeaver.class, this));
+            
         } catch (ClassNotFoundException e) {
             //we do nothing here
         }
+
+        this._dependencyScanner = new JavaDependencyScanner(this);
+        
 
     }
 
     @Override
     public void appendCustomScriptPath(String scriptPath) {
         super.appendCustomScriptPath(scriptPath);
-        if (_scanner != null) {
-            _scanner.addScanPath(scriptPath);
+        if (_annotationScanner != null) {
+            _annotationScanner.addScanPath(scriptPath);
         }
+        _dependencyScanner.addScanPath(scriptPath);
     }
 
     public JavaScriptingWeaver() {
@@ -110,7 +110,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     @Override
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
         //we load the scripting class from the given className
-        
+
         File currentClassFile = new File(sourceRoot + File.separator + file);
         if (!currentClassFile.exists()) {
             return null;
@@ -131,7 +131,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             }
             retVal = compiler.compileFile(sourceRoot, classPath, file);
 
-            if(retVal == null) {
+            if (retVal == null) {
                 return retVal;
             }
         } catch (ClassNotFoundException e) {
@@ -154,8 +154,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
          * //we only deal with class level reloading here
          * //the deregistration notification should happen on artefact level (which will be the next subtask)
          */
-        if (_scanner != null && retVal != null) {
-            _scanner.scanClass(retVal);
+        if (_annotationScanner != null && retVal != null) {
+            _annotationScanner.scanClass(retVal);
         }
 
         return retVal;
@@ -183,11 +183,15 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     /**
      * full scan, scans for all artefacts in all files
      */
-    public void fullAnnotationScan() {
-        if (_scanner == null) {
+    public void fullClassScan() {
+        _dependencyScanner.scanPaths();
+        
+        if (_annotationScanner == null) {
             return;
         }
-        _scanner.scanPaths();
+
+        _annotationScanner.scanPaths();
+
     }
 
     public void fullRecompile() {

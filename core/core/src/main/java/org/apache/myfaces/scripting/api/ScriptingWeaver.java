@@ -102,7 +102,7 @@ public interface ScriptingWeaver {
      * full annotation scan
      * at startup once the system is initialized
      */
-    public void fullAnnotationScan();
+    public void fullClassScan();
 
 
     /**

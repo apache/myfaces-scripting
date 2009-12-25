@@ -30,7 +30,7 @@ import java.lang.annotation.Annotation;
  *          meta data in the correct registry entries
  */
 
-public interface AnnotationScanListener {
+public interface AnnotationScanListener extends ClassScanListener {
 
     /**
      * returns true if the annotation marked by the incoming parameter is supported by this scanner

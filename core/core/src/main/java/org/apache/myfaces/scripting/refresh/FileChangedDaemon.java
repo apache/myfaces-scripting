@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
 
 import java.io.File;
 import java.util.*;
@@ -43,6 +44,8 @@ public class FileChangedDaemon extends Thread {
     static FileChangedDaemon instance = null;
 
     Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
+    ClassDependencies dependencyMap = new ClassDependencies();
+
 
     /**
      * this map is a shortcut for the various scripting engines
@@ -162,6 +165,10 @@ public class FileChangedDaemon extends Thread {
 
     public void setWeavers(ScriptingWeaver weavers) {
         _weavers = weavers;
+    }
+
+    public ClassDependencies getDependencyMap() {
+        return dependencyMap;
     }
 }
 

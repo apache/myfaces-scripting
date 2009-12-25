@@ -18,19 +18,16 @@
  */
 package org.apache.myfaces.groovyloader.core
 
-import org.apache.myfaces.groovyloader.core.Groovy2GroovyObjectReloadingProxy
 import org.apache.myfaces.scripting.api.ScriptingConst
 import org.apache.myfaces.scripting.api.ScriptingWeaver
 import org.codehaus.groovy.runtime.InvokerHelper
 import org.apache.myfaces.scripting.api.BaseWeaver
 import org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier
-import org.apache.myfaces.scripting.api.BaseWeaver
-import org.apache.myfaces.scripting.refresh.FileChangedDaemon
+
 import org.apache.myfaces.scripting.core.util.WeavingContext
-import org.apache.myfaces.groovyloader.core.GroovyGlobalReloadingStrategy
-import org.apache.myfaces.scripting.api.AnnotationScanner
-import org.apache.myfaces.scripting.core.util.Cast
-import org.apache.myfaces.scripting.core.util.ReflectUtil
+
+import org.apache.myfaces.scripting.api.ClassScanner
+
 import org.apache.myfaces.scripting.core.util.ClassUtils
 
 /**
@@ -52,7 +49,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
 
     static ThreadLocal _groovyClassLoaderHolder = new ThreadLocal();
     DynamicClassIdentifier identifier = new DynamicClassIdentifier()
-    AnnotationScanner _scanner = null;
+    ClassScanner _scanner = null;
 
 
 
@@ -75,7 +72,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
             Class[] params = new Class[1];
             params[0] = ScriptingWeaver.class;
             this._scanner = scanner.getConstructor(params).newInstance(this);
-            //this._scanner = (AnnotationScanner) ReflectUtil.instantiate(scanner, params);
+            //this._scanner = (ClassScanner) ReflectUtil.instantiate(scanner, params);
 
         } catch (ClassNotFoundException e) {
             //we do nothing here
@@ -165,7 +162,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     }
 
 
-    public void fullAnnotationScan() {
+    public void fullClassScan() {
         if (_scanner == null) {
             return;
         }

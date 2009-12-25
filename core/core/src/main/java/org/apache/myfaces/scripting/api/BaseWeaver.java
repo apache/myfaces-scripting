@@ -244,7 +244,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
-    public void fullAnnotationScan() {
+    public void fullClassScan() {
     }
 
 
@@ -277,6 +277,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     private void recompileRefresh() {
         fullRecompile();
+        
         refreshAllManagedBeans();
     }
 

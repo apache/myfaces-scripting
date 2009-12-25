@@ -60,6 +60,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         WeavingContext.setRefreshContext(rContext);
         log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
         weaver.requestRefresh();
+        weaver.fullClassScan();
         //TODO do a first full recompile here at startup time before the bean etc... instantiation can kick in
     }
 

@@ -19,7 +19,8 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.api.AnnotationScanner;
+import org.apache.myfaces.scripting.api.ClassScanListener;
+import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
@@ -36,9 +37,9 @@ import java.util.*;
  *          wherever possible
  */
 
-public class GenericAnnotationScanner extends BaseAnnotationScanListener implements AnnotationScanner {
+public class GenericAnnotationScanner extends BaseAnnotationScanListener implements ClassScanner {
 
-    List<AnnotationScanListener> _listeners = new LinkedList<AnnotationScanListener>();
+    List<ClassScanListener> _listeners = new LinkedList<ClassScanListener>();
 
     Map<String, String> _registeredAnnotations = new HashMap<String, String>();
     LinkedList<String> _sourcePaths = new LinkedList<String>();
@@ -53,14 +54,14 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
 
     public GenericAnnotationScanner(ScriptingWeaver weaver) {
         _weaver = weaver;
-         initDefaultListeners();
+        initDefaultListeners();
     }
 
     public void addScanPath(String sourcePath) {
         _sourcePaths.addFirst(sourcePath);
     }
 
-   
+
     Collection<java.lang.annotation.Annotation> filterAnnotations(java.lang.annotation.Annotation[] anns) {
         List<java.lang.annotation.Annotation> retVal = new ArrayList<java.lang.annotation.Annotation>(anns.length);
         if (anns == null) {
@@ -85,7 +86,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             removeAnnotations(clazz);
         }
     }
-   
+
     private void initDefaultListeners() {
         _listeners.add(new BeanImplementationListener());
         _listeners.add(new BehaviorImplementationListener());
@@ -102,7 +103,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
     public void scanPaths() {
         //TODO move this over to a binary scan system
         //https://issues.apache.org/jira/browse/EXTSCRIPT-33
-        for(String className : _weaver.loadPossibleDynamicClasses()) {
+        for (String className : _weaver.loadPossibleDynamicClasses()) {
             Class clazz = _weaver.loadScriptingClassFromName(className);
             //called already by loadScriptingClassFromName
             /*if(clazz != null) {
@@ -115,7 +116,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             }*/
         }
 
-   }
+    }
 
 
     /**
@@ -127,7 +128,8 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
     private void addOrMoveAnnotations(Class clazz) {
         java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
         for (java.lang.annotation.Annotation ann : anns) {
-            for (AnnotationScanListener listener : _listeners) {
+            for (ClassScanListener cListener : _listeners) {
+                AnnotationScanListener listener = (AnnotationScanListener) cListener;
                 if (listener.supportsAnnotation(ann.annotationType().getName())) {
                     listener.register(clazz, ann);
 
@@ -152,7 +154,8 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
     private void removeAnnotations(Class clazz) {
         String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
         if (registeredAnnotation != null) {
-            for (AnnotationScanListener listener : _listeners) {
+            for (ClassScanListener cListener : _listeners) {
+                AnnotationScanListener listener = (AnnotationScanListener) cListener;
                 if (listener.supportsAnnotation(registeredAnnotation)) {
                     listener.purge(clazz.getName());
                     _registeredAnnotations.remove(clazz.getName());
@@ -162,8 +165,6 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         }
     }
 
-
-  
 
     private void annotationMoved(Class clazz, java.lang.annotation.Annotation ann, AnnotationScanListener listener) {
         //case class exists but it has been moved to anoter annotation
@@ -178,7 +179,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         _listeners.clear();
     }
 
-    public void addListener(AnnotationScanListener listener) {
+    public void addListener(ClassScanListener listener) {
         _listeners.add(listener);
     }
 

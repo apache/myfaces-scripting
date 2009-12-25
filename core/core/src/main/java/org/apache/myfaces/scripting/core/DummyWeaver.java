@@ -65,7 +65,7 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
         return this;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void fullAnnotationScan() {
+    public void fullClassScan() {
     }
 
     public void fullRecompile() {
