@@ -95,6 +95,9 @@ public class CustomChainLoader extends ClassLoaderExtension {
     }
 
     public Class forName(String name) {
+        if(name.endsWith(";")) {
+            name = name.substring(1, name.length() - 1);
+        }
         if(name == null) {
             return null;
         }
@@ -106,7 +109,12 @@ public class CustomChainLoader extends ClassLoaderExtension {
             return null;
         else if (name.startsWith("sun.")) /*internal java specific namespace*/
             return null;
-
+        else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
+            return null;
+        }
+        if(name.contains("Blog")) {
+            System.out.println("Debugpoint found");
+        }
         return scriptingWeaver.loadScriptingClassFromName(name);
     }
 

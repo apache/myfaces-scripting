@@ -103,6 +103,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
      * note this method does not have to be thread safe
      * it is called in a thread safe manner by the base class
      *
+     * //TODO eliminate the source root we have the roots now somewhere else
+     *
      * @param sourceRoot the source search lookup path
      * @param file       the filename to be compiled and loaded
      * @return a valid class if it could be found, null if none was found
@@ -120,7 +122,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             log.info("[EXT-SCRIPTING] Loading Java file:" + file);
         }
 
-        Iterator<String> it = scriptPaths.iterator();
+        Iterator<String> it = WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine()).iterator();
         Class retVal = null;
 
         try {
@@ -203,7 +205,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());//new ReflectCompilerFacade();
         }
 
-        for (String scriptPath : getScriptPaths()) {
+        for (String scriptPath : WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine())) {
             //compile via javac dynamically, also after this block dynamic compilation
             //for the entire length of the request,
             try {

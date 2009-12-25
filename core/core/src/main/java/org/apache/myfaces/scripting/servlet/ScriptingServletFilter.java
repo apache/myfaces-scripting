@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
+import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
@@ -46,6 +47,7 @@ public class ScriptingServletFilter implements Filter {
 
         WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
         WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
+        WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_CONFIGURATION));
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
@@ -56,8 +58,8 @@ public class ScriptingServletFilter implements Filter {
     }
 
 
-
     //we mark the request beginning and end for further synchronisation issues
+
     private final AtomicInteger getRequestCnt() {
         return (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
     }

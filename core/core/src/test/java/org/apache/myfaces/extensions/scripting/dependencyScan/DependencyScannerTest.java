@@ -81,10 +81,10 @@ public class DependencyScannerTest {
 
         dependencyMap.addDependencies(PROBE1, retVal);
 
-        assertTrue("Dependency Test1", dependencyMap.getReferencedClasses(PROBE2).contains(PROBE1));
-        assertTrue("Dependency Test2", dependencyMap.getReferencedClasses(PROBE3).contains(PROBE1));
-        assertTrue("Dependency Test3", dependencyMap.getReferencedClasses(PROBE4).contains(PROBE1));
-        assertTrue("Dependency Test4", dependencyMap.getReferencedClasses(PROBE_PAR).contains(PROBE1));
+        assertTrue("Dependency Test1", dependencyMap.getReferringClasses(PROBE2).contains(PROBE1));
+        assertTrue("Dependency Test2", dependencyMap.getReferringClasses(PROBE3).contains(PROBE1));
+        assertTrue("Dependency Test3", dependencyMap.getReferringClasses(PROBE4).contains(PROBE1));
+        assertTrue("Dependency Test4", dependencyMap.getReferringClasses(PROBE_PAR).contains(PROBE1));
 
     }
 

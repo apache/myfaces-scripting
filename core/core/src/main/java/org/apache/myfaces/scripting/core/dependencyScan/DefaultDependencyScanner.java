@@ -43,6 +43,8 @@ public class DefaultDependencyScanner implements DependencyScanner {
     final ClassScanVisitor cp = new ClassScanVisitor();
     Log log = LogFactory.getLog(this.getClass().getName());
 
+    public DefaultDependencyScanner() {
+    }
 
     /**
      * @param className

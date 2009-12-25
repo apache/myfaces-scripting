@@ -29,6 +29,7 @@ public class ScriptingConst {
     public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.SCRIPTING_GROOVYFACTORY";
     public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.SCRIPTING_REQUSINGLETON";
 
+
     public static final String RELOAD_MAP = "reloadMap";
     public static final String SESS_BEAN_REFRESH_TIMER = "sessbeanrefrsh";
 
@@ -62,4 +63,5 @@ public class ScriptingConst {
     public static final int ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
 
     public static final String CTX_REQUEST_CNT = "RequestCnt";
+    public static final String CTX_CONFIGURATION = "ExtScriptingConfig";
 }

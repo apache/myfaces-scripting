@@ -18,6 +18,9 @@
  */
 package org.apache.myfaces.scripting.loaders.java;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -27,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collection;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -81,7 +85,7 @@ public class RecompiledClassLoader extends ClassLoader {
                 return super.getResourceAsStream(name);
             }
         }
-        return super.getResourceAsStream(name);    
+        return super.getResourceAsStream(name);
     }
 
     @Override
@@ -141,9 +145,25 @@ public class RecompiledClassLoader extends ClassLoader {
         //store the filename
         String separator = FileUtils.getFileSeparatorForRegex();
         String fileName = className.replaceAll("\\.", separator) + ".java";
+        Collection<String> sourceDirs = WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA);
+        String rootDir = null;
+        for (String sourceDir : sourceDirs) {
+            String fullPath = sourceDir + File.separator + fileName;
+            if ((new File(fullPath)).exists()) {
+                rootDir = sourceDir;
+                break;
+            }
+        }
 
-        reloadingMetaData.setFileName(sourceRoot + File.separator + fileName);
-        reloadingMetaData.setSourcePath("");
+        if (rootDir == null) {
+            Log log = LogFactory.getLog(this.getClass().getName());
+            log.warn("Warning source for class:" + className + " could not be found");
+            return retVal;
+        }
+
+
+        reloadingMetaData.setFileName(fileName);
+        reloadingMetaData.setSourcePath(rootDir);
         reloadingMetaData.setTimestamp(target.lastModified());
         reloadingMetaData.setTainted(false);
         reloadingMetaData.setTaintedOnce(true);

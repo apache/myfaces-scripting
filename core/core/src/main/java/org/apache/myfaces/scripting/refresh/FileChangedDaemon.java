@@ -112,19 +112,52 @@ public class FileChangedDaemon extends Thread {
 
                 File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
                 if (!it.getValue().isTainted() && isModified(it, proxyFile)) {
-                    it.getValue().setTainted(true);
+
 
                     systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
+                    it.getValue().setTainted(true);
                     it.getValue().setTaintedOnce(true);
                     printInfo(it, proxyFile);
                     it.getValue().setTimestamp(proxyFile.lastModified());
+                    dependencyTainted(it.getValue().getAClass().getName());
                 }
             }
         }
     }
 
+    /**
+     * recursive walk over our meta data to taint also the classes
+     * which refer to our refreshing class so that those
+     * are reloaded as well, this helps to avoid classcast
+     * exceptions caused by imports and casts on long running artefacts
+     *
+     * @param className the origin classname which needs to be walked recursively
+     */
+    private void dependencyTainted(String className) {
+        Set<String> referrers = dependencyMap.getReferringClasses(className);
+        if(referrers == null) return;
+        for (String referrer : referrers) {
+            ReloadingMetadata metaData = classMap.get(referrer);
+            if (metaData == null) continue;
+            if (metaData.isTainted()) continue;
+            printInfo(metaData);
+
+            metaData.setTainted(true);
+            metaData.setTaintedOnce(true);
+            dependencyTainted(metaData.getAClass().getName());
+            
+        }
+    }
+
+
     private final boolean isModified(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
         return proxyFile.lastModified() != it.getValue().getTimestamp();
+    }
+
+    private void printInfo(ReloadingMetadata it) {
+        if (log.isInfoEnabled()) {
+            log.info("[EXT-SCRIPTING] Tainting Dependency:" + it.getFileName());
+        }
     }
 
     private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {

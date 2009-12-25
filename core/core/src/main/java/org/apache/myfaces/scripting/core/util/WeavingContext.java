@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.DummyWeaver;
@@ -35,7 +36,7 @@ import java.util.Map;
 /**
  * A set of weaving context class called
  * by the various subsystems
- *
+ * <p/>
  * TODO move this away from static methods into a singleton which is kept
  * in the application context, to keep the context pattern.
  *
@@ -59,19 +60,14 @@ public class WeavingContext {
      * </p>
      */
     static protected ThreadLocal _weaverHolder = new ThreadLocal();
-
-    static protected ThreadLocal _eventProcessorHolder = new ThreadLocal();
-
-    static protected ThreadLocal _externalContextHolder = new ThreadLocal();
-
     static protected ThreadLocal _refreshContextHolder = new ThreadLocal();
+    static protected ThreadLocal _configuration = new ThreadLocal();
+    private static final String WARN_WEAVER_NOT_SET = "Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
-    
 
     public static void init() {
 
     }
-
 
 
     /**
@@ -89,19 +85,13 @@ public class WeavingContext {
         return (RefreshContext) _refreshContextHolder.get();
     }
 
-    /**
-     * fetches the generic request map if available
-     *
-     * @return the request map if available, null otherwise
-     */
-    public static Map<String, Object> getRequestAttributesMap() {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        if (ctx == null) return null;
-        return ctx.getExternalContext().getRequestMap();
+    public static Configuration getConfiguration() {
+        return (Configuration) _configuration.get();
     }
 
-
-    
+    public static void setConfiguration(Configuration configuration) {
+        _configuration.set(configuration);
+    }
 
 
     /**
@@ -143,7 +133,7 @@ public class WeavingContext {
         ScriptingWeaver weaver = (ScriptingWeaver) _weaverHolder.get();
         if (weaver == null) {
             Log log = LogFactory.getLog(WeavingContext.class);
-            log.warn("Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml");
+            log.warn(WARN_WEAVER_NOT_SET);
             _weaverHolder.set(new DummyWeaver());
         }
         return (ScriptingWeaver) _weaverHolder.get();
@@ -165,8 +155,8 @@ public class WeavingContext {
      */
     public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
-                                      new Class[]{theInterface},
-                                      new MethodLevelReloadingHandler(o, artefactType));
+                new Class[]{theInterface},
+                new MethodLevelReloadingHandler(o, artefactType));
     }
 
     /**
@@ -180,8 +170,8 @@ public class WeavingContext {
      */
     public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
-                                      new Class[]{theInterface},
-                                      new MethodLevelReloadingHandler(o, artefactType));
+                new Class[]{theInterface},
+                new MethodLevelReloadingHandler(o, artefactType));
     }
 
     public static FileChangedDaemon getFileChangedDaemon() {

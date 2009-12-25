@@ -54,7 +54,7 @@ public class ClassDependencies {
      *
      * @param clazz the referencing class to delete
      */
-    public void removeReferencing(String clazz) {
+    public void removeReferrer(String clazz) {
         List<String> emptyReferences = new ArrayList<String>(reverseIndex.size());
         for (Map.Entry<String, Set<String>> entry : reverseIndex.entrySet()) {
             Set<String> entrySet = entry.getValue();
@@ -69,8 +69,8 @@ public class ClassDependencies {
     }
 
 
-    public Set<String> getReferencedClasses(String referencingClass) {
-        return reverseIndex.get(referencingClass);
+    public Set<String> getReferringClasses(String referencedClass) {
+        return reverseIndex.get(referencedClass);
     }
 
     private final Set<String> getReverseDependencies(String dependency) {

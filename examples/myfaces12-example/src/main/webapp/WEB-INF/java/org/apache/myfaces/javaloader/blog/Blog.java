@@ -93,8 +93,8 @@ public class Blog {
             * the same behavior you get from scripting engines!
             * 
             */
-            //service.addEntry(entry);
-            executeMethod(service, "addEntry",  entry);
+            service.addEntry(entry);
+            //executeMethod(service, "addEntry",  entry);
         }
 
         //we stay on the same page

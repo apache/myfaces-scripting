@@ -45,7 +45,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * only be set from the
      * initialisation code so no thread safety needed
      */
-    protected List<String> scriptPaths = new LinkedList<String>();
+
 
     protected ReloadingStrategy _reloadingStrategy = null;
     private static final String SCOPE_SESSION = "session";
@@ -73,7 +73,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             scriptPath = scriptPath.substring(0, scriptPath.length() - 1);
         }
 
-        getScriptPaths().add(scriptPath);
+        WeavingContext.getConfiguration().addSourceDir(getScriptingEngine(), scriptPath);
     }
 
 
@@ -164,7 +164,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             String separator = FileUtils.getFileSeparatorForRegex();
             String fileName = className.replaceAll("\\.", separator) + getFileEnding();
 
-            for (String pathEntry : getScriptPaths()) {
+            for (String pathEntry : WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine())) {
 
                 /**
                  * the reload has to be performed synchronized
@@ -189,7 +189,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     //TODO move this into the classloader to cover dependend classes as well
+
     protected void refreshReloadingMetaData(String sourceRoot, String file, File currentClassFile, Class retVal, int engineType) {
+        if(sourceRoot.endsWith(".java")) {
+            System.out.println("Debugpoint found");
+        }
         ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
         reloadingMetaData.setAClass(retVal);
 
@@ -221,7 +225,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         this.fileEnding = fileEnding;
     }
 
-    public int getScriptingEngine() {
+    public final int getScriptingEngine() {
         return scriptingEngine;
     }
 
@@ -234,9 +238,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     public abstract boolean isDynamic(Class clazz);
 
-    public List<String> getScriptPaths() {
-        return scriptPaths;
-    }
+   
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass) {
         if (getClass().equals(weaverClass)) return this;
@@ -277,7 +279,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     private void recompileRefresh() {
         fullRecompile();
-        
+
         refreshAllManagedBeans();
     }
 
@@ -426,7 +428,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param bean
      */
     private void removeBeanReferences(ManagedBean bean) {
-        if(getLog().isInfoEnabled()) {
+        if (getLog().isInfoEnabled()) {
             getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
         }
 
@@ -465,7 +467,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     public Collection<String> loadPossibleDynamicClasses() {
 
-        List<String> scriptPaths = getScriptPaths();
+        Collection<String> scriptPaths = WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine());
         List<String> retVal = new LinkedList<String>();
 
         for (String scriptPath : scriptPaths) {

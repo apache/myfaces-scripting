@@ -107,7 +107,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
             //we have to add the script path so that groovy can work out the kinks of other source files added
             _groovyClassLoaderHolder.set(gcl)
 
-            getScriptPaths().each {
+            WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY).each {
                 gcl.addClasspath(it)
             }
         }
