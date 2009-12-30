@@ -22,6 +22,7 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -54,31 +55,26 @@ public class RefreshContext {
      */
     volatile FileChangedDaemon daemon = FileChangedDaemon.getInstance();
 
-    /*
-     * we have to keep the component data as shadow data reachable
-     * from various parts of the system to resolve
-     * the component <-> renderer dependencies
-     * we do not resolve the dependencies between the tag handlers
-     * and the components for now
-     *
-     * resolving those dependencies means
-     * renderer changes <-> taint all component classes which use
-     * the renderer
-     *
-     * component changes <-> taint all renderer classes as well
-     *
-     * This is needed to avoid intra component <-> renderer
-     * classcast exceptions
-     *
-     * the content of this map is the component class
-     * and the value is the renderer class
+
+    /**
+     * the bean synchronisation has to be dealt with
+     * differently, we have two volatile points in the lifecycle
+     * one being the compile the other one the bean refresh
+     * the refresh can only happen outside of a compile cycle
+     * and also a global refresh has to be atomic and no other
+     * refreshes should happen
      */
-    private volatile Map<String, String> _componentRendererDependencies = new ConcurrentHashMap<String, String>();
-    private volatile Map<String, String> _rendererComponentDependencies = new ConcurrentHashMap<String, String>();
-
-
     public volatile static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
-    public volatile static Boolean RELOAD_SYNC_MONITOR = new Boolean(true);
+
+    /**
+     * second synchronisation monitor
+     * all other artefacts can only be refreshed outside of a
+     * compile cycle othwise the classloader would get
+     * half finished compile states to load
+     */
+    public volatile static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
+
+    private volatile AtomicInteger currentlyRunningRequests = null;
 
     public long getPersonalScopedBeanRefresh() {
         return personalScopedBeanRefresh;
@@ -134,19 +130,30 @@ public class RefreshContext {
      * @param engineType
      * @return
      */
-    public static boolean isComileAllowed(int engineType) {
-        //TODO implement synchronized locking logic to avoid
-        //race conditions in multiuser environments
-        return true;
+    public boolean isComileAllowed(int engineType) {
+
+        return getCurrentlyRunningRequests().equals(1);
     }
 
-    public Map<String, String> getComponentRendererDependencies() {
-        return _componentRendererDependencies;
+ 
+    /**
+     * getter for our request counter
+     * we need this variable to keep a lock
+     * on the number of requests
+     * we only can compile if the currently
+     * running request is the only one currently
+     * active, to keep the compilation results in sync
+     *
+     * @return the request counter holder which is an atomic integer
+     *
+     * probably deprecred
+     */
+    public AtomicInteger getCurrentlyRunningRequests() {
+        return currentlyRunningRequests;
     }
 
-
-    public Map<String, String> getRendererComponentDependencies() {
-        return _rendererComponentDependencies;
+    public void setCurrentlyRunningRequests(AtomicInteger currentlyRunning) {
+        currentlyRunningRequests = currentlyRunning;
     }
 
 }

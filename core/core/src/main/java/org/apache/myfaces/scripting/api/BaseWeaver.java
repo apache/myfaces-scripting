@@ -139,7 +139,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //if not tained then we can recycle the last class loaded
             return metadata.getAClass();
         }
-        synchronized (RefreshContext.RELOAD_SYNC_MONITOR) {
+        synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
             //another chance just in case someone has reloaded between
             //the last if and synchronized, that way we can reduce the number of waiting threads
             if (!metadata.isTainted()) {
@@ -170,7 +170,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                  * the reload has to be performed synchronized
                  * hence there is no chance to do it unsynchronized
                  */
-                synchronized (RefreshContext.RELOAD_SYNC_MONITOR) {
+                synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
                     metadata = classMap.get(className);
                     if (metadata != null) {
                         return reloadScriptingClass(metadata.getAClass());
@@ -188,7 +188,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
-   
 
     protected Log getLog() {
         return LogFactory.getLog(this.getClass());
@@ -220,7 +219,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     public abstract boolean isDynamic(Class clazz);
 
-   
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass) {
         if (getClass().equals(weaverClass)) return this;
@@ -233,12 +231,17 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
 
     public void requestRefresh() {
+        //needed?
+
+
         if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
             // we set a lock over the compile and bean refresh
             //and an inner check again to avoid unneeded compile triggers
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
-                    recompileRefresh();
+
+                        recompileRefresh();
+
                     return;
                 }
             }
@@ -260,7 +263,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     private void recompileRefresh() {
-        fullRecompile();
+        synchronized(RefreshContext.COMPILE_SYNC_MONITOR) {
+            fullRecompile();
+        }
 
         refreshAllManagedBeans();
     }
@@ -362,42 +367,46 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * other users have to drop their non application scoped beans as well!
      */
     private void refreshPersonalScopedBeans() {
+        //the refreshing is only allowed if no compile is in progress
+        //and vice versa
 
-        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-        //the map is immutable but in between scanning might change it so we make a full copy of the map
-
-        //We can synchronized the refresh, but if someone alters
-        //the bean map from outside we still get race conditions
-        //But for most cases this mutex should be enough
-
-        Map<String, ManagedBean> workCopy = null;
         synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
+            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+            //the map is immutable but in between scanning might change it so we make a full copy of the map
+
+            //We can synchronized the refresh, but if someone alters
+            //the bean map from outside we still get race conditions
+            //But for most cases this mutex should be enough
+
+            Map<String, ManagedBean> workCopy = null;
+
             workCopy = makeSnapshot(mbeans);
-        }
 
-        for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
 
-            Class managedBeanClass = entry.getValue().getManagedBeanClass();
-            if (WeavingContext.isDynamic(managedBeanClass)) {
-                String scope = entry.getValue().getManagedBeanScope();
+            for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
 
-                if (scope != null && !scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
-                    if (scope.equalsIgnoreCase(SCOPE_REQUEST)) {
-                        //request, nothing has to be done here
-                        return;
-                    }
-                    synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
+                Class managedBeanClass = entry.getValue().getManagedBeanClass();
+                if (WeavingContext.isDynamic(managedBeanClass)) {
+                    String scope = entry.getValue().getManagedBeanScope();
+
+                    if (scope != null && !scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
+                        if (scope.equalsIgnoreCase(SCOPE_REQUEST)) {
+                            //request, nothing has to be done here
+                            return;
+                        }
+
                         if (scope.equalsIgnoreCase(SCOPE_SESSION)) {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
                         } else {
                             removeCustomScopedBean(entry.getValue());
                         }
+
                     }
+
                 }
-
             }
-
             updateBeanRefreshTime();
+
         }
 
     }
@@ -409,6 +418,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      *
      * @param bean
      */
+
     private void removeBeanReferences(ManagedBean bean) {
         if (getLog().isInfoEnabled()) {
             getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");

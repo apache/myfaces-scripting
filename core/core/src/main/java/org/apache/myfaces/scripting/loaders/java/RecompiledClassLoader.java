@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import java.io.File;
@@ -100,12 +101,18 @@ public class RecompiledClassLoader extends ClassLoader {
             }
 
             FileInputStream iStream = null;
-            int fileLength = (int) target.length();
-            byte[] fileContent = new byte[fileLength];
 
+            int fileLength = -1;
+            byte[] fileContent = null;
             try {
-                iStream = new FileInputStream(target);
-                iStream.read(fileContent);
+                //we cannot load while a compile is in progress
+                //we have to wait until it is one
+                synchronized(RefreshContext.COMPILE_SYNC_MONITOR) {
+                    fileLength = (int) target.length();
+                    fileContent = new byte[fileLength];
+                    iStream = new FileInputStream(target);
+                    iStream.read(fileContent);
+                }
                 // Erzeugt aus dem byte Feld ein Class Object.
                 Class retVal = null;
 

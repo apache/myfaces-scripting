@@ -48,12 +48,18 @@ public class ScriptingServletFilter implements Filter {
         WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
         WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
         WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_CONFIGURATION));
+        WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
 
-        filterChain.doFilter(servletRequest, servletResponse);
+
+        try {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } finally {
+            markRequestEnd();
+        }
     }
 
     public void destroy() {
-        markRequestEnd();
+
         WeavingContext.clean();
     }
 
@@ -71,10 +77,6 @@ public class ScriptingServletFilter implements Filter {
 
     private int markRequestEnd() {
         return getRequestCnt().decrementAndGet();
-    }
-
-    private int concurrentRequests() {
-        return getRequestCnt().get();
     }
 
 }

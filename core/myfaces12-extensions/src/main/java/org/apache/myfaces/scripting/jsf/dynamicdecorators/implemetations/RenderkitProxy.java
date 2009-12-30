@@ -55,13 +55,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         //renderers itself are flyweight patterns which means they are shared over objects
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_RENDERER);
         _delegate.addRenderer(componentFamily, rendererType, renderer);
-
-        /**
-         * we save the component family and the renderer class name
-         * so that if a component of
-         */
-
-        WeavingContext.getRefreshContext().getRendererComponentDependencies().put(renderer.getClass().getName(), componentFamily);
     }
 
     public Renderer getRenderer(String componentFamily, String rendererType) {
