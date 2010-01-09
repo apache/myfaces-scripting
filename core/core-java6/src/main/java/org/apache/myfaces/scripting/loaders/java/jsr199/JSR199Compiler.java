@@ -58,9 +58,9 @@ public class JSR199Compiler implements DynamicCompiler {
 
     private static final String FILE_SEPARATOR = File.separator;
 
-    JavaCompiler                        javaCompiler = ToolProvider.getSystemJavaCompiler();
+    JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
-    ContainerFileManager                fileManager = null;
+    ContainerFileManager fileManager = null;
 
 
     public JSR199Compiler() {

@@ -1,6 +1,6 @@
-<project xmlns = "http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>myfaces12-extensions</artifactId>
     <packaging>jar</packaging>
@@ -17,14 +17,14 @@
     </parent>
 
     <dependencies>
-        
+
 
         <dependency>
             <groupId>org.apache.myfaces.extension-scripting</groupId>
             <artifactId>core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-                
+
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
@@ -39,12 +39,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.sun.facelets</groupId>
+            <artifactId>jsf-facelets</artifactId>
+            <version>1.1.11</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.8.0</version>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>commons-el</groupId>
             <artifactId>commons-el</artifactId>
             <version>1.0</version>

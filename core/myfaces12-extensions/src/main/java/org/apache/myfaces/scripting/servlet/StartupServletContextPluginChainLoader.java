@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.servlet;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,13 +37,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author werpu
- * @date: 14.08.2009
- * <p/>
- * Startup context plugin chainloader
- * for myfaces 1.2.x,
- * we hook ourselfs into the startup event
- * system we have for myfaces 1.2.x+ to do the initial
- * configuration before the myfaces init itself starts!
+ *         <p/>
+ *         <p/>
+ *         Startup context plugin chainloader
+ *         for MyFaces 1.2.x,
+ *         we hook ourselves into the startup event
+ *         system we have for MyFaces 1.2.x+ to do the initial
+ *         configuration before the MyFaces init itself starts!
  */
 public class StartupServletContextPluginChainLoader implements StartupListener {
     final Log log = LogFactory.getLog(this.getClass());
@@ -69,9 +70,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     /**
      * initiates the first compile and scan in the subsystem
      *
-     * @param weaver our weaver which reveices the trigger calls
+     * @param weaver our weaver which receives the trigger calls
      */
-    private final void initInitialCompileAndScan(ScriptingWeaver weaver) {
+    private void initInitialCompileAndScan(ScriptingWeaver weaver) {
         log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
         weaver.requestRefresh();
         weaver.fullClassScan();
@@ -85,7 +86,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
      * @param servletContext the servlet context singleton which keeps
      *                       the context for distribution
      */
-    private final void initRefreshContext(ServletContext servletContext) {
+    private void initRefreshContext(ServletContext servletContext) {
         RefreshContext rContext = new RefreshContext();
         servletContext.setAttribute("RefreshContext", rContext);
         WeavingContext.setRefreshContext(rContext);
@@ -98,9 +99,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
      *
      * @param servletContext the application scoped holder for our weaver
      * @param loader         the chain loader which serves the weavers
-     * @return the weaver instance wich is generated and stored
+     * @return the weaver instance which is generated and stored
      */
-    private final ScriptingWeaver initScriptingWeaver(ServletContext servletContext, CustomChainLoader loader) {
+    private ScriptingWeaver initScriptingWeaver(ServletContext servletContext, CustomChainLoader loader) {
         ScriptingWeaver weaver = loader.getScriptingWeaver();
         servletContext.setAttribute("ScriptingWeaver", weaver);
         return weaver;
@@ -108,12 +109,12 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
     /**
      * initializes our custom chain loader which gets plugged into
-     * the myfaces loading part for classes!
+     * the MyFaces loading part for classes!
      *
-     * @param servletContext
-     * @return
+     * @param servletContext the servlet context to be passed down
+     * @return the custom chain loader for loading our classes over our classloaders
      */
-    private final CustomChainLoader initChainLoader(ServletContext servletContext) {
+    private CustomChainLoader initChainLoader(ServletContext servletContext) {
         CustomChainLoader loader = new CustomChainLoader(servletContext);
         ClassUtils.addClassLoadingExtension(loader, true);
         return loader;
@@ -122,12 +123,20 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     /**
      * initializes the central config storage!
      *
-     * @param servletContext
+     * @param servletContext the applications servlet context
      */
-    private final void initConfig(ServletContext servletContext) {
+    private void initConfig(ServletContext servletContext) {
         Configuration conf = new Configuration();
         servletContext.setAttribute(ScriptingConst.CTX_CONFIGURATION, conf);
         WeavingContext.setConfiguration(conf);
+        //we now add the resource loader path here
+        String resourceDirs = servletContext.getInitParameter(ScriptingConst.INIT_PARAM_RESOURCE_PATH);
+        if (!StringUtils.isBlank(resourceDirs)) {
+            String[] splittedResourceDirs = resourceDirs.split(",");
+            for (String resourceDir : splittedResourceDirs) {
+                conf.addResourceDir(resourceDir);
+            }
+        }
     }
 
     public void postInit(ServletContextEvent evt) {
