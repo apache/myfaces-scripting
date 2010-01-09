@@ -54,6 +54,7 @@ public class ClassDependencies {
      *
      * @param clazz the referencing class to delete
      */
+    @SuppressWarnings("unused")
     public void removeReferrer(String clazz) {
         List<String> emptyReferences = new ArrayList<String>(reverseIndex.size());
         for (Map.Entry<String, Set<String>> entry : reverseIndex.entrySet()) {

@@ -6,11 +6,11 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import java.io.File;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 /**
  * A scan strategy for scanning class files within our api
  */
+@SuppressWarnings("unused")
 public class ClassScanStrategy implements Strategy {
     Set<String> _whiteList;
     DependencyScanner _scanner;

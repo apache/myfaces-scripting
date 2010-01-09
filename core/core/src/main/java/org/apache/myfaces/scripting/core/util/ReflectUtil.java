@@ -44,7 +44,7 @@ public class ReflectUtil {
     /**
      * A simplified instantiation over reflection
      *
-     * @param clazz   the class to be istantiated
+     * @param clazz   the class to be instantiated
      * @param varargs the instantiation parameters
      * @return the instantiated object
      */
@@ -74,15 +74,14 @@ public class ReflectUtil {
             throw new RuntimeException(e);
         }
     }/*this is mostly just a helper to bypass a groovy bug in a more
-   * complex delegation environemt. Groovy throws a classcast
-   * exeption wrongly, delegating the instantiation code to java
+   * complex delegation environment. Groovy throws a classcast
+   * exception wrongly, delegating the instantiation code to java
    * fixes that
    * */
 
     public static Object newObject(Class clazz) throws IllegalAccessException, InstantiationException {
         return clazz.newInstance();
     }
-
 
     /**
      * Generic execute method which simplifies the reflection api
@@ -112,7 +111,6 @@ public class ReflectUtil {
 
     }
 
-
     public static Collection<Method> getAllMethods(Class clazz, String methodName, int varargLength) {
         ArrayList<Method> retVal = new ArrayList<Method>(30);
         while (clazz.equals(java.lang.Object.class)) {
@@ -127,7 +125,6 @@ public class ReflectUtil {
         return retVal;
     }
 
-
     public static Collection<Method> getMethods(Class clazz, String methodName, int varargLength) {
         ArrayList<Method> retVal = new ArrayList<Method>(30);
         for (Method m : clazz.getDeclaredMethods()) {
@@ -139,7 +136,6 @@ public class ReflectUtil {
         return retVal;
     }
 
-
     /**
      * Generic execute method which simplifies the reflection api
      * down to a usable system
@@ -148,10 +144,10 @@ public class ReflectUtil {
      * @param methodName the method name
      * @param varargs    the arguments which have to be passed to the method
      * @return the return value of the method
-     * @throws a generic runtime exception in case of a failure
-     *           we use unmanaged exceptions here to get a behavior similar to scripting
-     *           language execution where failures can happen but method executions
-     *           should not enforce exception handling
+     * @throws RuntimeException a generic runtime exception in case of a failure
+     *                          we use unmanaged exceptions here to get a behavior similar to scripting
+     *                          language execution where failures can happen but method executions
+     *                          should not enforce exception handling
      */
     public static Object executeMethod(Object obj, String methodName, Object... varargs) {
 
@@ -210,7 +206,6 @@ public class ReflectUtil {
     static class _MethodNotFound {
     }
 
-
     /**
      * check if the return vaue is a method not found return val which
      * indicates we have to follow the next workflow step
@@ -221,7 +216,6 @@ public class ReflectUtil {
     private static boolean methodNotFound(Object retVal) {
         return retVal instanceof _MethodNotFound;
     }
-
 
     /**
      * executes a method in an invocation handler
@@ -269,7 +263,6 @@ public class ReflectUtil {
         return new _MethodNotFound();
     }
 
-
     /**
      * executes a static method on a class
      *
@@ -293,7 +286,6 @@ public class ReflectUtil {
         return new _MethodNotFound();
     }
 
-
     private static void handleException(Throwable e) {
         if (e instanceof IllegalAccessException) {
             //do nothing
@@ -303,7 +295,6 @@ public class ReflectUtil {
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * executes a function method on a target object
@@ -340,7 +331,6 @@ public class ReflectUtil {
         }
 
     }
-
 
     /**
      * faster reflection call

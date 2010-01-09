@@ -5,19 +5,18 @@ import org.objectweb.asm.ClassReader;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
- * User: werpu2
- * Date: 23.12.2009
- * Time: 09:01:10
- * To change this template use File | Settings | File Templates.
+ * Class reader for ASM which allows to plug our own loader instead
+ * of the default one
+ * <p/>
+ * (ASM makes too many assumptions regarding the loader)
  */
 public class ExtendedClassReader extends ClassReader {
     /**
      * classloader pluggable classreader
      *
-     * @param loader
-     * @param className
-     * @throws IOException
+     * @param loader    the loader which has to be plugged into the system
+     * @param className the class name for the class which has to be investigated
+     * @throws IOException in case of a loading error (class cannot be loaded for whatever reason)
      */
     public ExtendedClassReader(ClassLoader loader, String className) throws IOException {
         super(loader.getResourceAsStream(className.replace('.', '/')

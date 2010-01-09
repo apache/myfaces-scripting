@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.core.reloading;
 
-import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
@@ -28,7 +27,7 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
  * @version $Revision$ $Date$
  *          <p/>
  *          A reloading strategy chain of responsibility which switches
- *          depending on the artefact type to the correct
+ *          depending on the artifact type to the correct
  *          strategy
  */
 
@@ -44,7 +43,6 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
         setWeaver(weaver);
     }
 
-
     public GlobalReloadingStrategy() {
 
     }
@@ -53,28 +51,28 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
      * the strategy callback which switches between various strategies
      * we have in our system
      *
-     * @param toReload
-     * @param artefactType
-     * @return
+     * @param toReload     the object which has to be reloaded
+     * @param artifactType the artifact type for which the reloading strategy has to be applied to
+     * @return either the same or a reloading object depending on the current state of the object
      */
-    public Object reload(Object toReload, int artefactType) {
+    public Object reload(Object toReload, int artifactType) {
 
-        switch (artefactType) {
+        switch (artifactType) {
             case ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN:
-                return _beanStrategy.reload(toReload, artefactType);
+                return _beanStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_RENDERER:
-                return _noMappingStrategy.reload(toReload, artefactType);
+                return _noMappingStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_BEHAVIOR:
-                return _noMappingStrategy.reload(toReload, artefactType);
+                return _noMappingStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER:
-                return _noMappingStrategy.reload(toReload, artefactType);
+                return _noMappingStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_COMPONENT:
-                return _noMappingStrategy.reload(toReload, artefactType);
+                return _noMappingStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_VALIDATOR:
-                return _noMappingStrategy.reload(toReload, artefactType);
-            //TODO Add other artefact loading strategies on demand here
+                return _noMappingStrategy.reload(toReload, artifactType);
+            //TODO Add other artifact loading strategies on demand here
             default:
-                return _allOthers.reload(toReload, artefactType);
+                return _allOthers.reload(toReload, artifactType);
         }
     }
 

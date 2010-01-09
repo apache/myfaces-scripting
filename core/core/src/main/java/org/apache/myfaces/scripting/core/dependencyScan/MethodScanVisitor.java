@@ -32,8 +32,6 @@ import java.util.Set;
 
 class MethodScanVisitor implements MethodVisitor {
 
-    //static final Logger log = Logger.getLogger("MethodScanVisitor");
-
     final Set<String> dependencies;
     final Set<String> whiteList;
 
@@ -41,7 +39,6 @@ class MethodScanVisitor implements MethodVisitor {
         this.dependencies = dependencies;
         this.whiteList = whiteList;
     }
-
 
     public AnnotationVisitor visitAnnotationDefault() {
         return null;

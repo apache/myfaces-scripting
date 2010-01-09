@@ -57,7 +57,7 @@ public class FileUtils {
     }
 
     public static File getTempDir() {
-        File tempDir = null;
+        File tempDir;
 
         String baseTempPath = System.getProperty("java.io.tmpdir");
         String tempDirName = "myfaces_compilation_" + _tempMarker;
@@ -72,21 +72,21 @@ public class FileUtils {
             if (tempDir.exists()) {
                 return tempDir;
             }
-            tempDir.mkdirs();
-            tempDir.deleteOnExit();
+            if (tempDir.mkdirs()) {
+                tempDir.deleteOnExit();
+            }
         }
         return tempDir;
     }
 
-
     /**
-     * we roll our own treewalker here
+     * we roll our own tree walker here
      * to avoid a dependency into commons fileutils
      * and to apply an easier pattern than
      * commons fileutils uses
      *
-     * @param rootDir
-     * @param strategy
+     * @param rootDir  the root dir for our walking
+     * @param strategy the strategy to apply to for our walking
      */
     public static void listFiles(File rootDir, Strategy strategy) {
         if (!rootDir.isDirectory()) {
@@ -112,7 +112,7 @@ public class FileUtils {
      * target path check to check if the targetPath is valid or can be created
      * </p>
      *
-     * @param path
+     * @param path the path to be investigated
      */
     public static void assertPath(File path) {
         // The destination directory must already exist as javac will not create the destination directory.
@@ -127,13 +127,12 @@ public class FileUtils {
         }
     }
 
-
     /**
      * fetches recursively the files under the current root
      *
      * @param sourcePath the source path from which the walker should start from
      * @param fileType   the pattern upon which the file has to be matched to aka *.java etc...
-     * @return
+     * @return a list of source files
      */
     public static List<File> fetchSourceFiles(File sourcePath, String fileType) {
         FileStrategy strategy = new FileStrategy(fileType);
@@ -141,7 +140,6 @@ public class FileUtils {
 
         return strategy.getFoundFiles();
     }
-
 
     /**
      * fetches the source paths from a given root directory in the format
@@ -151,6 +149,7 @@ public class FileUtils {
      * @param appendix   the appendix which has to be appended to every path found
      * @return a string builder of the paths found
      */
+    @SuppressWarnings("unused")
     public static StringBuilder fetchSourcePaths(File sourcePath, String appendix) {
         DirStrategy dirStrategy = new DirStrategy();
         listFiles(sourcePath, dirStrategy);

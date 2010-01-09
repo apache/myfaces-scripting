@@ -18,13 +18,11 @@
  */
 package org.apache.myfaces.scripting.core.reloading;
 
-import org.apache.myfaces.scripting.api.ReloadingStrategy;
-import org.apache.myfaces.scripting.api.BaseWeaver;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.myfaces.scripting.api.ReloadingStrategy;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -36,7 +34,7 @@ import java.lang.reflect.InvocationTargetException;
  *          pattern this is the most basic implementation
  *          covering our reloading.
  *          <p/>
- *          Applicable for most artefacts except for now managed beans
+ *          Applicable for most artifacts except for now managed beans
  *          <p/>
  */
 
@@ -51,7 +49,6 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
     public SimpleReloadingStrategy() {
 
     }
-
 
     /**
      * <p>
@@ -76,7 +73,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
         getLog().info("[EXT-SCRIPTING] possible reload for " + scriptingInstance.getClass().getName());
         /*only recreation of empty constructor classes is possible*/
         try {
-            //reload the object by instiating a new class and
+            //reload the object by instantiating a new class and
             // assigning the attributes properly
             Object newObject = aclass.newInstance();
 
@@ -91,17 +88,16 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
 
     }
 
-
     /**
      * helper to map the properties wherever possible
      * <p/>
      * This is the simplest solution for now,
      * we apply only a copy properties here, which should be enough
-     * for all artefacts except the managed beans and the ones
+     * for all artifacts except the managed beans and the ones
      * which have to preserve some kind of delegate before instantiation.
      *
-     * @param target
-     * @param src
+     * @param target the target which has to receive the properties
+     * @param src    the source which has the original properties
      */
     protected void mapProperties(Object target, Object src) {
         try {
@@ -118,7 +114,6 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
     protected Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
-
 
     public ScriptingWeaver getWeaver() {
         return _weaver;  //To change body of implemented methods use File | Settings | File Templates.

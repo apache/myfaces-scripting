@@ -46,15 +46,14 @@ public class DefaultDependencyScanner implements DependencyScanner {
     }
 
     /**
-     * @param className
-     * @return
+     * @param className the class name of the class which has to be investigated for the code dependencies
+     * @return a set of dependencies as string representation of their class names
      */
     public synchronized final Set<String> fetchDependencies(ClassLoader loader, String className, final Set<String> whiteList) {
         Set<String> retVal = new HashSet<String>();
         investigateInheritanceHierarchy(loader, retVal, className, whiteList);
         return retVal;
     }
-
 
     /**
      * this investigates the classes inheritance hierarchy for
@@ -63,9 +62,12 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * (maybe in the long run we will add interfaces and annotations as well
      * but for now we will leave them away for speed reasons)
      *
-     * @param retVal
+     * @param loader    the classLoader which should be used for the hierarchy scanning
+     * @param retVal    the receiving set
+     * @param className the className which has to be investigated
+     * @param whiteList the package scanning whitelist
      */
-    private final void investigateInheritanceHierarchy(ClassLoader loader, Set<String> retVal, String className, Set<String> whiteList) {
+    private void investigateInheritanceHierarchy(ClassLoader loader, Set<String> retVal, String className, Set<String> whiteList) {
         //we now have to fetch the parent hierarchy
 
         try {
@@ -86,13 +88,15 @@ public class DefaultDependencyScanner implements DependencyScanner {
     /**
      * scans one level of the inheritance hierarchy
      *
-     * @param retVal
-     * @param currentClassName
+     * @param loader           the classLoader which should be used for the hierarchy scanning
+     * @param retVal           the receiving set
+     * @param currentClassName the className which has to be investigated
+     * @param whiteList        the package scanning whitelist
      */
-    private final void scanCurrentClass(ClassLoader loader, Set<String> retVal, String currentClassName, Set<String> whiteList) {
+    private void scanCurrentClass(ClassLoader loader, Set<String> retVal, String currentClassName, Set<String> whiteList) {
         cp.setDependencyTarget(retVal);
         cp.setWhiteList(whiteList);
-        ClassReader cr = null;
+        ClassReader cr;
 
         try {
             cr = new ExtendedClassReader(loader, currentClassName);
@@ -101,6 +105,5 @@ public class DefaultDependencyScanner implements DependencyScanner {
             log.error(e);
         }
     }
-
 
 }

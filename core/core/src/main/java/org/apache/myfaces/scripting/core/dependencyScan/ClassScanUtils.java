@@ -30,7 +30,6 @@ import java.util.Set;
 class ClassScanUtils {
     public static final String BINARY_PACKAGE = "\\/";
 
-
     private static final String DOMAIN_JAVA = "java.";
     private static final String DOMAIN_JAVAX = "javax.";
     private static final String DOMAIN_COM_SUN = "com.sun";
@@ -46,7 +45,6 @@ class ClassScanUtils {
     private static final String DOMAIN_JYTHON = "jython.";
     private static final String DOMAIN_JRUBY = "jruby.";
 
-
     /**
      * checks if a given package or class
      * belongs to a standard namespaces which is
@@ -55,8 +53,8 @@ class ClassScanUtils {
      * @param in the page or fully qualified classname
      * @return true if it belongs to one of the standard namespaces, false if not
      */
-    public static final boolean isStandardNamespace(String in) {
-        //We dont use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
+    public static boolean isStandardNamespace(String in) {
+        //We don't use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
         //a precompiled regexp with match
 
         //shortcuts for a faster killing of the add before going into the heavier
@@ -86,11 +84,12 @@ class ClassScanUtils {
      * if the class or package is in the list of allowed namespaces
      * a true is returned otherwise a false
      *
-     * @param classOrPackage
-     * @param nameSpaces
-     * @return
+     * @param classOrPackage the class or package name to be checked for allowance
+     * @param nameSpaces     the list of allowed namespaces
+     * @return true if the namespace is within the boundaries of the whitelist false otherwise
      */
-    public static final boolean allowedNamespaces(String classOrPackage, String[] nameSpaces) {
+    @SuppressWarnings("unused")
+    public static boolean allowedNamespaces(String classOrPackage, String[] nameSpaces) {
 
         //ok this is probably the fastest way to iterate hence we use this old construct
         //a direct or would be faster but we cannot do it here since we are not dynamic here
@@ -106,35 +105,34 @@ class ClassScanUtils {
     /**
      * renames the internal member class descriptors of L<qualified classnamewith />; to its source name
      *
-     * @param parm the internal class name
+     * @param internalClassName the internal class name
      * @return the changed classname in its sourceform
      */
-    public static final String internalClassDescriptorToSource(String parm) {
+    public static String internalClassDescriptorToSource(String internalClassName) {
         //we strip the meta information which is not needed
-        //aka start mit ( alles strippen bis )
+        //aka start with ( strip all to )
 
         //()means usually beginning of a native type
-        if (parm.startsWith("(")) {
-            parm = parm.substring(parm.lastIndexOf(')') + 1);
+        if (internalClassName.startsWith("(")) {
+            internalClassName = internalClassName.substring(internalClassName.lastIndexOf(')') + 1);
         }
 
-        //()I for single datatypes
-        if (parm.equals("") || parm.length() == 1) {
+        //()I for single data types
+        if (internalClassName.equals("") || internalClassName.length() == 1) {
             return null;
         }
 
         //fully qualified name with meta information
-        if (parm.endsWith(";")) {
+        if (internalClassName.endsWith(";")) {
             //we can skip all the other meta information, a class identifier on sub class level
             //has to start with L the format is <META ATTRIBUTES>L<CLASS QUALIFIED NAME>;
             //The meta attributes can be for instance [ for array
-            parm = parm.substring(parm.indexOf('L') + 1, parm.length() - 1);
+            internalClassName = internalClassName.substring(internalClassName.indexOf('L') + 1, internalClassName.length() - 1);
         }
 
-
         //normal fully qualified name with no meta info attached
-        parm = parm.replaceAll(BINARY_PACKAGE, ".");
-        return parm;
+        internalClassName = internalClassName.replaceAll(BINARY_PACKAGE, ".");
+        return internalClassName;
     }
 
     /**
@@ -144,17 +142,18 @@ class ClassScanUtils {
      * for performance reasons, before going into the heavier whitelist
      * namespace check)
      *
-     * @param dependencies the target which has to recieve the dependency in source format
-     * @param parms        the list of dependencies which have to be added
+     * @param dependencies the target which has to receive the dependency in source format
+     * @param whiteList    the whitelist of allowed dependencies
+     * @param parameters   the list of dependencies which have to be added
      */
-    public static final void logParmList(Collection<String> dependencies, final Set<String> whiteList, final String... parms) {
-        for (String parm : parms) {
-            if (parm == null) continue;
-            if (parm.equals("")) continue;
-            parm = internalClassDescriptorToSource(parm);
-            if (parm == null || isStandardNamespace(parm)) continue;
+    public static void logParmList(Collection<String> dependencies, final Set<String> whiteList, final String... parameters) {
+        for (String singleParameter : parameters) {
+            if (singleParameter == null) continue;
+            if (singleParameter.equals("")) continue;
+            singleParameter = internalClassDescriptorToSource(singleParameter);
+            if (singleParameter == null || isStandardNamespace(singleParameter)) continue;
 
-            String[] packages = parm.split("\\.");
+            String[] packages = singleParameter.split("\\.");
 
             StringBuilder fullPackage = null;
             for (String currPackage : packages) {
@@ -162,13 +161,13 @@ class ClassScanUtils {
                     fullPackage.append(".");
                     fullPackage.append(currPackage);
                 } else {
-                    fullPackage = new StringBuilder(parm.length());
+                    fullPackage = new StringBuilder(singleParameter.length());
                     fullPackage.append(currPackage);
                 }
 
                 String tempPackage = fullPackage.toString();
                 if (whiteList.contains(tempPackage)) {
-                    dependencies.add(parm);
+                    dependencies.add(singleParameter);
                     break;
                 }
             }

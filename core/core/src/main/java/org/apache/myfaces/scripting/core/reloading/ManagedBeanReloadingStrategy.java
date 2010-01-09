@@ -18,23 +18,8 @@
  */
 package org.apache.myfaces.scripting.core.reloading;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.config.RuntimeConfig;
-import org.apache.myfaces.config.annotation.LifecycleProvider;
-import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
-import org.apache.myfaces.config.element.ManagedBean;
-import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-
-import javax.faces.context.FacesContext;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -51,10 +36,6 @@ import java.util.Map;
 public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
 
     ScriptingWeaver _weaver;
-    Map<String, List<ManagedBean>> _managedBeanIdx = null;
-
-    static final String RELOAD_PERFORMED = "beanReloadPerformed";
-
 
     public ManagedBeanReloadingStrategy(ScriptingWeaver weaver) {
         _weaver = weaver;
@@ -64,14 +45,15 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
     }
 
     /**
-     * In our case the dropping already has happend at request time
+     * In our case the dropping already has happened at request time
      * no need for another reloading here
      *
-     * @param scriptingInstance
-     * @param artefactType
-     * @return
+     * @param scriptingInstance the instance which has to be reloaded
+     * @param artifactType      the type of artifact
+     * @return does nothing in this case and returns only the original instance, the reloading is handled
+     *         for managed beans on another level
      */
-    public Object reload(Object scriptingInstance, int artefactType) {
+    public Object reload(Object scriptingInstance, int artifactType) {
         return scriptingInstance;
     }
 
