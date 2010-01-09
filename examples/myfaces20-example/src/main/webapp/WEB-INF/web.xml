@@ -24,7 +24,7 @@
 
     <description>MyProject web.xml</description>
 
-
+    <!--
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -55,6 +55,22 @@
         </param-value>
     </context-param>
 
+    <context-param>
+        <description>resource paths for our custom facelet resource resolver</description>
+        <param-name>org.apache.myfaces.scripting.resources.LOADER_PATHS</param-name>
+        <param-value>
+            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
+            source dir
+        </description>
+        <param-name>facelets.RESOURCE_RESOLVER</param-name>
+        <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
+    </context-param>
+    -->
 
     <!--
      <context-param>
@@ -82,21 +98,6 @@
         <param-value>Development</param-value>
     </context-param>
 
-    <context-param>
-        <description>resource paths for our custom facelet resource resolver</description>
-        <param-name>org.apache.myfaces.scripting.resources.LOADER_PATHS</param-name>
-        <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp
-        </param-value>
-    </context-param>
-
-    <context-param>
-        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
-            source dir
-        </description>
-        <param-name>facelets.RESOURCE_RESOLVER</param-name>
-        <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
-    </context-param>
 
     <context-param>
         <description>State saving method: "client" or "server" (= default)
