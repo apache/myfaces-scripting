@@ -298,7 +298,7 @@ public class ReflectUtil {
         if (e instanceof IllegalAccessException) {
             //do nothing
         } else if (e instanceof IllegalArgumentException) {
-           //do nothing
+            //do nothing
         } else {
             throw new RuntimeException(e);
         }

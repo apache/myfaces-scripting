@@ -44,12 +44,11 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
     protected void addEntity(Class clazz, String val) {
         if (log.isTraceEnabled()) {
             log.trace("addBehavior(" + val + ","
-                      + clazz.getName() + ")");
+                    + clazz.getName() + ")");
         }
         getApplication().addBehavior(val, clazz.getName());
     }
 
-    
 
     @Override
     public void purge(String className) {

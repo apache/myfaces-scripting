@@ -75,8 +75,8 @@ class JavacCompiler implements Compiler {
             this.compilerClass = classLoader.loadClass(JAVAC_MAIN);
         } catch (ClassNotFoundException ex) {
             throw new IllegalStateException("The Javac compiler class '" + JAVAC_MAIN + "' couldn't be found even though" +
-                                            "the required JAR file '$JAVA_HOME$/lib/tools.jar' has been put on the classpath. Are you sure that " +
-                                            "you're using a valid Sun JDK?");
+                    "the required JAR file '$JAVA_HOME$/lib/tools.jar' has been put on the classpath. Are you sure that " +
+                    "you're using a valid Sun JDK?");
         }
     }
 
@@ -105,19 +105,19 @@ class JavacCompiler implements Compiler {
             CompilationResult result = new CompilationResult(compilerOutput.toString());
             if (returnCode == null || returnCode.intValue() != 0) {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
-                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
+                        "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
 
             return result;
         } catch (NoSuchMethodException ex) {
             throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
-                                            "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
+                    "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
         } catch (InvocationTargetException ex) {
             throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                                            "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                                            "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         }
 
     }
@@ -147,24 +147,24 @@ class JavacCompiler implements Compiler {
             logCommandLine(compilerArguments);
 
             Integer returnCode = (Integer) compile.invoke(null,
-                                                          compilerArguments);
+                    compilerArguments);
 
             CompilationResult result = new CompilationResult(compilerOutput.toString());
             if (returnCode == null || returnCode.intValue() != 0) {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
-                                                                              "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
+                        "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
 
             return result;
         } catch (NoSuchMethodException ex) {
             throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
-                                            "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
+                    "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
         } catch (InvocationTargetException ex) {
             throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                                            "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                                            "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         }
     }
 
@@ -277,8 +277,8 @@ class JavacCompiler implements Compiler {
         if (ClassUtils.isPresent(JAVAC_MAIN)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Seemingly the required JAR file '$JAVA_HOME$/lib/tools.jar' has already been "
-                             + "put on the classpath as the class '" + JAVAC_MAIN + "' is present. So there's no "
-                             + "need to create a custom classloader for the Javac compiler.");
+                        + "put on the classpath as the class '" + JAVAC_MAIN + "' is present. So there's no "
+                        + "need to create a custom classloader for the Javac compiler.");
             }
 
             return ClassUtils.getContextClassLoader();
@@ -299,20 +299,20 @@ class JavacCompiler implements Compiler {
                     if (logger.isDebugEnabled()) {
                         logger.debug(
                                 "The required JAR file '$JAVA_HOME$/lib/tools.jar' has been found ['" + toolsJarFile.getAbsolutePath()
-                                + "']. A custom URL classloader will be created for the Javac compiler.");
+                                        + "']. A custom URL classloader will be created for the Javac compiler.");
                     }
 
                     return new URLClassLoader(
                             new URL[]{toolsJarFile.toURI().toURL()}, ClassUtils.getContextClassLoader());
                 } else {
                     throw new IllegalStateException("The Javac compiler class '" + JAVAC_MAIN + "' and the required JAR file " +
-                                                    "'$JAVA_HOME$/lib/tools.jar' couldn't be found. Are you sure that you're using a valid Sun JDK? " +
-                                                    "[$JAVA_HOME$: '" + System.getProperty("java.home") + "']");
+                            "'$JAVA_HOME$/lib/tools.jar' couldn't be found. Are you sure that you're using a valid Sun JDK? " +
+                            "[$JAVA_HOME$: '" + System.getProperty("java.home") + "']");
                 }
             } else {
                 if (logger.isDebugEnabled()) {
                     logger.debug("The user has specified the required JAR file '$JAVA_HOME$/lib/tools.jar' ['"
-                                 + toolsJar.toExternalForm() + "']. A custom URL classloader will be created for the Javac compiler.");
+                            + toolsJar.toExternalForm() + "']. A custom URL classloader will be created for the Javac compiler.");
                 }
 
                 return new URLClassLoader(new URL[]{toolsJar}, ClassUtils.getContextClassLoader());

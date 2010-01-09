@@ -101,7 +101,7 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
         getApplication().addConverter(entry.getRendererType(), clazz.getName());
     }
 
-   
+
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
         String value = (String) params.get(PAR_RENDERERTYPE);

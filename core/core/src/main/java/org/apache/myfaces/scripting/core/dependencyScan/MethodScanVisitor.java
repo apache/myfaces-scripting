@@ -44,20 +44,20 @@ class MethodScanVisitor implements MethodVisitor {
 
 
     public AnnotationVisitor visitAnnotationDefault() {
-        return null;  
+        return null;
     }
 
     public AnnotationVisitor visitAnnotation(String s, boolean b) {
-        return null;  
+        return null;
     }
 
     public AnnotationVisitor visitParameterAnnotation(int i, String s, boolean b) {
-        return null;  
+        return null;
     }
 
     public void visitAttribute(Attribute attribute) {
         //log.log(Level.INFO, "MethodAttr {0}:", attribute.type);
-        
+
     }
 
     public void visitCode() {
@@ -98,23 +98,23 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     public void visitLabel(Label label) {
-        
+
     }
 
     public void visitLdcInsn(Object o) {
-        
+
     }
 
     public void visitIincInsn(int i, int i1) {
-        
+
     }
 
     public void visitTableSwitchInsn(int i, int i1, Label label, Label[] labels) {
-        
+
     }
 
     public void visitLookupSwitchInsn(Label label, int[] ints, Label[] labels) {
-        
+
     }
 
     public void visitMultiANewArrayInsn(String s, int i) {
@@ -136,14 +136,14 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     public void visitLineNumber(int i, Label label) {
-        
+
     }
 
     public void visitMaxs(int i, int i1) {
-        
+
     }
 
     public void visitEnd() {
-        
+
     }
 }

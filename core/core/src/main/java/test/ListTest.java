@@ -28,19 +28,18 @@ import java.util.LinkedList;
 
 public class ListTest {
 
-    public static void main (String ... arg) {
+    public static void main(String... arg) {
 
         List<String> testList = new LinkedList<String>();
         testList.add("one");
         testList.add("two");
         testList.add("three");
 
-        List testlist2 = testList.subList(0,1);
+        List testlist2 = testList.subList(0, 1);
         testList.remove(0);
         System.out.println(testList.size());
 
         System.out.println(testlist2.size());
-
 
 
     }

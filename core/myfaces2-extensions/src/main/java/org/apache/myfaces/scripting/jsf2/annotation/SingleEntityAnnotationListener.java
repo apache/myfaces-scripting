@@ -32,7 +32,7 @@ import java.lang.annotation.Annotation;
 public abstract class SingleEntityAnnotationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
     String _entityParamValue = null;
 
-    
+
     public void register(Class clazz, Annotation annotation) {
 
         String val = (String) ReflectUtil.executeMethod(annotation, _entityParamValue);
@@ -44,13 +44,11 @@ public abstract class SingleEntityAnnotationListener extends BaseAnnotationScanL
 
     protected abstract void addEntity(Class clazz, String val);
 
- 
 
     protected boolean hasToReregister(String name, Class clazz) {
         String componentClass = (String) _alreadyRegistered.get(name);
         return componentClass == null || !componentClass.equals(clazz.getName());
     }
 
-    
 
 }

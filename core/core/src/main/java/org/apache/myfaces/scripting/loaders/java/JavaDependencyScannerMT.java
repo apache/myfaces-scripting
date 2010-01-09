@@ -18,11 +18,11 @@ import java.util.concurrent.Semaphore;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  *          <p/>
- * 
+ *          <p/>
  *          A  dependency scanner which utilizes the scan infrastructure
  *          from the core, multithreaded version
  */
-public class JavaDependencyScannerMT implements ClassScanner{
+public class JavaDependencyScannerMT implements ClassScanner {
     private static final int VALUE_POOL_SIZE = 3;
     static final int MAX_PARALLEL_SCANS = VALUE_POOL_SIZE;
     Semaphore threadCtrl = new Semaphore(MAX_PARALLEL_SCANS);
@@ -46,7 +46,6 @@ public class JavaDependencyScannerMT implements ClassScanner{
     }
 
 
-
     public synchronized void scanPaths() {
 
         if (log.isInfoEnabled()) {
@@ -68,14 +67,14 @@ public class JavaDependencyScannerMT implements ClassScanner{
 
             String[] valuesArr = new String[VALUE_POOL_SIZE];
             int len = valuesArr.length;
-           // int totalCnt = 0;
+            // int totalCnt = 0;
 
-            ExtendedLoopCnt cnt = new ExtendedLoopCnt(0,0, VALUE_POOL_SIZE);
+            ExtendedLoopCnt cnt = new ExtendedLoopCnt(0, 0, VALUE_POOL_SIZE);
             for (String dynamicClass : possibleDynamicClasses) {
 
                 //if (threaded)
                 valuesArr[cnt.getCnt()] = dynamicClass;
-                if (cnt.getCnt() == (VALUE_POOL_SIZE - 1) || cnt.getTotalCnt() ==  (len-1)) {
+                if (cnt.getCnt() == (VALUE_POOL_SIZE - 1) || cnt.getTotalCnt() == (len - 1)) {
                     runScanThreaded(possibleDynamicClasses, loader, valuesArr, cnt.getCnt() + 1);
                 }
                 cnt.incTotalCnt();
@@ -83,7 +82,7 @@ public class JavaDependencyScannerMT implements ClassScanner{
                     valuesArr = new String[VALUE_POOL_SIZE];
                 }
             }
-            while(threadCtrl.availablePermits() != MAX_PARALLEL_SCANS) {
+            while (threadCtrl.availablePermits() != MAX_PARALLEL_SCANS) {
                 try {
                     Thread.sleep(7);
                 } catch (InterruptedException e) {
@@ -99,7 +98,7 @@ public class JavaDependencyScannerMT implements ClassScanner{
         }
     }
 
-     private final void runScanThreaded(final Set<String> possibleDynamicClasses, final ClassLoader loader, final String[] dynaClasses, final int noClasses) {
+    private final void runScanThreaded(final Set<String> possibleDynamicClasses, final ClassLoader loader, final String[] dynaClasses, final int noClasses) {
 
         try {
 

@@ -140,7 +140,7 @@ public class JavacCompiler implements Compiler {
             // Invoke the Javac compiler
             Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
             Integer returnCode = (Integer) compile.invoke(null,
-                    new Object[]{ buildCompilerArguments(sourcePath, targetPath, file, classLoader),
+                    new Object[]{buildCompilerArguments(sourcePath, targetPath, file, classLoader),
                             new PrintWriter(compilerOutput)});
 
             CompilationResult result = new CompilationResult(compilerOutput.toString());

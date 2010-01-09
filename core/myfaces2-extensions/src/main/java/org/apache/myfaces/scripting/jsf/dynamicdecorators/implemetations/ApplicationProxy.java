@@ -40,12 +40,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Werner Punz
- *
- * our decorating applicstion
- * which should resolve our bean issues within a central
- * bean processing interceptor
- *
-
+ *         <p/>
+ *         our decorating applicstion
+ *         which should resolve our bean issues within a central
+ *         bean processing interceptor
  */
 public class ApplicationProxy extends Application implements Decorated {
 
@@ -101,6 +99,7 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
     //TOD add a weaving for resource bundles
+
     public ResourceBundle getResourceBundle(FacesContext facesContext, String s) throws FacesException, NullPointerException {
         weaveDelegate();
         return _delegate.getResourceBundle(facesContext, s);

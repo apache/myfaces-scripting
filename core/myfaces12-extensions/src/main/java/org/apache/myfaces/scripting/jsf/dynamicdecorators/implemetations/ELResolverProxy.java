@@ -39,7 +39,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     Log log = LogFactory.getLog(ELResolverProxy.class);
 
 
-
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
         //request, class is loaded anew hence we already have picked up the new code
 
@@ -57,7 +56,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
             //TODO move the bean dropping into the beginning of the lifecycle instead of on demand
             //That way we have a cleaner control over the refresh per request
-            
 
 
             Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
@@ -113,5 +111,5 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return supports;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    
+
 }

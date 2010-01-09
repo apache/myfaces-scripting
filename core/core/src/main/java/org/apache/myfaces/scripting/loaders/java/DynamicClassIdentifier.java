@@ -27,12 +27,11 @@ import java.util.HashMap;
 /**
  * @author werpu
  *         A dynamic class identifier for java classes
- *
- * TODO the algorithm of this class probably is obsolete, normally
- * a check for the classloader of the class being an instance
- * of our custom classloader ought to be enough, this has to be tested
- * though
- *
+ *         <p/>
+ *         TODO the algorithm of this class probably is obsolete, normally
+ *         a check for the classloader of the class being an instance
+ *         of our custom classloader ought to be enough, this has to be tested
+ *         though
  */
 public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.DynamicClassIdentifier {
     static ThreadLocal _checked = new ThreadLocal();
@@ -62,14 +61,13 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
     }
 
 
-
     private final boolean checkForAnnotation(Class clazz) {
         //Annotation identifier = clazz.getAnnotation(ScriptingClass.class);
-        if(clazz.getClassLoader() == null) return false;
-        
+        if (clazz.getClassLoader() == null) return false;
+
         Annotation identifier = clazz.getClassLoader().getClass().getAnnotation(JavaThrowAwayClassloader.class);
         boolean annotated = identifier != null;
-        
+
         return annotated;
     }
 

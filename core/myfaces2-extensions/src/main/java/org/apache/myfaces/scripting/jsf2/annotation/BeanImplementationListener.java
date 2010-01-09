@@ -59,7 +59,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
 
         String beanName = annCasted.name();
 
-        
+
         beanName = beanName.replaceAll("\"", "");
         if (!hasToReregister(beanName, clazz)) {
             return;
@@ -93,7 +93,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         mbean.setScope(scope);
     }
 
-   
 
     private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
         for (Field field : fields) {
@@ -105,7 +104,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             if (property != null) {
                 if (log.isDebugEnabled()) {
                     log.debug("  Field '" + field.getName()
-                              + "' has a @ManagedProperty annotation");
+                            + "' has a @ManagedProperty annotation");
                 }
 
                 org.apache.myfaces.config.impl.digester.elements.ManagedProperty mpc =
@@ -123,7 +122,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             }
         }
     }
-
 
 
     /**
@@ -151,7 +149,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         ManagedBean mbean = (ManagedBean) _alreadyRegistered.get(name);
         return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
     }
-
 
 
     @SuppressWarnings("unchecked")

@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * 
+ *
  */
 class CompilationResult {
 
-    /** The compiler output */ 
+    /**
+     * The compiler output
+     */
     private String compilerOutput;
 
     private List<CompilationMessage> errors = new ArrayList<CompilationMessage>();
@@ -17,7 +19,7 @@ class CompilationResult {
     // ------------------------------------------ CompilationResult
 
     public CompilationResult(String compilerOutput) {
-        this.compilerOutput = compilerOutput;    
+        this.compilerOutput = compilerOutput;
     }
 
     // ------------------------------------------ Public methods

@@ -26,10 +26,10 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * A marker interface which marks throw away classloaders
- * which only load java classes (we replace the current
- * class altering code with the one for
+ *          <p/>
+ *          A marker interface which marks throw away classloaders
+ *          which only load java classes (we replace the current
+ *          class altering code with the one for
  */
 
 @Target(ElementType.TYPE)

@@ -25,30 +25,29 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * <p />
- * The renderer is a stateless flyweight pattern the reloading strategy is
- * to do nothing, this should give optimal results
- *
- * <p />
- * The components are a similar case they are not flyweight
- * but the properties usually are preserved by the lifecycle if possible
- * or assigned by the tag handlers
- *
- * <p />
- * The same also applies to other flyweight patterned classes
- * like converters or validators
- * 
- * <p />
- * The only ones which need to keep some state are the ones
- * which keep delegates, like the NavHandler
+ *          <p/>
+ *          <p/>
+ *          The renderer is a stateless flyweight pattern the reloading strategy is
+ *          to do nothing, this should give optimal results
+ *          <p/>
+ *          <p/>
+ *          The components are a similar case they are not flyweight
+ *          but the properties usually are preserved by the lifecycle if possible
+ *          or assigned by the tag handlers
+ *          <p/>
+ *          <p/>
+ *          The same also applies to other flyweight patterned classes
+ *          like converters or validators
+ *          <p/>
+ *          <p/>
+ *          The only ones which need to keep some state are the ones
+ *          which keep delegates, like the NavHandler
  */
 public class NoMappingReloadingStrategy extends SimpleReloadingStrategy {
 
     public NoMappingReloadingStrategy(ScriptingWeaver weaver) {
         super(weaver);
     }
-
 
 
     @Override

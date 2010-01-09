@@ -27,13 +27,12 @@ import org.junit.Ignore;
  *          Probe for class scanning
  */
 @Ignore
-public class Probe extends ProbeParent{
+public class Probe extends ProbeParent {
     String prop1;
 
     public static int myTest(StringBuilder myBuilder, Object val2) {
         return (Integer) 1;
     }
 
-   
 
 }

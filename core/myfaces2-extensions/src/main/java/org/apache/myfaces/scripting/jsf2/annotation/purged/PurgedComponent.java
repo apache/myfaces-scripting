@@ -34,11 +34,11 @@ import java.io.IOException;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * We override the component from a real family so that
- * so that myfaces can handle it in a decent way
- * directly from UIComponent it would fail
- * unless we implement everything family etc... all by our own
+ *          <p/>
+ *          We override the component from a real family so that
+ *          so that myfaces can handle it in a decent way
+ *          directly from UIComponent it would fail
+ *          unless we implement everything family etc... all by our own
  */
 
 public class PurgedComponent extends UIOutput {

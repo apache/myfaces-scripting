@@ -25,10 +25,9 @@ package org.apache.myfaces.scripting.refresh.sourceTracking;
  *          We need additonal data structures which keep track of
  *          the current state of the source files, to be able
  *          to deal with annotations in a decent way
- *
+ *          <p/>
  *          For annotations we have to trigger the compiler as soon
  *          as a resolver runs into a class not exists situation
- *          
  */
 
 public class SourcFileDeltaHolder {

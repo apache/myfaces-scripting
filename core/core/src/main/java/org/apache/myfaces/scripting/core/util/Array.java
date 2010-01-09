@@ -23,8 +23,8 @@ package org.apache.myfaces.scripting.core.util;
  * @version $Revision$ $Date$
  */
 
-public class Array extends Cast{
-    public Array(Class clazz, Object ... value) {
-        super(java.lang.reflect.Array.newInstance(clazz,0).getClass(), value);
+public class Array extends Cast {
+    public Array(Class clazz, Object... value) {
+        super(java.lang.reflect.Array.newInstance(clazz, 0).getClass(), value);
     }
 }

@@ -127,11 +127,10 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
 
     /**
      * <p>Determines whether this class loader is supposed to load the given class.</p>
-     * 
+     *
      * @param className the name of the class
-     * 
      * @return <code>true</code>, if this class loader is supposed to load the
-     *          given class, <code>false</code> otherwise
+     *         given class, <code>false</code> otherwise
      */
     protected boolean isEligibleForLoading(String className) {
         return getClassName().equals(className);

@@ -21,16 +21,17 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
  */
 public class GroovyGlobalReloadingStrategy extends org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy {
 
-    //we cannot use a constructor here to bypass a groovy bug
-    //we use an explicit call to setWeaver instead
-    public GroovyGlobalReloadingStrategy() {
-        super();
-        _allOthers = new StandardGroovyReloadingStrategy()
-    }
+  //we cannot use a constructor here to bypass a groovy bug
+  //we use an explicit call to setWeaver instead
 
-    public void setWeaver(ScriptingWeaver weaver) {
-        super.setWeaver( weaver )
-        _allOthers.setWeaver( weaver )
-    }
+  public GroovyGlobalReloadingStrategy() {
+    super();
+    _allOthers = new StandardGroovyReloadingStrategy()
+  }
+
+  public void setWeaver(ScriptingWeaver weaver) {
+    super.setWeaver(weaver)
+    _allOthers.setWeaver(weaver)
+  }
 
 }

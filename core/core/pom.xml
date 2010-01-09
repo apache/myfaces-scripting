@@ -1,6 +1,6 @@
-<project xmlns = "http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
@@ -31,20 +31,22 @@
             <artifactId>groovy-all</artifactId>
             <version>1.6.4</version>
         </dependency>
-       
+
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
             <version>1.2.8</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
             <version>1.2.8</version>
             <scope>provided</scope>
         </dependency>
+
+        
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -56,7 +58,7 @@
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
             <version>3.2</version>
-            
+
         </dependency>
 
         <dependency>
@@ -65,7 +67,6 @@
             <version>4.3</version>
             <scope>test</scope>
         </dependency>
-       
 
 
     </dependencies>
@@ -78,9 +79,9 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
-                    
+
                 </configuration>
-             </plugin>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo.groovy</groupId>
                 <artifactId>groovy-maven-plugin</artifactId>
@@ -107,5 +108,5 @@
         </plugins>
     </build>
 
-    
+
 </project>

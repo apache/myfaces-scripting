@@ -39,9 +39,9 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 public class FileStrategy implements Strategy {
     Pattern rePattern;
 
-    public FileStrategy( String pattern) {
+    public FileStrategy(String pattern) {
         pattern = pattern.trim().replaceAll("\\.", "\\\\.");
-        pattern = "."+pattern;
+        pattern = "." + pattern;
 
 
         rePattern = Pattern.compile(pattern);

@@ -39,11 +39,9 @@ import java.lang.reflect.Method;
  *
  * @author Werner Punz
  */
-public class MethodLevelReloadingHandler extends ReloadingInvocationHandler implements  Serializable {
+public class MethodLevelReloadingHandler extends ReloadingInvocationHandler implements Serializable {
     transient ScriptingWeaver _weaver = null;
     int _artefactType;
-
-
 
 
     public MethodLevelReloadingHandler(Object rootObject, int artefactType) {
@@ -118,7 +116,6 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
         }
     }
 
- 
 
     public int getArtefactType() {
         return _artefactType;

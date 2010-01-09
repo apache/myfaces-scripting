@@ -135,7 +135,7 @@ public class FileChangedDaemon extends Thread {
      */
     private void dependencyTainted(String className) {
         Set<String> referrers = dependencyMap.getReferringClasses(className);
-        if(referrers == null) return;
+        if (referrers == null) return;
         for (String referrer : referrers) {
             ReloadingMetadata metaData = classMap.get(referrer);
             if (metaData == null) continue;
@@ -145,7 +145,7 @@ public class FileChangedDaemon extends Thread {
             metaData.setTainted(true);
             metaData.setTaintedOnce(true);
             dependencyTainted(metaData.getAClass().getName());
-            
+
         }
     }
 

@@ -240,7 +240,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
 
-                        recompileRefresh();
+                    recompileRefresh();
 
                     return;
                 }
@@ -263,7 +263,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     private void recompileRefresh() {
-        synchronized(RefreshContext.COMPILE_SYNC_MONITOR) {
+        synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
             fullRecompile();
         }
 

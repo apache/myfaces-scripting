@@ -24,8 +24,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import org.junit.Test;
 
 import java.io.File;
@@ -76,7 +78,7 @@ public class TestCompilerAPI {
         int major = Integer.parseInt(versionArr[Math.min(versionArr.length, 1)]);
 
         Log log = LogFactory.getLog(this.getClass());
-        log.info("[EXT-SCRIPTING] Java Version = "+major);
+        log.info("[EXT-SCRIPTING] Java Version = " + major);
 
         if (major > 5 && allowJSR199) {
             //jsr199 compliant jdk
@@ -93,7 +95,7 @@ public class TestCompilerAPI {
 
     @Test
     public void testFullCompile() {
-             File targetDir = null;
+        File targetDir = null;
         try {
 
             DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass(false));//new ReflectCompilerFacade();
@@ -101,8 +103,8 @@ public class TestCompilerAPI {
             File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
 
             assertTrue("target exists files are compiled into the target", target != null);
-            File classFile1 = new File(target.getAbsolutePath()+"/compiler/TestProbe1.class");
-            File classFile2 = new File(target.getAbsolutePath()+"/compiler/TestProbe2.class");
+            File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1.class");
+            File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2.class");
 
             assertTrue("Classfile1 is compiled into the target", classFile1.exists());
             assertTrue("Classfile2 is compiled into the target", classFile2.exists());

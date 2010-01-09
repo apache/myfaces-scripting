@@ -124,7 +124,7 @@ public interface ScriptingWeaver {
     /**
      * loads a list of possible dynamic classes
      * for the current given state of the source dirs
-     * 
+     *
      * @return a list of classes representing the current source state
      */
     public Collection<String> loadPossibleDynamicClasses();

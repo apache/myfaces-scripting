@@ -8,10 +8,10 @@ import java.lang.reflect.InvocationHandler;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * We set our own invocation handler
- * here to allow reflection utils directly targetting our
- * _delegate.
+ *          <p/>
+ *          We set our own invocation handler
+ *          here to allow reflection utils directly targetting our
+ *          _delegate.
  */
 public abstract class ReloadingInvocationHandler implements InvocationHandler, Decorated {
     Class _loadedClass = null;
@@ -20,16 +20,17 @@ public abstract class ReloadingInvocationHandler implements InvocationHandler, D
     /**
      * simplified invoke for more dynamic upon invocation
      * on our reloading objects
+     *
      * @param o
      * @param m
      * @param args
      * @return
      */
-    public Object invoke(Object o, String m, Object ... args) {
+    public Object invoke(Object o, String m, Object... args) {
         return ReflectUtil.executeMethod(o, m, args);
     }
-    
-   
+
+
     public Class getLoadedClass() {
         return _loadedClass;
     }

@@ -41,27 +41,24 @@ import java.util.*;
  * our decorating applicstion
  * which should resolve our bean issues within a central
  * bean processing interceptor
- *
- *
+ * <p/>
+ * <p/>
  * component
- *
- *   komponente A Šndert sich
- *   Renderer Šndert sich nicht
- *
- *   class Renderer {
- *          public method (UIComponent myComp) {
- *                  ((MyComponent)myComp)
- }
- }
- *
- *
+ * <p/>
+ * komponente A Šndert sich
+ * Renderer Šndert sich nicht
+ * <p/>
+ * class Renderer {
+ * public method (UIComponent myComp) {
+ * ((MyComponent)myComp)
+ * }
+ * }
  *
  * @author Werner Punz
  */
 public class ApplicationProxy extends Application implements Decorated {
 
     volatile Application _delegate;
-
 
 
     public ApplicationProxy(Application delegate) {
@@ -290,7 +287,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         _delegate.addComponent(componentType, componentClass);
         //TODO handle this properly
-       // WeavingContext.getRefreshContext().getComponentRendererDependencies(componentClass, "");
+        // WeavingContext.getRefreshContext().getComponentRendererDependencies(componentClass, "");
     }
 
     public UIComponent createComponent(String s) throws FacesException {

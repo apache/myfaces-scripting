@@ -32,7 +32,7 @@ public class GroovyCompilerTest extends AbstractGeneratorTestCase {
 
     /**
      * <p>Tests whether it is possible to compile a dynamically generated Groovy source file.</p>
-     * 
+     *
      * @throws Exception if an error occurs
      */
     public void testCompileGeneratedFile() throws Exception {
@@ -89,7 +89,7 @@ public class GroovyCompilerTest extends AbstractGeneratorTestCase {
     /**
      * <p>Tests whether it is possible to reference dependencies in the Groovy
      * source files that have to be resolved using the supplied class loader.</p>
-     * 
+     *
      * @throws Exception if an error occurs
      */
     public void testCompileFileWithDependencies() throws Exception {
@@ -127,7 +127,7 @@ public class GroovyCompilerTest extends AbstractGeneratorTestCase {
 
     /**
      * <p>Returns the class loader that has loaded this class.</p>
-     * 
+     *
      * @return the class loader that has loaded this class
      */
     protected ClassLoader getCurrentClassLoader() {

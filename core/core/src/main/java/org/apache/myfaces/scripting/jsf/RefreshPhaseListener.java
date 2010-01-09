@@ -29,12 +29,12 @@ import java.util.Map;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * We use a phase listener here for all parts of the refresh
- * which have to rely on jsf access
- *
- * Which means all parts which need some kind of FacesConfig have
- * to rely on this one, we trigger before the first phase
+ *          <p/>
+ *          We use a phase listener here for all parts of the refresh
+ *          which have to rely on jsf access
+ *          <p/>
+ *          Which means all parts which need some kind of FacesConfig have
+ *          to rely on this one, we trigger before the first phase
  */
 
 public class RefreshPhaseListener implements PhaseListener {
@@ -47,7 +47,7 @@ public class RefreshPhaseListener implements PhaseListener {
         //we fetch the earliest phase possible, in case of a normal get it is the render phase
         //in every other case it is the restore view phase
         Map requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        if(requestMap.containsKey(EQ_KEY)) return;
+        if (requestMap.containsKey(EQ_KEY)) return;
         requestMap.put(EQ_KEY, Boolean.TRUE);
 
         WeavingContext.doRequestRefreshes();
@@ -56,7 +56,7 @@ public class RefreshPhaseListener implements PhaseListener {
     }
 
     public PhaseId getPhaseId() {
-        return PhaseId.ANY_PHASE; 
+        return PhaseId.ANY_PHASE;
     }
 
 }

@@ -34,7 +34,6 @@ import java.io.File;
  */
 public interface DynamicCompiler {
     /**
-     * 
      * compiles a single file into a class
      *
      * @param sourceRoot the source search path (root of our source)

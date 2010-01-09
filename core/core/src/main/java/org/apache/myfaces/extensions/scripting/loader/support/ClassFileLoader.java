@@ -78,7 +78,7 @@ public class ClassFileLoader extends AbstractThrowAwayClassLoader {
      */
     public URL[] getURLs() {
         try {
-            return new URL[]{ classFile.toURI().toURL() };
+            return new URL[]{classFile.toURI().toURL()};
         }
         catch (IOException ex) {
             logger.error("Couldn't resolve the URL to the class file '"

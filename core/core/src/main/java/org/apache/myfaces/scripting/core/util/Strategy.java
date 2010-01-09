@@ -21,11 +21,10 @@ package org.apache.myfaces.scripting.core.util;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Applied strategy class for iteration walkers
- * to make the handling of iterated objects
- * more scripty al
- *
+ *          <p/>
+ *          Applied strategy class for iteration walkers
+ *          to make the handling of iterated objects
+ *          more scripty al
  */
 public interface Strategy {
 

@@ -34,6 +34,7 @@ public class FileUtils {
 
     /**
      * Get the file separator for this platform.
+     *
      * @return The file separator.
      */
     public static String getFileSeparator() {
@@ -42,6 +43,7 @@ public class FileUtils {
 
     /**
      * Get the file separator for this platform, properly escaped for usage in a regular expression.
+     *
      * @return The file separator, escaped for in a regex.
      */
     public static String getFileSeparatorForRegex() {
@@ -87,16 +89,16 @@ public class FileUtils {
      * @param strategy
      */
     public static void listFiles(File rootDir, Strategy strategy) {
-        if(!rootDir.isDirectory()) {
+        if (!rootDir.isDirectory()) {
             strategy.apply(rootDir);
             return;
         }
 
         //TODO apply a filter here instead of doing the check directly
-        File [] files = rootDir.listFiles();
-        for(File file: files) {
+        File[] files = rootDir.listFiles();
+        for (File file : files) {
             boolean isDirectory = file.isDirectory();
-            if(isDirectory && !file.getName().endsWith(".")) {
+            if (isDirectory && !file.getName().endsWith(".")) {
                 listFiles(file, strategy);
                 strategy.apply(file);
             } else if (!isDirectory) {
@@ -117,7 +119,7 @@ public class FileUtils {
         if (!path.exists()) {
             if (!path.mkdirs()) {
                 throw new IllegalStateException("It wasn't possible to create the target " +
-                                                "directory for the compiler ['" + path.getAbsolutePath() + "'].");
+                        "directory for the compiler ['" + path.getAbsolutePath() + "'].");
             }
 
             // If we've created the destination directory, we'll delete it as well once the application exits
@@ -130,7 +132,7 @@ public class FileUtils {
      * fetches recursively the files under the current root
      *
      * @param sourcePath the source path from which the walker should start from
-     * @param fileType the pattern upon which the file has to be matched to aka *.java etc...
+     * @param fileType   the pattern upon which the file has to be matched to aka *.java etc...
      * @return
      */
     public static List<File> fetchSourceFiles(File sourcePath, String fileType) {
@@ -146,10 +148,10 @@ public class FileUtils {
      * <path>/<appendix>;...
      *
      * @param sourcePath the sourcePath from which the directory traversal should happen from
-     * @param appendix the appendix which has to be appended to every path found
+     * @param appendix   the appendix which has to be appended to every path found
      * @return a string builder of the paths found
      */
-    public static StringBuilder fetchSourcePaths(File sourcePath,  String appendix) {
+    public static StringBuilder fetchSourcePaths(File sourcePath, String appendix) {
         DirStrategy dirStrategy = new DirStrategy();
         listFiles(sourcePath, dirStrategy);
 
@@ -160,7 +162,7 @@ public class FileUtils {
         for (File foundDir : dirStrategy.getFoundFiles()) {
             String dirName = foundDir.getAbsolutePath();
             sourcesList.append(dirName);
-            sourcesList.append( File.separator);
+            sourcesList.append(File.separator);
             sourcesList.append(appendix);
         }
         return sourcesList;

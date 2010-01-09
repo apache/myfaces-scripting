@@ -53,7 +53,7 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
         _alreadyRegistered.put(clazz.getName(), val);
     }
 
-   
+
     @Override
     public void purge(String className) {
         super.purge(className);

@@ -40,7 +40,7 @@ public interface AnnotationScanListener extends ClassScanListener {
      */
     public boolean supportsAnnotation(String annotation);
 
- 
+
     /**
      * class file registration of the supported annotation
      *

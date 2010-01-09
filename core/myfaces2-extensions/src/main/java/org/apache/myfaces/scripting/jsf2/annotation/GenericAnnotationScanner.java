@@ -109,11 +109,11 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         //https://issues.apache.org/jira/browse/EXTSCRIPT-33
 
         //check if the faces config is already available otherwise we cannot scan yet
-       final FacesContext facesContext = FacesContext.getCurrentInstance();
+        final FacesContext facesContext = FacesContext.getCurrentInstance();
         //runtime config not started
         //for now we only can reache the runtime config in the referenced BaseAnnotatonScanListener
         //if we have a facesContext reachable.
-        if(facesContext == null) {
+        if (facesContext == null) {
             //TODO decouple the scan in the BaseAnnotationScanListener from the facesConfig
             //to get the runtime config
             return;
@@ -129,8 +129,8 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             //hence we do not have the annotations yet scanned
             //in groovy we have the initial scan not done hence
             //the annotations are scanned on the fly!
-            if(clazz != null &&  !(_weaver instanceof GroovyWeaver)) {
-               java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+            if (clazz != null && !(_weaver instanceof GroovyWeaver)) {
+                java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
                 if (anns != null && anns.length > 0) {
                     addOrMoveAnnotations(clazz);
                 } else {

@@ -46,26 +46,26 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         }
 
         public boolean equals(Object incoming) {
-             if (!(incoming instanceof AnnotationEntry)) {
+            if (!(incoming instanceof AnnotationEntry)) {
                 return false;
             }
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
 
-            if(incoming == null) {
+            if (incoming == null) {
                 return false;
             }
 
-            boolean firstEquals = compareValuePair( value, toCompare.getValue());
-            boolean secondEquals = compareValuePair( forClass, toCompare.getForClass());
+            boolean firstEquals = compareValuePair(value, toCompare.getValue());
+            boolean secondEquals = compareValuePair(forClass, toCompare.getForClass());
 
             return firstEquals && secondEquals;
         }
 
         protected boolean compareValuePair(Object val1, Object val2) {
             boolean retVal = false;
-            if(val1 == null ) {
-                if(val2 != null) retVal = false;
-                if(val2 == null) {
+            if (val1 == null) {
+                if (val2 != null) retVal = false;
+                if (val2 == null) {
                     retVal = true;
                 }
             } else {
@@ -84,7 +84,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
     }
 
     public ConverterImplementationListener() {
-         super(PAR_VALUE, PAR_DEFAULT);
+        super(PAR_VALUE, PAR_DEFAULT);
     }
 
     @Override
@@ -114,7 +114,6 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         return alreadyRegistered.equals(entry);
     }
 
-   
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesConverter.class.getName());

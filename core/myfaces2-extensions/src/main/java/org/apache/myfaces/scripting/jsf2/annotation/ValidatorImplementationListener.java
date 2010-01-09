@@ -50,28 +50,27 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         }
 
 
-
         public boolean equals(Object incoming) {
             if (!(incoming instanceof AnnotationEntry)) {
                 return false;
             }
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
 
-            if(incoming == null) {
+            if (incoming == null) {
                 return false;
             }
 
-            boolean firstEquals = compareValuePair( value, toCompare.getValue());
-            boolean secondEquals = compareValuePair( theDefault, toCompare.getTheDefault());
+            boolean firstEquals = compareValuePair(value, toCompare.getValue());
+            boolean secondEquals = compareValuePair(theDefault, toCompare.getTheDefault());
 
             return firstEquals && secondEquals;
         }
 
         protected boolean compareValuePair(Object val1, Object val2) {
             boolean retVal = false;
-            if(val1 == null ) {
-                if(val2 != null) retVal = false;
-                if(val2 == null) {
+            if (val1 == null) {
+                if (val2 != null) retVal = false;
+                if (val2 == null) {
                     retVal = true;
                 }
             } else {
@@ -106,7 +105,6 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         getApplication().addValidator(entry.getValue(), clazz.getName());
     }
 
-   
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -123,7 +121,6 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         return alreadyRegistered.equals(entry);
     }
 
-    
 
     @Override
     public void purge(String className) {

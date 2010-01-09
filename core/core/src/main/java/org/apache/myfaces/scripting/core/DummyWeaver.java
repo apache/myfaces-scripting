@@ -28,13 +28,13 @@ import java.util.Collection;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * a dummy weaver in case the filter has not been set
+ *          <p/>
+ *          a dummy weaver in case the filter has not been set
  */
 
 public class DummyWeaver implements Serializable, ScriptingWeaver {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -1504583349449148143L;
 
@@ -42,23 +42,23 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public Object reloadScriptingInstance(Object o, int artefactType) {
-        return o;  
+        return o;
     }
 
     public Class reloadScriptingClass(Class aclass) {
-        return aclass;  
+        return aclass;
     }
 
     public Class loadScriptingClassFromName(String className) {
-        return ClassUtils.forName(className);  
+        return ClassUtils.forName(className);
     }
 
     public int getScriptingEngine() {
-        return ScriptingConst.ENGINE_TYPE_ALL;  
+        return ScriptingConst.ENGINE_TYPE_ALL;
     }
 
     public boolean isDynamic(Class clazz) {
-        return false;  
+        return false;
     }
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass) {
@@ -76,7 +76,7 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public Collection<String> loadPossibleDynamicClasses() {
-        return null; 
+        return null;
     }
 
 }

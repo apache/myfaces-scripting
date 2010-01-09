@@ -125,7 +125,7 @@ public class CompilerFacade implements DynamicCompiler {
         try {
             CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
             fileManager.refreshClassloader();
-            ((RecompiledClassLoader)fileManager.getClassLoader()).setSourceRoot(sourceRoot);
+            ((RecompiledClassLoader) fileManager.getClassLoader()).setSourceRoot(sourceRoot);
             displayMessages(result);
             return fileManager.getTempDir();
         } catch (CompilationException e) {

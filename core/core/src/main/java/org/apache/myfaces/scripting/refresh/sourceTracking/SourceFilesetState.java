@@ -31,5 +31,5 @@ public class SourceFilesetState {
      * key canonical name,
      * entry, relative fi
      */
-    Set<SourceFile> _fileSet= new HashSet<SourceFile>();
+    Set<SourceFile> _fileSet = new HashSet<SourceFile>();
 }

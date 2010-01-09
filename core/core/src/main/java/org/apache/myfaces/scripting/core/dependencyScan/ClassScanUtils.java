@@ -24,30 +24,27 @@ import java.util.Set;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Utils which store the shared code
- * 
- *
+ *          <p/>
+ *          Utils which store the shared code
  */
 class ClassScanUtils {
     public static final String BINARY_PACKAGE = "\\/";
 
 
-    private static final String DOMAIN_JAVA         = "java.";
-    private static final String DOMAIN_JAVAX        = "javax.";
-    private static final String DOMAIN_COM_SUN      = "com.sun";
-    private static final String DOMAIN_APACHE       = "org.apache.";
-    private static final String DOMAIN_MYFACES      = "org.apache.myfaces";
-    private static final String DOMAIN_JBOSS        = "org.jboss";
-    private static final String DOMAIN_SPRING       = "org.springframework";
-    private static final String DOMAIN_JUNIT        = "org.junit";
-    private static final String DOMAIN_ECLIPSE      = "org.eclipse";
-    private static final String DOMAIN_NETBEANS     = "org.netbeans";
-    private static final String DOMAIN_GROOVY       = "groovy.";
-    private static final String DOMAIN_SCALA        = "scala.";
-    private static final String DOMAIN_JYTHON       = "jython.";
-    private static final String DOMAIN_JRUBY        = "jruby.";
-
+    private static final String DOMAIN_JAVA = "java.";
+    private static final String DOMAIN_JAVAX = "javax.";
+    private static final String DOMAIN_COM_SUN = "com.sun";
+    private static final String DOMAIN_APACHE = "org.apache.";
+    private static final String DOMAIN_MYFACES = "org.apache.myfaces";
+    private static final String DOMAIN_JBOSS = "org.jboss";
+    private static final String DOMAIN_SPRING = "org.springframework";
+    private static final String DOMAIN_JUNIT = "org.junit";
+    private static final String DOMAIN_ECLIPSE = "org.eclipse";
+    private static final String DOMAIN_NETBEANS = "org.netbeans";
+    private static final String DOMAIN_GROOVY = "groovy.";
+    private static final String DOMAIN_SCALA = "scala.";
+    private static final String DOMAIN_JYTHON = "jython.";
+    private static final String DOMAIN_JRUBY = "jruby.";
 
 
     /**

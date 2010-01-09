@@ -92,7 +92,7 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
-       
+
         File target = getClassFile(className);
         if (target.exists()) {
             ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
@@ -107,7 +107,7 @@ public class RecompiledClassLoader extends ClassLoader {
             try {
                 //we cannot load while a compile is in progress
                 //we have to wait until it is one
-                synchronized(RefreshContext.COMPILE_SYNC_MONITOR) {
+                synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
                     fileLength = (int) target.length();
                     fileContent = new byte[fileLength];
                     iStream = new FileInputStream(target);

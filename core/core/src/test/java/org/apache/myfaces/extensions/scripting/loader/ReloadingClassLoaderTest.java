@@ -271,7 +271,7 @@ public class ReloadingClassLoaderTest extends AbstractGeneratorTestCase {
 
     protected ReloadingClassLoader buildClassLoader(String compilationDirectory) {
         return new ReloadingClassLoader(getClass().getClassLoader(),
-                    new File(buildAbsolutePath(compilationDirectory)));
+                new File(buildAbsolutePath(compilationDirectory)));
     }
 
 }

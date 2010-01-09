@@ -40,6 +40,7 @@ public class MetaclassStubcompilerFix extends DelegatingMetaClass {
     /*dummy constructor do not use it it bypasses
   * a bug in the maven-groovy stub compiler regarding
   * base classes*/
+
     public MetaclassStubcompilerFix() {
         super(MetaclassStubcompilerFix.class);
     }

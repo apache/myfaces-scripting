@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * <p>Utility class for class loading purposes, e.g. to determine the classpath of a
  * class loader hierarchy.</p>
- * 
  */
 public class ClassLoaderUtils {
 
@@ -43,7 +42,7 @@ public class ClassLoaderUtils {
 
     /**
      * <p>Returns the default class loader to use.</p>
-     * 
+     *
      * @return the default class loader to use
      */
     public static ClassLoader getDefaultClassLoader() {
@@ -57,10 +56,9 @@ public class ClassLoaderUtils {
 
     /**
      * <p>Determines whether the given class is loadable by the given class loader.</p>
-     * 
-     * @param className the class you want to check
+     *
+     * @param className   the class you want to check
      * @param classLoader the class loader to use for that check
-     * 
      * @return <code>true</code>, if the given class is loadable by the given class loader
      */
     public static boolean isClassAvailable(String className, ClassLoader classLoader) {

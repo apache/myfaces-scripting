@@ -135,7 +135,7 @@ public class RefreshContext {
         return getCurrentlyRunningRequests().equals(1);
     }
 
- 
+
     /**
      * getter for our request counter
      * we need this variable to keep a lock
@@ -145,8 +145,8 @@ public class RefreshContext {
      * active, to keep the compilation results in sync
      *
      * @return the request counter holder which is an atomic integer
-     *
-     * probably deprecred
+     *         <p/>
+     *         probably deprecred
      */
     public AtomicInteger getCurrentlyRunningRequests() {
         return currentlyRunningRequests;

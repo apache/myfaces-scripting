@@ -53,6 +53,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      * use this version of the file separator in regex methods, like replaceAll().
      */
     private static String FILE_SEPARATOR = File.separator;
+
     static {
         if ("\\".equals(FILE_SEPARATOR)) {
             FILE_SEPARATOR = "\\\\";
@@ -72,7 +73,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      * each class has got its own class loader.
      */
     private Map<String, ThrowAwayClassLoader> classLoaders =
-                        new HashMap<String, ThrowAwayClassLoader>();
+            new HashMap<String, ThrowAwayClassLoader>();
 
     /**
      * The target directory for the compiler, i.e. the directory that contains the
@@ -143,8 +144,7 @@ public class ReloadingClassLoader extends URLClassLoader {
                     // linkage errors / exceptions.
                     reloadClass(className);
                 }
-            }
-            else {
+            } else {
                 if (logger.isTraceEnabled()) {
                     logger.trace("A new dynamic class '"
                             + className + "' has been found by this class loader '" + this + "'.");
@@ -157,15 +157,13 @@ public class ReloadingClassLoader extends URLClassLoader {
 
             ThrowAwayClassLoader classLoader = classLoaders.get(className);
             return classLoader.loadClass(className, resolve);
-        }
-        else {
+        } else {
             // Even though there is no class file available, there's still a chance that this
             // class loader has forcefully reloaded a statically compiled class.
             if (classLoaders.containsKey(className)) {
                 ThrowAwayClassLoader classLoader = classLoaders.get(className);
                 return classLoader.loadClass(className, resolve);
-            }
-            else {
+            } else {
                 // However, if there's neither a .class file nor a reloadable class loader
                 // available, just delegate to the parent class loader.
                 return super.loadClass(className, resolve);
@@ -182,7 +180,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      */
     public URL[] getURLs() {
         try {
-            return new URL[]{ compilationDirectory.toURI().toURL() };
+            return new URL[]{compilationDirectory.toURI().toURL()};
         } catch (IOException ex) {
             logger.error("Couldn't resolve the URL to the compilation directory '" + compilationDirectory + "'.", ex);
             return new URL[0];
@@ -210,8 +208,7 @@ public class ReloadingClassLoader extends URLClassLoader {
                 // reference is already outdated.
                 ThrowAwayClassLoader classLoader = (ThrowAwayClassLoader) classObj.getClassLoader();
                 return classLoader.isOutdated(classFile.lastModified());
-            }
-            else {
+            } else {
                 return true;
             }
         }
@@ -237,8 +234,7 @@ public class ReloadingClassLoader extends URLClassLoader {
         File classFile = resolveClassFile(className);
         if (classFile != null && classFile.exists()) {
             classLoader = new ClassFileLoader(className, classFile, this);
-        }
-        else {
+        } else {
             classLoader = new OverridingClassLoader(className, this);
         }
 
@@ -247,8 +243,7 @@ public class ReloadingClassLoader extends URLClassLoader {
             if (oldClassLoader != null) {
                 logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
                         + classLoader + "' as this class loader is supposed to reload the class '" + className + "'.");
-            }
-            else {
+            } else {
                 logger.info("Installed a new class loader '" + classLoader + "' for the class '"
                         + className + "' as this class loader is supposed to reload it.");
             }
@@ -262,7 +257,6 @@ public class ReloadingClassLoader extends URLClassLoader {
      * created, hence a copy is created).</p>
      *
      * @param parentClassLoader the parent ClassLoader to use
-     *
      * @return a copy of the current reloading class loader
      */
     public ReloadingClassLoader cloneWithParentClassLoader(ClassLoader parentClassLoader) {

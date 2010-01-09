@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.ServletContext;
 
 /**
- * a custom chainloader which adds a groovy loading    
+ * a custom chainloader which adds a groovy loading
  * facility to our myfaces loading plugin system
  *
  * @author Werner Punz
@@ -57,6 +57,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
 
     //TODO move the entire init code into the weavers
     //every weaver should know itself how to initialize itself
+
     public CustomChainLoader(ServletContext servletContext) {
         ScriptingWeaver groovyWeaver = new GroovyWeaver();
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
@@ -70,6 +71,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         WeavingContext.setWeaver(this.scriptingWeaver);
     }
 
+
     private void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) {
         String additionalLoaderPaths;
 
@@ -79,10 +81,10 @@ public class CustomChainLoader extends ClassLoaderExtension {
 
         additionalLoaderPaths = servletContext.getInitParameter(initParams);
         appendAdditionalPaths(additionalLoaderPaths, weaver);
-        if(additionalLoaderPaths == null || additionalLoaderPaths.trim().equals("")) {
+        if (additionalLoaderPaths == null || additionalLoaderPaths.trim().equals("")) {
             weaver.appendCustomScriptPath(scriptingRoot);
             weaver.appendCustomScriptPath(classRoot);
-        }    
+        }
     }
 
     private void appendAdditionalPaths(String additionalLoaderPaths, ScriptingWeaver workWeaver) {
@@ -95,10 +97,10 @@ public class CustomChainLoader extends ClassLoaderExtension {
     }
 
     public Class forName(String name) {
-        if(name.endsWith(";")) {
+        if (name.endsWith(";")) {
             name = name.substring(1, name.length() - 1);
         }
-        if(name == null) {
+        if (name == null) {
             return null;
         }
         if (name.startsWith("java.")) /*the entire java namespace is reserved so no use to do a specific classloading check here*/
@@ -112,7 +114,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
             return null;
         }
-       
+
         return scriptingWeaver.loadScriptingClassFromName(name);
     }
 

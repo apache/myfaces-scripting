@@ -66,7 +66,7 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
     /**
      * In our case the dropping already has happend at request time
      * no need for another reloading here
-     * 
+     *
      * @param scriptingInstance
      * @param artefactType
      * @return

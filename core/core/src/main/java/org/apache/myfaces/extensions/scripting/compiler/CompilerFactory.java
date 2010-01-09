@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
  * implementation based on the current JVM for you. If you're using a Java 6
  * VM, it will return a compiler using the JSR-199 API, otherwise it will
  * return a compiler that uses the Javac tool.</p>
- * 
  */
 public class CompilerFactory {
 
@@ -35,8 +34,7 @@ public class CompilerFactory {
             // it's at least 1.6 as otherwise you wouldn't even be able
             // to load the module (the target VM is set to 1.5 after all).
             return Jsr199CompilerLoader.createJsr199Compiler();
-        }
-        else {
+        } else {
             if (logger.isWarnEnabled() &&
                     !System.getProperty("java.vendor").contains("Sun Microsystems")) {
                 logger.warn("This application is running on a Java runtime that neither supports the JSR-199 API " +
@@ -54,7 +52,6 @@ public class CompilerFactory {
      * <p>Utility class that loads the JSR-199 compiler implementation. The sole purpose
      * of this class is to ensure that the current class loader doesn't try to load the
      * class 'Jsr199Compiler' until it's sure that we're running on a JVM 6 platform.</p>
-     *
      */
     private static class Jsr199CompilerLoader {
 

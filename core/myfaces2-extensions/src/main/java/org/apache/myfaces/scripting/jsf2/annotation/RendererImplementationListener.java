@@ -62,22 +62,22 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
             //handle null cases
             if ((componentFamily == null && toCompare.getComponentFamily() != null) ||
-                (componentFamily != null && toCompare.getComponentFamily() == null) ||
-                (rendererType == null && toCompare.getRendererType() != null) ||
-                (rendererType != null && toCompare.getRendererType() == null) ||
-                (renderKitId == null && toCompare.getRenderKitId() != null) ||
-                (renderKitId != null && toCompare.getRenderKitId() == null)) {
+                    (componentFamily != null && toCompare.getComponentFamily() == null) ||
+                    (rendererType == null && toCompare.getRendererType() != null) ||
+                    (rendererType != null && toCompare.getRendererType() == null) ||
+                    (renderKitId == null && toCompare.getRenderKitId() != null) ||
+                    (renderKitId != null && toCompare.getRenderKitId() == null)) {
 
                 return false;
             } else if (componentFamily == null && toCompare.getComponentFamily() == null &&
-                       rendererType == null && toCompare.getRendererType() == null &&
-                       renderKitId == null && toCompare.getRenderKitId() == null) {
+                    rendererType == null && toCompare.getRendererType() == null &&
+                    renderKitId == null && toCompare.getRenderKitId() == null) {
                 return true;
             }
 
             return componentFamily.equals(toCompare.getComponentFamily()) &&
-                   rendererType.equals(toCompare.getComponentFamily()) &&
-                   renderKitId.equals(toCompare.getRenderKitId());
+                    rendererType.equals(toCompare.getComponentFamily()) &&
+                    renderKitId.equals(toCompare.getRenderKitId());
         }
 
         public String getComponentFamily() {
@@ -112,8 +112,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
         if (log.isTraceEnabled()) {
             log.trace("addRenderer(" + renderKitId + ", "
-                      + entry.getComponentFamily() + ", " + entry.getRendererType()
-                      + ", " + clazz.getName() + ")");
+                    + entry.getComponentFamily() + ", " + entry.getRendererType()
+                    + ", " + clazz.getName() + ")");
         }
 
         try {
@@ -128,8 +128,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
     private RenderKitFactory getRenderKitFactory() {
         return (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
     }
-
-
 
 
     @Override
@@ -147,8 +145,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         //here the check if the new class is the same as the old one
         return alreadyRegistered.equals(entry);
     }
-
-  
 
 
     private String getRenderKitId(Map<String, Object> params) {
@@ -177,7 +173,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
 
         RenderKit renderKit = getRenderkit(entry.getRenderKitId());
         try {
-            
+
             renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
         } catch (InstantiationException e) {
             log.error(e);

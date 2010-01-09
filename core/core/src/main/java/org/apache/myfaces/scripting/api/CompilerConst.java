@@ -21,18 +21,18 @@ package org.apache.myfaces.scripting.api;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Various constants shared over the various compiler implementations
- * JSR or non JSR!
+ *          <p/>
+ *          Various constants shared over the various compiler implementations
+ *          JSR or non JSR!
  */
 
 public class CompilerConst {
-    public static final String STD_ERROR_HEAD   = "Java Compiler, Error on line: ";
-    public static final String JC_CLASSPATH     = "-cp";
-    public static final String JC_TARGET_PATH   = "-d";
-    public static final String JC_SOURCEPATH    = "-sourcepath";
-    public static final String JC_DEBUG         = "-g";
-    public static final String JAVA_WILDCARD    = "*.java ";
-    public static final String JC_VERBOSE       = "-verbose";
+    public static final String STD_ERROR_HEAD = "Java Compiler, Error on line: ";
+    public static final String JC_CLASSPATH = "-cp";
+    public static final String JC_TARGET_PATH = "-d";
+    public static final String JC_SOURCEPATH = "-sourcepath";
+    public static final String JC_DEBUG = "-g";
+    public static final String JAVA_WILDCARD = "*.java ";
+    public static final String JC_VERBOSE = "-verbose";
     public static final String JC_SOURCE = "-source";
 }

@@ -20,20 +20,21 @@ package org.apache.myfaces.scripting.api;
 
 /**
  * @author werpu
- * Generic  class identifier interface
- * has to be implemented by all identifiers
+ *         Generic  class identifier interface
+ *         has to be implemented by all identifiers
  */
 public interface DynamicClassIdentifier {
-   /**
+    /**
      * identifies whether a given class is dynamic or not
-    *
+     *
      * @param clazz the class which has to be investigates
      * @return true if it is dynamic false if not
      */
     public boolean isDynamic(Class clazz);
 
     /**
-     * gets the engine 
+     * gets the engine
+     *
      * @param clazz
      * @return
      */

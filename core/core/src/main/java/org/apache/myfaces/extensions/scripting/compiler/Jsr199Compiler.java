@@ -104,8 +104,7 @@ public class Jsr199Compiler implements Compiler {
 
                 if (Diagnostic.Kind.ERROR.equals(diagnostic.getKind())) {
                     result.registerError(message);
-                }
-                else if (Diagnostic.Kind.WARNING.equals(diagnostic.getKind()) ||
+                } else if (Diagnostic.Kind.WARNING.equals(diagnostic.getKind()) ||
                         Diagnostic.Kind.MANDATORY_WARNING.equals(diagnostic.getKind())) {
                     result.registerWarning(message);
                 }

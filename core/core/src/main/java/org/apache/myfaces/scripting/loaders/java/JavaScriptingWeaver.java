@@ -74,13 +74,13 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         try {
             Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
             this._annotationScanner = (ClassScanner) ReflectUtil.instantiate(scanner, new Cast(ScriptingWeaver.class, this));
-            
+
         } catch (ClassNotFoundException e) {
             //we do nothing here
         }
 
         this._dependencyScanner = new JavaDependencyScanner(this);
-        
+
 
     }
 
@@ -102,7 +102,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
      * loads a class from a given sourceroot and filename
      * note this method does not have to be thread safe
      * it is called in a thread safe manner by the base class
-     *
+     * <p/>
      * //TODO eliminate the source root we have the roots now somewhere else
      *
      * @param sourceRoot the source search lookup path
@@ -141,11 +141,11 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         }
 
 
-      //no refresh needed because this is done in the case of java already by
-      //the classloader  
-      //  if (retVal != null) {
-       //     refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
-      //  }
+        //no refresh needed because this is done in the case of java already by
+        //the classloader
+        //  if (retVal != null) {
+        //     refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
+        //  }
 
         /**
          * we now scan the return value and update its configuration parameters if needed
@@ -191,7 +191,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     public void fullClassScan() {
         _dependencyScanner.scanPaths();
 
-        
+
         if (_annotationScanner == null || FacesContext.getCurrentInstance() == null) {
             return;
         }

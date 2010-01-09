@@ -95,7 +95,7 @@ public class ReloadingMetadata {
     }
 
     public void setSourcePath(String sourcePath) {
-        
+
         this.sourcePath = sourcePath;
     }
 

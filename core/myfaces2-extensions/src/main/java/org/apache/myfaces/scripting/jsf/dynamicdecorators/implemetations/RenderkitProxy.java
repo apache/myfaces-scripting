@@ -118,6 +118,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     //TODO add full support for myfaces 2.0 here
+
     @Override
     public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer renderer) {
 

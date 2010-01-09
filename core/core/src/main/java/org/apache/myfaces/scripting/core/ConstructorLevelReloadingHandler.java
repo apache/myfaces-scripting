@@ -41,7 +41,7 @@ import java.lang.reflect.Method;
 public class ConstructorLevelReloadingHandler extends ReloadingInvocationHandler implements Serializable, Decorated {
 
     ScriptingWeaver _weaver = null;
- 
+
 
     public void setLoadedClass(Class loadedClass) {
         _loadedClass = loadedClass;

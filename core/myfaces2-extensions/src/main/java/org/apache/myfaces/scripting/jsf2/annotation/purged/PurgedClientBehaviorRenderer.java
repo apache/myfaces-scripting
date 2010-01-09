@@ -26,5 +26,5 @@ import javax.faces.render.ClientBehaviorRenderer;
  */
 
 public class PurgedClientBehaviorRenderer extends ClientBehaviorRenderer {
-    
+
 }

@@ -68,7 +68,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
     private final void investigateInheritanceHierarchy(ClassLoader loader, Set<String> retVal, String className, Set<String> whiteList) {
         //we now have to fetch the parent hierarchy
 
-       try {
+        try {
             Class toCheck = loader.loadClass(className);
             scanCurrentClass(loader, retVal, className, whiteList);
             Class parent = toCheck.getSuperclass();
@@ -79,7 +79,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             }
 
         } catch (ClassNotFoundException e) {
-            log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" +e);
+            log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" + e);
         }
     }
 

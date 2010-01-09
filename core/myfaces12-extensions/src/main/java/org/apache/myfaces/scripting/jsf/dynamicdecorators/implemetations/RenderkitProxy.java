@@ -59,7 +59,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public Renderer getRenderer(String componentFamily, String rendererType) {
         weaveDelegate();
-        return  (Renderer) reloadInstance(_delegate.getRenderer(componentFamily, rendererType), ScriptingConst.ARTEFACT_TYPE_RENDERER);
+        return (Renderer) reloadInstance(_delegate.getRenderer(componentFamily, rendererType), ScriptingConst.ARTEFACT_TYPE_RENDERER);
     }
 
     public ResponseStateManager getResponseStateManager() {
@@ -74,20 +74,20 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
-        return (ResponseStream) reloadInstance( _delegate.createResponseStream(outputStream), ScriptingConst.ARTEFACT_TYPE_RESPONSESTREAM);
+        return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream), ScriptingConst.ARTEFACT_TYPE_RESPONSESTREAM);
     }
 
     public Object getDelegate() {
-        return _delegate;  
+        return _delegate;
     }
 
 
-     private final void weaveDelegate() {
+    private final void weaveDelegate() {
         _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_RENDERKIT);
     }
 
     private final Object reloadInstance(Object instance, int artefactType) {
-        if(instance == null) {
+        if (instance == null) {
             return null;
         }
         if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
@@ -101,7 +101,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     private final boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
         ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-           if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+        if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
             req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
             return false;
         }

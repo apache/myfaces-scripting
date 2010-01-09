@@ -35,7 +35,6 @@ import java.io.StringWriter;
 
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
- *
  */
 public class GroovyCompiler implements Compiler {
 
@@ -49,9 +48,9 @@ public class GroovyCompiler implements Compiler {
     /**
      * <p>Compiles the given file and creates an according class file in the given target path.</p>
      *
-     * @param sourcePath the path to the source directory
-     * @param targetPath the path to the target directory
-     * @param file       the file of the class you want to compile
+     * @param sourcePath  the path to the source directory
+     * @param targetPath  the path to the target directory
+     * @param file        the file of the class you want to compile
      * @param classLoader the class loader to use to determine the classpath
      * @return the compilation result
      */
@@ -63,9 +62,9 @@ public class GroovyCompiler implements Compiler {
     /**
      * <p>Compiles the given file and creates an according class file in the given target path.</p>
      *
-     * @param sourcePath the path to the source directory
-     * @param targetPath the path to the target directory
-     * @param file       the file of the class you want to compile
+     * @param sourcePath  the path to the source directory
+     * @param targetPath  the path to the target directory
+     * @param file        the file of the class you want to compile
      * @param classLoader the class loader to use to determine the classpath
      * @return the compilation result
      */
@@ -109,7 +108,6 @@ public class GroovyCompiler implements Compiler {
      * our compilation API consists of.</p>
      *
      * @param message the Groovy compiler message you want to convert
-     *
      * @return the final converted compilation message
      */
     protected CompilationResult.CompilationMessage convertMessage(Message message) {
@@ -123,7 +121,7 @@ public class GroovyCompiler implements Compiler {
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "This compiler came across an unknown message kind ['" + message + "']. It will be ignored.");
+                        "This compiler came across an unknown message kind ['" + message + "']. It will be ignored.");
             }
 
             return null;
@@ -133,9 +131,9 @@ public class GroovyCompiler implements Compiler {
     /**
      * <p>Configures the compiler by building its configuration object.</p>
      *
-     * @param sourcePath the path to the source directory
-     * @param targetPath the path to the target directory
-     * @param file       the file of the class you want to compile
+     * @param sourcePath  the path to the source directory
+     * @param targetPath  the path to the target directory
+     * @param file        the file of the class you want to compile
      * @param classLoader the class loader to use to determine the classpath
      * @return the compiler configuration
      */
@@ -155,7 +153,7 @@ public class GroovyCompiler implements Compiler {
 
         // Generate debugging information.
         configuration.setDebug(true);
-        
+
         return configuration;
     }
 

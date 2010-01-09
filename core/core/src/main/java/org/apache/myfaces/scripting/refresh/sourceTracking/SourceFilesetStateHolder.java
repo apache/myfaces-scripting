@@ -24,9 +24,9 @@ import java.util.HashMap;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * a generic state holder which can keep track of multiple source files
- * depending on the engine type
+ *          <p/>
+ *          a generic state holder which can keep track of multiple source files
+ *          depending on the engine type
  */
 
 public class SourceFilesetStateHolder {

@@ -23,8 +23,8 @@ import org.junit.Ignore;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * testprobe for our reflectutils
+ *          <p/>
+ *          testprobe for our reflectutils
  */
 
 @Ignore
@@ -47,7 +47,7 @@ public class Probe {
     }
 
     public static boolean testMethod4(String param1, String param2) {
-       return true;
+        return true;
     }
 
 

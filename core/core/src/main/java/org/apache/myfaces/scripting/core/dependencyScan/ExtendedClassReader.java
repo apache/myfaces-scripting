@@ -20,7 +20,7 @@ public class ExtendedClassReader extends ClassReader {
      * @throws IOException
      */
     public ExtendedClassReader(ClassLoader loader, String className) throws IOException {
-         super(loader.getResourceAsStream(className.replace('.', '/')
+        super(loader.getResourceAsStream(className.replace('.', '/')
                 + ".class"));
     }
 

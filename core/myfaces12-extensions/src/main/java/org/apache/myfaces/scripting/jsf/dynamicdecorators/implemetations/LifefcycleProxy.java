@@ -34,10 +34,10 @@ import javax.faces.FacesException;
  */
 public class LifefcycleProxy extends Lifecycle implements Decorated {
 
- //   GroovyWeaver WeavingContext.getWeaver() =  WeavingContext.getWeaver();
+    //   GroovyWeaver WeavingContext.getWeaver() =  WeavingContext.getWeaver();
 
     private void weaveDelegate() {
-        if(_delegate != null)
+        if (_delegate != null)
             _delegate = (Lifecycle) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_LIFECYCLE);
     }
 
@@ -50,7 +50,7 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
         weaveDelegate();
         /*we can put our object weaving code into the add here*/
         if (WeavingContext.isDynamic(phaseListener.getClass()))
-            phaseListener = (PhaseListener)  WeavingContext.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class,ScriptingConst.ARTEFACT_TYPE_PHASELISTENER);
+            phaseListener = (PhaseListener) WeavingContext.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class, ScriptingConst.ARTEFACT_TYPE_PHASELISTENER);
 
         _delegate.addPhaseListener(phaseListener);
     }

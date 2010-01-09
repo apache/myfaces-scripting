@@ -63,57 +63,56 @@ public class ClassUtils {
      * @param className the className from the class which has to be rewritten
      * @throws ClassNotFoundException
      */
- /*   public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
-        FileInputStream fIstr = null;
-        FileOutputStream foStream = null;
-        try {
-            File classFile = classNameToFile(classPath, className);
-            fIstr = new FileInputStream(classFile);
+    /*   public static void markAsDynamicJava(String classPath, String className) throws ClassNotFoundException {
+    FileInputStream fIstr = null;
+    FileOutputStream foStream = null;
+    try {
+        File classFile = classNameToFile(classPath, className);
+        fIstr = new FileInputStream(classFile);
 
-            ClassNode node = new ClassNode();
-            ClassReader clsReader = new ClassReader(fIstr);
-            //ClassWriter wrt = new ClassWriter();
-            clsReader.accept((ClassVisitor) node, ClassReader.SKIP_FRAMES);
-            //node.accept(wrt);
-            ClassWriter wrt = new ClassWriter(0);
+        ClassNode node = new ClassNode();
+        ClassReader clsReader = new ClassReader(fIstr);
+        //ClassWriter wrt = new ClassWriter();
+        clsReader.accept((ClassVisitor) node, ClassReader.SKIP_FRAMES);
+        //node.accept(wrt);
+        ClassWriter wrt = new ClassWriter(0);
 
-            if (node.visibleAnnotations == null) {
-                node.visibleAnnotations = new LinkedList<AnnotationNode>();
-            }
-
-            boolean hasAnnotation = false;
-            String annotationMarker = Type.getDescriptor(ScriptingClass.class);
-            for (Object elem : node.visibleAnnotations) {
-                AnnotationNode aNode = (AnnotationNode) elem;
-                if (aNode.desc.equals(annotationMarker)) {
-                    hasAnnotation = true;
-                    break;
-                }
-            }
-            if (!hasAnnotation) {
-                node.visibleAnnotations.add(new AnnotationNode(annotationMarker));
-            }
-            node.accept(wrt);
-
-            byte[] finalClass = wrt.toByteArray();
-            fIstr.close();
-            fIstr = null;
-
-            foStream = new FileOutputStream(classNameToFile(classPath, className));
-            foStream.write(finalClass);
-            foStream.flush();
-
-        } catch (FileNotFoundException ex) {
-            throw new ClassNotFoundException("Class " + className + " not found ");
-
-        } catch (IOException e) {
-            logError(e);
-        } finally {
-            closeStreams(fIstr, foStream);
+        if (node.visibleAnnotations == null) {
+            node.visibleAnnotations = new LinkedList<AnnotationNode>();
         }
 
-    }    */
+        boolean hasAnnotation = false;
+        String annotationMarker = Type.getDescriptor(ScriptingClass.class);
+        for (Object elem : node.visibleAnnotations) {
+            AnnotationNode aNode = (AnnotationNode) elem;
+            if (aNode.desc.equals(annotationMarker)) {
+                hasAnnotation = true;
+                break;
+            }
+        }
+        if (!hasAnnotation) {
+            node.visibleAnnotations.add(new AnnotationNode(annotationMarker));
+        }
+        node.accept(wrt);
 
+        byte[] finalClass = wrt.toByteArray();
+        fIstr.close();
+        fIstr = null;
+
+        foStream = new FileOutputStream(classNameToFile(classPath, className));
+        foStream.write(finalClass);
+        foStream.flush();
+
+    } catch (FileNotFoundException ex) {
+        throw new ClassNotFoundException("Class " + className + " not found ");
+
+    } catch (IOException e) {
+        logError(e);
+    } finally {
+        closeStreams(fIstr, foStream);
+    }
+
+}    */
     private static void logError(IOException e) {
         Log log = LogFactory.getLog(ClassUtils.class);
         log.error(e);

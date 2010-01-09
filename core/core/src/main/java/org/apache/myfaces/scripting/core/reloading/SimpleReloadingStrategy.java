@@ -125,7 +125,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
     }
 
     public void setWeaver(ScriptingWeaver weaver) {
-        _weaver =  weaver;
+        _weaver = weaver;
     }
 
 }
