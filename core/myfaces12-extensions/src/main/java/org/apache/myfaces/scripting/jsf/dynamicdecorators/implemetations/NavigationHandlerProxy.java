@@ -33,7 +33,7 @@ import javax.faces.context.FacesContext;
 public class NavigationHandlerProxy extends NavigationHandler implements Decorated {
 
     private void weaveDelegate() {
-        _delegate = (NavigationHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_NAVIGATIONHANDLER);
+        _delegate = (NavigationHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_NAVIGATIONHANDLER);
     }
 
     public NavigationHandlerProxy(NavigationHandler delegate) {

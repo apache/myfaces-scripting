@@ -62,7 +62,7 @@
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
         </navigation-handler>
         <resource-handler>
-            org.apache.myfaces.blank.SourceResourceHandler
+            org.apache.myfaces.scripting.jsf2.resources.SourceResourceHandler
         </resource-handler>
 
     </application>

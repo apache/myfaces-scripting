@@ -58,7 +58,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-        renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_RENDERER);
+        renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_RENDERER);
 
         _delegate.addRenderer(componentFamily, rendererType, renderer);
     }
@@ -66,7 +66,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     public Renderer getRenderer(String componentFamily, String rendererType) {
         weaveDelegate();
         Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
-        Renderer rendr2 = (Renderer) reloadInstance(rendr, ScriptingConst.ARTEFACT_TYPE_RENDERER);
+        Renderer rendr2 = (Renderer) reloadInstance(rendr, ScriptingConst.ARTIFACT_TYPE_RENDERER);
         if (rendr != rendr2) {
             Renderer tempRenderer = _delegate.getRenderer(componentFamily, rendererType);
             if (tempRenderer instanceof PurgedRenderer) {
@@ -109,12 +109,12 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     public ResponseWriter createResponseWriter(Writer writer, String s, String s1) {
         weaveDelegate();
-        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1), ScriptingConst.ARTEFACT_TYPE_RESPONSEWRITER);
+        return (ResponseWriter) reloadInstance(_delegate.createResponseWriter(writer, s, s1), ScriptingConst.ARTIFACT_TYPE_RESPONSEWRITER);
     }
 
     public ResponseStream createResponseStream(OutputStream outputStream) {
         weaveDelegate();
-        return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream), ScriptingConst.ARTEFACT_TYPE_RESPONSESTREAM);
+        return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream), ScriptingConst.ARTIFACT_TYPE_RESPONSESTREAM);
     }
 
     //TODO add full support for myfaces 2.0 here
@@ -123,7 +123,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer renderer) {
 
         weaveDelegate();
-        renderer = (ClientBehaviorRenderer) reloadInstance(renderer, ScriptingConst.ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER);
+        renderer = (ClientBehaviorRenderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER);
         _delegate.addClientBehaviorRenderer(s, renderer);
     }
 
@@ -132,7 +132,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     public ClientBehaviorRenderer getClientBehaviorRenderer(String s) {
         weaveDelegate();
         ClientBehaviorRenderer rendr = _delegate.getClientBehaviorRenderer(s);
-        ClientBehaviorRenderer rendr2 = (ClientBehaviorRenderer) reloadInstance(rendr, ScriptingConst.ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER);
+        ClientBehaviorRenderer rendr2 = (ClientBehaviorRenderer) reloadInstance(rendr, ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER);
         if (rendr != rendr2) {
             //TODO simplyfy this
             rendr2 = _delegate.getClientBehaviorRenderer(s);
@@ -168,7 +168,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
 
     private final void weaveDelegate() {
-        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_RENDERKIT);
+        _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_RENDERKIT);
     }
 
     private final Object reloadInstance(Object instance, int artefactType) {

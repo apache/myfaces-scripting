@@ -52,7 +52,7 @@ public class FacesContextProxy extends FacesContext implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null)
-            _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_FACESCONTEXT);
+            _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_FACESCONTEXT);
     }
 
 

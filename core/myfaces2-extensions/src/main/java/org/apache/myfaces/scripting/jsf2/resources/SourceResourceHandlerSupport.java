@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
 */
-package org.apache.myfaces.blank;
+package org.apache.myfaces.scripting.jsf2.resources;
 
 import org.apache.myfaces.application.DefaultResourceHandlerSupport;
 import org.apache.myfaces.application.ResourceHandlerSupport;
@@ -40,7 +40,7 @@ import javax.faces.context.FacesContext;
 public class SourceResourceHandlerSupport implements ResourceHandlerSupport {
 
     private ResourceLoader[] _supportResourceLoaders;
-    private ResourceHandlerSupport _delegate = new DefaultResourceHandlerSupport();
+    private ResourceHandlerSupport _defaultSupport = new DefaultResourceHandlerSupport();
 
     @Override
     /**
@@ -59,7 +59,7 @@ public class SourceResourceHandlerSupport implements ResourceHandlerSupport {
             //The ExternalContextResourceLoader has precedence over
             //ClassLoaderResourceLoader, so it goes first.
             _supportResourceLoaders = new ResourceLoader[]{
-                    new SourceResourceLoader(""),
+                    new SourceResourceLoader("/resources"),
                     new ExternalContextResourceLoader("/resources"),
                     new ClassLoaderResourceLoader("META-INF/resources")
             };
@@ -68,22 +68,22 @@ public class SourceResourceHandlerSupport implements ResourceHandlerSupport {
     }
 
     public String calculateResourceBasePath(FacesContext facesContext) {
-        return _delegate.calculateResourceBasePath(facesContext);
+        return _defaultSupport.calculateResourceBasePath(facesContext);
     }
 
     public boolean isExtensionMapping() {
-        return _delegate.isExtensionMapping();
+        return _defaultSupport.isExtensionMapping();
     }
 
     public String getMapping() {
-        return _delegate.getMapping();
+        return _defaultSupport.getMapping();
     }
 
     public long getStartupTime() {
-        return _delegate.getStartupTime();
+        return _defaultSupport.getStartupTime();
     }
 
     public long getMaxTimeExpires() {
-        return _delegate.getMaxTimeExpires();
+        return _defaultSupport.getMaxTimeExpires();
     }
 }

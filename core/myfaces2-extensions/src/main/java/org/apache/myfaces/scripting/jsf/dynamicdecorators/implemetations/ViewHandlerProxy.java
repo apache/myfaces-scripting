@@ -43,7 +43,7 @@ public class ViewHandlerProxy extends ViewHandler implements Decorated {
 
     private void weaveDelegate() {
         if (_delegate != null) {
-            _delegate = (ViewHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_VIEWHANDLER);
+            _delegate = (ViewHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_VIEWHANDLER);
         }
     }
 

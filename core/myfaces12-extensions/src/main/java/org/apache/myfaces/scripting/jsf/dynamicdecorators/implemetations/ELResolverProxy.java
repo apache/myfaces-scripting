@@ -58,7 +58,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
             //That way we have a cleaner control over the refresh per request
 
 
-            Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
+            Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
             if (newRetVal != retVal) {
                 _delegate.setValue(elContext, base, property, newRetVal);
@@ -106,7 +106,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     public Set<Integer> supportsEvents() {
         Set<Integer> supports = new HashSet<Integer>();
-        supports.add(ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN);
+        supports.add(ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
 
         return supports;  //To change body of implemented methods use File | Settings | File Templates.
     }

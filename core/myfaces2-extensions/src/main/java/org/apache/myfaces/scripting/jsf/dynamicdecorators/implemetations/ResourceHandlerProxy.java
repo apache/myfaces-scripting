@@ -71,6 +71,6 @@ public class ResourceHandlerProxy extends ResourceHandler {
     }
 
     private final void weaveDelegate() {
-        _delegate = (ResourceHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTEFACT_TYPE_RESOURCEHANDLER);
+        _delegate = (ResourceHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_RESOURCEHANDLER);
     }
 }
