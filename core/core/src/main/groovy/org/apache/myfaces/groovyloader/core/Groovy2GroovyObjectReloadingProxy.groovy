@@ -24,13 +24,13 @@ import org.apache.myfaces.scripting.core.util.WeavingContext
 import org.apache.myfaces.scripting.core.util.WeavingContext
 
 /**
- * A proxying class doing constructor interceoption
+ * A proxying class doing constructor interception
  * to enable dynamic reload of groovy classes
  * on constructor setup
  *
  * Every groovy class
  * generated is marked with this
- * procy on its metaclass
+ * proxy on its metaclass
  * however java omits the meta data
  * this proxy is only used for groovy 2 groovy
  * references and should allow code reloading
@@ -45,10 +45,10 @@ import org.apache.myfaces.scripting.core.util.WeavingContext
  *
  */
 class Groovy2GroovyObjectReloadingProxy extends MetaclassStubcompilerFix {
-/*
-due to a bug in the groovy meta stub compiler
-we have to derive from our own object here
-*/
+  /*
+  due to a bug in the groovy meta stub compiler
+  we have to derive from our own object here
+  */
 
   boolean tainted = false
 

@@ -19,14 +19,13 @@
 package org.apache.myfaces.scripting.api;
 
 
-import java.util.Map;
 import java.lang.annotation.Annotation;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  *          <p/>
- *          We use a source code artefact observer here to register the
+ *          We use a source code artifact observer here to register the
  *          meta data in the correct registry entries
  */
 
@@ -35,8 +34,8 @@ public interface AnnotationScanListener extends ClassScanListener {
     /**
      * returns true if the annotation marked by the incoming parameter is supported by this scanner
      *
-     * @param annotation the supported annotation as neutral string representation of its class
-     * @return in case of support
+     * @param annotation        the supported annotation as neutral string representation of its class
+     * @return                  in case of support
      */
     public boolean supportsAnnotation(String annotation);
 
@@ -44,16 +43,16 @@ public interface AnnotationScanListener extends ClassScanListener {
     /**
      * class file registration of the supported annotation
      *
-     * @param clazz
-     * @param annotationName
+     * @param clazz             the class to be registered
+     * @param annotationName    the annotation for the class
      */
     public void register(Class clazz, Annotation annotationName);
 
     /**
      * purges the class from the correct places of the myfaces registry
-     * so that the artefact is not reachable anymore
+     * so that the artifact is not reachable anymore
      *
-     * @param className
+     * @param className         the class name for the class which needs to be purged
      */
     public void purge(String className);
 }

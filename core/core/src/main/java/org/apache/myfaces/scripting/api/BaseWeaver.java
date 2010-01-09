@@ -87,7 +87,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     /**
      * helper for accessing the reloading metadata map
      *
-     * @return
+     * @return a map with the class name as key and the reloading meta data as value
      */
     protected Map<String, ReloadingMetadata> getClassMap() {
         return WeavingContext.getFileChangedDaemon().getClassMap();
@@ -96,10 +96,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     /**
      * reloads a scripting instance object
      *
-     * @param scriptingInstance the object which has to be reloaded
-     * @return the reloaded object with all properties transferred or the original object if no reloading was needed
+     * @param scriptingInstance     the object which has to be reloaded
+     * @param artifactType          integer value indication which type of JSF artifact we have to deal with
+     * @return                      the reloaded object with all properties transferred or the original object if no reloading was needed
      */
-    public Object reloadScriptingInstance(Object scriptingInstance, int artefactType) {
+    public Object reloadScriptingInstance(Object scriptingInstance, int artifactType) {
         Map<String, ReloadingMetadata> classMap = getClassMap();
         if (classMap.size() == 0) {
             return scriptingInstance;
@@ -109,10 +110,10 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
         //This gives a minor speedup because we jump out as soon as possible
         //files never changed do not even have to be considered
-        //not tained even once == not even considered to be reloaded
+        //not tainted even once == not even considered to be reloaded
         if (isReloadCandidate(reloadMeta)) {
 
-            Object reloaded = _reloadingStrategy.reload(scriptingInstance, artefactType);
+            Object reloaded = _reloadingStrategy.reload(scriptingInstance, artifactType);
             if (reloaded != null) {
                 return reloaded;
             }
@@ -151,9 +152,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     /**
-     * recompiles and loads a scripting class from a given classname
+     * recompiles and loads a scripting class from a given class name
      *
-     * @param className the classname including the package
+     * @param className the class name including the package
      * @return a valid class if the sources could be found null if nothing could be found
      */
     public Class loadScriptingClassFromName(String className) {
@@ -175,7 +176,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                     if (metadata != null) {
                         return reloadScriptingClass(metadata.getAClass());
                     }
-                    Class retVal = (Class) loadScriptingClassFromFile(pathEntry, fileName);
+                    Class retVal = loadScriptingClassFromFile(pathEntry, fileName);
                     if (retVal != null) {
                         return retVal;
                     }

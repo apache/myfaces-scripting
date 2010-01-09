@@ -21,10 +21,9 @@ package org.apache.myfaces.javaloader.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import javax.faces.context.FacesContext;
 
-import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
+import static org.apache.myfaces.scripting.core.util.ReflectUtil.executeMethod;
 
 /**
  * @author werpu2

@@ -34,7 +34,7 @@ import org.apache.myfaces.scripting.loaders.groovy.GroovyDependencyScanner
 
 /**
  * Weaver  which does dynamic class reloading
- * and in groovy2groovy encironments also adds
+ * and in groovy2groovy environments also adds
  * a transparent reloading proxy
  * that way we get a dynamic reloading
  * upon file change
@@ -68,7 +68,7 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     _reloadingStrategy.setWeaver(this)
 
     //init classpath removed we can resolve that over the
-    //url classloader at the time myfaces is initialized
+    //url classloader at the time MyFaces is initialized
     try {
       Class scanner = ClassUtils.getContextClassLoader().loadClass("org.apache.myfaces.scripting.jsf2.annotation.GenericAnnotationScanner");
       Class[] params = new Class[1];

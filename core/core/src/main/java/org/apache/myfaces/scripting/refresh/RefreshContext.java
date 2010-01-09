@@ -64,15 +64,15 @@ public class RefreshContext {
      * and also a global refresh has to be atomic and no other
      * refreshes should happen
      */
-    public volatile static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
+    public final static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
 
     /**
      * second synchronisation monitor
-     * all other artefacts can only be refreshed outside of a
-     * compile cycle othwise the classloader would get
+     * all other artifacts can only be refreshed outside of a
+     * compile cycle otherwise the classloader would get
      * half finished compile states to load
      */
-    public volatile static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
+    public final static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
 
     private volatile AtomicInteger currentlyRunningRequests = null;
 

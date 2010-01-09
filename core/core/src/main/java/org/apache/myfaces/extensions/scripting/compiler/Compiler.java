@@ -52,7 +52,7 @@ public interface Compiler {
      * @param file        the relative file name of the class you want to compile
      * @param classLoader the class loader for dependent classes
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
-     * @throws CompilationException if a severe error occured while trying to compile a file
+     * @throws CompilationException if a severe error occurred while trying to compile a file
      */
     public CompilationResult compile(File sourcePath, File targetPath, String file, ClassLoader classLoader)
             throws CompilationException;

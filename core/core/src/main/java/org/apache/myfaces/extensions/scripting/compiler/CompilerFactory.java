@@ -7,7 +7,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>This factory chooses and creates an instance of the according compiler
  * implementation based on the current JVM for you. If you're using a Java 6
  * VM, it will return a compiler using the JSR-199 API, otherwise it will
- * return a compiler that uses the Javac tool.</p>
+ * return a compiler that uses the JavaC tool.</p>
  */
 public class CompilerFactory {
 
