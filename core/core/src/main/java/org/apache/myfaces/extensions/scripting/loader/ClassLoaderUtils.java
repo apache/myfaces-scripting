@@ -25,6 +25,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -85,8 +86,8 @@ public class ClassLoaderUtils {
         StringBuffer classpath = new StringBuffer();
 
         URL[] urls = resolveClasspath(classLoader);
-        for (int i = 0; i < urls.length; ++i) {
-            classpath.append(urls[i].getPath());
+        for (URL url : urls) {
+            classpath.append(url.getPath());
 
             // Note that the classpath separator character is platform
             // dependent. On Windows systems it's ";" whereas on other
@@ -116,9 +117,7 @@ public class ClassLoaderUtils {
 
                 URL[] urls = urlClassLoader.getURLs();
                 if (urls != null) {
-                    for (int i = 0; i < urls.length; ++i) {
-                        classpath.add(urls[i]);
-                    }
+                    classpath.addAll(Arrays.asList(urls));
                 }
             } else {
                 if (logger.isWarnEnabled()) {
@@ -132,7 +131,7 @@ public class ClassLoaderUtils {
             classLoader = classLoader.getParent();
         }
 
-        return (URL[]) classpath.toArray(new URL[classpath.size()]);
+        return classpath.toArray(new URL[classpath.size()]);
     }
 
 }

@@ -14,5 +14,6 @@ package org.apache.myfaces.scripting.api;
  *          scopes if possible to enforce a clean reload wherever possible.
  *          </p>
  */
+@SuppressWarnings("unused")
 public interface Unreloadable {
 }

@@ -79,6 +79,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     /**
      * condition which marks a metadata as reload candidate
+     *
+     * @param reloadMeta the metadata to be investigated for reload candidacy
+     * @return true if it is a reload candidate
      */
     public boolean isReloadCandidate(ReloadingMetadata reloadMeta) {
         return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.isTaintedOnce();
@@ -96,9 +99,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     /**
      * reloads a scripting instance object
      *
-     * @param scriptingInstance     the object which has to be reloaded
-     * @param artifactType          integer value indication which type of JSF artifact we have to deal with
-     * @return                      the reloaded object with all properties transferred or the original object if no reloading was needed
+     * @param scriptingInstance the object which has to be reloaded
+     * @param artifactType      integer value indication which type of JSF artifact we have to deal with
+     * @return the reloaded object with all properties transferred or the original object if no reloading was needed
      */
     public Object reloadScriptingInstance(Object scriptingInstance, int artifactType) {
         Map<String, ReloadingMetadata> classMap = getClassMap();
@@ -232,9 +235,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
 
     public void requestRefresh() {
-        //needed?
-
-
         if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
             // we set a lock over the compile and bean refresh
             //and an inner check again to avoid unneeded compile triggers
@@ -289,7 +289,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             Set<String> managedBeanClasses = new HashSet<String>();
 
             Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-            Map<String, ManagedBean> workCopy = null;
+            Map<String, ManagedBean> workCopy;
 
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 workCopy = makeSnapshot(mbeans);
@@ -330,16 +330,17 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     /**
-     * myfaces 2.0 keeps an immutable map over the session
+     * MyFaces 2.0 keeps an immutable map over the session
      * and request scoped beans
      * if we alter that during our loop we get a concurrent modification exception
      * taking a snapshot in time fixes that
      *
-     * @param mbeans
-     * @return
+     * @param mbeans the internal managed bean map which has to be investigated
+     * @return a map with the class name as key and the managed bean info
+     *         as value of the current state of the internal runtime config bean map
      */
     private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
-        Map<String, ManagedBean> workCopy = null;
+        Map<String, ManagedBean> workCopy;
 
         workCopy = new HashMap<String, ManagedBean>(mbeans.size());
         for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
@@ -379,10 +380,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //the bean map from outside we still get race conditions
             //But for most cases this mutex should be enough
 
-            Map<String, ManagedBean> workCopy = null;
+            Map<String, ManagedBean> workCopy;
 
             workCopy = makeSnapshot(mbeans);
-
 
             for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
 
@@ -417,7 +417,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * for jsf2 we probably have some kind of notification mechanism
      * which notifies custom scopes
      *
-     * @param bean
+     * @param bean the managed bean which all references have to be removed from
      */
 
     private void removeBeanReferences(ManagedBean bean) {
@@ -440,7 +440,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     /**
      * jsf2 helper to remove custom scoped beans
      *
-     * @param bean
+     * @param bean the managed bean which has to be removed from the custom scope from
      */
     private void removeCustomScopedBean(ManagedBean bean) {
         Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(bean.getManagedBeanScope());

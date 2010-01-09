@@ -16,7 +16,7 @@ public class ClassDependencies {
      * classname
      * <p/>
      * <p/>
-     * the key is a depenency a class has the value is a set of classes which depend on the current class
+     * the key is a dependency a class has the value is a set of classes which depend on the current class
      */
     private Map<String, Set<String>> reverseIndex = new ConcurrentHashMap<String, Set<String>>();
 
@@ -29,8 +29,8 @@ public class ClassDependencies {
      * adds a set of dependencies to the
      * reverse lookup index
      *
-     * @param referencingClass
-     * @param referencedClasses
+     * @param referencingClass  the referencing class of this dependency
+     * @param referencedClasses the referenced class of this dependency
      */
     public void addDependencies(String referencingClass, Collection<String> referencedClasses) {
         for (String referencedClass : referencedClasses) {
@@ -73,7 +73,7 @@ public class ClassDependencies {
         return reverseIndex.get(referencedClass);
     }
 
-    private final Set<String> getReverseDependencies(String dependency) {
+    private Set<String> getReverseDependencies(String dependency) {
         Set<String> dependencies = reverseIndex.get(dependency);
         if (dependencies == null) {
             dependencies = Collections.synchronizedSet(new HashSet<String>());

@@ -22,34 +22,34 @@ import java.util.Collection;
 
 /**
  * @author werpu
- * @date: 15.08.2009
- * <p/>
- * Central interface to the scripting layer
- * this class is a weaver which allows to trigger
- * the scripting layer in various situations
- * of the JSF interception points
- * <p/>
- * The scripting weaver replaces the classloader for those instances
- * because custom classloaders are inherently problematic in web containers
+ *         <p/>
+ *         <p/>
+ *         Central interface to the scripting layer
+ *         this class is a weaver which allows to trigger
+ *         the scripting layer in various situations
+ *         of the JSF interception points
+ *         <p/>
+ *         The scripting weaver replaces the classloader for those instances
+ *         because custom classloaders are inherently problematic in web containers
  */
 public interface ScriptingWeaver {
 
     /**
      * appends a custom script search path to the original one
      *
-     * @param scriptPaths
-     * @deprecates
+     * @param scriptPath a script path to be appended
+     * @deprecated
      */
-    public void appendCustomScriptPath(String scriptPaths);
+    public void appendCustomScriptPath(String scriptPath);
 
 
     /**
      * @param o            the object which has to be reloaded
-     * @param artefactType an identifier for the artefact type so that its reloading strategies can
-     *                     be adjusted depending on the type of artefact which has to be processed, we have to pass down
-     *                     this artefact because we cannot rely on instanceof here for several reasons first we do not know
-     *                     if a managed bean does not implement as well one of the artefact interfaces for one reason or the other
-     *                     secondly how do we deal with future extensions which provide new artefacts we cannot
+     * @param artifactType an identifier for the artifact type so that its reloading strategies can
+     *                     be adjusted depending on the type of artifact which has to be processed, we have to pass down
+     *                     this artifact because we cannot rely on instanceof here for several reasons first we do not know
+     *                     if a managed bean does not implement as well one of the artifact interfaces for one reason or the other
+     *                     secondly how do we deal with future extensions which provide new artifacts we cannot
      *                     bind the code to just one implementation, hence we add some kind of type identifier here as well
      * @return reloads an existing objects with its attributes
      *         and assigns the reloaded class to the new object
@@ -57,7 +57,7 @@ public interface ScriptingWeaver {
      *         note, the new object must not be the same as the original one
      *         it can be a shallow clone with a new class instead
      */
-    public Object reloadScriptingInstance(Object o, int artefactType);
+    public Object reloadScriptingInstance(Object o, int artifactType);
 
     /**
      * reloads an existing class if needed
@@ -78,25 +78,26 @@ public interface ScriptingWeaver {
      */
     public Class loadScriptingClassFromName(String className);
 
-
     /**
      * returns the engine type for this weaver
      *
-     * @return
+     * @return the supported scripting engine of this weaver
      */
     public int getScriptingEngine();
 
-
     /**
-     * checks wether a given class can be reloaded
+     * checks whether a given class can be reloaded
      * from this weaver or not
      *
-     * @param clazz
-     * @return
+     * @param clazz the class which has to be investigated
+     * @return true if the class is dynamic false otherwise
      */
     public boolean isDynamic(Class clazz);
 
-
+    /**
+     * @param weaverClass the weaver class
+     * @return an instance of the weaver class (mostly singleton)
+     */
     public ScriptingWeaver getWeaverInstance(Class weaverClass);
 
     /**
@@ -105,21 +106,18 @@ public interface ScriptingWeaver {
      */
     public void fullClassScan();
 
-
     /**
      * do a full recompile of changed resources instead of a
      * simply compile per file
      */
     public void fullRecompile();
 
-
     /**
-     * callback for artefacting request refreshes
-     * some artefacts should be refreshed or cleared upon
+     * callback for artifact request refreshes
+     * some artifacts should be refreshed or cleared upon
      * request time, others can be dealt with on on demand time
      */
     public void requestRefresh();
-
 
     /**
      * loads a list of possible dynamic classes

@@ -24,6 +24,7 @@ package org.apache.myfaces.scripting.api;
  *
  * @author Werner Punz
  */
+@SuppressWarnings("unused")
 public class ScriptingConst {
     public static final String SCRIPTING_CLASSLOADER = "org.apache.myfaces.SCRIPTING_CLASSLOADER";
     public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.SCRIPTING_GROOVYFACTORY";
@@ -39,28 +40,28 @@ public class ScriptingConst {
     public static final int ENGINE_TYPE_NO_ENGINE = -1;
     public static final int ENGINE_TYPE_GROOVY = 0;
     public static final int ENGINE_TYPE_JAVA = 1;
-    public static final int ARTEFACT_TYPE_UNKNOWN = -1;
-    public static final int ARTEFACT_TYPE_MANAGEDBEAN = 1;
-    public static final int ARTEFACT_TYPE_MANAGEDPROPERTY = 2;
-    public static final int ARTEFACT_TYPE_RENDERKIT = 3;
-    public static final int ARTEFACT_TYPE_VIEWHANDLER = 4;
-    public static final int ARTEFACT_TYPE_RENDERER = 5;
-    public static final int ARTEFACT_TYPE_COMPONENT = 6;
-    public static final int ARTEFACT_TYPE_VALIDATOR = 7;
-    public static final int ARTEFACT_TYPE_BEHAVIOR = 8;
-    public static final int ARTEFACT_TYPE_APPLICATION = 9;
-    public static final int ARTEFACT_TYPE_ELCONTEXTLISTENER = 10;
-    public static final int ARTEFACT_TYPE_ACTIONLISTENER = 11;
-    public static final int ARTEFACT_TYPE_VALUECHANGELISTENER = 12;
-    public static final int ARTEFACT_TYPE_CONVERTER = 13;
-    public static final int ARTEFACT_TYPE_LIFECYCLE = 14;
-    public static final int ARTEFACT_TYPE_PHASELISTENER = 15;
-    public static final int ARTEFACT_TYPE_FACESCONTEXT = 16;
-    public static final int ARTEFACT_TYPE_NAVIGATIONHANDLER = 17;
-    public static final int ARTEFACT_TYPE_RESPONSEWRITER = 18;
-    public static final int ARTEFACT_TYPE_RESPONSESTREAM = 19;
-    public static final int ARTEFACT_TYPE_RESOURCEHANDLER = 19;
-    public static final int ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
+    public static final int ARTIFACT_TYPE_UNKNOWN = -1;
+    public static final int ARTIFACT_TYPE_MANAGEDBEAN = 1;
+    public static final int ARTIFACT_TYPE_MANAGEDPROPERTY = 2;
+    public static final int ARTIFACT_TYPE_RENDERKIT = 3;
+    public static final int ARTIFACT_TYPE_VIEWHANDLER = 4;
+    public static final int ARTIFACT_TYPE_RENDERER = 5;
+    public static final int ARTIFACT_TYPE_COMPONENT = 6;
+    public static final int ARTIFACT_TYPE_VALIDATOR = 7;
+    public static final int ARTIFACT_TYPE_BEHAVIOR = 8;
+    public static final int ARTIFACT_TYPE_APPLICATION = 9;
+    public static final int ARTIFACT_TYPE_ELCONTEXTLISTENER = 10;
+    public static final int ARTIFACT_TYPE_ACTIONLISTENER = 11;
+    public static final int ARTIFACT_TYPE_VALUECHANGELISTENER = 12;
+    public static final int ARTIFACT_TYPE_CONVERTER = 13;
+    public static final int ARTIFACT_TYPE_LIFECYCLE = 14;
+    public static final int ARTIFACT_TYPE_PHASELISTENER = 15;
+    public static final int ARTIFACT_TYPE_FACESCONTEXT = 16;
+    public static final int ARTIFACT_TYPE_NAVIGATIONHANDLER = 17;
+    public static final int ARTIFACT_TYPE_RESPONSEWRITER = 18;
+    public static final int ARTIFACT_TYPE_RESPONSESTREAM = 19;
+    public static final int ARTIFACT_TYPE_RESOURCEHANDLER = 19;
+    public static final int ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
 
     public static final String CTX_REQUEST_CNT = "RequestCnt";
     public static final String CTX_CONFIGURATION = "ExtScriptingConfig";

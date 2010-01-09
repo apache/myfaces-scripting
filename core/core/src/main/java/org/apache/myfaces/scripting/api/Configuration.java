@@ -29,7 +29,7 @@ public class Configuration {
      * for systems which can use resource loaders
      * <p/>
      * so that we can load various resources as well
-     * from separate sourcedirs instead
+     * from separate source directories instead
      */
     volatile List<String> _resourceDirs = new CopyOnWriteArrayList<String>();
 
@@ -38,18 +38,20 @@ public class Configuration {
     }
 
     public void addSourceDir(int scriptingEngine, String sourceDir) {
-        CopyOnWriteArrayList dirs = _sourceDirs.get(scriptingEngine);
+        CopyOnWriteArrayList<String> dirs = _sourceDirs.get(scriptingEngine);
         if (dirs == null) {
-            dirs = new CopyOnWriteArrayList();
+            dirs = new CopyOnWriteArrayList<String>();
             _sourceDirs.put(scriptingEngine, dirs);
         }
         dirs.add(sourceDir);
     }
 
+    @SuppressWarnings("unused")
     public void addCompileTarget(int scriptingEngine, String target) {
         _compileTarget.put(scriptingEngine, target);
     }
 
+    @SuppressWarnings("unused")
     public String getCompileTarget(int scriptingEngine) {
         return _compileTarget.get(scriptingEngine);
     }

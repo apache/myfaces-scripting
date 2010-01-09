@@ -15,8 +15,10 @@ public interface ClassScanner {
 
     public void scanPaths();
 
+    @SuppressWarnings("unused")
     public void clearListeners();
 
+    @SuppressWarnings("unused")
     public void addListener(ClassScanListener listener);
 
     public void addScanPath(String scanPath);

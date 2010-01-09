@@ -34,5 +34,6 @@ public class CompilerConst {
     public static final String JC_DEBUG = "-g";
     public static final String JAVA_WILDCARD = "*.java ";
     public static final String JC_VERBOSE = "-verbose";
+    @SuppressWarnings("unused")
     public static final String JC_SOURCE = "-source";
 }

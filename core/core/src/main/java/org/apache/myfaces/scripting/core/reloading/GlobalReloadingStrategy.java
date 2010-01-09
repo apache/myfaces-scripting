@@ -60,17 +60,17 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
     public Object reload(Object toReload, int artefactType) {
 
         switch (artefactType) {
-            case ScriptingConst.ARTEFACT_TYPE_MANAGEDBEAN:
+            case ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN:
                 return _beanStrategy.reload(toReload, artefactType);
-            case ScriptingConst.ARTEFACT_TYPE_RENDERER:
+            case ScriptingConst.ARTIFACT_TYPE_RENDERER:
                 return _noMappingStrategy.reload(toReload, artefactType);
-            case ScriptingConst.ARTEFACT_TYPE_BEHAVIOR:
+            case ScriptingConst.ARTIFACT_TYPE_BEHAVIOR:
                 return _noMappingStrategy.reload(toReload, artefactType);
-            case ScriptingConst.ARTEFACT_TYPE_CLIENTBEHAVIORRENDERER:
+            case ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER:
                 return _noMappingStrategy.reload(toReload, artefactType);
-            case ScriptingConst.ARTEFACT_TYPE_COMPONENT:
+            case ScriptingConst.ARTIFACT_TYPE_COMPONENT:
                 return _noMappingStrategy.reload(toReload, artefactType);
-            case ScriptingConst.ARTEFACT_TYPE_VALIDATOR:
+            case ScriptingConst.ARTIFACT_TYPE_VALIDATOR:
                 return _noMappingStrategy.reload(toReload, artefactType);
             //TODO Add other artefact loading strategies on demand here
             default:

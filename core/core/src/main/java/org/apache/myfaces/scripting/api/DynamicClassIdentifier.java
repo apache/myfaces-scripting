@@ -19,7 +19,7 @@
 package org.apache.myfaces.scripting.api;
 
 /**
- * @author werpu
+ * @author Werner Punz
  *         Generic  class identifier interface
  *         has to be implemented by all identifiers
  */
@@ -28,15 +28,16 @@ public interface DynamicClassIdentifier {
      * identifies whether a given class is dynamic or not
      *
      * @param clazz the class which has to be investigates
-     * @return true if it is dynamic false if not
+     * @return true     if it is dynamic false if not
      */
     public boolean isDynamic(Class clazz);
 
     /**
      * gets the engine
      *
-     * @param clazz
-     * @return
+     * @param clazz the class which the engine type has to be determined for
+     * @return the engine type as integer value
      */
+    @SuppressWarnings("unused")
     public int getEngineType(Class clazz);
 }

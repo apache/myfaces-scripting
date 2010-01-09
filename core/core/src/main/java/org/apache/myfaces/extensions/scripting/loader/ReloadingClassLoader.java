@@ -259,6 +259,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      * @param parentClassLoader the parent ClassLoader to use
      * @return a copy of the current reloading class loader
      */
+    @SuppressWarnings("unused")
     public ReloadingClassLoader cloneWithParentClassLoader(ClassLoader parentClassLoader) {
         ReloadingClassLoader classLoader =
                 new ReloadingClassLoader(parentClassLoader, compilationDirectory);
