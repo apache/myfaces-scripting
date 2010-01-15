@@ -419,7 +419,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     public void fullRecompile() {
-        if (isFullyRecompiled()) {
+        if (isFullyRecompiled() || !isRecompileRecommended()) {
             return;
         }
 
@@ -441,6 +441,10 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         markAsFullyRecompiled();
     }
 
+    protected boolean isRecompileRecommended() {
+        return WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine());    
+    }
+
     protected boolean isFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context != null) {
@@ -458,7 +462,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
             }
         }
-        WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_GROOVY, Boolean.FALSE);
+        WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
     }
 
     /**
