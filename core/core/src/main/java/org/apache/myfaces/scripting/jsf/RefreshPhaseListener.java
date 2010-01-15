@@ -43,6 +43,7 @@ public class RefreshPhaseListener implements PhaseListener {
     public void afterPhase(PhaseEvent event) {
     }
 
+    @SuppressWarnings("unchecked")
     public void beforePhase(PhaseEvent event) {
         //we fetch the earliest phase possible, in case of a normal get it is the render phase
         //in every other case it is the restore view phase

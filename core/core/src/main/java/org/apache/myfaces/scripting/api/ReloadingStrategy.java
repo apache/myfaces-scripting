@@ -11,7 +11,7 @@ package org.apache.myfaces.scripting.api;
  *          on the artifact
  */
 public interface ReloadingStrategy {
-    public Object reload(Object toReload, int artefactType);
+    public Object reload(Object toReload, int artifactType);
 
     public ScriptingWeaver getWeaver();
 

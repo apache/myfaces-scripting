@@ -48,7 +48,7 @@ class ClassScanUtils {
     /**
      * checks if a given package or class
      * belongs to a standard namespaces which is
-     * untouchable by an implementor
+     * untouchable by an implementer
      *
      * @param in the page or fully qualified classname
      * @return true if it belongs to one of the standard namespaces, false if not
@@ -173,5 +173,4 @@ class ClassScanUtils {
             }
         }
     }
-
 }

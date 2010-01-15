@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.core;
 
-
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
@@ -39,47 +38,45 @@ import java.lang.reflect.Method;
  *
  * @author Werner Punz
  */
+@SuppressWarnings("unused")
 public class MethodLevelReloadingHandler extends ReloadingInvocationHandler implements Serializable {
     transient ScriptingWeaver _weaver = null;
-    int _artefactType;
+    int _artifactType;
 
-
-    public MethodLevelReloadingHandler(Object rootObject, int artefactType) {
+    public MethodLevelReloadingHandler(Object rootObject, int artifactType) {
         _loadedClass = rootObject.getClass();
         _delegate = rootObject;
-        _artefactType = artefactType;
+        _artifactType = artifactType;
     }
-
 
     /**
      * outside interface to the invoke method
      * which gets called every time a method
      * is called
      *
-     * @param o
-     * @param method
-     * @param objects
-     * @return
+     * @param object       the object holding the method
+     * @param method       the method
+     * @param paramHolders the param holders
+     * @return the return value of the operation
      * @throws Throwable
      */
-    public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-        return reloadInvoke(method, objects);
+    public Object invoke(Object object, Method method, Object[] paramHolders) throws Throwable {
+        return reloadInvoke(method, paramHolders);
     }
-
 
     /**
      * invoke handler which is triggered
      * by every method call which takes care of the reload
      *
-     * @param method  the method to call
-     * @param objects the params
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @param method       the method to call
+     * @param paramHolders the params
+     * @return the return value of the operation
+     * @throws InstantiationException    standard throw caused by reflection
+     * @throws IllegalAccessException    standard throw caused by reflection
+     * @throws InvocationTargetException standard throw caused by reflection
      */
 
-    protected Object reloadInvoke(Method method, Object[] objects) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected Object reloadInvoke(Method method, Object[] paramHolders) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         if (_weaver == null)
             _weaver = WeavingContext.getWeaver();
 
@@ -87,27 +84,27 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
             //stateless or lost state due to a lifecycle iteration we trigger anew
             _delegate = (_weaver.reloadScriptingClass(_loadedClass)).newInstance();
         } else {
-            //if we are stateful only a tainted artefact is reloaded
-            _delegate = _weaver.reloadScriptingInstance(_delegate, _artefactType);
+            //if we are stateful only a tainted artifact is reloaded
+            _delegate = _weaver.reloadScriptingInstance(_delegate, _artifactType);
 
             //we work our way through all proxies and fetch the class for further reference
             Object delegate = WeavingContext.getDelegateFromProxy(_delegate);
             _loadedClass = delegate.getClass();
         }
         //check for proxies and unproxy them before calling the methods
-        //to avoid unneccessary cast problems
+        //to avoid unnecessary cast problems
         //this is slow on long param lists but it is better
         //to be slow than to have casts an calls in the code
         //for production we can compile the classes anyway and avoid
         //this
-        unmapProxies(objects);
-        return method.invoke(_delegate, objects);
+        unmapProxies(paramHolders);
+        return method.invoke(_delegate, paramHolders);
     }
 
     /**
      * unmap proxied objects
      *
-     * @param objects
+     * @param objects the objects to be unmapped
      */
     private void unmapProxies(Object[] objects) {
         if (objects == null) return;
@@ -116,12 +113,11 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
         }
     }
 
-
-    public int getArtefactType() {
-        return _artefactType;
+    public int getArtifactType() {
+        return _artifactType;
     }
 
-    public void setArtefactType(int artefactType) {
-        _artefactType = artefactType;
+    public void setArtifactType(int artifactType) {
+        _artifactType = artifactType;
     }
 }

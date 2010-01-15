@@ -39,8 +39,8 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
         }
 
         Class[] interfaces = clazz.getInterfaces();
-        for (int cnt = 0; cnt < interfaces.length; cnt++) {
-            if (interfaces[cnt].getName().startsWith("groovy.lang")) {
+        for (Class anInterface : interfaces) {
+            if (anInterface.getName().startsWith("groovy.lang")) {
                 alreadyChecked.put(clazz.getName(), Boolean.TRUE);
                 return true;
             }
@@ -49,6 +49,7 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Boolean> getAlreadyChecked() {
         Map<String, Boolean> checked = (Map<String, Boolean>) _checked.get();
         if (checked == null) {

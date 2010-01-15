@@ -115,8 +115,8 @@ public class CompilerFacade implements DynamicCompiler {
     /**
      * compiles all files
      *
-     * @param sourceRoot
-     * @param classPath
+     * @param sourceRoot the source root
+     * @param classPath  the class path
      * @return the root target path for the classes which are compiled
      *         so that they later can be picked up by the classloader
      * @throws ClassNotFoundException

@@ -58,7 +58,7 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
     }
 
     public ScriptingWeaver getWeaver() {
-        return _weaver;  //To change body of implemented methods use File | Settings | File Templates.
+        return _weaver;  
     }
 
     public void setWeaver(ScriptingWeaver weaver) {

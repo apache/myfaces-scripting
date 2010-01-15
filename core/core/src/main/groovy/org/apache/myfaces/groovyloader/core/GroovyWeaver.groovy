@@ -31,6 +31,7 @@ import org.apache.myfaces.scripting.api.ClassScanner
 import org.apache.myfaces.scripting.core.util.ClassUtils
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata
 import org.apache.myfaces.scripting.loaders.groovy.GroovyDependencyScanner
+import org.apache.myfaces.scripting.loaders.groovy.ScanningGroovyClassloader
 
 /**
  * Weaver  which does dynamic class reloading
@@ -105,7 +106,8 @@ public class GroovyWeaver extends BaseWeaver implements Serializable, ScriptingW
     GroovyClassLoader gcl = _groovyClassLoaderHolder.get()
 
     if (gcl == null) {
-      gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
+      //gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
+      gcl = new ScanningGroovyClassloader(Thread.currentThread().getContextClassLoader());
       //we have to add the script path so that groovy can work out the kinks of other source files added
       _groovyClassLoaderHolder.set(gcl)
 

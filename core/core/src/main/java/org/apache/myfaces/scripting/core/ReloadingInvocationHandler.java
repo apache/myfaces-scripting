@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationHandler;
  *          here to allow reflection utils directly targetting our
  *          _delegate.
  */
+@SuppressWarnings("unused")
 public abstract class ReloadingInvocationHandler implements InvocationHandler, Decorated {
     Class _loadedClass = null;
     Object _delegate = null;
@@ -21,15 +22,14 @@ public abstract class ReloadingInvocationHandler implements InvocationHandler, D
      * simplified invoke for more dynamic upon invocation
      * on our reloading objects
      *
-     * @param o
-     * @param m
-     * @param args
-     * @return
+     * @param object    the object to be invoked on
+     * @param method    the method to be invoked
+     * @param arguments the arguments passed down
+     * @return the return value of the operation
      */
-    public Object invoke(Object o, String m, Object... args) {
-        return ReflectUtil.executeMethod(o, m, args);
+    public Object invoke(Object object, String method, Object... arguments) {
+        return ReflectUtil.executeMethod(object, method, arguments);
     }
-
 
     public Class getLoadedClass() {
         return _loadedClass;

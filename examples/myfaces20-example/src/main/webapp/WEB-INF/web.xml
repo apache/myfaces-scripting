@@ -24,7 +24,7 @@
 
     <description>MyProject web.xml</description>
 
-    <!--
+
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -56,7 +56,7 @@
     </context-param>
 
     <context-param>
-        <description>resource paths for our custom facelet resource resolver</description>
+        <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
             /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp
@@ -70,7 +70,7 @@
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
         <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
     </context-param>
-    -->
+   
 
     <!--
      <context-param>

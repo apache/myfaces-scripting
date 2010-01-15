@@ -22,10 +22,7 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @author werpu
@@ -45,9 +42,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
 
     public CoreWeaver(ScriptingWeaver... weavers) {
-        for (ScriptingWeaver weaver : weavers) {
-            _weavers.add(weaver);
-        }
+        _weavers.addAll(Arrays.asList(weavers));
     }
 
     public void appendCustomScriptPath(String scriptPaths) {
@@ -117,7 +112,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     /**
-     * @deprecated, the full recompile now is done at the beginning of a request
+     * @deprecated the full recompile now is done at the beginning of a request
      */
     public void fullRecompile() {
         for (ScriptingWeaver weaver : _weavers) {
