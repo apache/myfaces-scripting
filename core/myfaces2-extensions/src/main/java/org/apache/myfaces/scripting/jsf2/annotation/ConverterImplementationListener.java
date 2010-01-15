@@ -23,6 +23,7 @@ import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedConverter;
 
 import javax.faces.application.Application;
 import javax.faces.convert.FacesConverter;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,6 +36,8 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
     private static final String PAR_VALUE = "value";
     private static final String PAR_DEFAULT = "forClass";
 
+    Map<AnnotationEntry, String> _inverseIndex = new HashMap<AnnotationEntry, String>();
+    
     class AnnotationEntry {
         String value;
         Class forClass;
@@ -46,19 +49,32 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         }
 
         public boolean equals(Object incoming) {
+            if (incoming == null) {
+                return false;
+            }
+
             if (!(incoming instanceof AnnotationEntry)) {
                 return false;
             }
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
 
-            if (incoming == null) {
-                return false;
-            }
+
 
             boolean firstEquals = compareValuePair(value, toCompare.getValue());
             boolean secondEquals = compareValuePair(forClass, toCompare.getForClass());
 
             return firstEquals && secondEquals;
+        }
+
+        @Override
+        public int hashCode() {
+            String retVal = checkForNull(value) + "_";
+            retVal += ((forClass != null) ? forClass.getName() : "");
+            return retVal.hashCode();
+        }
+
+        private String checkForNull(String in) {
+            return (in == null) ? "" : in;
         }
 
         protected boolean compareValuePair(Object val1, Object val2) {
@@ -94,10 +110,10 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
 
         AnnotationEntry entry = new AnnotationEntry(value, forClass);
         _alreadyRegistered.put(clazz.getName(), entry);
-
+        _inverseIndex.put(entry, clazz.getName());
+        
         getApplication().addConverter(entry.getValue(), clazz.getName());
     }
-
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -107,13 +123,9 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, forClass);
 
         AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getName());
-        if (alreadyRegistered == null) {
-            return true;
-        }
-
-        return alreadyRegistered.equals(entry);
+       
+        return (alreadyRegistered == null) || alreadyRegistered.equals(entry);
     }
-
 
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesConverter.class.getName());
@@ -126,9 +138,12 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         if (entry == null) {
             return;
         }
-
-        Application application = getApplication();
-        application.addConverter(entry.getValue(), PurgedConverter.class.getName());
+        String _oldConverterClass = _inverseIndex.get(entry);
+        if(_oldConverterClass.equals(className)) {
+            Application application = getApplication();
+            application.addConverter(entry.getValue(), PurgedConverter.class.getName());
+            _inverseIndex.put(entry, className);
+        }
     }
 
 }

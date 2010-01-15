@@ -126,7 +126,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             //hence we do not have the annotations yet scanned
             //in groovy we have the initial scan not done hence
             //the annotations are scanned on the fly!
-            if (clazz != null && !(_weaver instanceof GroovyScriptingWeaver)) {
+            if (clazz != null ) {
                 java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
                 if (anns != null && anns.length > 0) {
                     addOrMoveAnnotations(clazz);

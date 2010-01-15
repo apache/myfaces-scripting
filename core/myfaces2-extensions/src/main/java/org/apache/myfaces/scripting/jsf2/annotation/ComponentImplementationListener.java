@@ -57,6 +57,11 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
     @Override
     public void purge(String className) {
         super.purge(className);
+        //no purge needed we already have a different class
+        //registered
+        if(!_alreadyRegistered.containsKey(className)) {
+            return;
+        }
         String val = (String) _alreadyRegistered.remove(className);
         if (val != null) {
             getApplication().addComponent(val, PurgedComponent.class.getName());

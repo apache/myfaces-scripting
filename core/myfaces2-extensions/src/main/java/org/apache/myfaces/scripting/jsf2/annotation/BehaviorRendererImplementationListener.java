@@ -19,12 +19,14 @@
 package org.apache.myfaces.scripting.jsf2.annotation;
 
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedClientBehaviorRenderer;
+import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedRenderer;
 
 import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
 import javax.faces.render.FacesBehaviorRenderer;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,6 +40,9 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
 
     private static final String PAR_RENDERERTYPE = "rendererType";
     private static final String PAR_RENDERKITID = "renderKitId";
+
+    Map<AnnotationEntry, String> _inverseIndex = new HashMap<AnnotationEntry, String>();
+
 
     class AnnotationEntry {
         String rendererType;
@@ -62,6 +67,15 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
             boolean secondEquals = compareValuePair(renderKitId, toCompare.getRenderKitId());
 
             return firstEquals && secondEquals;
+        }
+
+        @Override
+        public int hashCode() {
+            return (checkForNull(rendererType)+"_"+checkForNull(renderKitId)).hashCode();    //To change body of overridden methods use File | Settings | File Templates.
+        }
+
+        private String checkForNull(String in) {
+            return (in == null)? "":in; 
         }
 
         protected boolean compareValuePair(Object val1, Object val2) {
@@ -97,7 +111,8 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
 
         AnnotationEntry entry = new AnnotationEntry(value, renderKitId);
         _alreadyRegistered.put(clazz.getName(), entry);
-
+        _inverseIndex.put(entry, clazz.getName());
+        
         getApplication().addConverter(entry.getRendererType(), clazz.getName());
     }
 
@@ -145,7 +160,11 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
 
         RenderKit renderKit = getRenderkit(entry.getRenderKitId());
         try {
-            renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
+            String rendererClass = _inverseIndex.get(entry);
+            if (rendererClass != null && rendererClass.equals(className)) {
+                _inverseIndex.put(entry, PurgedClientBehaviorRenderer.class.getName());
+                renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
+            }   
         } catch (InstantiationException e) {
             log.error(e);
         } catch (IllegalAccessException e) {

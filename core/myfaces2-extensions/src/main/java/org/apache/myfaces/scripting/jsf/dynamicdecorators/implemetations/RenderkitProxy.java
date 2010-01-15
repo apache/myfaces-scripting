@@ -79,9 +79,11 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return rendr;
     }
 
+    //TODO probably not needed anymore
     private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
         ClientBehaviorRenderer rendr2;
-        WeavingContext.getWeaver().fullClassScan();
+        //WeavingContext.getWeaver().fullClassScan();
+
         rendr2 = _delegate.getClientBehaviorRenderer(s);
         if (rendr2 instanceof PurgedClientBehaviorRenderer) {
             throw new FacesException("Renderer not found");
@@ -90,10 +92,11 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return rendr2;
     }
 
-
+    //TODO probably not needed anymore
     private Renderer handleAnnotationChange(String s, String s1) {
         Renderer rendr2;
-        WeavingContext.getWeaver().fullClassScan();
+
+        //WeavingContext.getWeaver().fullClassScan();
         rendr2 = _delegate.getRenderer(s, s1);
         if (rendr2 instanceof PurgedRenderer) {
             throw new FacesException("Renderer not found");

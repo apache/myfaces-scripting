@@ -27,7 +27,9 @@ import javax.faces.render.FacesRenderer;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -39,10 +41,11 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
     private static final String PAR_RENDERERTYPE = "rendererType";
     private static final String PAR_RENDERKITID = "renderKitId";
 
+    Map<AnnotationEntry, String> _inverseIndex = new HashMap<AnnotationEntry, String>();
+
     public RendererImplementationListener() {
         super(PAR_FAMILY, PAR_RENDERERTYPE, PAR_RENDERKITID);
     }
-
 
     class AnnotationEntry {
         String componentFamily;
@@ -74,10 +77,22 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
                     renderKitId == null && toCompare.getRenderKitId() == null) {
                 return true;
             }
-
+            //TODO a simple hash compare should be enough for almost if not all cases since the hashes have a very low propability to be the same
             return componentFamily.equals(toCompare.getComponentFamily()) &&
-                    rendererType.equals(toCompare.getComponentFamily()) &&
+                    rendererType.equals(toCompare.getRendererType()) &&
                     renderKitId.equals(toCompare.getRenderKitId());
+        }
+
+        @Override
+        public int hashCode() {
+            /*we calculate the hashcoide to avoid double entries*/
+            return (((componentFamily != null) ? componentFamily : "")
+                    + "_" +
+                    ((rendererType != null) ? rendererType : "")
+                    + "_" +
+                    ((renderKitId != null) ? renderKitId : "")
+
+            ).hashCode();
         }
 
         public String getComponentFamily() {
@@ -93,11 +108,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         }
     }
 
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesRenderer.class.getName());
     }
-
 
     @Override
     protected void addEntity(Class clazz, Map<String, Object> params) {
@@ -108,6 +121,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         RenderKit renderKit = getRenderkit(renderKitId);
 
         AnnotationEntry entry = new AnnotationEntry(value, theDefault, renderKitId);
+        _inverseIndex.put(entry, clazz.getName());
         _alreadyRegistered.put(clazz.getName(), entry);
 
         if (log.isTraceEnabled()) {
@@ -129,7 +143,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
     }
 
-
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
         String value = (String) params.get(PAR_FAMILY);
@@ -146,7 +159,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return alreadyRegistered.equals(entry);
     }
 
-
     private String getRenderKitId(Map<String, Object> params) {
         String renderKitId = (String) params.get(PAR_RENDERKITID);
         renderKitId = (renderKitId == null) ? getApplication().getDefaultRenderKitId() : renderKitId;
@@ -159,7 +171,6 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return renderKit;
     }
 
-
     @Override
     public void purge(String className) {
         super.purge(className);
@@ -168,13 +179,14 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
             return;
         }
 
-        //TODO handle the changed renderer params, but annotation on same
-        //class case (remove and add case on the same class)
-
         RenderKit renderKit = getRenderkit(entry.getRenderKitId());
         try {
-
-            renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
+            //by fetching the changed renderer we save a full rescan
+            String rendererClass = _inverseIndex.get(entry);
+            if (rendererClass != null && rendererClass.equals(className)) {
+                _inverseIndex.put(entry, PurgedRenderer.class.getName());
+                renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
+            }
         } catch (InstantiationException e) {
             log.error(e);
         } catch (IllegalAccessException e) {

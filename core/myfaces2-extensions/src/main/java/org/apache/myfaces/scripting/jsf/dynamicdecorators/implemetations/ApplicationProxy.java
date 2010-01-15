@@ -336,7 +336,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addConverter(String converterId, String converterClass) {
         weaveDelegate();
-        if (converterClass.equals(PurgedConverter.class.getName())) {
+       /* if (converterClass.equals(PurgedConverter.class.getName())) {
             //purged case we do a full rescane
             WeavingContext.getWeaver().fullClassScan();
             Converter componentToChange = _delegate.createConverter(converterId);
@@ -346,7 +346,7 @@ public class ApplicationProxy extends Application implements Decorated {
                 _delegate.addConverter(converterId, PurgedConverter.class.getName());
             }
             return;
-        }
+        }*/
 
         _delegate.addConverter(converterId, converterClass);
     }

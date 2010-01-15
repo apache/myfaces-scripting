@@ -53,6 +53,10 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
     @Override
     public void purge(String className) {
         super.purge(className);
+        if(!_alreadyRegistered.containsKey(className)) {
+            return;
+        }
+
         String val = (String) _alreadyRegistered.remove(className);
         if (val != null) {
             getApplication().addBehavior(val, PurgedBehavior.class.getName());
