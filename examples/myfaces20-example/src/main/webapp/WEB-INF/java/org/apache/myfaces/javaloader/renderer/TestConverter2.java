@@ -28,7 +28,6 @@ import javax.faces.convert.FacesConverter;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@FacesConverter(value="at.irian.CustomConverter")
 public class TestConverter2 implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
         return "hello from converter 2";

@@ -24,9 +24,10 @@ public class TestBean3 {
     String hello3 = "hello from  added attribute 2";
 
 
-
+    
     private String myText() {
-        return "hello world from bean3 from the new method";
+        
+        return "Hello World from bean3";
     }
 
     public String getSayHello() {
@@ -40,7 +41,7 @@ public class TestBean3 {
 
     public void setSayHello(String hello) {
         this.sayHello = hello;
-        System.out.println("hello world");
+        System.out.println("hello world xxxx");
     }
 
     public void setResource(String param) {

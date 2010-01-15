@@ -72,6 +72,9 @@ public class DefaultDependencyScanner implements DependencyScanner {
 
         try {
             Class toCheck = loader.loadClass(className);
+            if(toCheck == null) {
+                return;
+            }
             scanCurrentClass(loader, retVal, className, whiteList);
             Class parent = toCheck.getSuperclass();
 

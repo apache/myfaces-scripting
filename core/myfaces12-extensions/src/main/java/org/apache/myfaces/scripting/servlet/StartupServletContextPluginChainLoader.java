@@ -75,7 +75,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     private void initInitialCompileAndScan(ScriptingWeaver weaver) {
         log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
         weaver.requestRefresh();
-        weaver.fullClassScan();
+        //weaver.fullClassScan();
     }
 
     /**

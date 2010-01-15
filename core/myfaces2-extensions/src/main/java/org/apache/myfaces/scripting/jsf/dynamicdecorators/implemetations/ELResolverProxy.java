@@ -46,6 +46,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
 
         Object retVal = _delegate.getValue(elContext, base, property);
+
         Object newRetVal = null;
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
@@ -61,6 +62,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
             newRetVal = reloadAnnotatedBean(elContext, base, property, newRetVal);
 
             return newRetVal;
+
+
         } else if (retVal == null) {
             retVal = reloadAnnotatedBean(elContext, base, property, null);
         }

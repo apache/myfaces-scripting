@@ -41,10 +41,11 @@ import java.util.Collection;
  */
 @JavaThrowAwayClassloader
 public class RecompiledClassLoader extends ClassLoader {
-    static File tempDir = null;
+    public static File tempDir = null;
     static double _tempMarker = Math.random();
     int _scriptingEngine;
     String _engineExtension;
+    boolean _unTaintClasses = true;
 
     String sourceRoot;
 
@@ -62,6 +63,12 @@ public class RecompiledClassLoader extends ClassLoader {
         _scriptingEngine = scriptingEngine;
         _engineExtension = engineExtension;
     }
+
+    public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
+        this(classLoader,scriptingEngine, engineExtension);
+        _unTaintClasses = untaint;
+    }
+
 
     RecompiledClassLoader() {
     }
@@ -117,11 +124,13 @@ public class RecompiledClassLoader extends ClassLoader {
                 }
                 // Erzeugt aus dem byte Feld ein Class Object.
                 Class retVal = null;
+                
+
 
                 //we have to do it here because just in case
                 //a dependend class is loaded as well we run into classcast exceptions
                 if (data != null) {
-                    data.setTainted(false);
+                     data.setTainted(false);
 
                     //storeReloadableDefinitions(className, target, fileLength, fileContent)
                     retVal = super.defineClass(className, fileContent, 0, fileLength);

@@ -31,7 +31,7 @@ import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
 public class Blog {
 
 
-    String title        =   "Hello to the myfaces dynamic blogging example";
+    String title        =   "Hello to the MyFaces dynamic Java blogging example";
     String title1       =   "You can alter the code for this small blogging application on the fly, " +
                             "you even can add new classes on the fly and Java will pick it up";
 
@@ -91,7 +91,7 @@ public class Blog {
             * the same behavior you get from scripting engines!
             * 
             */
-            service.addEntry(entry);
+            service.addEntry2(entry);
             //executeMethod(service, "addEntry",  entry);
         }
 

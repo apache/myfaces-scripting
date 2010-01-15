@@ -591,6 +591,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     private void recompileRefresh() {
         synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
             fullRecompile();
+            //we update our dependencies and annotation info prior to going
+            //into the refresh cycle
+            fullClassScan();
         }
 
         refreshAllManagedBeans();

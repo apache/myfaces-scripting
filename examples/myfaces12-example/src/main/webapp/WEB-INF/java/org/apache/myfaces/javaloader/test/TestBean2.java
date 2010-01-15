@@ -2,12 +2,12 @@ package org.apache.myfaces.javaloader.test;
 
 
 public class TestBean2 {
-    String sayHello = "hello worldgggg";
+    String sayHello = "hello world ";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
  
     public String getSayHello() {
-        return " Java dynamic bean - "+TestClass2.hello2 + hello3;
+        return "Hello from Java dynamic bean - "+TestClass2.hello2 + hello3;
     }
 
     public String getSayHello2() {

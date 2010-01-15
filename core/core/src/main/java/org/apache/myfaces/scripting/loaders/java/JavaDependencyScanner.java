@@ -98,7 +98,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
 
     protected ClassLoader getClassLoader() {
-        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java");
+        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", RecompiledClassLoader.tempDir);
     }
 
 

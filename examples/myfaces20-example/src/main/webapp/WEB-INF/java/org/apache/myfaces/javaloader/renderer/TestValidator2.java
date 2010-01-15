@@ -32,6 +32,7 @@ import javax.faces.validator.FacesValidator;
  * @version $Revision$ $Date$
  */
 @FacesValidator(value = "at.irian.CustomValidator")
+
 public class TestValidator2 implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         Log log = LogFactory.getLog(TestValidator1.class);

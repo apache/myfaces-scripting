@@ -1,11 +1,10 @@
 package org.apache.myfaces.scripting.loaders.groovy;
 
-import groovy.lang.GroovyClassLoader;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.JavaDependencyScanner;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.scripting.loaders.java.ScannerClassloader;
 
 /**
  *
@@ -18,11 +17,17 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
 
     @Override
     protected ClassLoader getClassLoader() {
-        return new GroovyRecompiledClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY);
+        //TODO move the temp dir handling into the configuration
+        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, RecompiledClassLoader.tempDir);
     }
 
     @Override
     protected int getEngineType() {
         return ScriptingConst.ENGINE_TYPE_GROOVY;
+    }
+
+    @Override
+    public void scanPaths() {
+        super.scanPaths();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

@@ -28,7 +28,7 @@ import javax.faces.component.UIComponent;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
+@FacesConverter(value="at.irian.CustomConverter")
 public class TestConverter1 implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
         return "hello from converter1";  //To change body of implemented methods use File | Settings | File Templates.

@@ -30,6 +30,7 @@ import javax.faces.component.FacesComponent;
  * Simple component to be picked up by
  */
 @FacesComponent("at.irian.JavaTestComponent")
+
 public class JavaTestComponent extends UIInput implements Markable {
 
     enum PropertyKeys {
@@ -41,7 +42,7 @@ public class JavaTestComponent extends UIInput implements Markable {
     }
 
     public String getMarker() {
-        return "Component 1 marker";
+        return "<h1>Component 1  marker</h1>";
     }
 
     public void setMarker() {

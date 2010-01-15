@@ -25,6 +25,7 @@ import javax.faces.component.FacesComponent;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 public class JavaTestComponent2 extends UIInput implements Markable {
 
     public JavaTestComponent2() {

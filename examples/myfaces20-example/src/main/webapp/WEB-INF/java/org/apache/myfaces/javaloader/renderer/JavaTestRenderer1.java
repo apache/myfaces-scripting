@@ -42,8 +42,8 @@ import java.io.IOException;
  * the annotation is dynamic you can change it on the fly or move it from one
  * class to the other
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
 
+@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
@@ -52,10 +52,11 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-        JavaTestComponent myComponent = (JavaTestComponent) component;
+        //JavaTestComponent myComponent = (JavaTestComponent) component;
         ResponseWriter writer = context.getResponseWriter();
         writer.write(MSG2);
         writer.write((String) ReflectUtil.executeMethod(component, "getMarker"));
+
 
         writer.flush();
     }
