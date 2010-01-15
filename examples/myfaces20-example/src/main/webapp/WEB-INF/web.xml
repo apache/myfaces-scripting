@@ -24,7 +24,6 @@
 
     <description>MyProject web.xml</description>
 
-    <!--
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -32,6 +31,7 @@
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
+    <!--
 
 
     <context-param>
