@@ -176,7 +176,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
             //jsr199 compliant jdk
             return JSR199_COMPILER;
         }
-        //otherwise 
+        //otherwise
         return JAVA5_COMPILER;
     }
 

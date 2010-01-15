@@ -53,7 +53,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     }
 
     public void refreshClassloader() {
-        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
+        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA,".java");
     }
 
     @Override

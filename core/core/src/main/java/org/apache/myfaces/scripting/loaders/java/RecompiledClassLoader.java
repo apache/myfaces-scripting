@@ -44,10 +44,11 @@ public class RecompiledClassLoader extends ClassLoader {
     static File tempDir = null;
     static double _tempMarker = Math.random();
     int _scriptingEngine;
+    String _engineExtension;
 
     String sourceRoot;
 
-    public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine) {
+    public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
         super(classLoader);
         if (tempDir == null) {
             synchronized (this.getClass()) {
@@ -59,6 +60,7 @@ public class RecompiledClassLoader extends ClassLoader {
             }
         }
         _scriptingEngine = scriptingEngine;
+        _engineExtension = engineExtension;
     }
 
     RecompiledClassLoader() {
@@ -66,7 +68,7 @@ public class RecompiledClassLoader extends ClassLoader {
 
 
     /*
-     * TODO the classcast excepton is caused by a loadClassIntrnal triggered
+     * TODO the classcast exception is caused by a loadClassInternal triggered
      * at the time the referencing class is loaded and then by another classload
      * at the time the bean is refreshed
      *
@@ -144,7 +146,7 @@ public class RecompiledClassLoader extends ClassLoader {
         }
 
 
-        return super.loadClass(className);    //To change body of overridden methods use File | Settings | File Templates.
+        return super.loadClass(className);    
     }
 
     private Class<?> storeReloadableDefinitions(String className, File target, int fileLength, byte[] fileContent) {
@@ -155,8 +157,8 @@ public class RecompiledClassLoader extends ClassLoader {
         //find the source for the given class and then
         //store the filename
         String separator = FileUtils.getFileSeparatorForRegex();
-        String fileName = className.replaceAll("\\.", separator) + ".java";
-        Collection<String> sourceDirs = WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA);
+        String fileName = className.replaceAll("\\.", separator) + getStandardFileExtension();
+        Collection<String> sourceDirs = WeavingContext.getConfiguration().getSourceDirs(_scriptingEngine);
         String rootDir = null;
         File sourceFile = null;
         for (String sourceDir : sourceDirs) {
@@ -186,6 +188,9 @@ public class RecompiledClassLoader extends ClassLoader {
         return retVal;
     }
 
+    protected String getStandardFileExtension() {
+        return _engineExtension;
+    }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {

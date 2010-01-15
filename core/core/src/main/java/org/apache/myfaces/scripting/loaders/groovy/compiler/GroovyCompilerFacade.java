@@ -16,14 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.loaders.java.jdk5;
+package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.GroovyCompiler;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.loaders.groovy.compiler.GroovyContainerFileManager;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.scripting.loaders.java.jdk5.ContainerFileManager;
 
 import java.io.File;
 
@@ -35,42 +40,18 @@ import java.io.File;
  *          we can call javac directly
  */
 
-public class CompilerFacade implements DynamicCompiler {
-    protected Compiler compiler = null;
+public class GroovyCompilerFacade implements DynamicCompiler {
 
     ContainerFileManager fileManager = null;
 
     Log log = LogFactory.getLog(this.getClass());
+    GroovyCompiler compiler;
 
-    public CompilerFacade() {
+    public GroovyCompilerFacade() {
         super();
 
-        compiler = new JavacCompiler();
-        fileManager = new ContainerFileManager();
-    }
-
-    /**
-     * does a compilation of all files one compile per request
-     * is allowed for performance reasons, the request blocking will be done
-     * probably on the caller side of things
-     *
-     * @param sourceRoot
-     * @param classPath
-     */
-    public void compileAll(String sourceRoot, String classPath) {
-        try {
-            //TODO do a full compile and block the compile for the rest of the request
-            //so that we do not run into endless compile cycles
-
-            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
-            displayMessages(result);
-            if (result.hasErrors()) {
-                log.error("Compiler output:" + result.getCompilerOutput());
-            }
-
-        } catch (CompilationException e) {
-            log.error(e);
-        }
+        compiler = new GroovyCompiler();
+        fileManager = new GroovyContainerFileManager();
     }
 
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
@@ -79,14 +60,19 @@ public class CompilerFacade implements DynamicCompiler {
         String className = filePath.replaceAll(separator, ".");
         className = ClassUtils.relativeFileToClassName(className);
 
-        try {
-            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath, fileManager.getClassPath());
+       // try {
+            //no need we do a full recompile at the beginning
+            //CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath, fileManager.getClassLoader());
 
-            displayMessages(result);
+            //displayMessages(result);
 
-            if (!result.hasErrors()) {
+            //if (!result.hasErrors()) {
+                fileManager.refreshClassloader();
                 ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-                if (!(oldClassLoader.getClass().equals(RecompiledClassLoader.class))) {
+                //we now quickly check for the groovy classloader being, set we cannot deal with instances here
+
+                //TODO change the check as well for java
+                if (!(oldClassLoader.equals(fileManager.getClassLoader()))) {
                     try {
                         RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader();
                         classLoader.setSourceRoot(sourceRoot);
@@ -100,13 +86,14 @@ public class CompilerFacade implements DynamicCompiler {
                         Thread.currentThread().setContextClassLoader(oldClassLoader);
                     }
                 }
-            } else {
-                log.error("Compiler output:" + result.getCompilerOutput());
-            }
+            //} else {
+            //    log.error("Compiler errors");
+            //    displayMessages(result);
+            //}
 
-        } catch (CompilationException e) {
-            log.error(e);
-        }
+        //} catch (CompilationException e) {
+        //    log.error(e);
+        //}
         return null;
     }
 
@@ -120,16 +107,11 @@ public class CompilerFacade implements DynamicCompiler {
      * @throws ClassNotFoundException
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        try {
-            CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassPath());
-            fileManager.refreshClassloader();
-            ((RecompiledClassLoader) fileManager.getClassLoader()).setSourceRoot(sourceRoot);
-            displayMessages(result);
-            return fileManager.getTempDir();
-        } catch (CompilationException e) {
-            log.error(e);
-        }
-        return null;
+        CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), fileManager.getClassLoader());
+        fileManager.refreshClassloader();
+        ((RecompiledClassLoader) fileManager.getClassLoader()).setSourceRoot(sourceRoot);
+        displayMessages(result);
+        return fileManager.getTempDir();
     }
 
     private void displayMessages(CompilationResult result) {

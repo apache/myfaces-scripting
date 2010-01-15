@@ -35,15 +35,15 @@ import java.net.URLClassLoader;
 
 
 public class ContainerFileManager {
-    String _classPath = null;
-    RecompiledClassLoader classLoader = null;
+    protected String _classPath = null;
+    protected RecompiledClassLoader classLoader = null;
 
     public ContainerFileManager() {
         refreshClassloader();
     }
 
     public void refreshClassloader() {
-        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
+        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
     }
 
     public String getClassPath() {

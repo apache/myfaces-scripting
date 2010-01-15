@@ -18,13 +18,7 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
 
     @Override
     protected ClassLoader getClassLoader() {
-        //TODO return the groovy classloader here
-        //which has to serve the groovy resources
-
-        GroovyClassLoader gcl = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
-        for (String sourceDir : WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY)) {
-            gcl.addClasspath(sourceDir);
-        }
-        return gcl;
+        return new GroovyRecompiledClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY);
     }
+
 }

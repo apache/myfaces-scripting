@@ -27,10 +27,8 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.java.util.ExtendedLoopCnt;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -54,7 +52,6 @@ public class JavaDependencyScanner implements ClassScanner {
         this._weaver = weaver;
 
     }
-
 
     public synchronized void scanPaths() {
         if (log.isInfoEnabled()) {
@@ -90,7 +87,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
 
     protected ClassLoader getClassLoader() {
-        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
+        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
     }
 
 

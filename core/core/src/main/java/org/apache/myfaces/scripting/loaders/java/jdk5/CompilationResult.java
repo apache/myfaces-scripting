@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  *
  */
-class CompilationResult {
+public class CompilationResult {
 
     /**
      * The compiler output

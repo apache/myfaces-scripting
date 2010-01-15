@@ -138,7 +138,7 @@ public class JavaDependencyScannerMT implements ClassScanner {
 
 
     protected ClassLoader getClassLoader() {
-        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA);
+        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
     }
 
 

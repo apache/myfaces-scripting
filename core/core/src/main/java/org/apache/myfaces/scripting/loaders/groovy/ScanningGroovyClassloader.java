@@ -23,6 +23,7 @@ import java.util.Collection;
  *
  * that way we can properly add artefact refreshing
  * to avoid classcast exceptions also on groovy level
+ * @deprecated
  */
 public class ScanningGroovyClassloader extends GroovyClassLoader {
     public ScanningGroovyClassloader() {

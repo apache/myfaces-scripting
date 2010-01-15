@@ -22,6 +22,7 @@ import org.apache.myfaces.groovyloader.core.GroovyWeaver;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.CoreWeaver;
+import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.apache.commons.lang.StringUtils;
@@ -59,7 +60,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
     //every weaver should know itself how to initialize itself
 
     public CustomChainLoader(ServletContext servletContext) {
-        ScriptingWeaver groovyWeaver = new GroovyWeaver();
+        ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
         setupScriptingPaths(servletContext, groovyWeaver, GROOVY_SOURCE_ROOT, CUSTOM_LOADER_PATHS);
@@ -113,6 +114,9 @@ public class CustomChainLoader extends ClassLoaderExtension {
             return null;
         else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
             return null;
+        }
+        if(name.contains(".Blog")) {
+            log.debug("Debugpoint found for Blog");
         }
 
         return scriptingWeaver.loadScriptingClassFromName(name);

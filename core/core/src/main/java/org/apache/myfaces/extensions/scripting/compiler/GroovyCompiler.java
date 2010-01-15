@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.compiler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.extensions.scripting.loader.ClassLoaderUtils;
+import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -32,6 +33,7 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
@@ -59,6 +61,44 @@ public class GroovyCompiler implements Compiler {
         return compile(sourcePath, targetPath, new File(sourcePath, file), classLoader);
     }
 
+    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) {
+
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.groovy");
+
+        StringWriter compilerOutput = new StringWriter();
+
+        CompilationUnit compilationUnit = new CompilationUnit(
+                buildCompilerConfiguration(sourcePath, targetPath, classLoader));
+        compilationUnit.getConfiguration().setOutput(new PrintWriter(compilerOutput));
+
+        for (File sourceFile : sourceFiles) {
+            compilationUnit.addSource(sourceFile);
+        }
+
+        CompilationResult result;
+
+        try {
+            compilationUnit.compile();
+
+            result = new CompilationResult(compilerOutput.toString());
+        } catch (CompilationFailedException ex) {
+            // Register all collected error messages from the Groovy compiler
+            result = new CompilationResult(compilerOutput.toString());
+            ErrorCollector collector = compilationUnit.getErrorCollector();
+            for (int i = 0; i < collector.getErrorCount(); ++i) {
+                result.registerError(convertMessage(collector.getError(i)));
+            }
+        }
+
+        // Register all collected warnings from the Groovy compiler
+        ErrorCollector collector = compilationUnit.getErrorCollector();
+        for (int i = 0; i < collector.getWarningCount(); ++i) {
+            result.registerWarning(convertMessage(collector.getWarning(i)));
+        }
+
+        return result;
+    }
+
     /**
      * <p>Compiles the given file and creates an according class file in the given target path.</p>
      *
@@ -73,7 +113,7 @@ public class GroovyCompiler implements Compiler {
         StringWriter compilerOutput = new StringWriter();
 
         CompilationUnit compilationUnit = new CompilationUnit(
-                buildCompilerConfiguration(sourcePath, targetPath, file, classLoader));
+                buildCompilerConfiguration(sourcePath, targetPath, classLoader));
         compilationUnit.getConfiguration().setOutput(new PrintWriter(compilerOutput));
         compilationUnit.addSource(file);
 
@@ -133,11 +173,10 @@ public class GroovyCompiler implements Compiler {
      *
      * @param sourcePath  the path to the source directory
      * @param targetPath  the path to the target directory
-     * @param file        the file of the class you want to compile
      * @param classLoader the class loader to use to determine the classpath
      * @return the compiler configuration
      */
-    protected CompilerConfiguration buildCompilerConfiguration(File sourcePath, File targetPath, File file, ClassLoader classLoader) {
+    protected CompilerConfiguration buildCompilerConfiguration(File sourcePath, File targetPath, ClassLoader classLoader) {
         CompilerConfiguration configuration = new CompilerConfiguration();
 
         // Set the destination / target directory for the compiled .class files.

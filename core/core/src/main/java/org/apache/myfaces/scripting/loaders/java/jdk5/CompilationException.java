@@ -3,7 +3,7 @@ package org.apache.myfaces.scripting.loaders.java.jdk5;
 /**
  *
  */
-class CompilationException extends Exception {
+public class CompilationException extends Exception {
 
     // ------------------------------------------ Constructors
 
