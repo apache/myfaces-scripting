@@ -39,29 +39,33 @@ import java.util.*;
  */
 public abstract class BaseWeaver implements ScriptingWeaver {
 
-    private String fileEnding = null;
-    private int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
     /**
      * only be set from the
      * initialisation code so no thread safety needed
      */
-
 
     protected ReloadingStrategy _reloadingStrategy = null;
     private static final String SCOPE_SESSION = "session";
     private static final String SCOPE_APPLICATION = "application";
     private static final String SCOPE_REQUEST = "request";
 
+    protected DynamicCompiler _compiler = null;
+    protected Log _log = LogFactory.getLog(this.getClass());
+    protected String _classPath = "";
+    protected ClassScanner _annotationScanner = null;
+    protected ClassScanner _dependencyScanner = null;
+    private String _fileEnding = null;
+    private int _scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+
     public BaseWeaver() {
         _reloadingStrategy = new GlobalReloadingStrategy(this);
     }
 
     public BaseWeaver(String fileEnding, int scriptingEngine) {
-        this.fileEnding = fileEnding;
-        this.scriptingEngine = scriptingEngine;
+        this._fileEnding = fileEnding;
+        this._scriptingEngine = scriptingEngine;
         _reloadingStrategy = new GlobalReloadingStrategy(this);
     }
-
 
     /**
      * add custom source lookup paths
@@ -74,8 +78,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         }
 
         WeavingContext.getConfiguration().addSourceDir(getScriptingEngine(), scriptPath);
+        if (_annotationScanner != null) {
+            _annotationScanner.addScanPath(scriptPath);
+        }
+        _dependencyScanner.addScanPath(scriptPath);
     }
-
 
     /**
      * condition which marks a metadata as reload candidate
@@ -192,7 +199,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
-
     protected Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
@@ -201,28 +207,23 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return reloadMeta.getScriptingEngine() == getScriptingEngine();
     }
 
-
     public String getFileEnding() {
-        return fileEnding;
+        return _fileEnding;
     }
 
     public void setFileEnding(String fileEnding) {
-        this.fileEnding = fileEnding;
+        this._fileEnding = fileEnding;
     }
 
     public final int getScriptingEngine() {
-        return scriptingEngine;
+        return _scriptingEngine;
     }
 
     public void setScriptingEngine(int scriptingEngine) {
-        this.scriptingEngine = scriptingEngine;
+        this._scriptingEngine = scriptingEngine;
     }
 
-
-    protected abstract Class loadScriptingClassFromFile(String sourceRoot, String file);
-
     public abstract boolean isDynamic(Class clazz);
-
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass) {
         if (getClass().equals(weaverClass)) return this;
@@ -230,9 +231,18 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
+    /**
+     * full scan, scans for all artefacts in all files
+     */
     public void fullClassScan() {
-    }
+        _dependencyScanner.scanPaths();
 
+        if (_annotationScanner == null || FacesContext.getCurrentInstance() == null) {
+            return;
+        }
+        _annotationScanner.scanPaths();
+
+    }
 
     public void requestRefresh() {
         if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
@@ -250,27 +260,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         personalScopeRefresh();
 
     }
-
-    private void personalScopeRefresh() {
-        //shortcut to avoid heavier operations in the beginning
-        long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
-        if (globalBeanRefreshTimeout == -1l) return;
-
-        Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-        Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
-        if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
-            refreshPersonalScopedBeans();
-        }
-    }
-
-    private void recompileRefresh() {
-        synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
-            fullRecompile();
-        }
-
-        refreshAllManagedBeans();
-    }
-
 
     protected void refreshAllManagedBeans() {
 
@@ -330,38 +319,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     /**
-     * MyFaces 2.0 keeps an immutable map over the session
-     * and request scoped beans
-     * if we alter that during our loop we get a concurrent modification exception
-     * taking a snapshot in time fixes that
-     *
-     * @param mbeans the internal managed bean map which has to be investigated
-     * @return a map with the class name as key and the managed bean info
-     *         as value of the current state of the internal runtime config bean map
-     */
-    private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
-        Map<String, ManagedBean> workCopy;
-
-        workCopy = new HashMap<String, ManagedBean>(mbeans.size());
-        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
-            workCopy.put(entry.getKey(), entry.getValue());
-        }
-
-        return workCopy;
-    }
-
-    private void updateBeanRefreshTime() {
-        long sessionRefreshTime = System.currentTimeMillis();
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
-    }
-
-    private void markSessionBeanRefreshRecommended() {
-        long sessionRefreshTime = System.currentTimeMillis();
-        WeavingContext.getRefreshContext().setPersonalScopedBeanRefresh(sessionRefreshTime);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
-    }
-
-    /**
      * refreshes all personal scoped beans (aka beans which
      * have an assumed lifecycle <= session)
      * <p/>
@@ -407,9 +364,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 }
             }
             updateBeanRefreshTime();
-
         }
-
     }
 
     /**
@@ -438,20 +393,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     /**
-     * jsf2 helper to remove custom scoped beans
-     *
-     * @param bean the managed bean which has to be removed from the custom scope from
-     */
-    private void removeCustomScopedBean(ManagedBean bean) {
-        Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(bean.getManagedBeanScope());
-        if (scopeImpl == null) return; //scope not implemented
-        //we now have to revert to introspection here because scopes are a pure jsf2 construct
-        //so we use a messaging pattern here to cope with it
-
-        ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
-    }
-
-    /**
      * Loads a list of possible dynamic classNames
      * for this scripting engine
      *
@@ -476,4 +417,183 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return retVal;
 
     }
+
+    public void fullRecompile() {
+        if (isFullyRecompiled()) {
+            return;
+        }
+
+        if (_compiler == null) {
+            _compiler = instantiateCompiler();//new ReflectCompilerFacade();
+        }
+
+        for (String scriptPath : WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine())) {
+            //compile via javac dynamically, also after this block dynamic compilation
+            //for the entire length of the request,
+            try {
+                _compiler.compileAllFiles(scriptPath, _classPath);
+            } catch (ClassNotFoundException e) {
+                _log.error(e);
+            }
+
+        }
+
+        markAsFullyRecompiled();
+    }
+
+    protected boolean isFullyRecompiled() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context != null) {
+            return context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
+        }
+        return false;
+    }
+
+    protected void markAsFullyRecompiled() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context != null) {
+            //mark the request as tainted with recompile
+            if (context != null) {
+                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+                requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
+            }
+        }
+        WeavingContext.getRefreshContext().setRecompileRecommended(ScriptingConst.ENGINE_TYPE_GROOVY, Boolean.FALSE);
+    }
+
+    /**
+     * loads a class from a given sourceroot and filename
+     * note this method does not have to be thread safe
+     * it is called in a thread safe manner by the base class
+     * <p/>
+     *
+     * @param sourceRoot the source search lookup path
+     * @param file       the filename to be compiled and loaded
+     * @return a valid class if it could be found, null if none was found
+     */
+    protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
+        //we load the scripting class from the given className
+
+        File currentClassFile = new File(sourceRoot + File.separator + file);
+        if (!currentClassFile.exists()) {
+            return null;
+        }
+
+        if (_log.isInfoEnabled()) {
+            _log.info(getLoadingInfo(file));
+        }
+
+        Iterator<String> it = WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine()).iterator();
+        Class retVal = null;
+
+        try {
+            //we initialize the compiler lazy
+            //because the facade itself is lazy
+            if (_compiler == null) {
+                _compiler = instantiateCompiler();//new ReflectCompilerFacade();
+            }
+            retVal = _compiler.compileFile(sourceRoot, _classPath, file);
+
+            if (retVal == null) {
+                return retVal;
+            }
+        } catch (ClassNotFoundException e) {
+            //can be safely ignored
+        }
+
+        //no refresh needed because this is done in the case of java already by
+        //the classloader
+        //  if (retVal != null) {
+        //     refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
+        //  }
+
+        /**
+         * we now scan the return value and update its configuration parameters if needed
+         * this can help to deal with method level changes of class files like managed properties
+         * or scope changes from shorter running scopes to longer running ones
+         * if the annotation has been moved the class will be deregistered but still delivered for now
+         *
+         * at the next refresh the second step of the registration cycle should pick the new class up
+         * //TODO we have to mark the artefacting class as deregistered and then enforce
+         * //a reload this is however not the scope of the commit of this subtask
+         * //we only deal with class level reloading here
+         * //the deregistration notification should happen on artefact level (which will be the next subtask)
+         */
+        if (_annotationScanner != null && retVal != null) {
+            _annotationScanner.scanClass(retVal);
+        }
+
+        return retVal;
+    }
+
+    /**
+     * jsf2 helper to remove custom scoped beans
+     *
+     * @param bean the managed bean which has to be removed from the custom scope from
+     */
+    private void removeCustomScopedBean(ManagedBean bean) {
+        Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(bean.getManagedBeanScope());
+        if (scopeImpl == null) return; //scope not implemented
+        //we now have to revert to introspection here because scopes are a pure jsf2 construct
+        //so we use a messaging pattern here to cope with it
+
+        ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
+    }
+
+    /**
+     * MyFaces 2.0 keeps an immutable map over the session
+     * and request scoped beans
+     * if we alter that during our loop we get a concurrent modification exception
+     * taking a snapshot in time fixes that
+     *
+     * @param mbeans the internal managed bean map which has to be investigated
+     * @return a map with the class name as key and the managed bean info
+     *         as value of the current state of the internal runtime config bean map
+     */
+    private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
+        Map<String, ManagedBean> workCopy;
+
+        workCopy = new HashMap<String, ManagedBean>(mbeans.size());
+        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+            workCopy.put(entry.getKey(), entry.getValue());
+        }
+
+        return workCopy;
+    }
+
+    private void updateBeanRefreshTime() {
+        long sessionRefreshTime = System.currentTimeMillis();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
+    }
+
+    private void markSessionBeanRefreshRecommended() {
+        long sessionRefreshTime = System.currentTimeMillis();
+        WeavingContext.getRefreshContext().setPersonalScopedBeanRefresh(sessionRefreshTime);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
+    }
+
+    private void personalScopeRefresh() {
+        //shortcut to avoid heavier operations in the beginning
+        long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
+        if (globalBeanRefreshTimeout == -1l) return;
+
+        Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+        Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
+        if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
+            refreshPersonalScopedBeans();
+        }
+    }
+
+    private void recompileRefresh() {
+        synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
+            fullRecompile();
+        }
+
+        refreshAllManagedBeans();
+    }
+
+    protected abstract DynamicCompiler instantiateCompiler();
+
+    protected abstract String getLoadingInfo(String file);
+
 }
