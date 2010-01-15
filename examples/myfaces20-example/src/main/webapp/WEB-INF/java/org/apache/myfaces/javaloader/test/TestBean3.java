@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.nio.CharBuffer;
 
 
-@ManagedBean(name = "javatestbean")
-@SessionScoped
 public class TestBean3 {
     String sayHello = "hello world";
     String hello2 = "hello from added attribute";
@@ -28,7 +26,7 @@ public class TestBean3 {
 
     
     private String myText() {
-        return "Hello World from bean3";
+        return "Hello World from bean3 ";
     }
 
     public String getSayHello() {
@@ -42,7 +40,7 @@ public class TestBean3 {
 
     public void setSayHello(String hello) {
         this.sayHello = hello;
-        System.out.println("hello world xxxx");
+        System.out.println("hello world");
     }
 
     public void setResource(String param) {

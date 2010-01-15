@@ -48,18 +48,18 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         Object retVal = _delegate.getValue(elContext, base, property);
 
         Object newRetVal = null;
+        //TODO simplify this, we do not need it anymore since we do our base scan at the beginning
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
 
-            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
-                 our classloader we have to recreate all the time to avoid classloader issues*/
+            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
 
             if (newRetVal != retVal) {
                 _delegate.setValue(elContext, base, property, newRetVal);
             }
 
             //in case we have an annotation change we have to deal with it differently
-            newRetVal = reloadAnnotatedBean(elContext, base, property, newRetVal);
+            //newRetVal = reloadAnnotatedBean(elContext, base, property, newRetVal);
 
             return newRetVal;
 
