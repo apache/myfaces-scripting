@@ -1,5 +1,7 @@
 package org.apache.myfaces.scripting.loaders.java;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -10,26 +12,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * A specialized non tainting classloader for our scanners
+ *
  */
 public class ScannerClassloader extends ClassLoader {
 
     File tempDir = null;
-    int _scriptingEngine;
-    String _engineExtension;
 
-    static Map<String, Class> _alreadyScanned = new HashMap<String, Class>();
+    Map<String, Class> _alreadyScanned = new HashMap<String, Class>();
 
     public ScannerClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, File tempDir) {
         super(classLoader);
 
         this.tempDir = tempDir;
-        _scriptingEngine = scriptingEngine;
-        _engineExtension = engineExtension;
     }
 
     @Override
@@ -103,5 +103,9 @@ public class ScannerClassloader extends ClassLoader {
         }
 
     }
+
+
+
+
 }
 

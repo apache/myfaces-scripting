@@ -25,8 +25,9 @@ public class TestBean3 {
 
 
     
+
+    
     private String myText() {
-        
         return "Hello World from bean3";
     }
 

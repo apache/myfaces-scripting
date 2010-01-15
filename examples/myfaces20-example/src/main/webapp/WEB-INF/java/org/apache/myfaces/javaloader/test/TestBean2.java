@@ -12,11 +12,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-
 public class TestBean2 {
 
-
-    String sayHello = "hello world test";
+    String sayHello = "hello world test xxx";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
  
