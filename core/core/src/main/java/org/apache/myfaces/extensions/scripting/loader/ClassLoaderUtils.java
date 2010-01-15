@@ -119,13 +119,16 @@ public class ClassLoaderUtils {
                 if (urls != null) {
                     classpath.addAll(Arrays.asList(urls));
                 }
-            } else {
+            } /*else {
                 if (logger.isWarnEnabled()) {
                     logger.warn("Resolving the classpath of the classloader '" + parent + "' - One of its parent class"
                             + " loaders is no URLClassLoader '" + classLoader + "', which means it's possible that"
                             + " some classpath entries aren't in the final outcome of this method call.");
                 }
-            }
+            } */
+
+            //we disable this warning entirely for now because our own url classloader
+            //can deal with this properly, due to extra startup context classpath determination
 
             // Inspect the parent class loader next.
             classLoader = classLoader.getParent();

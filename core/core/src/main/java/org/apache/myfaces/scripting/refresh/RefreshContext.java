@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.refresh;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
+import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -98,6 +99,25 @@ public class RefreshContext {
 
     public void setRecompileRecommended(int scriptingEngine, boolean recompileRecommended) {
         daemon.getSystemRecompileMap().put(scriptingEngine, recompileRecommended);
+    }
+
+    public boolean isDependencyScanned(int scriptingEngine) {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        if(ctx == null) {
+            return false;
+        }
+        Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
+        Boolean retVal = (Boolean) requestMap.get("isDependencyScanned_"+scriptingEngine);
+        return (retVal == null)? false: retVal;
+    }
+
+    public void setDependencyScanned(int scriptingEngine, Boolean val) {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+         if(ctx == null) {
+             return;
+         }
+         Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
+         requestMap.put("isDependencyScanned_"+scriptingEngine, val);
     }
 
     public FileChangedDaemon getDaemon() {

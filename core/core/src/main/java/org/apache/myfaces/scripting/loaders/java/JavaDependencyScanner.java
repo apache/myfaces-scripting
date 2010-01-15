@@ -54,6 +54,14 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     public synchronized void scanPaths() {
+        //only one dependency check per refresh makes sense in our case
+        if(WeavingContext.getRefreshContext().isDependencyScanned(ScriptingConst.ENGINE_TYPE_JAVA)) {
+            return;
+        } else {
+            WeavingContext.getRefreshContext().setDependencyScanned(ScriptingConst.ENGINE_TYPE_JAVA, true);
+        }
+
+
         if (log.isInfoEnabled()) {
             log.info("[EXT-SCRITPING] starting class dependency scan");
         }
