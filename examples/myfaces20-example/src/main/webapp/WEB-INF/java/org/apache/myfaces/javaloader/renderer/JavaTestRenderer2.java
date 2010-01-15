@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.javaloader.renderer;
 
-
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
@@ -33,12 +32,11 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  */
 
-
- public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
+public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "aaa Hello world from Renderer 2  ";
 
-    private static final String MSG2 =" hello world second var";
+    private static final String MSG2 = " hello world second var";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -46,7 +44,7 @@ import java.io.IOException;
         ResponseWriter writer = context.getResponseWriter();
         writer.write(MSG);
         writer.write(MSG2);
-        writer.write((String)ReflectUtil.executeMethod(component, "getMarker"));
+        writer.write((String) ReflectUtil.executeMethod(component, "getMarker"));
     }
 
 }

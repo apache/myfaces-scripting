@@ -34,7 +34,6 @@ import javax.faces.FacesException;
  */
 public class LifefcycleProxy extends Lifecycle implements Decorated {
 
-    //   GroovyWeaver WeavingContext.getWeaver() =  WeavingContext.getWeaver();
 
     private void weaveDelegate() {
         if (_delegate != null)

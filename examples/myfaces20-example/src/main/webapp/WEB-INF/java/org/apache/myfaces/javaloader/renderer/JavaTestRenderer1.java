@@ -43,8 +43,8 @@ import java.io.IOException;
  * class to the other
  */
 @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
- 
-  public class JavaTestRenderer1 extends HtmlTextRendererBase {
+
+public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
@@ -52,13 +52,13 @@ import java.io.IOException;
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
+        JavaTestComponent myComponent = (JavaTestComponent) component;
         ResponseWriter writer = context.getResponseWriter();
         writer.write(MSG2);
         writer.write((String) ReflectUtil.executeMethod(component, "getMarker"));
 
         writer.flush();
     }
-
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         log.info("JavaTestRenderer1.encodeEnd");

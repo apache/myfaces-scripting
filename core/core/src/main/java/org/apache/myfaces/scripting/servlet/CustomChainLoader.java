@@ -18,16 +18,15 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
-import org.apache.myfaces.groovyloader.core.GroovyWeaver;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.core.CoreWeaver;
-import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
-import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
-import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.core.CoreWeaver;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
+import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
+import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 
 import javax.servlet.ServletContext;
 

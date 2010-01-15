@@ -18,15 +18,12 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.myfaces.config.impl.digester.elements.FacesConfig;
-import org.apache.myfaces.groovyloader.core.GroovyWeaver;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
+import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
@@ -129,7 +126,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             //hence we do not have the annotations yet scanned
             //in groovy we have the initial scan not done hence
             //the annotations are scanned on the fly!
-            if (clazz != null && !(_weaver instanceof GroovyWeaver)) {
+            if (clazz != null && !(_weaver instanceof GroovyScriptingWeaver)) {
                 java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
                 if (anns != null && anns.length > 0) {
                     addOrMoveAnnotations(clazz);

@@ -45,7 +45,7 @@
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
 
-    <!--
+
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -65,7 +65,7 @@
             /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces12-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
-    -->
+   
 
     <!--
     <context-param>

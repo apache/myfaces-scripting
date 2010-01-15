@@ -25,13 +25,9 @@ package org.apache.myfaces.javaloader.blog;
 public class BlogEntry {
 
     String firstName = "";
-
     String lastName = "";
     String topic = "";
-
     String content = "";
-
-    
 
     public String getFirstName() {
         return firstName;
@@ -61,7 +57,6 @@ public class BlogEntry {
         return content;
     }
 
-    
     public void setContent(String content) {
         this.content = content;
     }

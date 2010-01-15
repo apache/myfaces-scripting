@@ -27,6 +27,5 @@ public class BlogEntry {
     String lastName = ""
     String topic = ""
     String content = ""
-
   
 }

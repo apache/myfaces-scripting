@@ -22,7 +22,6 @@ import org.apache.myfaces.scripting.api.ReloadingStrategy
 import org.apache.myfaces.scripting.core.reloading.SimpleReloadingStrategy
 import org.apache.myfaces.scripting.api.BaseWeaver;
 
-
 public class StandardGroovyReloadingStrategy extends SimpleReloadingStrategy {
 
   public StandardGroovyReloadingStrategy(BaseWeaver weaver) {

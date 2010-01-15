@@ -30,7 +30,6 @@ public class BlogEntry {
     String lastName     =   "";
     String topic        =   "";
     String content      =   "";
-
     
     public String getFirstName() {
         return firstName;

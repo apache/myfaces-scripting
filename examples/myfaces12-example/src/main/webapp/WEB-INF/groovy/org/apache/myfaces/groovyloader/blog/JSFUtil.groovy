@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 public class JSFUtil {
 
 
+  
     public static Object resolveVariable(String beanName) {
         Log log = LogFactory.getLog(JSFUtil.class)
         log.info("ElResolver Instance:" + FacesContext.getCurrentInstance().getELContext().getELResolver().toString())
