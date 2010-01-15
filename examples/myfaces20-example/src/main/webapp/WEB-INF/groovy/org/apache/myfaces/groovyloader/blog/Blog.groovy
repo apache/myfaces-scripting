@@ -35,7 +35,7 @@ public class Blog {
 
     Log log = LogFactory.getLog(Blog.class)
 
-    String title = "Hello to the myfaces dynamic blogging"
+    String title = "Hello to the myfaces 2.0 - Groovy dynamic blogging"
     String title1 = "You can alter the code for this small blogging application on the fly, you even can add new classes on the fly and Grooy will pick it up"
 
     String firstName = ""
@@ -67,7 +67,7 @@ public class Blog {
 
 
         
-        service.addEntry(entry)
+        service.addEntry2(entry)
 
         //we stay on the same page
         return null;

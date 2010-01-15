@@ -31,6 +31,7 @@ public class BlogEntry {
 
     String content = "";
 
+    
 
     public String getFirstName() {
         return firstName;

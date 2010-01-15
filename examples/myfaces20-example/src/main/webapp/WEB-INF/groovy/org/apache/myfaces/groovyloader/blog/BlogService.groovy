@@ -35,6 +35,15 @@ public class BlogService {
         return blogEntries
     }
 
+  public void addEntry2(BlogEntry entry) {
+      Log log = LogFactory.getLog(BlogService.class)
+      log.info("Adding entry, topic: " + entry.topic)
+      blogEntries.add (entry)
+
+      log.info("blogentries size"+blogEntries.size())
+  }
+
+
     public void addEntry(BlogEntry entry) {
         Log log = LogFactory.getLog(BlogService.class)
         log.info("Adding entry, topic: " + entry.topic)

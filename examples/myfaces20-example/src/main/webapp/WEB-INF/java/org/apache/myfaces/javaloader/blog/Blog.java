@@ -61,7 +61,7 @@ public class Blog {
 
 
     public String addEntry2 () {
-        getLog().info("adding entry");
+        getLog().info("adding entry2");
 
         BlogService service = (BlogService) JSFUtil.resolveVariable("javaBlogService");
 

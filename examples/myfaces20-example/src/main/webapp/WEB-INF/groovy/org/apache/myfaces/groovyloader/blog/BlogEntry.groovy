@@ -28,6 +28,8 @@ public class BlogEntry {
     String topic = ""
     String content = ""
 
+
+  
     public String getTopic() {
         return topic;
     }

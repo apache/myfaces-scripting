@@ -55,10 +55,10 @@ public class JavaDependencyScanner implements ClassScanner {
 
     public synchronized void scanPaths() {
         //only one dependency check per refresh makes sense in our case
-        if(WeavingContext.getRefreshContext().isDependencyScanned(ScriptingConst.ENGINE_TYPE_JAVA)) {
+        if(WeavingContext.getRefreshContext().isDependencyScanned(getEngineType())) {
             return;
         } else {
-            WeavingContext.getRefreshContext().setDependencyScanned(ScriptingConst.ENGINE_TYPE_JAVA, true);
+            WeavingContext.getRefreshContext().setDependencyScanned(getEngineType(), true);
         }
 
 
@@ -80,6 +80,9 @@ public class JavaDependencyScanner implements ClassScanner {
 
     }
 
+    protected int getEngineType() {
+        return ScriptingConst.ENGINE_TYPE_JAVA;
+    }
 
     private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
 
@@ -95,7 +98,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
 
     protected ClassLoader getClassLoader() {
-        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
+        return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java");
     }
 
 

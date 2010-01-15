@@ -21,4 +21,8 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
         return new GroovyRecompiledClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY);
     }
 
+    @Override
+    protected int getEngineType() {
+        return ScriptingConst.ENGINE_TYPE_GROOVY;
+    }
 }
