@@ -24,7 +24,7 @@
 
     <description>MyProject web.xml</description>
 
-
+    <!--
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -70,7 +70,7 @@
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
         <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
     </context-param>
-   
+    -->
 
     <!--
      <context-param>
