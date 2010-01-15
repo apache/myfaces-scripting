@@ -415,7 +415,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addValidator(String validatorId, String validatorClass) {
         weaveDelegate();
-        if (validatorClass.equals(PurgedValidator.class.getName())) {
+/*        if (validatorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescane
             WeavingContext.getWeaver().fullClassScan();
             Validator componentToChange = _delegate.createValidator(validatorId);
@@ -426,7 +426,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
             }
             return;
-        }
+        } */
         _delegate.addValidator(validatorId, validatorClass);
     }
 
@@ -434,6 +434,9 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
 
         Validator retVal = _delegate.createValidator(validatorId);
+
+        //TODO purge error assert here
+
         //the validators are recreated every request we do not have to deal with them on method level
         Validator newRetVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_VALIDATOR);
         if (newRetVal != retVal) {

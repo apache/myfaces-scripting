@@ -22,6 +22,7 @@ import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedValidator;
 
 import javax.faces.validator.FacesValidator;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,6 +35,7 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
     private static final String PAR_VALUE = "value";
     private static final String PAR_DEFAULT = "isDefault";
 
+    Map<AnnotationEntry, String> _inverseIndex = new HashMap<AnnotationEntry, String>();
 
     public ValidatorImplementationListener() {
         /*supported annotation parameters rendererType and default*/
@@ -49,7 +51,6 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
             this.theDefault = theDefault;
         }
 
-
         public boolean equals(Object incoming) {
             if (!(incoming instanceof AnnotationEntry)) {
                 return false;
@@ -64,6 +65,20 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
             boolean secondEquals = compareValuePair(theDefault, toCompare.getTheDefault());
 
             return firstEquals && secondEquals;
+        }
+
+        @Override
+        public int hashCode() {
+            String retVal = checkForNull(value) + "_" + checkForNull(theDefault);
+            return retVal.hashCode();
+        }
+
+        private String checkForNull(String in) {
+            return (in == null) ? "" : in;
+        }
+
+        private String checkForNull(Boolean in) {
+            return (in == null) ? "" : String.valueOf(in.booleanValue());
         }
 
         protected boolean compareValuePair(Object val1, Object val2) {
@@ -88,11 +103,9 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         }
     }
 
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesValidator.class.getName());
     }
-
 
     @Override
     protected void addEntity(Class clazz, Map<String, Object> params) {
@@ -101,10 +114,10 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
 
         AnnotationEntry entry = new AnnotationEntry(value, theDefault);
         _alreadyRegistered.put(clazz.getName(), entry);
+        _inverseIndex.put(entry, clazz.getName());
 
         getApplication().addValidator(entry.getValue(), clazz.getName());
     }
-
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -121,7 +134,6 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         return alreadyRegistered.equals(entry);
     }
 
-
     @Override
     public void purge(String className) {
         super.purge(className);
@@ -129,7 +141,12 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         if (entry == null) {
             return;
         }
-        _alreadyRegistered.remove(className);
-        getApplication().addValidator(entry.getValue(), PurgedValidator.class.getName());
+
+        String oldValidator = _inverseIndex.get(entry);
+        if (oldValidator.equals(className)) {
+            _alreadyRegistered.remove(className);
+            getApplication().addValidator(entry.getValue(), PurgedValidator.class.getName());
+            _inverseIndex.put(entry, PurgedValidator.class.getName());
+        }
     }
 }
