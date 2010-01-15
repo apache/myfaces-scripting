@@ -35,7 +35,7 @@ public class Blog {
 
     Log log = LogFactory.getLog(Blog.class)
 
-    String title = "Hello to the myfaces 2.0 - Groovy dynamic blogging"
+    String title = "Hello to the myfaces 2.0  Groovy dynamic blogging"
     String title1 = "You can alter the code for this small blogging application on the fly, you even can add new classes on the fly and Grooy will pick it up"
 
     String firstName = ""

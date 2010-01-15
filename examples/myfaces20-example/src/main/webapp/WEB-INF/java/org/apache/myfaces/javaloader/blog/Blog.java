@@ -42,9 +42,6 @@ public class Blog {
     String title5 = "test from title5";
 
 
-
-
-
     String firstName    = "";
     String lastName     = "";
     String topic        = "";
@@ -109,6 +106,8 @@ public class Blog {
     public String getTitle() {
         return title;
     }
+
+
 
     public void setTitle(String title) {
         this.title = title;
