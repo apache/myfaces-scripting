@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * we have to reimplement the component rule class here
+ * we have to re implement the component rule class here
  * because it is declared private in the original
  * implementation
  */

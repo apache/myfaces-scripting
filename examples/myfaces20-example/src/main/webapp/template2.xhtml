@@ -13,9 +13,20 @@
 </head>
 
 <body>
+
+<h:panelGroup>
+    <h3>
+        <h:outputFormat value="Compiler Output" escape="false"/>
+    </h3>
+    <grv:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>
+</h:panelGroup>
+
+
 <h1>
-    <ui:insert name="title">Myfaces Example Facelets</ui:insert>
+    <ui:insert name="title">Component Testcase</ui:insert>
 </h1>
+
+
 <p>
     <ui:insert name="body">Hello World Example!</ui:insert>
 </p>
