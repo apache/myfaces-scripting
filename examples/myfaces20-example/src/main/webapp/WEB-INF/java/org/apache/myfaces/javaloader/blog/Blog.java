@@ -29,12 +29,11 @@ import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
  * @date: 01.09.2009
  */
 
-
 public class Blog {
 
     String title        =   "Hello to the myfaces dynamic blogging example";
     String title1       =   "You can alter the code for this small blogging application on the fly, " +
-                            "you even can add new classes on the fly and Java will pick it up";
+                           "you even can add new classes on the fly and Java will pick it up";
 
     String title3 = "bla";
     String title4 = "bla2";
@@ -176,6 +175,4 @@ public class Blog {
     public void setTitle5(String title5) {
 
     }
-
-
 }

@@ -12,28 +12,42 @@
 
     <ui:define name="body">
         <h:form id="form">
-            <h:panelGrid id="grid" columns="2">
-                <h:outputText id="output1" value="Please enter your name"/>
-                <h:inputText id="input1" value="#{helloWorld.name}" required="true">
-                    <grv:groovyvalidator/>
-                </h:inputText>
-                <h:commandButton id="button1" value="press me" action="#{helloWorld.send}"/>
-                <grv:testcomponent/>
-                <h:message id="message1" for="input1"/>
-                <h:outputFormat value="#{testbean.xxx}"/>
-                <h:outputFormat value="#{javatestbean.sayHello}"/>
-                converter:
-                <h:inputText>
-                    <grv:testConverter1/>
-                    <grv:testValidator1/>
-                </h:inputText>
-                <h:commandButton value="Press me dynamic" action="#{testbean.doit}"/>
-                <grv:testcomponent2 testAttr="vvv" testAttr2="zzz"/>
+            <h:panelGrid id="grid" columns="1">
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Validator Test 1</h3>
+                    <h:outputText id="output1" value="Please enter your name"/>
+                    <h:inputText id="input1" value="#{helloWorld.name}" required="true">
+                        <grv:groovyvalidator/>
+                    </h:inputText>
+                    <h:commandButton id="button1" value="press me" action="#{helloWorld.send}"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Groovy Component</h3>
+                    <grv:testcomponent/>
+                    <h:message id="message1" for="input1"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Bean Tests</h3>
+                    <h:outputFormat value="#{testbean.xxx}"/>
+                    <br/>
+                    <h:outputFormat value="#{javatestbean.sayHello}"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Converter Test 1</h3>
+                    <h:inputText>
+                        <grv:testConverter1/>
+                        <grv:testValidator1/>
+                    </h:inputText>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Action Test 1</h3>
+                    <h:commandButton value="Press me dynamic" action="#{testbean.doit}"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Java Component</h3>
+                    <grv:testcomponent2 testAttr="vvv" testAttr2="zzz"/>
+                </h:panelGroup>
 
-
-                Resource Handler Test:
-
-                <h:outputFormat value="#{javatestbean.resource}"/>
             </h:panelGrid>
 
 
