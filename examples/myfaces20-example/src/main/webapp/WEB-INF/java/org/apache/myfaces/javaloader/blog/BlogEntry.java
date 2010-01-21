@@ -24,7 +24,6 @@ package org.apache.myfaces.javaloader.blog;
  */
 public class BlogEntry {
 
-    
     String firstName = "";
     String lastName = "";
     String topic = "";

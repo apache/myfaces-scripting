@@ -40,6 +40,11 @@
         <render-kit-factory>
             org.apache.myfaces.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
         </render-kit-factory>
+        <tag-handler-delegate-factory>
+            org.apache.myfaces.scripting.facelet.TagHandlerDelegateFactoryImpl
+        </tag-handler-delegate-factory>
+
+
     </factory>
 
     <application>

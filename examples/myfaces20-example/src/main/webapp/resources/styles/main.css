@@ -1,3 +1,8 @@
+body {
+    background-image:url("../resources/img/gradient1.jpg");
+    background-repeat:repeat-x;
+}
+
 #hello {
     background-color: yellow;
 }
@@ -7,6 +12,7 @@
     background-color: white;
     border: 1px solid black;
     -moz-border-radius: 5px;
+    padding: 5px;
     border-radius: 5px;
 }
 

@@ -108,7 +108,7 @@ public class JavaTestComponent extends UIInput implements Markable {
 
 
     enum PropertyKeys {
-        inc, testAttr, testAttr2
+        inc, testAttr, testAttr2, testAttr3
     }
 
     public JavaTestComponent() {
@@ -140,11 +140,19 @@ public class JavaTestComponent extends UIInput implements Markable {
         getStateHelper().put(PropertyKeys.testAttr, testAttr);
     }
 
-      public String getTestAttr2() {
-        return (String) getStateHelper().eval(PropertyKeys.testAttr, "");
+    public String getTestAttr2x() {
+        return (String) getStateHelper().eval(PropertyKeys.testAttr2, "");
     }
 
-    public void setTestAttr2(String testAttr) {
+    public void setTestAttr2x(String testAttr) {
         getStateHelper().put(PropertyKeys.testAttr2, testAttr);
+    }
+
+      public String getTestAttr3() {
+        return (String) getStateHelper().eval(PropertyKeys.testAttr3, "");
+    }
+
+    public void setTestAttr3(String testAttr) {
+        getStateHelper().put(PropertyKeys.testAttr3, testAttr);
     }
 }

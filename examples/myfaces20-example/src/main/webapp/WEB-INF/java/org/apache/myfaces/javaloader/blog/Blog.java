@@ -29,6 +29,7 @@ import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
  * @date: 01.09.2009
  */
 
+
 public class Blog {
 
     String title        =   "Hello to the myfaces dynamic blogging example";

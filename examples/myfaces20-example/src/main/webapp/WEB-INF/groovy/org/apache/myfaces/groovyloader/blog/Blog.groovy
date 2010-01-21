@@ -26,10 +26,8 @@ import javax.faces.bean.ManagedBean
 import javax.faces.bean.SessionScoped
 import javax.faces.bean.RequestScoped;
 
-
 @ManagedBean(name = "blogView")
 @RequestScoped
-  
 public class Blog {
     //bug application and session scoped beans  are not refreshed structurally yet
 

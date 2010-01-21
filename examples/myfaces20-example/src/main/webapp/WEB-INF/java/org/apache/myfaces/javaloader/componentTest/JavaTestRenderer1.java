@@ -46,21 +46,25 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
-    private static final String MSG2 = "Hello world from Renderer 1";
+    private static final String MSG2 = "aaaa Hello world from Renderer 1";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         JavaTestComponent myComponent = (JavaTestComponent) component;
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.write(MSG2);
-        writer.write(myComponent.getMarker());
-        writer.write("<h1/>hello world "+myComponent.getTestAttr()+"</h1>");
+        test(myComponent, writer);
         
         //hello(writer);
         writer.flush();
     }
-    
+
+    private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
+        writer.write(MSG2);
+        writer.write(myComponent.getMarker());
+        writer.write("<h1/>TestAttr: "+myComponent.getTestAttr()+" | "+myComponent.getTestAttr3()+"</h1>");
+    }
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         log.info("JavaTestRenderer1.encodeEnd");
     }
