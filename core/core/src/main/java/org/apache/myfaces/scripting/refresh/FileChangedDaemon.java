@@ -115,11 +115,12 @@ public class FileChangedDaemon extends Thread {
 
 
                     systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
-                    it.getValue().setTainted(true);
-                    it.getValue().setTaintedOnce(true);
+                    ReloadingMetadata meta = it.getValue();
+                    meta.setTainted(true);
+                    meta.setTaintedOnce(true);
                     printInfo(it, proxyFile);
-                    it.getValue().setTimestamp(proxyFile.lastModified());
-                    dependencyTainted(it.getValue().getAClass().getName());
+                    meta.setTimestamp(proxyFile.lastModified());
+                    dependencyTainted(meta.getAClass().getName());
                 }
             //}
         }

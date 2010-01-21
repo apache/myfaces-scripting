@@ -2,12 +2,9 @@ package org.apache.myfaces.scripting.api;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.config.RuntimeConfig;
-import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
@@ -45,26 +42,28 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
 
     protected ReloadingStrategy _reloadingStrategy = null;
-    private static final String SCOPE_SESSION = "session";
-    private static final String SCOPE_APPLICATION = "application";
-    private static final String SCOPE_REQUEST = "request";
 
     protected DynamicCompiler _compiler = null;
-    protected Log _log = LogFactory.getLog(this.getClass());
-    protected String _classPath = "";
     protected ClassScanner _annotationScanner = null;
     protected ClassScanner _dependencyScanner = null;
+
+    private BeanHandler _beanHandler;
+    protected String _classPath = "";
+    protected Log _log = LogFactory.getLog(this.getClass());
+
     private String _fileEnding = null;
     private int _scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
 
     public BaseWeaver() {
         _reloadingStrategy = new GlobalReloadingStrategy(this);
+        _beanHandler = new MyFacesBeanHandler(getScriptingEngine());
     }
 
     public BaseWeaver(String fileEnding, int scriptingEngine) {
         this._fileEnding = fileEnding;
         this._scriptingEngine = scriptingEngine;
         _reloadingStrategy = new GlobalReloadingStrategy(this);
+        _beanHandler = new MyFacesBeanHandler(getScriptingEngine());
     }
 
     /**
@@ -211,6 +210,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return _fileEnding;
     }
 
+    @SuppressWarnings("unused")
     public void setFileEnding(String fileEnding) {
         this._fileEnding = fileEnding;
     }
@@ -219,6 +219,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return _scriptingEngine;
     }
 
+    @SuppressWarnings("unused")
     public void setScriptingEngine(int scriptingEngine) {
         this._scriptingEngine = scriptingEngine;
     }
@@ -250,146 +251,13 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //and an inner check again to avoid unneeded compile triggers
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
-
                     recompileRefresh();
-
                     return;
                 }
             }
         }
-        personalScopeRefresh();
+        _beanHandler.personalScopeRefresh();
 
-    }
-
-    protected void refreshAllManagedBeans() {
-
-        if (FacesContext.getCurrentInstance() == null) {
-            return;//no npe allowed
-        }
-        Set<String> tainted = new HashSet<String>();
-        for (Map.Entry<String, ReloadingMetadata> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
-            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().isTainted()) {
-                tainted.add(it.getKey());
-            }
-        }
-        if (tainted.size() > 0) {
-            boolean managedBeanTainted = false;
-            //We now have to check if the tainted classes belong to the managed beans
-            Set<String> managedBeanClasses = new HashSet<String>();
-
-            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-            Map<String, ManagedBean> workCopy;
-
-            synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
-                workCopy = makeSnapshot(mbeans);
-            }
-
-            for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
-                managedBeanClasses.add(entry.getValue().getManagedBeanClassName());
-            }
-            for (String taintedClass : tainted) {
-                if (managedBeanClasses.contains(taintedClass)) {
-                    managedBeanTainted = true;
-                    break;
-                }
-            }
-
-            markSessionBeanRefreshRecommended();
-
-            getLog().info("[EXT-SCRIPTING] Tainting all beans to avoid classcast exceptions");
-            if (managedBeanTainted) {
-
-                for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
-                    Class managedBeanClass = entry.getValue().getManagedBeanClass();
-                    if (WeavingContext.isDynamic(managedBeanClass)) {
-                        //managed bean class found we drop the class from our session
-                        removeBeanReferences(entry.getValue());
-                    }
-                    //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
-                    //exceptions
-                    getLog().info("[EXT-SCRIPTING] Tainting ");
-                    ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
-                    if (metaData != null) {
-                        metaData.setTainted(true);
-                    }
-                }
-            }
-        }
-
-    }
-
-    /**
-     * refreshes all personal scoped beans (aka beans which
-     * have an assumed lifecycle <= session)
-     * <p/>
-     * This is needed for multiuser purposes because if one user alters some beans
-     * other users have to drop their non application scoped beans as well!
-     */
-    private void refreshPersonalScopedBeans() {
-        //the refreshing is only allowed if no compile is in progress
-        //and vice versa
-
-        synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
-            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-            //the map is immutable but in between scanning might change it so we make a full copy of the map
-
-            //We can synchronized the refresh, but if someone alters
-            //the bean map from outside we still get race conditions
-            //But for most cases this mutex should be enough
-
-            Map<String, ManagedBean> workCopy;
-
-            workCopy = makeSnapshot(mbeans);
-
-            for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
-
-                Class managedBeanClass = entry.getValue().getManagedBeanClass();
-                if (WeavingContext.isDynamic(managedBeanClass)) {
-                    String scope = entry.getValue().getManagedBeanScope();
-
-                    if (scope != null && !scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
-                        if (scope.equalsIgnoreCase(SCOPE_REQUEST)) {
-                            //request, nothing has to be done here
-                            return;
-                        }
-
-                        if (scope.equalsIgnoreCase(SCOPE_SESSION)) {
-                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
-                        } else {
-                            removeCustomScopedBean(entry.getValue());
-                        }
-
-                    }
-
-                }
-            }
-            updateBeanRefreshTime();
-        }
-    }
-
-    /**
-     * removes the references from out static scope
-     * for jsf2 we probably have some kind of notification mechanism
-     * which notifies custom scopes
-     *
-     * @param bean the managed bean which all references have to be removed from
-     */
-
-    private void removeBeanReferences(ManagedBean bean) {
-        if (getLog().isInfoEnabled()) {
-            getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
-        }
-
-        String scope = bean.getManagedBeanScope();
-
-        if (scope != null && scope.equalsIgnoreCase(SCOPE_SESSION)) {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
-        } else if (scope != null && scope.equalsIgnoreCase(SCOPE_APPLICATION)) {
-            FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
-            //other scope
-        } else if (scope != null && !scope.equals(SCOPE_REQUEST)) {
-            removeCustomScopedBean(bean);
-        }
     }
 
     /**
@@ -442,7 +310,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     protected boolean isRecompileRecommended() {
-        return WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine());    
+        return WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine());
     }
 
     protected boolean isFullyRecompiled() {
@@ -530,64 +398,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return retVal;
     }
 
-    /**
-     * jsf2 helper to remove custom scoped beans
-     *
-     * @param bean the managed bean which has to be removed from the custom scope from
-     */
-    private void removeCustomScopedBean(ManagedBean bean) {
-        Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(bean.getManagedBeanScope());
-        if (scopeImpl == null) return; //scope not implemented
-        //we now have to revert to introspection here because scopes are a pure jsf2 construct
-        //so we use a messaging pattern here to cope with it
-
-        ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
-    }
-
-    /**
-     * MyFaces 2.0 keeps an immutable map over the session
-     * and request scoped beans
-     * if we alter that during our loop we get a concurrent modification exception
-     * taking a snapshot in time fixes that
-     *
-     * @param mbeans the internal managed bean map which has to be investigated
-     * @return a map with the class name as key and the managed bean info
-     *         as value of the current state of the internal runtime config bean map
-     */
-    private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
-        Map<String, ManagedBean> workCopy;
-
-        workCopy = new HashMap<String, ManagedBean>(mbeans.size());
-        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
-            workCopy.put(entry.getKey(), entry.getValue());
-        }
-
-        return workCopy;
-    }
-
-    private void updateBeanRefreshTime() {
-        long sessionRefreshTime = System.currentTimeMillis();
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
-    }
-
-    private void markSessionBeanRefreshRecommended() {
-        long sessionRefreshTime = System.currentTimeMillis();
-        WeavingContext.getRefreshContext().setPersonalScopedBeanRefresh(sessionRefreshTime);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ScriptingConst.SESS_BEAN_REFRESH_TIMER, sessionRefreshTime);
-    }
-
-    private void personalScopeRefresh() {
-        //shortcut to avoid heavier operations in the beginning
-        long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
-        if (globalBeanRefreshTimeout == -1l) return;
-
-        Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-        Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
-        if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
-            refreshPersonalScopedBeans();
-        }
-    }
-
     private void recompileRefresh() {
         synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
             fullRecompile();
@@ -596,7 +406,21 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             fullClassScan();
         }
 
-        refreshAllManagedBeans();
+        /*
+         * we scan all intra bean dependencies
+         * which are not covered by our
+         * class dependency scan
+         */
+        _beanHandler.scanDependencies();
+
+        /*
+         * Now it is time to refresh the tainted managed beans
+         * by now we should have a good grasp about which beans
+         * need to to be refreshed (note we cannot cover all corner cases
+         * but our extended dependency scan should be able to cover
+         * most refreshing cases.
+         */
+        _beanHandler.refreshAllManagedBeans();
     }
 
     protected abstract DynamicCompiler instantiateCompiler();

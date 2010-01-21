@@ -20,7 +20,6 @@ package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
 import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
 import org.apache.myfaces.extensions.scripting.compiler.GroovyCompiler;
 import org.apache.myfaces.scripting.api.DynamicCompiler;

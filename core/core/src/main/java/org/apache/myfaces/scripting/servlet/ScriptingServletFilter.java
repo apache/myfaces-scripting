@@ -49,7 +49,7 @@ public class ScriptingServletFilter implements Filter {
         WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
         WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_CONFIGURATION));
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
-
+        WeavingContext.setExternalContext(context);
 
         try {
             filterChain.doFilter(servletRequest, servletResponse);

@@ -21,7 +21,9 @@ package org.apache.myfaces.extensions.scripting.compiler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.extensions.scripting.loader.ClassLoaderUtils;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -81,6 +83,8 @@ public class GroovyCompiler implements Compiler {
             compilationUnit.compile();
 
             result = new CompilationResult(compilerOutput.toString());
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
+
         } catch (CompilationFailedException ex) {
             // Register all collected error messages from the Groovy compiler
             result = new CompilationResult(compilerOutput.toString());
@@ -123,6 +127,8 @@ public class GroovyCompiler implements Compiler {
             compilationUnit.compile();
 
             result = new CompilationResult(compilerOutput.toString());
+
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
         } catch (CompilationFailedException ex) {
             // Register all collected error messages from the Groovy compiler
             result = new CompilationResult(compilerOutput.toString());

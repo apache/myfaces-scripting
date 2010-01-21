@@ -20,10 +20,13 @@ package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.CompilerConst;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
 import javax.tools.*;
@@ -59,13 +62,12 @@ public class JSR199Compiler implements DynamicCompiler {
     private static final String FILE_SEPARATOR = File.separator;
 
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-    DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
     ContainerFileManager fileManager = null;
 
 
     public JSR199Compiler() {
         super();
-        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(diagnosticCollector, null, null));
+        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector(), null, null));
         if (javaCompiler == null) {
             //TODO add other compilers as fallbacks here eclipse ecq being the first
         }
@@ -123,6 +125,8 @@ public class JSR199Compiler implements DynamicCompiler {
      * @throws ClassNotFoundException in case of a compilation error
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+        DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
+        
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
         List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourceRoot), CompilerConst.JAVA_WILDCARD);
@@ -148,13 +152,18 @@ public class JSR199Compiler implements DynamicCompiler {
         if (diagnosticCollector.getDiagnostics().size() > 0) {
             Log log = LogFactory.getLog(this.getClass());
             StringBuilder errors = new StringBuilder();
+            CompilationResult result = new CompilationResult("");
             for (Diagnostic diagnostic : diagnosticCollector.getDiagnostics()) {
                 String error = createErrorMessage(diagnostic);
                 log.error(error);
+                result.getErrors().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
                 errors.append(error);
-
             }
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
+            
             throw new ClassNotFoundException("Compile error of java file:" + errors.toString());
+        } else {
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, new CompilationResult(""));
         }
     }
 

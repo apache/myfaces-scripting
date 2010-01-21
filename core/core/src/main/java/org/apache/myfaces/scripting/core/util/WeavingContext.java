@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
@@ -28,12 +29,15 @@ import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A set of weaving context class called
@@ -53,6 +57,7 @@ public class WeavingContext {
         public Object _weaverHolder;
         public Object _refreshContextHolder;
         public Object _configurtion;
+        public Object _externalContext;
     }
 
     static ThreadLocalData _referenceThreadHolder = null;
@@ -61,7 +66,7 @@ public class WeavingContext {
      * <p>
      * we push our _weaver into the thread local
      * to avoid too many calls into the
-     * context classloading hierarchy
+     * context class loading hierarchy
      * this should speed things up a little bit.
      * </p>
      * <p>
@@ -74,13 +79,31 @@ public class WeavingContext {
     static protected ThreadLocal _weaverHolder = new ThreadLocal();
     static protected ThreadLocal _refreshContextHolder = new ThreadLocal();
     static protected ThreadLocal _configuration = new ThreadLocal();
+    static protected ThreadLocal _externalContext = new ThreadLocal();
+
     private static final String WARN_WEAVER_NOT_SET = "Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
+    private static final Map<Integer, CompilationResult> _compilationResults = new ConcurrentHashMap<Integer, CompilationResult>();
 
     public static void init() {
 
     }
 
+    public static CompilationResult getCompilationResult(Integer scriptingEngine) {
+        return _compilationResults.get(scriptingEngine);
+    }
+
+    public static void setCompilationResult(Integer scriptingEngine, CompilationResult result) {
+        _compilationResults.put(scriptingEngine, result);
+    }
+
+    public static void setExternalContext(Object context) {
+        _externalContext.set(context);
+    }
+
+    public static Object getExternalContext() {
+        return _externalContext.get();
+    }
 
     /**
      * general shutdown clean
@@ -104,7 +127,6 @@ public class WeavingContext {
     public static void setConfiguration(Configuration configuration) {
         _configuration.set(configuration);
     }
-
 
     /**
      * the weavers are set from outside
@@ -150,7 +172,6 @@ public class WeavingContext {
         }
         return (ScriptingWeaver) _weaverHolder.get();
     }
-
 
     /**
      * we create a proxy to an existing object
@@ -215,11 +236,9 @@ public class WeavingContext {
         return o;
     }
 
-
     public static boolean isDynamic(Class clazz) {
         return getWeaver().isDynamic(clazz);
     }
-
 
     /**
      * we push the threading data into
@@ -230,7 +249,7 @@ public class WeavingContext {
         data._configurtion = getConfiguration();
         data._refreshContextHolder = getRefreshContext();
         data._weaverHolder = getWeaver();
-
+        data._externalContext = getExternalContext();
         _referenceThreadHolder = data;
     }
 
@@ -239,6 +258,7 @@ public class WeavingContext {
         setConfiguration((Configuration) data._configurtion);
         setRefreshContext((RefreshContext) data._refreshContextHolder);
         setWeaver((ScriptingWeaver) data._weaverHolder);
+        setExternalContext(data._externalContext);
     }
 
     public static void cleanThreadingData() {

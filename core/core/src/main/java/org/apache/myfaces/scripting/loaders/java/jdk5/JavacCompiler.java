@@ -2,9 +2,12 @@ package org.apache.myfaces.scripting.loaders.java.jdk5;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.api.CompilerConst;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -107,7 +110,7 @@ class JavacCompiler implements Compiler {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
                         "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
-
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
             return result;
         } catch (NoSuchMethodException ex) {
             throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
@@ -154,7 +157,7 @@ class JavacCompiler implements Compiler {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
                         "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
-
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
             return result;
         } catch (NoSuchMethodException ex) {
             throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
