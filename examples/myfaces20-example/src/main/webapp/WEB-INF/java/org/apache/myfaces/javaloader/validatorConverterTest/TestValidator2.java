@@ -16,51 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.validatorConverterTest;
 
-import javax.faces.application.Resource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.faces.context.FacesContext;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
-import java.net.URL;
+import javax.faces.component.UIComponent;
+import javax.faces.validator.ValidatorException;
+import javax.faces.validator.Validator;
+import javax.faces.validator.FacesValidator;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@FacesValidator(value = "at.irian.CustomValidator")
 
-public class StringResource extends Resource {
-
-    String resourceString = "";
-
-    public StringResource(String resourceString) {
-        this.resourceString = resourceString;
+public class TestValidator2 implements Validator {
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        Log log = LogFactory.getLog(TestValidator1.class);
+        log.info("Hello world from TestValidator2");
     }
 
-    @Override
-    public InputStream getInputStream() {
-
-        return new ByteArrayInputStream(resourceString.getBytes());  
-    }
-
-    @Override
-    public String getRequestPath() {
-        return null;  
-    }
-
-    @Override
-    public Map<String, String> getResponseHeaders() {
-        return null;  
-    }
-
-    @Override
-    public URL getURL() {
-        return null;  
-    }
-
-    @Override
-    public boolean userAgentNeedsUpdate(FacesContext context) {
-        return false;  
-    }
 }

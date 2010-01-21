@@ -16,18 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.other;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.Resource;
+
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
-public class ResourceHandler2 extends BaseResourceHandler {
-    public ResourceHandler2(ResourceHandler delegate) {
+public class ResourceHandler1 extends BaseResourceHandler {
+    public ResourceHandler1(ResourceHandler delegate) {
         super(delegate);
     }
 
@@ -37,7 +37,6 @@ public class ResourceHandler2 extends BaseResourceHandler {
             Resource retVal = new StringResource("hello world from resource handler1");
             return retVal;
         }
-
         return super.createResource(resourceName);
     }
 }

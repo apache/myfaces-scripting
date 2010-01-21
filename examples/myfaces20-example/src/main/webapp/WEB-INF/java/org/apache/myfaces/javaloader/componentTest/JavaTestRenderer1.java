@@ -16,10 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.componentTest;
 
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
@@ -35,7 +34,7 @@ import java.io.IOException;
  *          <p/>
  *          Renderer Example with dynamic annotations,
  *          you can move the annotation from one
- *          renderer artefact to the other
+ *          renderer artifact to the other
  */
 
 /*
@@ -43,24 +42,25 @@ import java.io.IOException;
  * class to the other
  */
 @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
-    private static final String MSG2 = "Hello world from Renderer 1   ";
+    private static final String MSG2 = "Hello world from Renderer 1";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-        //JavaTestComponent myComponent = (JavaTestComponent) component;
+        JavaTestComponent myComponent = (JavaTestComponent) component;
+
         ResponseWriter writer = context.getResponseWriter();
         writer.write(MSG2);
-        writer.write((String) ReflectUtil.executeMethod(component, "getMarker"));
-
-
+        writer.write(myComponent.getMarker());
+        writer.write("<h1/>hello world "+myComponent.getTestAttr()+"</h1>");
+        
+        //hello(writer);
         writer.flush();
     }
-
+    
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         log.info("JavaTestRenderer1.encodeEnd");
     }

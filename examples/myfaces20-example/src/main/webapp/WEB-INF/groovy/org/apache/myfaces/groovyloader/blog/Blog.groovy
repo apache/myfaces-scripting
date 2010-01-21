@@ -29,7 +29,7 @@ import javax.faces.bean.RequestScoped;
 
 @ManagedBean(name = "blogView")
 @RequestScoped
-
+  
 public class Blog {
     //bug application and session scoped beans  are not refreshed structurally yet
 

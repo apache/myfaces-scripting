@@ -20,6 +20,8 @@ package org.apache.myfaces.groovyloader.test
 /**
  * @author Werner Punz
  */
+
+
 class TestBean {
     String helloworld = "hallo ist - die bean"
 

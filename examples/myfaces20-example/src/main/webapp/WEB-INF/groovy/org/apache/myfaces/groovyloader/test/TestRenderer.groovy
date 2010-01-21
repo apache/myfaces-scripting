@@ -20,16 +20,17 @@ package org.apache.myfaces.groovyloader.test
 
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase
 import javax.faces.context.FacesContext
-import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponent
+import javax.faces.context.ResponseWriter;
 
-
+   
 /**
  * @author Werner Punz
  */
 public class TestRenderer extends HtmlTextRendererBase {
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) {
-        facesContext.responseWriter.write """
+  public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) {
+    facesContext.responseWriter.write """
             <h1> Hello from a groovy JSF components renderer </h1>
 
             <p> you can find my sources under WEB-INF/groovy/... </p>
@@ -50,15 +51,17 @@ public class TestRenderer extends HtmlTextRendererBase {
 
             Test for attribute: $uiComponent.testattr
         """
-        super.encodeBegin(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
-    }
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) {
-        print super.toString()
-        super.encodeEnd(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
-        facesContext.getResponseWriter().write """\
+ 
+    super.encodeBegin(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
+  }
+
+  public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) {
+    print super.toString()
+    super.encodeEnd(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
+    facesContext.getResponseWriter().write """\
             encode end here
         """
 
-    }
+  }
 }

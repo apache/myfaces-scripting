@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.validatorConverterTest;
 
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;

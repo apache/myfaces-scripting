@@ -16,44 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.validatorConverterTest;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.FacesComponent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-/**
- * Simple component to be picked up by
- */
-@FacesComponent("at.irian.JavaTestComponent")
-
-public class JavaTestComponent extends UIInput implements Markable {
-
-    enum PropertyKeys {
-        inc
-    }
-
-    public JavaTestComponent() {
-        setRendererType("at.irian.JavaTestRenderer");
-    }
-
-    public String getMarker() {
-        return "<h1>Component 1  marker</h1>";
-    }
-
-    public void setMarker() {
-       
-    }
-
-    public int getInc() {
-        return (Integer) getStateHelper().eval(PropertyKeys.inc, 1);
-    }
-
-    public void setInc(int inc) {
-        getStateHelper().put(PropertyKeys.inc, inc);
+public class TestValidator1 implements Validator {
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        Log log = LogFactory.getLog(TestValidator1.class);
+        log.info("Hello world from TestValidator1");
     }
 }

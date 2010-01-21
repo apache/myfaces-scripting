@@ -1,4 +1,4 @@
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.other;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

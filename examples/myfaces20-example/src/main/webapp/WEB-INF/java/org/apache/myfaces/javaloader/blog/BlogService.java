@@ -29,7 +29,7 @@ import java.util.List;
 public class BlogService {
 
 
-
+    
     /**
      * note we cannot cast on dynamically referenced
      * and recompiled objects which are shared between beans
@@ -45,11 +45,9 @@ public class BlogService {
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
 
     public void addEntry(BlogEntry entry) {
-        System.out.println("dddd2");
 
         if (entry != null) {
             blogEntries.add(entry);
-
         }
     }
 

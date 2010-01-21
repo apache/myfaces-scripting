@@ -16,27 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.validatorConverterTest;
 
-import javax.faces.component.UIInput;                                 
-import javax.faces.component.FacesComponent;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
+import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
-public class JavaTestComponent2 extends UIInput implements Markable {
-
-    public JavaTestComponent2() {
-        setRendererType("at.irian.JavaTestRenderer");
+@FacesConverter(value="at.irian.CustomConverter")
+public class TestConverter1 implements Converter {
+    public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
+        return "hello from converter1";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public String getMarker() {
-        return "<h1>Component 2 marker</h1>";
-    }
-
-    public void setMarker() {
+    public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
+        return "hello from converter1";  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

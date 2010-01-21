@@ -16,25 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.renderer;
+package org.apache.myfaces.javaloader.componentTest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.javaloader.other.Markable;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.FacesValidator;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
+import javax.faces.component.UIInput;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class TestValidator1 implements Validator {
-    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        Log log = LogFactory.getLog(TestValidator1.class);
-        log.info("Hello world from TestValidator1");
+public class JavaTestComponent2 extends UIInput implements Markable {
+
+    public JavaTestComponent2() {
+        setRendererType("at.irian.JavaTestRenderer");
+    }
+
+
+    public String getMarker() {
+        return "<h1>Component 2 marker</h1>";
+    }
+
+    public void setMarker() {
     }
 }
