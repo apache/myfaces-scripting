@@ -1,4 +1,4 @@
-package org.apache.myfaces.scripting.facelet;
+package org.apache.myfaces.scripting.facelet.support;
 
 import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.*;
@@ -6,13 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by IntelliJ IDEA.
- * User: werpu2
- * Date: 21.01.2010
- * Time: 16:06:23
- * To change this template use File | Settings | File Templates.
+ * we have to reimplement the component rule class here
+ * because it is declared private in the original
+ * implementation
  */
-final class ComponentRule extends MetaRule
+public final class ComponentRule extends MetaRule
 {
 
     final class LiteralAttributeMetadata extends Metadata

@@ -1,7 +1,8 @@
 package org.apache.myfaces.scripting.facelet;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.view.facelets.tag.MetaRulesetImpl;
+import org.apache.myfaces.scripting.facelet.support.ComponentRule;
+import org.apache.myfaces.scripting.facelet.support.SwitchingMetarulesetImpl;
 import org.apache.myfaces.view.facelets.tag.jsf.*;
 
 import javax.faces.component.ActionSource;

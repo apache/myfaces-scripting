@@ -1,6 +1,5 @@
-package org.apache.myfaces.scripting.facelet;
+package org.apache.myfaces.scripting.facelet.support;
 
-import org.apache.myfaces.view.facelets.tag.BeanPropertyTagRule;
 import org.apache.myfaces.view.facelets.tag.MetaRulesetImpl;
 import org.apache.myfaces.view.facelets.tag.MetadataImpl;
 import org.apache.myfaces.view.facelets.tag.MetadataTargetImpl;

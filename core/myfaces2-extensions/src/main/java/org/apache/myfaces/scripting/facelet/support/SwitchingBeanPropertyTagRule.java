@@ -1,4 +1,4 @@
-package org.apache.myfaces.scripting.facelet;
+package org.apache.myfaces.scripting.facelet.support;
 
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.view.facelets.tag.BeanPropertyTagRule;
