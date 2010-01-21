@@ -108,10 +108,10 @@ public class FileChangedDaemon extends Thread {
      */
     private final void checkForChanges() {
         for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
-            if (!it.getValue().isTainted()) {
+            //if (!it.getValue().isTainted()) {
 
                 File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
-                if (!it.getValue().isTainted() && isModified(it, proxyFile)) {
+                if (/*!it.getValue().isTainted() &&*/ isModified(it, proxyFile)) {
 
 
                     systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
@@ -121,7 +121,7 @@ public class FileChangedDaemon extends Thread {
                     it.getValue().setTimestamp(proxyFile.lastModified());
                     dependencyTainted(it.getValue().getAClass().getName());
                 }
-            }
+            //}
         }
     }
 
