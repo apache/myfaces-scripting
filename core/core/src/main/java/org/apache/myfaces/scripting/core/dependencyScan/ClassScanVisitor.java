@@ -20,18 +20,19 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.objectweb.asm.*;
 
-import java.util.*;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
 class ClassScanVisitor implements ClassVisitor {
 
     Set<String> dependencies;
     Set<String> whiteList;
-    //static final Logger log = Logger.getLogger("ClassScanVisitor");
+    static final Logger log = Logger.getLogger("ClassScanVisitor");
 
     public ClassScanVisitor() {
 

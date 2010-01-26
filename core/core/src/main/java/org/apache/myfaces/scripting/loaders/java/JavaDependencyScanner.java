@@ -85,15 +85,13 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
-
-        Set<String> referrers = _dependecyScanner.fetchDependencies(loader, dynamicClass, possibleDynamicClasses);
+        Set<String> referencedClasses = _dependecyScanner.fetchDependencies(loader, dynamicClass, possibleDynamicClasses);
         //we make it in two ops because if we do the self dependency
         //removal in the scanner itself the code  should not break
-        referrers.remove(dynamicClass);
-        if (!referrers.isEmpty()) {
-            WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(dynamicClass, referrers);
+        referencedClasses.remove(dynamicClass);
+        if (!referencedClasses.isEmpty()) {
+            WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(dynamicClass, referencedClasses);
         }
-
     }
 
 
