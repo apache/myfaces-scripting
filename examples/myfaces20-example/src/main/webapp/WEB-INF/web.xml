@@ -33,7 +33,6 @@
     </context-param>
 
 
-    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -70,7 +69,6 @@
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
         <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
     </context-param>
-     -->
 
     <!--
      <context-param>
@@ -108,7 +106,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-        <param-value>/WEB-INF/groovy-taglib.xml</param-value>
+        <param-value>/WEB-INF/facelets/groovy-taglib.xml;/WEB-INF/facelets/extscripting.taglib.xml</param-value>
     </context-param>
 
 

@@ -46,12 +46,15 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
 
+    
     private static final String MSG2 = "aaaa Hello world from Renderer 1";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         JavaTestComponent myComponent = (JavaTestComponent) component;
 
+
+        
         ResponseWriter writer = context.getResponseWriter();
         test(myComponent, writer);
         
@@ -63,6 +66,8 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         writer.write(MSG2);
         writer.write(myComponent.getMarker());
         writer.write("<h1/>TestAttr: "+myComponent.getTestAttr()+" | "+myComponent.getTestAttr3()+"</h1>");
+        /*lets add the new attribute as extra output*/
+        writer.write("<h2>"+myComponent.getTestAttr4()+"</h2>");
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

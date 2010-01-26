@@ -101,6 +101,7 @@ Caused by: java.lang.IllegalArgumentException: object is not an instance of decl
 /**
  * Simple component to be picked up by
  */
+
 @FacesComponent("at.irian.JavaTestComponent")
 public class JavaTestComponent extends UIInput implements Markable {
 
@@ -108,7 +109,7 @@ public class JavaTestComponent extends UIInput implements Markable {
 
 
     enum PropertyKeys {
-        inc, testAttr, testAttr2, testAttr3
+        inc, testAttr, testAttr2, testAttr3, testAttr4
     }
 
     public JavaTestComponent() {
@@ -148,11 +149,27 @@ public class JavaTestComponent extends UIInput implements Markable {
         getStateHelper().put(PropertyKeys.testAttr2, testAttr);
     }
 
-      public String getTestAttr3() {
+    public String getTestAttr3() {
         return (String) getStateHelper().eval(PropertyKeys.testAttr3, "");
     }
 
     public void setTestAttr3(String testAttr) {
         getStateHelper().put(PropertyKeys.testAttr3, testAttr);
     }
+
+    /**
+     * Ok guys, lets add a new attribute to the component
+     * which is displayed in our browser page
+     *
+     * Note we are on jsf 2 level
+     */
+
+    public String getTestAttr4() {
+        return (String) getStateHelper().eval(PropertyKeys.testAttr4, "");
+    }
+
+    public void setTestAttr4(String testAttr) {
+        getStateHelper().put(PropertyKeys.testAttr4, testAttr);
+    } 
+
 }
