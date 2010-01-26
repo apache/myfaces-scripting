@@ -40,15 +40,14 @@ public class TestRenderer extends HtmlTextRendererBase {
             <p> you can edit the artefacts is running</p>
             <p> I will pick up the changes after you have hit the reload button </p>
 
-            <h2> One note however, you cannot change components with a simple page
-            refresh, this works only for renderers</h2>
-
+             One note however, <br /> you cannot change components with a simple page
+            refresh,<br /> this works only for renderers
             <p> you have to rebuild the component tree</p>
 
-            <p> Once you are done you can move your sources over and have them compiled into
+            <p> Once you are done, <br /> you can move your sources over and have <br /> them compiled into
             java classes to gain more speed </p>
 
-            <p> You can prototype every jsf artefact that way, managed beans, renderers, validators,
+            <p> You can prototype every jsf artefact that way,<br /> managed beans, renderers, validators,
             phase listeners </p>
 
             Test for attribute: $uiComponent.testattr

@@ -38,8 +38,8 @@ public class TestRenderer extends HtmlTextRendererBase {
             <p> you can edit the artefacts is running</p>
             <p> I will pick up the changes after you have hit the reload button </p>
 
-            <h2> One note however, you cannot change components with a simple page
-            refresh, this works only for renderers</h2>
+            One note however, <br /> you cannot change components with a simple page
+            refresh,<br /> this works only for renderers
 
             <p> you have to rebuild the component tree</p>
 

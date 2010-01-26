@@ -138,6 +138,10 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     public Class reloadScriptingClass(Class aclass) {
         ReloadingMetadata metadata = getClassMap().get(aclass.getName());
+        if(aclass.getName().contains("TestRenderer1")) {
+            System.out.println("Debugpoint found");
+        }
+
 
         if (metadata == null)
             return aclass;
