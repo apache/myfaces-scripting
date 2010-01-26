@@ -42,18 +42,15 @@ import java.io.IOException;
  * class to the other
  */
 @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-public class JavaTestRenderer1 extends HtmlTextRendererBase {
+    public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
-
     
-    private static final String MSG2 = "aaaa Hello world from Renderer 1";
+    private static final String MSG2 = "Hello world from Renderer 1";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         JavaTestComponent myComponent = (JavaTestComponent) component;
-
-
         
         ResponseWriter writer = context.getResponseWriter();
         test(myComponent, writer);

@@ -106,8 +106,7 @@ Caused by: java.lang.IllegalArgumentException: object is not an instance of decl
 public class JavaTestComponent extends UIInput implements Markable {
 
     String _testAttr;
-
-
+    
     enum PropertyKeys {
         inc, testAttr, testAttr2, testAttr3, testAttr4
     }

@@ -31,9 +31,11 @@ import static org.apache.myfaces.scripting.core.util.ReflectUtil.executeMethod;
  * <p/>
  * A helper for JSF and introspection related tasks
  */
-public class JSFUtil {
+public class JSFUtilJava {
 
-    public JSFUtil() {
+
+    
+    public JSFUtilJava() {
     }
 
     /**
@@ -43,7 +45,8 @@ public class JSFUtil {
      * @return
      */
     public static Object resolveVariable(String beanName) {
-        Log log = LogFactory.getLog(JSFUtil.class);
+
+        Log log = LogFactory.getLog(JSFUtilJava.class);
         Object facesContext = FacesContext.getCurrentInstance();
 
         Object elContext = executeMethod(facesContext, "getELContext");
@@ -55,6 +58,7 @@ public class JSFUtil {
              org.apache.myfaces.scripting.java.JAR_PATHS
              pointing towards the lingering jars
              The compiler cannot pick up the implicit containers classpaths
+
 
 
 

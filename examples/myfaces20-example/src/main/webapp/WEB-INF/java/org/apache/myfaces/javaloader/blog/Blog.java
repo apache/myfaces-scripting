@@ -20,9 +20,7 @@ package org.apache.myfaces.javaloader.blog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-
-import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
+import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
 
 /**
  * @author werpu2
@@ -59,7 +57,7 @@ public class Blog {
     public String addEntry2 () {
         getLog().info("adding entry2");
 
-        BlogService service = (BlogService) JSFUtil.resolveVariable("javaBlogService");
+        BlogService service = (BlogService) resolveVariable("javaBlogService");
 
         
         if (service == null) {

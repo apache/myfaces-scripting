@@ -23,7 +23,6 @@
 
 
     <description>MyProject web.xml</description>
-
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -31,7 +30,8 @@
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
-
+    <!--
+  
 
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
@@ -69,7 +69,7 @@
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
         <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
     </context-param>
-
+    -->
     <!--
      <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead

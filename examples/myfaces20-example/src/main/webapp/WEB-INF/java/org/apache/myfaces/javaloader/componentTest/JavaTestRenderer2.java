@@ -33,7 +33,7 @@ import java.io.IOException;
  */
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
-    private static final String MSG = "aaa Hello world from Renderer 2";
+    private static final String MSG = "Hello world from Renderer 2";
 
     private static final String MSG2 = " hello world second var";
 
