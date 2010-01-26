@@ -657,9 +657,9 @@ public class ApplicationProxy extends Application implements Decorated {
         if (instance == null) {
             return null;
         }
-        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.getClass().getName())) {
             instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
-            alreadyWovenInRequest(instance.toString());
+            alreadyWovenInRequest(instance.getClass().getName());
         }
         return instance;
     }

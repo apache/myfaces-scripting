@@ -120,10 +120,10 @@ public class ApplicationProxy extends Application implements Decorated {
          * maybe in the long run we can make a decorator here instead
          * but for now lets try it this way
          */
-        if (WeavingContext.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.toString())) {
+        if (WeavingContext.isDynamic(component.getClass()) && !alreadyWovenInRequest(component.getClass().getName())) {
             /*once it was tainted we have to recreate all the time*/
             component = (UIComponent) WeavingContext.getWeaver().reloadScriptingInstance(component, ScriptingConst.ARTIFACT_TYPE_COMPONENT);
-            alreadyWovenInRequest(component.toString());
+            alreadyWovenInRequest(component.getClass().getName());
         }
         return component;
 
@@ -421,9 +421,9 @@ public class ApplicationProxy extends Application implements Decorated {
         if (instance == null) {
             return null;
         }
-        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.getClass().getName())) {
             instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
-            alreadyWovenInRequest(instance.toString());
+            alreadyWovenInRequest(instance.getClass().getName());
         }
         return instance;
     }

@@ -58,6 +58,9 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
+        if(rendererType.equals("at.irian.JavaTestRenderer")) {
+            System.out.println("debugpoint found");
+        }
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_RENDERER);
 
         _delegate.addRenderer(componentFamily, rendererType, renderer);
@@ -178,8 +181,8 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         if (instance == null) {
             return null;
         }
-        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.toString())) {
-            alreadyWovenInRequest(instance.toString());
+        if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.getClass().getName())) {
+            alreadyWovenInRequest(instance.getClass().getName());
             instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
 
             //now the add should be done properly if possible
