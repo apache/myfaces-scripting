@@ -49,7 +49,9 @@ class MethodScanVisitor implements MethodVisitor {
         return null;
     }
 
-    public AnnotationVisitor visitAnnotation(String s, boolean b) {
+    public AnnotationVisitor visitAnnotation(String description, boolean b) {
+        ClassScanUtils.logParmList(dependencies, whiteList, description);
+
         return null;
     }
 

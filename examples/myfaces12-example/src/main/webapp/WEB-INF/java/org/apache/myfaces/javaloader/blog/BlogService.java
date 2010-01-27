@@ -45,6 +45,7 @@ public class BlogService {
      */
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
 
+    @DependencyTestAnnoation
     public void addEntry2(BlogEntry entry) {
         if (entry != null) {
            blogEntries.add(entry);

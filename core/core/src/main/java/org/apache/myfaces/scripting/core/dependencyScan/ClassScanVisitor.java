@@ -66,6 +66,8 @@ class ClassScanVisitor implements ClassVisitor {
 
     public AnnotationVisitor visitAnnotation(String desc,
                                              boolean visible) {
+        ClassScanUtils.logParmList(dependencies, whiteList, desc);
+       
         return null;
     }
 

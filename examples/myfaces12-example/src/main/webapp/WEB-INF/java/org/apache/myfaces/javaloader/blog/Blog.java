@@ -21,13 +21,15 @@ package org.apache.myfaces.javaloader.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.lang.Deprecated;
+
 import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
 
 /**
  * @author werpu2
  * @date: 01.09.2009
  */
-
+@DependencyTestAnnoation
 public class Blog {
 
 
