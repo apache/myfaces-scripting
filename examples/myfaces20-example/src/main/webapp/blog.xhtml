@@ -10,44 +10,49 @@
 <ui:composition template="/template.xhtml">
 
     <ui:define name="body">
-        <h:form id="form">
-            <h:panelGroup styleClass="stdBox">
-                <h:panelGrid id="grid" columns="1">
-                    <h:outputText id="title1" styleClass="title" value="#{blogView.title}"/>
-                    <h:outputText id="title11" styleClass="title1" value="#{blogView.title1}"/>
-                    <!--
-                        entry.firstName = firstName
-                        entry.lastName = lastName
-                        entry.topic = topic
-                        entry.content = content
-                    -->
-                    <h:outputText value="First Name"/>
-                    <h:inputText value="#{blogView.firstName}"/>
-                    <h:outputText value="Last Name"/>
-                    <h:inputText value="#{blogView.lastName}"/>
-                    <h:outputText value="Topic of entry"/>
-                    <h:inputText value="#{blogView.topic}"/>
-                    <h:outputText value="Content"/>
-                    <h:inputText value="#{blogView.content}"/>
+        <h1>
+            <ui:insert name="title">Ext-Scripting Groovy Blog Example</ui:insert>
+        </h1>
 
+        <h:form id="form" >
 
-                    <h:commandLink action="#{blogView.addEntry}" value="Add Blog Entry"/>
+            <div class="left" style="margin-top: 3px;">
+                <h:panelGrid id="grid" columns="1" styleClass="stdBox">
+                    <h:outputText id="title1" styleClass="title" value="#{javaBlogView.title}"/>
+                    <h:outputText id="title11" styleClass="title1" value="#{javaBlogView.title1}"/>
+           
+                    <hr/>
+
+                    <h:panelGrid columns="2" columnClasses="label, input">
+                        <h:outputText value="First Name"/>
+                        <h:inputText value="#{blogView.firstName}"/>
+                        <h:outputText value="Last Name"/>
+                        <h:inputText value="#{blogView.lastName}"/>
+                        <h:outputText value="Topic of entry"/>
+                        <h:inputText value="#{blogView.topic}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" columnClasses="label, input">
+                        <h:outputText styleClass="label" value="Content"/>
+                        <h:inputTextarea  value="#{blogView.content}"/>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:commandButton styleClass="btn" action="#{blogView.addEntry}" value="Add Blog Entry"/>
                 </h:panelGrid>
-            </h:panelGroup>
+            </div>
 
-            <h:panelGrid columns="1">
-                <h:panelGroup>
-                <h3><h:outputText value="Blog Entries"/></h3>
-                </h:panelGroup>
+            <h:panelGrid columns="1" styleClass="right">
                 <ui:repeat value="#{blogService.blogEntries}" var="item">
-                    <h:panelGroup styleClass="stdBox">
-                        Topic:
-                        <h:outputText value="#{item.topic}"/>
-                        <br/>
-                        Content:
-                        <h:outputText value="#{item.content}"/>
-                    </h:panelGroup>
-                    <br />
+                    <h:panelGrid columns="1" styleClass="stdBox">
+                        <h:panelGroup styleClass="topic">
+                            <h:outputLabel styleClass="label" value="Topic"/>
+                            <h:outputText value="#{item.topic}"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="content">
+                            <h:outputLabel styleClass="label" value="Content"/>
+                            <h:outputFormat escape="false" value="#{item.content}"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <br/>
                 </ui:repeat>
             </h:panelGrid>
 
