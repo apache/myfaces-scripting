@@ -1,6 +1,17 @@
 body {
-    background-image:url("../resources/img/gradient1.jpg");
-    background-repeat:repeat-x;
+    background-image: url("../resources/img/sig07-009_mac.jpg");
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+div.centerDiv {
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+}
+
+h1 {
+    color: #ffff00;
 }
 
 #hello {
@@ -8,14 +19,18 @@ body {
 }
 
 .stdBox {
-    display: table;
+    display: block;
+    width: 400px;
     background-color: white;
     border: 1px solid black;
     -moz-border-radius: 5px;
     padding: 5px;
     border-radius: 5px;
+    background-image: url("../resources/img/gradient1.jpg");
+    background-repeat: repeat-x;
+    margin-bottom: 5px;
+    min-height: 120px;
 }
-
 
 /*==================================================
     Basic CSS information for our compiler
@@ -40,18 +55,18 @@ div.warningsLabel {
 }
 
 div.errorBox {
-    width: 800px;
+    width: 820px;
     heigh: 200px;
-
 
     display: block;
     overflow: auto;
     border: 1px solid black;
     background-color: #ffffcc;
 
-    -moz-border-radius:5px;
-    border-radius:5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     padding: 5px;
+    margin-left: 10px;
 }
 
 div.errorBox .line {
@@ -59,10 +74,10 @@ div.errorBox .line {
     width: 780px;
 
     border: 1px dashed black;
-    background-color:#ccccff;
+    background-color: #ccccff;
     padding: 5px;
     margin-top: 10px;
-    margin-left:auto;
+    margin-left: auto;
     margin-right: auto;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -86,4 +101,16 @@ div.errorBox .line .message {
     width: 738px;
     display: block;
     float: left;
+}
+
+.left {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+}
+
+.right {
+    position: absolute;
+    left: 430px;
+    top: 20px;
 }

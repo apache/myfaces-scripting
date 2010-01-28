@@ -10,8 +10,8 @@
 <ui:composition template="/template.xhtml">
 
     <ui:define name="body">
-        <h:form id="form">
-            <h:panelGrid id="grid" columns="1" styleClass="stdBox">
+        <h:form id="form" style="position: relative">
+            <h:panelGrid id="grid" columns="1" styleClass="stdBox left">
                 <h:outputText id="title1" styleClass="title" value="#{javaBlogView.title}"/>
                 <h:outputText id="title11" styleClass="title1" value="#{javaBlogView.title1}"/>
                 <!--
@@ -37,7 +37,7 @@
 
                 <h:commandLink action="#{javaBlogView.addEntry2}" value="Add Blog"/>
             </h:panelGrid>
-            <h:panelGrid columns="1">
+            <h:panelGrid columns="1" styleClass="right">
                 <h:panelGroup>
                     <h3>
                         <h:outputText value="Blog Entries"/>
