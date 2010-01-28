@@ -42,7 +42,7 @@
 
             <h:panelGrid columns="1" styleClass="right">
                 <ui:repeat value="#{blogService.blogEntries}" var="item">
-                    <h:panelGrid columns="1" styleClass="stdBox">
+                    <h:panelGrid columns="1" styleClass="messageBox">
                         <h:panelGroup styleClass="topic">
                             <h:outputLabel styleClass="label" value="Topic"/>
                             <h:outputText value="#{item.topic}"/>

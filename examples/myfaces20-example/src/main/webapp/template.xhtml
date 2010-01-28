@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:exs = "http://myfaces.apache.org/ext-scripting"
+      xmlns:exs="http://myfaces.apache.org/ext-scripting"
       xmlns:h="http://java.sun.com/jsf/html">
 <head>
 
@@ -15,17 +15,20 @@
 </head>
 
 <body>
-<div class="centerDiv">
-<h:panelGroup>
-    <h3>
-        <h:outputFormat value="Compiler Output" escape="false"/>
-    </h3>
-    <exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>
-</h:panelGroup>
+<div id="backGroundFloat">
 
-<p>
-    <ui:insert name="body">Hello World Example!</ui:insert>
-</p>
+</div>
+<div class="centerDiv">
+    <h:panelGroup>
+        <h3>
+            <h:outputFormat value="Compiler Output" escape="false"/>
+        </h3>
+        <exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>
+    </h:panelGroup>
+
+    <p>
+        <ui:insert name="body">Hello World Example!</ui:insert>
+    </p>
 </div>
 
 </body>
