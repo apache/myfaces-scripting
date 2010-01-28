@@ -22,8 +22,6 @@ package org.apache.myfaces.javaloader.test;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
-   aaa
 public class TestValidator {
 
 }
