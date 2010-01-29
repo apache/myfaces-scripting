@@ -1,23 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns = "http://www.w3.org/1999/xhtml" xmlns:ui = "http://java.sun.com/jsf/facelets"
-      xmlns:f = "http://java.sun.com/jsf/core" xmlns:h = "http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 <head>
-<title>Hello World</title>
+    <title>Hello World</title>
 </head>
 <body>
 
-<f:view>
-	<h:outputText value = "Hello #{helloWorld.name}. We hope you enjoy Apache MyFaces" />
-	<h:form id = "form2">
-		<h:commandLink id = "link1" action = "back">
-			<h:outputText id = "linkText" value = "GO HOME" />
-		</h:commandLink>
+<ui:composition template="/template.xhtml">
 
-        <h:commandLink id = "link12" action = "xxx">
-			<h:outputText id = "linkText2" value = "GO HOME" />
-		</h:commandLink>
-	</h:form>
-</f:view>
+    <ui:define name="body">
+        <h1><h:outputText value="Hello #{helloWorld.name}. We hope you enjoy Apache MyFaces Extensions Scripting"/></h1>
+        <h:form id="form2">
+            <h:panelGrid id="grid" columns="2" styleClass="stdBox">
+
+                <h:commandLink id="link1" action="back">
+                    <h:outputText id="linkText" value="GO HOME"/>
+                </h:commandLink>
+
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </body>
 </html>

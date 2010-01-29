@@ -11,29 +11,32 @@
 
     <ui:define name="body">
         <h:form id="form">
-            <h:panelGroup styleClass="stdBox">
-                <h3>Validator Test 1</h3>
-                <h:outputText id="output1" value="Please enter your name"/>
-                <h:inputText id="input1" value="#{helloWorld.name}" required="true">
-                    <grv:groovyvalidator/>
-                </h:inputText>
-                <h:commandButton id="button1" value="press me" action="#{helloWorld.send}"/>
+            <h:panelGroup styleClass="left">
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Validator Test 1</h3>
+                    <h:outputText id="output1" value="Please enter your name"/>
+                    <h:inputText id="input1" value="#{helloWorld.name}" required="true">
+                        <grv:groovyvalidator/>
+                    </h:inputText>
+                    <h:commandButton id="button1" value="press me" action="#{helloWorld.send}"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Groovy Component</h3>
+                    <grv:testcomponent/>
+                    <h:message id="message1" for="input1"/>
+                </h:panelGroup>
             </h:panelGroup>
-            <h:panelGroup styleClass="stdBox">
-                <h3>Groovy Component</h3>
-                <grv:testcomponent/>
-                <h:message id="message1" for="input1"/>
-            </h:panelGroup>
-
-            <h:panelGroup styleClass="stdBox">
-                <h3>Bean Tests</h3>
-                <h:outputFormat value="#{testbean.xxx}"/>
-                <br/>
-                <h:outputFormat value="#{javatestbean.sayHello}"/>
-            </h:panelGroup>
-            <h:panelGroup styleClass="stdBox">
-                <h3>Action Test 1</h3>
-                <h:commandButton value="Press me dynamic" action="#{testbean.doit}"/>
+            <h:panelGroup styleClass="right">
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Bean Tests</h3>
+                    <h:outputFormat value="#{testbean.xxx}"/>
+                    <br/>
+                    <h:outputFormat value="#{javatestbean.sayHello}"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="stdBox">
+                    <h3>Action Test 1</h3>
+                    <h:commandButton value="Press me dynamic" action="#{testbean.doit}"/>
+                </h:panelGroup>
             </h:panelGroup>
         </h:form>
     </ui:define>
