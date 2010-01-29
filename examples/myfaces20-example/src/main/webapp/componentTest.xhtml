@@ -10,8 +10,12 @@
 <ui:composition template="/template2.xhtml">
     <ui:define name="body">
         <!-- also we need to add some values here -->
-        <grv:testcomponent2 testAttr="vvv" testAttr3="Attribute 3 set"
-                            testAttr4="Attribute 4 set and showing"/>
+        <h:form>
+
+            <h:commandLink style="color: white;" value="press me" action="#{javatestbean.doAction}"/>
+            <grv:testcomponent2 testAttr="vvv" testAttr3="Attribute 3 set"
+                                testAttr4="Attribute 4 set and showing"/>
+        </h:form>
     </ui:define>
 </ui:composition>
 </body>

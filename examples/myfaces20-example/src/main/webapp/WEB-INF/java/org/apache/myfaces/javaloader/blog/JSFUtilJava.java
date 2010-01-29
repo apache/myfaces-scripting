@@ -32,12 +32,10 @@ import static org.apache.myfaces.scripting.core.util.ReflectUtil.executeMethod;
  * A helper for JSF and introspection related tasks
  */
 public class JSFUtilJava {
-
-
     
     public JSFUtilJava() {
     }
-
+    
     /**
      * resolves a variable in the current facesContext
      *

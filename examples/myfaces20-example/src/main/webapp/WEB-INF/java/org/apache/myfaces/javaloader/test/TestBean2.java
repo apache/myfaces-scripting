@@ -7,6 +7,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.Resource;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,7 +19,11 @@ public class TestBean2 {
     String sayHello = "hello world test xxx";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
- 
+
+    public void validate(ComponentSystemEvent e) {
+        System.out.println("Validating");
+    }
+
     public String getSayHello() {
         return sayHello;
     }
@@ -36,7 +41,11 @@ public class TestBean2 {
     public void setResource(String param) {
 
     }
-    
+
+    public String doAction() {
+        return null;
+    }
+
     public String getResource() throws java.io.IOException {
          /*  ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
            Resource resource = handler.createResource("testResource");
