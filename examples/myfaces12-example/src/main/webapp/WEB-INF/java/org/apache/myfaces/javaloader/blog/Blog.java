@@ -23,13 +23,15 @@ import org.apache.commons.logging.LogFactory;
 
 import java.lang.Deprecated;
 
+import org.apache.myfaces.javaloader.blog.DependencyTestAnnotation;
 import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
 
 /**
  * @author werpu2
  * @date: 01.09.2009
  */
-@DependencyTestAnnoation
+@DependencyTestAnnotation
+
 public class Blog {
 
 
