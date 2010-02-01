@@ -127,4 +127,8 @@ public interface ScriptingWeaver {
      */
     public Collection<String> loadPossibleDynamicClasses();
 
+    /**
+     * scan for taint check
+     */
+    public void scanForAddedClasses();
 }

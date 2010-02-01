@@ -44,12 +44,9 @@ public class ScriptingServletFilter implements Filter {
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         markRequestStart();
-
-        WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
-        WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
-        WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_CONFIGURATION));
+        WeavingContext.initThread(context);
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
-        WeavingContext.setExternalContext(context);
+        WeavingContext.getFileChangedDaemon().initWeavingContext(context);
 
         try {
             filterChain.doFilter(servletRequest, servletResponse);
@@ -57,6 +54,7 @@ public class ScriptingServletFilter implements Filter {
             markRequestEnd();
         }
     }
+
 
     public void destroy() {
 

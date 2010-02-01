@@ -67,4 +67,11 @@ public class GroovyScriptingWeaver extends BaseWeaver {
         return new GroovyCompilerFacade();
     }
 
+    /**
+     * checks outside of the request scope for changes and taints the corresponding engine
+     */
+    public void scanForAddedClasses() {
+        _dependencyScanner.scanAndMarkChange();
+    }
+
 }

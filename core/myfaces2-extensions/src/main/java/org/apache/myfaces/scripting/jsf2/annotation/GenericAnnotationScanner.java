@@ -220,4 +220,8 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         _listeners.add(listener);
     }
 
+    @Override
+    public void scanAndMarkChange() {
+        //do nothing here
+    }
 }

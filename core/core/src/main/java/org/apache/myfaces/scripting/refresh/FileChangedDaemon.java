@@ -23,11 +23,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 
+import javax.servlet.ServletContext;
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 
 /**
  * @author werpu
@@ -46,7 +48,6 @@ public class FileChangedDaemon extends Thread {
     Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
     ClassDependencies dependencyMap = new ClassDependencies();
 
-
     /**
      * this map is a shortcut for the various scripting engines
      * it keeps track whether the engines source paths
@@ -59,11 +60,17 @@ public class FileChangedDaemon extends Thread {
      */
     Map<Integer, Boolean> systemRecompileMap = new ConcurrentHashMap<Integer, Boolean>(8, 0.75f, 1);
 
-
     boolean running = false;
+    boolean contextInitialized = false;
     Log log = LogFactory.getLog(FileChangedDaemon.class);
     ScriptingWeaver _weavers = null;
+    WeakReference externalContext;
 
+  
+    public void initWeavingContext(Object externalContext) {
+        if (this.externalContext != null) return;
+        this.externalContext = new WeakReference(externalContext);
+    }
 
     public static synchronized FileChangedDaemon getInstance() {
         if (instance == null) {
@@ -77,9 +84,12 @@ public class FileChangedDaemon extends Thread {
         return instance;
     }
 
-
     public void run() {
         while (running) {
+            if (externalContext != null && !contextInitialized) {
+                WeavingContext.initThread((ServletContext) externalContext.get());
+                contextInitialized = true;
+            }
             try {
                 try {
                     Thread.sleep(ScriptingConst.TAINT_INTERVAL);
@@ -87,6 +97,7 @@ public class FileChangedDaemon extends Thread {
                     //if the server shuts down while we are in sleep we get an error
                     //which we better should swallow
                 }
+
                 if (classMap == null || classMap.size() == 0)
                     continue;
 
@@ -107,21 +118,25 @@ public class FileChangedDaemon extends Thread {
      * as marks the engine as having to do a full recompile
      */
     private final void checkForChanges() {
+
+        WeavingContext.getWeaver().scanForAddedClasses();
+
+        //TODO move this code also into the weaver so that
+        //we have it centralized
         for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
             //if (!it.getValue().isTainted()) {
 
-                File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
-                if (/*!it.getValue().isTainted() &&*/ isModified(it, proxyFile)) {
+            File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
+            if (/*!it.getValue().isTainted() &&*/ isModified(it, proxyFile)) {
 
-
-                    systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
-                    ReloadingMetadata meta = it.getValue();
-                    meta.setTainted(true);
-                    meta.setTaintedOnce(true);
-                    printInfo(it, proxyFile);
-                    meta.setTimestamp(proxyFile.lastModified());
-                    dependencyTainted(meta.getAClass().getName());
-                }
+                systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
+                ReloadingMetadata meta = it.getValue();
+                meta.setTainted(true);
+                meta.setTaintedOnce(true);
+                printInfo(it, proxyFile);
+                meta.setTimestamp(proxyFile.lastModified());
+                dependencyTainted(meta.getAClass().getName());
+            }
             //}
         }
     }
@@ -150,7 +165,6 @@ public class FileChangedDaemon extends Thread {
         }
     }
 
-
     private final boolean isModified(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
         return proxyFile.lastModified() != it.getValue().getTimestamp();
     }
@@ -175,7 +189,6 @@ public class FileChangedDaemon extends Thread {
     public void setRunning(boolean running) {
         this.running = running;
     }
-
 
     public Map<Integer, Boolean> getSystemRecompileMap() {
         return systemRecompileMap;

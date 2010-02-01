@@ -105,7 +105,12 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         return identifier.isDynamic(clazz);  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-
+    /**
+     * checks outside of the request scope for changes and taints the corresponding engine
+     */
+    public void scanForAddedClasses() {
+        _dependencyScanner.scanAndMarkChange();
+    }
    
 
     protected DynamicCompiler instantiateCompiler() {

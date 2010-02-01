@@ -10,6 +10,7 @@ import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner
 import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.util.ExtendedLoopCnt;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -157,5 +158,24 @@ public class JavaDependencyScannerMT implements ClassScanner {
         //not needed anymore since we only rely on full scans and full recompile now
     }
 
+      public void scanAndMarkChange() {
 
+        final Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
+        Map <Integer, Boolean> recompileMap = WeavingContext.getRefreshContext().getDaemon().getSystemRecompileMap();
+        Map <String, ReloadingMetadata> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
+        Boolean alreadyTainted = recompileMap.get(getEngineType());
+        if(alreadyTainted != null && alreadyTainted) {
+            return;
+        }
+
+        for(String clazz: possibleDynamicClasses) {
+            if(!classMap.containsKey(clazz)) {
+                recompileMap.put(getEngineType(), Boolean.TRUE);
+            }
+        }
+    }
+
+    public int getEngineType() {
+        return ScriptingConst.ENGINE_TYPE_JAVA;
+    }
 }

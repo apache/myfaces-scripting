@@ -121,6 +121,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void requestRefresh() {
+
         for (ScriptingWeaver weaver : _weavers) {
             weaver.requestRefresh();
         }
@@ -132,5 +133,11 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
             retVal.addAll(weaver.loadPossibleDynamicClasses());
         }
         return retVal;
+    }
+
+    public void scanForAddedClasses() {
+        for (ScriptingWeaver weaver : _weavers) {
+            weaver.scanForAddedClasses();
+        }
     }
 }
