@@ -11,6 +11,7 @@
     <ui:define name="body">
         <!-- also we need to add some values here -->
         <h:form>
+            <f:event name="postAddToView" listener="#{javatestbean.doPageInitStuff}"/>
 
             <h:commandLink style="color: white;" value="press me" action="#{javatestbean.doAction}"/>
             <grv:testcomponent2 testAttr="vvv" testAttr3="Attribute 3 set"
