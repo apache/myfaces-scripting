@@ -27,14 +27,14 @@
     </lifecycle>
 
     <component>
-        <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
+        <component-type>org.apache.myfaces.scripting.components.CompilerComponent</component-type>
         <component-class>org.apache.myfaces.scripting.components.CompilerComponent</component-class>
     </component>
 
     <render-kit>
         <renderer>
             <component-family>javax.faces.Output</component-family>
-            <renderer-type>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-type>
+            <renderer-type>org.apache.myfaces.scripting.components.CompilerComponentRenderer</renderer-type>
             <renderer-class>org.apache.myfaces.scripting.components.CompilerComponentRenderer</renderer-class>
         </renderer>
     </render-kit>
