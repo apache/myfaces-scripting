@@ -12,6 +12,12 @@
         This project provides the myfaces groovy bindings
     </description>
 
+    <parent>
+        <groupId>org.apache.myfaces</groupId>
+        <artifactId>myfaces</artifactId>
+        <version>7</version>
+    </parent>
+
     <modules>
         <module>core</module>
         <module>examples</module>
