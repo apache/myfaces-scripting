@@ -26,6 +26,7 @@ import javax.faces.bean.ManagedBean
 import javax.faces.bean.ApplicationScoped;
 
 
+
 @ManagedBean(name = "blogService")
 @ApplicationScoped
 public class BlogService {
@@ -42,7 +43,6 @@ public class BlogService {
 
       log.info("blogentries size"+blogEntries.size())
   }
-
 
     public void addEntry(BlogEntry entry) {
         Log log = LogFactory.getLog(BlogService.class)

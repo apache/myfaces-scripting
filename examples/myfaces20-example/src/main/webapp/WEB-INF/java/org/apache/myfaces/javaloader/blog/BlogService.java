@@ -26,7 +26,7 @@ import java.util.List;
  * @author werpu2
  * @date: 01.09.2009
  */
-public class BlogService {
+public class BlogService implements BlogServiceInterface {
 
 
     

@@ -46,7 +46,7 @@ public class Blog {
         log.info("adding entry");
 
 
-        def service = JSFUtil.resolveVariable("blogService")
+        BlogService service = JSFUtil.resolveVariable("blogService")
 
         if (service == null) {
             log.error("service not found")
@@ -65,7 +65,7 @@ public class Blog {
 
 
         
-        service.addEntry2(entry)
+        service.addEntry(entry)
 
         //we stay on the same page
         return null;

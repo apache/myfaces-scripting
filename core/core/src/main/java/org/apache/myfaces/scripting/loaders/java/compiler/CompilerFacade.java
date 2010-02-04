@@ -25,6 +25,7 @@ import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 
@@ -70,7 +71,7 @@ public class CompilerFacade implements DynamicCompiler {
             //so that we do not run into endless compile cycles
             RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
             classLoader.setSourceRoot(sourceRoot); 
-            CompilationResult result = compiler.compile(new File(sourceRoot), classLoader.getTempDir(), classLoader);
+            CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
             displayMessages(result);
             if (result.hasErrors()) {
                 log.error("Compiler output:" + result.getCompilerOutput());
@@ -112,11 +113,11 @@ public class CompilerFacade implements DynamicCompiler {
         try {
             RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
 
-            CompilationResult result = compiler.compile(new File(sourceRoot), classLoader.getTempDir(), classLoader);
+            CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 
             classLoader.setSourceRoot(sourceRoot);
             displayMessages(result);
-            return classLoader.getTempDir();
+            return WeavingContext.getConfiguration().getCompileTarget();
         } catch (CompilationException e) {
             log.error(e);
         }

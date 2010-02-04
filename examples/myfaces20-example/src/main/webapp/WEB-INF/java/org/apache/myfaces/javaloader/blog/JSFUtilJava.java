@@ -36,6 +36,7 @@ public class JSFUtilJava {
     public JSFUtilJava() {
     }
     
+    
     /**
      * resolves a variable in the current facesContext
      *

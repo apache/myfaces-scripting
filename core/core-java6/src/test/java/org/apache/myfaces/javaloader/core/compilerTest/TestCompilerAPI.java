@@ -20,12 +20,14 @@ package org.apache.myfaces.javaloader.core.compilerTest;
 
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 import org.junit.Test;
 
@@ -67,6 +69,8 @@ public class TestCompilerAPI {
         probe1 = new File(sourcePath1);
         probe2 = new File(sourcePath2);
         root = new File(rootPath);
+
+        WeavingContext.setConfiguration(new Configuration());
     }
 
 

@@ -2,6 +2,7 @@ package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
 import javax.tools.FileObject;
@@ -96,7 +97,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
 
 
     public File getTempDir() {
-        return classLoader.getTempDir();
+        return WeavingContext.getConfiguration().getCompileTarget();
     }
 
 

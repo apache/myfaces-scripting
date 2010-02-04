@@ -110,10 +110,10 @@ public class GroovyCompilerFacade implements DynamicCompiler {
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
         GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ".groovy");
         classLoader.setSourceRoot(sourceRoot);
-        CompilationResult result = compiler.compile(new File(sourceRoot), classLoader.getTempDir(), classLoader);
+        CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 
         displayMessages(result);
-        return classLoader.getTempDir();
+        return WeavingContext.getConfiguration().getCompileTarget();
     }
 
     private void displayMessages(CompilationResult result) {

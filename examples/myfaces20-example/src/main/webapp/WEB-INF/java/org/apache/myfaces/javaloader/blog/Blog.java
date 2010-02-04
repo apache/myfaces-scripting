@@ -57,7 +57,7 @@ public class Blog {
     public String addEntry2 () {
         getLog().info("adding entry2");
 
-        BlogService service = (BlogService) resolveVariable("javaBlogService");
+        BlogServiceInterface service = (BlogServiceInterface) resolveVariable("javaBlogService");
 
         
         if (service == null) {

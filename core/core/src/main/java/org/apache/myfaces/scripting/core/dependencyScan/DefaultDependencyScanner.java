@@ -76,15 +76,28 @@ public class DefaultDependencyScanner implements DependencyScanner {
                 return;
             }
             scanCurrentClass(loader, retVal, className, whiteList);
-            Class parent = toCheck.getSuperclass();
+            scanHierarchy(loader, retVal, whiteList, toCheck);
 
-            while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
-                scanCurrentClass(loader, retVal, parent.getName(), whiteList);
-                parent = parent.getSuperclass();
-            }
+            //TODO now lets do the same for the interfaces and their parents
 
         } catch (ClassNotFoundException e) {
             log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" + e);
+        }
+    }
+
+    /**
+     * scans the hierarchy of a given class
+     * @param loader
+     * @param retVal
+     * @param whiteList
+     * @param toCheck
+     */
+    private void scanHierarchy(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck) {
+        Class parent = toCheck.getSuperclass();
+
+        while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
+            scanCurrentClass(loader, retVal, parent.getName(), whiteList);
+            parent = parent.getSuperclass();
         }
     }
 

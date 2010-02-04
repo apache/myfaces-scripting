@@ -1,5 +1,8 @@
 package org.apache.myfaces.scripting.api;
 
+import org.apache.myfaces.scripting.core.util.FileUtils;
+
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -19,10 +22,7 @@ public class Configuration {
      */
     volatile Map<Integer, CopyOnWriteArrayList<String>> _sourceDirs = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<String>>();
 
-    /**
-     * the compile target directories depending on the scripting engine
-     */
-    volatile Map<Integer, String> _compileTarget = new ConcurrentHashMap<Integer, String>();
+    volatile File _compileTarget = FileUtils.getTempDir();
 
     /**
      * we keep track of separate resource dirs
@@ -46,14 +46,8 @@ public class Configuration {
         dirs.add(sourceDir);
     }
 
-    @SuppressWarnings("unused")
-    public void addCompileTarget(int scriptingEngine, String target) {
-        _compileTarget.put(scriptingEngine, target);
-    }
-
-    @SuppressWarnings("unused")
-    public String getCompileTarget(int scriptingEngine) {
-        return _compileTarget.get(scriptingEngine);
+    public File getCompileTarget() {
+        return _compileTarget;
     }
 
     public void addResourceDir(String dir) {

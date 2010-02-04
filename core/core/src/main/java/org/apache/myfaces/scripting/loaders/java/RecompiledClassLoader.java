@@ -57,7 +57,7 @@ public class RecompiledClassLoader extends ClassLoader {
                     return;
                 }
 
-                tempDir = FileUtils.getTempDir();
+                tempDir = WeavingContext.getConfiguration().getCompileTarget();
             }
         }
         _scriptingEngine = scriptingEngine;
