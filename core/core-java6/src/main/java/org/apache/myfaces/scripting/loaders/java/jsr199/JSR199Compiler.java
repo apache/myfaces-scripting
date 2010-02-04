@@ -1,33 +1,13 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
-import org.apache.myfaces.scripting.api.DynamicCompiler;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.api.CompilationException;
 import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
 import javax.tools.*;
 import java.io.File;
@@ -57,28 +37,21 @@ import java.util.Locale;
  * @author Werner Punz (latest modification by $Author: werpu $)
  * @version $Revision: 812255 $ $Date: 2009-09-07 20:51:39 +0200 (Mo, 07 Sep 2009) $
  */
-public class JSR199Compiler implements DynamicCompiler {
+public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler {
 
     private static final String FILE_SEPARATOR = File.separator;
 
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     ContainerFileManager fileManager = null;
 
-
     public JSR199Compiler() {
         super();
-        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector(), null, null));
-        if (javaCompiler == null) {
-            //TODO add other compilers as fallbacks here eclipse ecq being the first
-        }
     }
 
     /**
      * Compile a single file
      *
-     * @param sourceRoot       the source search path (root of our source)
-     * @param classPath
-     * @param relativeFileName
+     * @param sourceRoot the source search path (root of our source)
      * @return
      * @throws ClassNotFoundException
      * @deprecated note we will move over to a single
@@ -90,27 +63,26 @@ public class JSR199Compiler implements DynamicCompiler {
      *             TODO move this code over to the weaver instead of the compiler
      *             we do not do a single compile step anymore
      */
-    public Class compileFile(String sourceRoot, String classPath, String relativeFileName) throws ClassNotFoundException {
-        fileManager.refreshClassloader();
-        String className = ClassUtils.relativeFileToClassName(relativeFileName);
-        ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        if (!(oldClassLoader instanceof RecompiledClassLoader)) {
-            try {
-                RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader(null);
-                classLoader.setSourceRoot(sourceRoot);
-                Thread.currentThread().setContextClassLoader(classLoader);
+    public CompilationResult compile(File sourceRoot, File targetPath, File toCompile, ClassLoader classPathHolder) throws CompilationException {
+        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector(), null, null));
 
-                //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
+        DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
 
-                return classLoader.loadClass(className);
-            } finally {
-                Thread.currentThread().setContextClassLoader(oldClassLoader);
-            }
+        getLog().info("[EXT-SCRIPTING] Doing a full recompile");
+
+
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(new File[]{toCompile});
+        String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
+        javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
+        try {
+            handleDiagnostics(diagnosticCollector);
+        } catch (ClassNotFoundException e) {
+            throw new CompilationException(e);
         }
-        return null;
+        fileManager.refreshClassloader();
+        return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
 
     }
-
 
     /**
      * compile all files starting from a given root
@@ -121,23 +93,28 @@ public class JSR199Compiler implements DynamicCompiler {
      * push the list into the jsr compiler interface
      *
      * @param sourceRoot the root for all java sources to be compiled
-     * @param classPath  the classpath for the compilation
+     * @param loader     the classpath holder for the compilation
      * @throws ClassNotFoundException in case of a compilation error
      */
-    public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+    public CompilationResult compile(File sourceRoot, File destination, ClassLoader loader) throws CompilationException {
+        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector(), null, null));
+
         DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
-        
+
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourceRoot), CompilerConst.JAVA_WILDCARD);
-        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[0]));
-        String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot, CompilerConst.JC_DEBUG};
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourceRoot, CompilerConst.JAVA_WILDCARD);
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[sourceFiles.size()]));
+        String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, fileManager.getTempDir().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
-        handleDiagnostics(diagnosticCollector);
+        try {
+            handleDiagnostics(diagnosticCollector);
+        } catch (ClassNotFoundException e) {
+            throw new CompilationException(e);
+        }
         fileManager.refreshClassloader();
-        return fileManager.getTempDir();
+        return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
     }
-
 
     /**
      * internal diagnostics handler
@@ -160,7 +137,7 @@ public class JSR199Compiler implements DynamicCompiler {
                 errors.append(error);
             }
             WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
-            
+
             throw new ClassNotFoundException("Compile error of java file:" + errors.toString());
         } else {
             WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, new CompilationResult(""));

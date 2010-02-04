@@ -20,13 +20,11 @@ package org.apache.myfaces.scripting.loaders.java;
 
 import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.*;
+import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
-import javax.faces.context.FacesContext;
-import java.io.File;
 import java.io.Serializable;
-import java.util.*;
 
 /**
  * @author werpu
@@ -114,7 +112,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
    
 
     protected DynamicCompiler instantiateCompiler() {
-        return (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass());
+        return new CompilerFacade();
     }
 
 }

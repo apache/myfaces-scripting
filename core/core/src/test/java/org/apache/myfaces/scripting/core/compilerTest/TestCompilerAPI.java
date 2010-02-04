@@ -28,6 +28,7 @@ import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 import org.junit.Test;
 
 import java.io.File;
@@ -40,8 +41,6 @@ import java.io.File;
 public class TestCompilerAPI {
 
     private static final String JAVA_FILE_ENDING = ".java";
-    private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.JSR199Compiler";
-    private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
 
     private static final String PROBE1 = "../../src/test/resources/compiler/TestProbe1.java";
     private static final String PROBE2 = "../../src/test/resources/compiler/TestProbe2.java";
@@ -71,23 +70,7 @@ public class TestCompilerAPI {
     }
 
 
-    private String getScriptingFacadeClass(boolean allowJSR199) {
-        String javaVer = System.getProperty("java.version");
-        String[] versionArr = javaVer.split("\\.");
-
-        int major = Integer.parseInt(versionArr[Math.min(versionArr.length, 1)]);
-
-        Log log = LogFactory.getLog(this.getClass());
-        log.info("[EXT-SCRIPTING] Java Version = " + major);
-
-        if (major > 5 && allowJSR199) {
-            //jsr199 compliant jdk
-            return JSR199_COMPILER;
-        }
-        //otherwise
-        return JAVA5_COMPILER;
-    }
-
+  
     @Test
     public void testDummy() {
 
@@ -98,7 +81,7 @@ public class TestCompilerAPI {
         File targetDir = null;
         try {
 
-            DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass(false));//new ReflectCompilerFacade();
+            DynamicCompiler compiler = (DynamicCompiler) new CompilerFacade(false);//new ReflectCompilerFacade();
 
             File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
 

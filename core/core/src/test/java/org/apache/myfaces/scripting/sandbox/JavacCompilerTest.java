@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -17,18 +15,23 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
--->
+ */
+package org.apache.myfaces.scripting.sandbox;
 
-<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
-                version="2.0">
-    <namespace>http://myfaces.apache.org/ext-scripting</namespace>
-    <tag>
-        <tag-name>compilerOutput</tag-name>
-        <component>
-            <component-type>org.apache.myfaces.scripting.components.CompilerComponent</component-type>
-            <renderer-type>org.apache.myfaces.scripting.components.CompilerComponentRenderer</renderer-type>
-        </component>
-    </tag>
-</facelet-taglib>
+import org.apache.myfaces.scripting.sandbox.compiler.*;
+import org.junit.Ignore;
+
+/**
+ * <p>Test class for
+ * <code>org.apache.myfaces.scripting.sandbox.compiler.JavacCompiler</code></p>
+ */
+@Ignore
+public class JavacCompilerTest extends AbstractJavaCompilerTestCase {
+
+    // ------------------------------------------ AbstractJavaCompilerTestCase methods
+
+    protected org.apache.myfaces.scripting.sandbox.compiler.Compiler createCompiler() {
+        return new JavacCompiler();
+    }
+
+}

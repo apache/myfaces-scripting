@@ -303,7 +303,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //compile via javac dynamically, also after this block dynamic compilation
             //for the entire length of the request,
             try {
-                _compiler.compileAllFiles(scriptPath, _classPath);
+                //TODO fix this
+                if(! scriptPath.trim().equals(""))
+                    _compiler.compileAllFiles(scriptPath, _classPath);
             } catch (ClassNotFoundException e) {
                 _log.error(e);
             }

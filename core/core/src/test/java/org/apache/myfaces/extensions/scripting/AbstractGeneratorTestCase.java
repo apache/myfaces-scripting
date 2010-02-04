@@ -19,10 +19,10 @@
 package org.apache.myfaces.extensions.scripting;
 
 import junit.framework.TestCase;
-import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
-import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
-import org.apache.myfaces.extensions.scripting.compiler.Compiler;
-import org.apache.myfaces.extensions.scripting.compiler.CompilerFactory;
+import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;

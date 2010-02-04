@@ -26,6 +26,7 @@ import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 import org.junit.Test;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public class TestCompilerAPI {
 
     private static final String JAVA_FILE_ENDING = ".java";
     private static final String JSR199_COMPILER = "org.apache.myfaces.scripting.loaders.java.jsr199.JSR199Compiler";
-    private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.jdk5.CompilerFacade";
+    private static final String JAVA5_COMPILER = "org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade";
 
     private static final String PROBE1 = "../../src/test/resources/compiler/TestProbe1.java";
     private static final String PROBE2 = "../../src/test/resources/compiler/TestProbe2.java";
@@ -90,7 +91,7 @@ public class TestCompilerAPI {
         try {
 
 
-            DynamicCompiler compiler = (DynamicCompiler) ReflectUtil.instantiate(getScriptingFacadeClass(true));//new ReflectCompilerFacade();
+            DynamicCompiler compiler = (DynamicCompiler) new CompilerFacade(true);//new ReflectCompilerFacade();
 
             File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
 

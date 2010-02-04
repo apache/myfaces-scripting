@@ -16,18 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
+package org.apache.myfaces.scripting.loaders.java.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
+import org.apache.myfaces.scripting.api.CompilationException;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.groovy.GroovyRecompiledClassloader;
+import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 
 import java.io.File;
 
@@ -39,18 +38,47 @@ import java.io.File;
  *          we can call javac directly
  */
 
-public class GroovyCompilerFacade implements DynamicCompiler {
-
-    //ContainerFileManager fileManager = null;
+public class CompilerFacade implements DynamicCompiler {
+    protected org.apache.myfaces.scripting.api.Compiler compiler = null;
 
     Log log = LogFactory.getLog(this.getClass());
-    GroovyCompiler compiler;
 
-    public GroovyCompilerFacade() {
+
+    public CompilerFacade() {
         super();
 
-        compiler = new GroovyCompiler();
-        //fileManager = new GroovyContainerFileManager();
+        compiler = JavaCompilerFactory.getInstance().getCompilerInstance();
+    }
+
+     public CompilerFacade(boolean allowJSR) {
+        super();
+
+        compiler = JavaCompilerFactory.getInstance().getCompilerInstance(allowJSR);
+    }
+
+    /**
+     * does a compilation of all files one compile per request
+     * is allowed for performance reasons, the request blocking will be done
+     * probably on the caller side of things
+     *
+     * @param sourceRoot
+     * @param classPath
+     */
+    public void compileAll(String sourceRoot, String classPath) {
+        try {
+            //TODO do a full compile and block the compile for the rest of the request
+            //so that we do not run into endless compile cycles
+            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
+            classLoader.setSourceRoot(sourceRoot); 
+            CompilationResult result = compiler.compile(new File(sourceRoot), classLoader.getTempDir(), classLoader);
+            displayMessages(result);
+            if (result.hasErrors()) {
+                log.error("Compiler output:" + result.getCompilerOutput());
+            }
+
+        } catch (org.apache.myfaces.scripting.api.CompilationException e) {
+            log.error(e);
+        }
     }
 
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
@@ -58,44 +86,17 @@ public class GroovyCompilerFacade implements DynamicCompiler {
         String separator = FileUtils.getFileSeparatorForRegex();
         String className = filePath.replaceAll(separator, ".");
         className = ClassUtils.relativeFileToClassName(className);
-
-        // try {
-        //no need we do a full recompile at the beginning
-        //CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath, fileManager.getClassLoader());
-
-        //displayMessages(result);
-
-        //if (!result.hasErrors()) {
-        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ".groovy");
-
-        //fileManager.refreshClassloader();
+        RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        //we now quickly check for the groovy classloader being, set we cannot deal with instances here
-
-        //TODO change the check as well for java
-        //if (!(oldClassLoader.equals(fileManager.getClassLoader()))) {
         try {
-            //RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader();
             classLoader.setSourceRoot(sourceRoot);
             Thread.currentThread().setContextClassLoader(classLoader);
-
-            //Not needed anymore due to change in the dynamic class detection system
-            //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
 
             return classLoader.loadClass(className);
         } finally {
             Thread.currentThread().setContextClassLoader(oldClassLoader);
         }
-        //}
-        //} else {
-        //    log.error("Compiler errors");
-        //    displayMessages(result);
-        //}
 
-        //} catch (CompilationException e) {
-        //    log.error(e);
-        //}
-        //return null;
     }
 
     /**
@@ -108,21 +109,29 @@ public class GroovyCompilerFacade implements DynamicCompiler {
      * @throws ClassNotFoundException
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ".groovy");
-        classLoader.setSourceRoot(sourceRoot);
-        CompilationResult result = compiler.compile(new File(sourceRoot), classLoader.getTempDir(), classLoader);
+        try {
+            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
 
-        displayMessages(result);
-        return classLoader.getTempDir();
+            CompilationResult result = compiler.compile(new File(sourceRoot), classLoader.getTempDir(), classLoader);
+
+            classLoader.setSourceRoot(sourceRoot);
+            displayMessages(result);
+            return classLoader.getTempDir();
+        } catch (CompilationException e) {
+            log.error(e);
+        }
+        return null;
     }
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.error("[EXT-SCRIPTING] Groovy compiler error:" + error.getLineNumber() + "-" + error.getMessage());
+            log.error(error.getLineNumber() + "-" + error.getMessage());
+
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
-            log.error("[EXT-SCRIPTING] Groovy compiler warning:" + error.getMessage());
+            log.error(error.getMessage());
         }
-        WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
     }
+
+
 }
