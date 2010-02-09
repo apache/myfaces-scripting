@@ -21,7 +21,7 @@ package org.apache.myfaces.groovyloader.test
  * @author Werner Punz
  */
 class TestBean {
-    String helloworld = "hallo ist - die bean"
+    String helloworld = "Hello from the bean"
 
     //note you can add new atrtributes
     //no setter or getter is needed
