@@ -78,19 +78,19 @@
 
     <!-- navigation rules for helloWorld.jsp -->
     <navigation-rule>
-        <from-view-id>/helloWorld.jsp</from-view-id>
+        <from-view-id>/helloWorld.*</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/page2.jsp</to-view-id>
+            <to-view-id>/page2.jsf</to-view-id>
         </navigation-case>
     </navigation-rule>
 
     <!-- navigation rules for page2.jsp -->
     <navigation-rule>
-        <from-view-id>/page2.jsp</from-view-id>
+        <from-view-id>/page2.*</from-view-id>
         <navigation-case>
             <from-outcome>back</from-outcome>
-            <to-view-id>/helloWorld.jsp</to-view-id>
+            <to-view-id>/helloWorld.jsf</to-view-id>
         </navigation-case>
     </navigation-rule>
 
