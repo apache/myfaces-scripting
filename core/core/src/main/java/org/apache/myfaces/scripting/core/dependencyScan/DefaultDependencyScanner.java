@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.apache.commons.logging.Log;

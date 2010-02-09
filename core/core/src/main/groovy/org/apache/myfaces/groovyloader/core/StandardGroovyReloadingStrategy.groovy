@@ -56,7 +56,5 @@ public class StandardGroovyReloadingStrategy extends SimpleReloadingStrategy {
       }
     }
   }
-
-
 }
 
