@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.loader.dependencies.scanner.adapter;
+package org.apache.myfaces.extensions.scripting.loader.dependencies.scanner.asm;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -31,6 +31,11 @@ import org.objectweb.asm.MethodVisitor;
  * just a callback method, it does nothing, and if it's a method that's supposed to
  * create another visitor, it returns <code>null</code>.</p>
  *
+ * <p>Note that I know that there is a class called ClassAdapter in the ASM library,
+ * but as far as I know this class is only a proxy, i.e. it delegates to an existing
+ * implementation of the ClassVisitor interface (at least the constructor requires
+ * you to pass an instance of this interface).</p>
+ *
  * @author Bernhard Huemer
  */
 public class ClassVisitorAdapter implements ClassVisitor {
@@ -38,7 +43,7 @@ public class ClassVisitorAdapter implements ClassVisitor {
     // ------------------------------------------ ClassVisitor methods
 
     public void visit(int version, int access, String name,
-                      String signature, String supername, String[] interfaces) {
+                      String signature, String superClassName, String[] interfaces) {
         
     }
 
@@ -46,11 +51,11 @@ public class ClassVisitorAdapter implements ClassVisitor {
         
     }
 
-    public void visitOuterClass(String owner, String name, String desc) {
+    public void visitOuterClass(String owner, String name, String description) {
 
     }
 
-    public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+    public AnnotationVisitor visitAnnotation(String description, boolean visible) {
         return null;
     }
 
@@ -68,7 +73,7 @@ public class ClassVisitorAdapter implements ClassVisitor {
     }
 
     public MethodVisitor visitMethod(int access, String name,
-                                      String desc, String signature, String[] exceptions) {
+                                      String description, String signature, String[] exceptions) {
         return null;
     }
 

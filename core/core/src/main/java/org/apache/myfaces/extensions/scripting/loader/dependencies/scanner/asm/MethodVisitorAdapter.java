@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.loader.dependencies.scanner.adapter;
+package org.apache.myfaces.extensions.scripting.loader.dependencies.scanner.asm;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -29,6 +29,11 @@ import org.objectweb.asm.MethodVisitor;
  * about the remaining ones. This implementation does by default nothing, i.e. if it's
  * just a callback method, it does nothing, and if it's a method that's supposed to
  * create another visitor, it returns <code>null</code>.</p>
+ *
+ * <p>Note that I know that there is a class called MethodAdapter in the ASM library,
+ * but as far as I know this class is only a proxy, i.e. it delegates to an existing
+ * implementation of the MethodVisitor interface (at least the constructor requires
+ * you to pass an instance of this interface).</p>
  *
  * @author Bernhard Huemer
  */
@@ -61,31 +66,31 @@ public class MethodVisitorAdapter implements MethodVisitor {
 
     }
 
-    public void visitInsn(int opcode) {
+    public void visitInsn(int operationCode) {
 
     }
 
-    public void visitIntInsn(int opcode, int operand) {
+    public void visitIntInsn(int operationCode, int operand) {
 
     }
 
-    public void visitVarInsn(int opcode, int var) {
+    public void visitVarInsn(int operationCode, int var) {
         
     }
 
-    public void visitTypeInsn(int opcode, String type) {
+    public void visitTypeInsn(int operationCode, String type) {
 
     }
 
-    public void visitFieldInsn(int opcode, String owner, String name, String desc) {
+    public void visitFieldInsn(int operationCode, String owner, String name, String description) {
         
     }
 
-    public void visitMethodInsn(int opcode, String owner, String name, String desc) {
+    public void visitMethodInsn(int operationCode, String owner, String name, String description) {
 
     }
 
-    public void visitJumpInsn(int opcode, Label label) {
+    public void visitJumpInsn(int operationCode, Label label) {
 
     }
 
@@ -109,7 +114,7 @@ public class MethodVisitorAdapter implements MethodVisitor {
 
     }
 
-    public void visitMultiANewArrayInsn(String desc, int dims) {
+    public void visitMultiANewArrayInsn(String description, int dims) {
 
     }
 
@@ -118,7 +123,7 @@ public class MethodVisitorAdapter implements MethodVisitor {
     }
 
     public void visitLocalVariable(
-            String name, String desc, String signature, Label start, Label end, int index) {
+            String name, String description, String signature, Label start, Label end, int index) {
 
     }
 
