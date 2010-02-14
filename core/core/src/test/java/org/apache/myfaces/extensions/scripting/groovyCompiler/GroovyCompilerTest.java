@@ -19,9 +19,9 @@
 package org.apache.myfaces.extensions.scripting.groovyCompiler;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.GroovyCompiler;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.junit.Test;
 
@@ -107,7 +107,7 @@ public class GroovyCompilerTest {
         target.mkdirs();
         target.deleteOnExit();
 
-        CompilationResult result = compiler.compile(root, target, loader);
+        CompilationResult result = null; // compiler.compile(root, target, loader);
 
         assertTrue("result has no errors", !result.hasErrors());
 

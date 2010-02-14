@@ -20,8 +20,8 @@ package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.GroovyCompiler;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
@@ -110,7 +110,7 @@ public class GroovyCompilerFacade implements DynamicCompiler {
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
         GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ".groovy");
         classLoader.setSourceRoot(sourceRoot);
-        CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
+        CompilationResult result = null; //compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 
         displayMessages(result);
         return WeavingContext.getConfiguration().getCompileTarget();

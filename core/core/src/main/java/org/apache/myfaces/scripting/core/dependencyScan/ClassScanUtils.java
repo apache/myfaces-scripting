@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan;
 
+import org.objectweb.asm.Type;
+
 import java.util.Collection;
 import java.util.Set;
 

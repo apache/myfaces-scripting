@@ -20,9 +20,10 @@ package org.apache.myfaces.scripting.loaders.groovy.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.Compiler;
+import org.apache.myfaces.extensions.scripting.loader.ClassLoaderUtils;
 import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -43,7 +44,7 @@ import java.util.List;
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
  */
-public class GroovyCompiler  implements org.apache.myfaces.scripting.sandbox.compiler.Compiler {
+public class GroovyCompiler  implements Compiler {
 
     /**
      * The logger instance for this class.

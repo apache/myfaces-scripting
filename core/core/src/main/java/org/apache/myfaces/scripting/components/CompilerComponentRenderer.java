@@ -21,7 +21,7 @@ package org.apache.myfaces.scripting.components;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;

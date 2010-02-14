@@ -20,8 +20,8 @@ package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.FileUtils;
@@ -52,8 +52,8 @@ import java.util.Locale;
  * to use commons-jci so we rolled our own small specialized facade for this
  * </p>
  *
- * @author Werner Punz (latest modification by $Author: werpu $)
- * @version $Revision: 812255 $ $Date: 2009-09-07 20:51:39 +0200 (Mo, 07 Sep 2009) $
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
 public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler {
 

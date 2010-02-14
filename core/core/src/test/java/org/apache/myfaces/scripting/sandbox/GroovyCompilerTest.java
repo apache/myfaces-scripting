@@ -19,14 +19,15 @@
 package org.apache.myfaces.scripting.sandbox;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
-import org.apache.myfaces.scripting.sandbox.compiler.*;
-import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.GroovyCompiler;
+import org.apache.myfaces.extensions.scripting.compiler.Compiler;
 
 import java.io.File;
 
 /**
  * <p>Test class for
- * <code>org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler</code></p>
+ * <code>org.apache.myfaces.extensions.scripting.compiler.GroovyCompiler</code></p>
  */
 public class GroovyCompilerTest extends AbstractGeneratorTestCase {
 
@@ -49,7 +50,7 @@ public class GroovyCompilerTest extends AbstractGeneratorTestCase {
                 "}                                                  "
         });
 
-        org.apache.myfaces.scripting.sandbox.compiler.Compiler compiler = new GroovyCompiler();
+        Compiler compiler = new GroovyCompiler();
         CompilationResult result = compiler.compile(
                 new File(buildAbsolutePath("/src/main/groovy")),
                 new File(buildAbsolutePath("/target/test-classes")),
@@ -99,8 +100,8 @@ public class GroovyCompilerTest extends AbstractGeneratorTestCase {
                 "package org.apache.myfaces.extensions.scripting;                                   ",
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.extensions.scripting.compiler.Compiler;                  ",
+                "import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;         ",
                 "                                                                                   ",
                 "def class DummyCompiler implements Compiler {                                      ",
                 "                                                                                   ",

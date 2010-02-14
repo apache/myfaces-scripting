@@ -21,13 +21,13 @@ package org.apache.myfaces.scripting.sandbox;
 import java.io.File;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
-import org.apache.myfaces.scripting.sandbox.compiler.*;
-import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
+import org.apache.myfaces.extensions.scripting.compiler.*;
+import org.apache.myfaces.extensions.scripting.compiler.Compiler;
 import org.junit.Ignore;
 
 /**
  * <p>Test class for all Java implementations of
- * <code>org.apache.myfaces.scripting.sandbox.compiler.Compiler</code>.</p>
+ * <code>org.apache.myfaces.extensions.scripting.compiler.Compiler</code>.</p>
  */
 @Ignore
 public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTestCase {
@@ -46,7 +46,7 @@ public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTest
                 "}                                                  "
         });
 
-        org.apache.myfaces.scripting.sandbox.compiler.Compiler compiler = createCompiler();
+        Compiler compiler = createCompiler();
         CompilationResult result = compiler.compile(
                 new File(buildAbsolutePath("/src/main/java")),
                 new File(buildAbsolutePath("/target/test-classes")),
@@ -85,8 +85,8 @@ public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTest
                 "package org.apache.myfaces.extensions.scripting;                                   ",
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.extensions.scripting.compiler.Compiler;                  ",
+                "import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;         ",
                 "                                                                                   ",
                 "public class DummyCompiler implements Compiler {                                   ",
                 "                                                                                   ",
@@ -117,8 +117,8 @@ public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTest
                 "package org.apache.myfaces.extensions.scripting;                                   ",
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.extensions.scripting.compiler.Compiler;                  ",
+                "import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;         ",
                 "                                                                                   ",
                 "public class DummyCompiler implements Compiler {                                   ",
                 "                                                                                   ",
@@ -157,6 +157,6 @@ public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTest
      *
      * @return a new instance of the compiler implementation that this class should test
      */
-    protected abstract Compiler createCompiler();
+    protected abstract org.apache.myfaces.extensions.scripting.compiler.Compiler createCompiler();
 
 }

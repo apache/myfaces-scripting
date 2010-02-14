@@ -19,11 +19,11 @@
 package org.apache.myfaces.scripting.sandbox;
 
 import junit.framework.TestCase;
-import org.apache.myfaces.scripting.sandbox.loader.support.OverridingClassLoader;
+import org.apache.myfaces.extensions.scripting.loader.support.OverridingClassLoader;
 
 /**
  * <p>Test class for the class
- * <code>org.apache.myfaces.scripting.sandbox.loader.support.OverridingClassLoader</code></p>
+ * <code>org.apache.myfaces.extensions.scripting.loader.support.OverridingClassLoader</code></p>
  */
 public class OverridingClassLoaderTest extends TestCase {
 

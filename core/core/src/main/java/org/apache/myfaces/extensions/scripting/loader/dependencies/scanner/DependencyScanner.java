@@ -16,31 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package test;
+package org.apache.myfaces.extensions.scripting.loader.dependencies.scanner;
 
-import java.util.List;
-import java.util.LinkedList;
+import org.apache.myfaces.extensions.scripting.loader.dependencies.registry.DependencyRegistry;
 
 /**
- * @author Werner Punz (latest modification by $Author$)
- * @version $Revision$ $Date$
+ * 
+ *
  */
+public interface DependencyScanner {
 
-public class ListTest {
+    public void scan(DependencyRegistry registry, ClassLoader classLoader, String className);
 
-    public static void main(String... arg) {
-
-        List<String> testList = new LinkedList<String>();
-        testList.add("one");
-        testList.add("two");
-        testList.add("three");
-
-        List testlist2 = testList.subList(0, 1);
-        testList.remove(0);
-        System.out.println(testList.size());
-
-        System.out.println(testlist2.size());
-
-
-    }
 }

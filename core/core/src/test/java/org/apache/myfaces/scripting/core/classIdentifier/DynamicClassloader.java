@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.core.classIdentifier;
 
-import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
+import org.apache.myfaces.extensions.scripting.loader.support.ThrowAwayClassLoader;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.loaders.java.JavaThrowAwayClassloader;
 

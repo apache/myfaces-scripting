@@ -19,10 +19,10 @@
 package org.apache.myfaces.extensions.scripting;
 
 import junit.framework.TestCase;
-import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilerFactory;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
+import org.apache.myfaces.extensions.scripting.compiler.Compiler;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;
+import org.apache.myfaces.extensions.scripting.compiler.CompilerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -128,7 +128,7 @@ public abstract class AbstractGeneratorTestCase extends TestCase {
                 new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName, fileContent, classLoader);
     }
 
-    protected CompilationResult compileFile(Compiler compiler, String sourcePath, String targetPath, String fileName, String[] fileContent)
+    protected CompilationResult compileFile(org.apache.myfaces.extensions.scripting.compiler.Compiler compiler, String sourcePath, String targetPath, String fileName, String[] fileContent)
             throws IOException, CompilationException {
         return compileFile(compiler,
                 new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName, fileContent);

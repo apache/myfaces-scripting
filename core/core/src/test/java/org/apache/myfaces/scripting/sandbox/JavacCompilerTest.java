@@ -18,19 +18,19 @@
  */
 package org.apache.myfaces.scripting.sandbox;
 
-import org.apache.myfaces.scripting.sandbox.compiler.*;
+import org.apache.myfaces.extensions.scripting.compiler.*;
 import org.junit.Ignore;
 
 /**
  * <p>Test class for
- * <code>org.apache.myfaces.scripting.sandbox.compiler.JavacCompiler</code></p>
+ * <code>org.apache.myfaces.extensions.scripting.compiler.JavacCompiler</code></p>
  */
 @Ignore
 public class JavacCompilerTest extends AbstractJavaCompilerTestCase {
 
     // ------------------------------------------ AbstractJavaCompilerTestCase methods
 
-    protected org.apache.myfaces.scripting.sandbox.compiler.Compiler createCompiler() {
+    protected org.apache.myfaces.extensions.scripting.compiler.Compiler createCompiler() {
         return new JavacCompiler();
     }
 

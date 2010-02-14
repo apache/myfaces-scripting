@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.loader.support;
+package org.apache.myfaces.extensions.scripting.loader.support;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

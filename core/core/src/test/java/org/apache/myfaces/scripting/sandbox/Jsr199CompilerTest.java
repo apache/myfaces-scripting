@@ -29,7 +29,7 @@ public class Jsr199CompilerTest extends AbstractJavaCompilerTestCase {
 
     // ------------------------------------------ AbstractJavaCompilerTestCase methods
 
-    protected org.apache.myfaces.scripting.sandbox.compiler.Compiler createCompiler() {
+    protected org.apache.myfaces.extensions.scripting.compiler.Compiler createCompiler() {
         //return new Jsr199Compiler();
         return null;
     }

@@ -16,15 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.compiler;
+package org.apache.myfaces.extensions.scripting.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
-import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.loader.ClassLoaderUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -36,6 +32,7 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.*;
 import java.util.List;
 
 /**
@@ -64,46 +61,6 @@ public class GroovyCompiler implements Compiler {
         return compile(sourcePath, targetPath, new File(sourcePath, file), classLoader);
     }
 
-    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) {
-
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.groovy");
-
-        StringWriter compilerOutput = new StringWriter();
-
-        CompilationUnit compilationUnit = new CompilationUnit(
-                buildCompilerConfiguration(sourcePath, targetPath, classLoader));
-        compilationUnit.getConfiguration().setOutput(new PrintWriter(compilerOutput));
-
-        for (File sourceFile : sourceFiles) {
-            compilationUnit.addSource(sourceFile);
-        }
-
-        CompilationResult result;
-
-        try {
-            compilationUnit.compile();
-
-            result = new CompilationResult(compilerOutput.toString());
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
-
-        } catch (CompilationFailedException ex) {
-            // Register all collected error messages from the Groovy compiler
-            result = new CompilationResult(compilerOutput.toString());
-            ErrorCollector collector = compilationUnit.getErrorCollector();
-            for (int i = 0; i < collector.getErrorCount(); ++i) {
-                result.registerError(convertMessage(collector.getError(i)));
-            }
-        }
-
-        // Register all collected warnings from the Groovy compiler
-        ErrorCollector collector = compilationUnit.getErrorCollector();
-        for (int i = 0; i < collector.getWarningCount(); ++i) {
-            result.registerWarning(convertMessage(collector.getWarning(i)));
-        }
-
-        return result;
-    }
-
     /**
      * <p>Compiles the given file and creates an according class file in the given target path.</p>
      *
@@ -128,8 +85,6 @@ public class GroovyCompiler implements Compiler {
             compilationUnit.compile();
 
             result = new CompilationResult(compilerOutput.toString());
-
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
         } catch (CompilationFailedException ex) {
             // Register all collected error messages from the Groovy compiler
             result = new CompilationResult(compilerOutput.toString());

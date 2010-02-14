@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.loader;
+package org.apache.myfaces.extensions.scripting.loader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +31,8 @@ import java.util.List;
 /**
  * <p>Utility class for class loading purposes, e.g. to determine the classpath of a
  * class loader hierarchy.</p>
+ *
+ * @author Bernhard Huemer
  */
 public class ClassLoaderUtils {
 
@@ -110,7 +112,7 @@ public class ClassLoaderUtils {
         List<URL> classpath = new ArrayList<URL>();
 
         ClassLoader classLoader = parent;
-        // Walk up the hierachy of class loaders in order to determine the current classpath.
+        // Walk up the hierarchy of class loaders in order to determine the current classpath.
         while (classLoader != null) {
             if (classLoader instanceof URLClassLoader) {
                 URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
@@ -119,16 +121,13 @@ public class ClassLoaderUtils {
                 if (urls != null) {
                     classpath.addAll(Arrays.asList(urls));
                 }
-            } /*else {
+            } else {
                 if (logger.isWarnEnabled()) {
                     logger.warn("Resolving the classpath of the classloader '" + parent + "' - One of its parent class"
                             + " loaders is no URLClassLoader '" + classLoader + "', which means it's possible that"
                             + " some classpath entries aren't in the final outcome of this method call.");
                 }
-            } */
-
-            //we disable this warning entirely for now because our own url classloader
-            //can deal with this properly, due to extra startup context classpath determination
+            }
 
             // Inspect the parent class loader next.
             classLoader = classLoader.getParent();

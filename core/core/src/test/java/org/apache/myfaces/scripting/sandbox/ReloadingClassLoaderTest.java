@@ -19,14 +19,14 @@
 package org.apache.myfaces.scripting.sandbox;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
-import org.apache.myfaces.scripting.sandbox.loader.ReloadingClassLoader;
+import org.apache.myfaces.extensions.scripting.loader.ReloadingClassLoader;
 import org.junit.Ignore;
 
 import java.io.File;
 
 /**
  * <p>Test class for
- * <code>org.apache.myfaces.scripting.sandbox.loader.ReloadingClassLoader</code></p>
+ * <code>org.apache.myfaces.extensions.scripting.loader.ReloadingClassLoader</code></p>
  */
 @Ignore
 public class ReloadingClassLoaderTest extends AbstractGeneratorTestCase {
@@ -197,8 +197,8 @@ public class ReloadingClassLoaderTest extends AbstractGeneratorTestCase {
                 "package org.apache.myfaces.extensions.scripting;                                   ",
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.extensions.scripting.compiler.Compiler;                  ",
+                "import org.apache.myfaces.extensions.scripting.compiler.CompilationResult;         ",
                 "                                                                                   ",
                 "public class DummyCompiler implements Compiler {                                   ",
                 "                                                                                   ",
@@ -224,9 +224,9 @@ public class ReloadingClassLoaderTest extends AbstractGeneratorTestCase {
     public void testLoadParentClassFile() throws Exception {
         ClassLoader classLoader = buildClassLoader("/target/test-classes");
 
-        Class compilerInterface = classLoader.loadClass("org.apache.myfaces.scripting.sandbox.compiler.Compiler");
+        Class compilerInterface = classLoader.loadClass("org.apache.myfaces.extensions.scripting.compiler.Compiler");
         assertNotNull(compilerInterface);
-        assertEquals("org.apache.myfaces.scripting.sandbox.compiler.Compiler", compilerInterface.getName());
+        assertEquals("org.apache.myfaces.extensions.scripting.compiler.Compiler", compilerInterface.getName());
     }
 
     public void testOutdatedCheck() throws Exception {

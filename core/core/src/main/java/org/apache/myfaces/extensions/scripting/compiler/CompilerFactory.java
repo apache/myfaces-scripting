@@ -1,4 +1,4 @@
-package org.apache.myfaces.scripting.sandbox.compiler;
+package org.apache.myfaces.extensions.scripting.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

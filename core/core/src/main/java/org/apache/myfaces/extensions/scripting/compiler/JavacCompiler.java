@@ -16,16 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.compiler;
+package org.apache.myfaces.extensions.scripting.compiler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
-import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.extensions.scripting.loader.ClassLoaderUtils;
+import org.apache.myfaces.extensions.scripting.compiler.CompilationException;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;

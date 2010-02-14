@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.api;
+package org.apache.myfaces.extensions.scripting.compiler;
 
 /**
  * <p>This exception will usually be thrown if an error occurred while compiling a

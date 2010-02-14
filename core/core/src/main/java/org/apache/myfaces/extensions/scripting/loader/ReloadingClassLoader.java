@@ -16,19 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.loader;
+package org.apache.myfaces.extensions.scripting.loader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
-import org.apache.myfaces.scripting.sandbox.loader.support.ClassFileLoader;
-import org.apache.myfaces.scripting.sandbox.loader.support.OverridingClassLoader;
+import org.apache.myfaces.extensions.scripting.loader.support.ClassFileLoader;
+import org.apache.myfaces.extensions.scripting.loader.support.ThrowAwayClassLoader;
+import org.apache.myfaces.extensions.scripting.loader.support.OverridingClassLoader;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,6 +78,12 @@ public class ReloadingClassLoader extends URLClassLoader {
             new HashMap<String, ThrowAwayClassLoader>();
 
     /**
+     * A list of reloading listeners that this class loader notifies once a class
+     * has been reloaded. 
+     */
+    private List<ClassReloadingListener> reloadingListeners = new ArrayList<ClassReloadingListener>();
+
+    /**
      * The target directory for the compiler, i.e. the directory that contains the
      * dynamically compiled .class files.
      */
@@ -84,9 +92,9 @@ public class ReloadingClassLoader extends URLClassLoader {
     // ------------------------------------------ Constructors
 
     /**
-     * <p>Constructs a new reloading classloader for the specified compilation
-     * directory using the default delegation parent classloader. Note that this
-     * classloader will only delegate to the parent classloader if there's no
+     * <p>Constructs a new reloading class loader for the specified compilation
+     * directory using the default delegation parent class loader. Note that this
+     * class loader will only delegate to the parent class loader if there's no
      * dynamically compiled class available.</p>
      *
      * @param compilationDirectory the compilation directory
@@ -94,20 +102,26 @@ public class ReloadingClassLoader extends URLClassLoader {
     public ReloadingClassLoader(File compilationDirectory) {
         super(new URL[0]);
         this.compilationDirectory = compilationDirectory;
+
+        // Register a default logging listener
+        registerReloadingListener(new LoggingClassReloadingListener());
     }
 
     /**
-     * <p>Constructs a new reloading classloader for the specified compilation
-     * directory using the given delegation parent classloader. Note that this
-     * classloader will only delegate to the parent classloader if there's no
+     * <p>Constructs a new reloading class loader for the specified compilation
+     * directory using the given delegation parent class loader. Note that this
+     * class loader will only delegate to the parent class loader if there's no
      * dynamically compiled class available.</p>
      *
-     * @param parentClassLoader    the parent classloader
+     * @param parentClassLoader    the parent class loader
      * @param compilationDirectory the compilation directory
      */
     public ReloadingClassLoader(ClassLoader parentClassLoader, File compilationDirectory) {
         super(new URL[0], parentClassLoader);
         this.compilationDirectory = compilationDirectory;
+
+        // Register a default logging listener
+        registerReloadingListener(new LoggingClassReloadingListener());
     }
 
     // ------------------------------------------ URLClassLoader methods
@@ -180,7 +194,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      */
     public URL[] getURLs() {
         try {
-            return new URL[]{compilationDirectory.toURI().toURL()};
+            return new URL[]{ compilationDirectory.toURI().toURL() };
         } catch (IOException ex) {
             logger.error("Couldn't resolve the URL to the compilation directory '" + compilationDirectory + "'.", ex);
             return new URL[0];
@@ -217,12 +231,12 @@ public class ReloadingClassLoader extends URLClassLoader {
     }
 
     /**
-     * <p>Reloads the given class internally explicitly. Note that this classloader usually
-     * reloads classes automatically, i.e. this classloader detects if there is a newer
+     * <p>Reloads the given class internally explicitly. Note that this class loader usually
+     * reloads classes automatically, i.e. this class loader detects if there is a newer
      * version of a class file available in the compilation directory. However, by using
-     * this method you tell this classloader to forcefully reload the given class. For
+     * this method you tell this class loader to forcefully reload the given class. For
      * example, if you've got a newer version of a dynamically recompiled class and a
-     * statically compiled class depending on this one, you can tell this classloader to
+     * statically compiled class depending on this one, you can tell this class loader to
      * reload the statically compiled class as well so that it references the correct
      * version of the Class object.</p>
      *
@@ -238,14 +252,25 @@ public class ReloadingClassLoader extends URLClassLoader {
             classLoader = new OverridingClassLoader(className, this);
         }
 
+        // Replace the class loader in the table and fire the according event.
         ThrowAwayClassLoader oldClassLoader = classLoaders.put(className, classLoader);
-        if (logger.isInfoEnabled()) {
-            if (oldClassLoader != null) {
-                logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
-                        + classLoader + "' as this class loader is supposed to reload the class '" + className + "'.");
-            } else {
-                logger.info("Installed a new class loader '" + classLoader + "' for the class '"
-                        + className + "' as this class loader is supposed to reload it.");
+        synchronized (reloadingListeners) {
+            for (ClassReloadingListener reloadingListener : reloadingListeners) {
+                reloadingListener.classReloaded(oldClassLoader, classLoader, className);
+            }
+        }    
+    }
+
+    /**
+     * <p>Registers a new reloading listener. Afterwards the given listener
+     * will be notified if this class loader reloads or loads a class.</p>
+     *
+     * @param reloadingListener the reloading listener you want to register
+     */
+    public void registerReloadingListener(ClassReloadingListener reloadingListener) {
+        synchronized (reloadingListeners) {
+            if (reloadingListener != null) {
+                reloadingListeners.add(reloadingListener);
             }
         }
     }
@@ -266,9 +291,10 @@ public class ReloadingClassLoader extends URLClassLoader {
 
         // Note that we don't have to create "deep copies" as the class loaders in the map
         // are immutable anyway (they are only supposed to load a single class) and additionally
-        // this map doesn't contain any classes that have been loaded using the current parent
+        // this map doesn't contain classes that have been loaded using the current parent
         // class loader!
         classLoader.classLoaders = new HashMap<String, ThrowAwayClassLoader>(classLoaders);
+        classLoader.reloadingListeners = new ArrayList<ClassReloadingListener>(reloadingListeners);
 
         return classLoader;
     }
@@ -293,6 +319,23 @@ public class ReloadingClassLoader extends URLClassLoader {
         // relative class file path can be computed from the class name.
         return new File(compilationDirectory,
                 className.replaceAll("\\.", FILE_SEPARATOR).concat(".class"));
+    }
+
+    // ------------------------------------------ Private classes
+
+    private static class LoggingClassReloadingListener implements ClassReloadingListener {
+
+        public void classReloaded(ThrowAwayClassLoader oldClassLoader, ThrowAwayClassLoader newClassLoader, String className) {
+            if (logger.isInfoEnabled()) {
+                if (oldClassLoader != null) {
+                    logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
+                            + newClassLoader + "' as this class loader is supposed to reload the class '" + className + "'.");
+                } else {
+                    logger.info("Installed a new class loader '" + newClassLoader + "' for the class '"
+                            + className + "' as this class loader is supposed to reload it.");
+                }
+            }
+        }
     }
 
 }
