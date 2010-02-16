@@ -171,12 +171,19 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
      */
     private String createErrorMessage(Diagnostic diagnostic) {
         StringBuilder retVal = new StringBuilder(256);
+        if(diagnostic == null) {
+            return retVal.toString();
+        }
         retVal.append(CompilerConst.STD_ERROR_HEAD);
-        retVal.append(diagnostic.getMessage(Locale.getDefault()));
+        String message = diagnostic.getMessage(Locale.getDefault());
+        message = (message == null)? "":message;
+        retVal.append(message);
         retVal.append(diagnostic.getLineNumber());
 
         retVal.append("\n\n");
-        retVal.append(diagnostic.getSource().toString());
+        String source = diagnostic.getSource().toString();
+        source = (source == null)? "No source info":source;
+        retVal.append(source);
 
         return retVal.toString();
     }
