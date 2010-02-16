@@ -23,9 +23,9 @@ package org.apache.myfaces.groovyloader.blog;
  */
 public class BlogEntry {
 
-    String firstName = ""
-    String lastName = ""
-    String topic = ""
-    String content = ""
-  
+  String firstName = ""
+  String lastName = ""
+  String topic = ""
+  String content = ""
+
 }

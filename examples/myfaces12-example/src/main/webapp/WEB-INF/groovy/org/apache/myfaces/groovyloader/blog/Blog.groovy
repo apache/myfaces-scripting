@@ -26,50 +26,49 @@ import org.apache.myfaces.groovyloader.blog.BlogService;
 
 
 public class Blog {
-    //bug application and session scoped beans  are not refreshed structurally yet
+  //bug application and session scoped beans  are not refreshed structurally yet
 
-    Log log = LogFactory.getLog(Blog.class)
+  Log log = LogFactory.getLog(Blog.class)
 
-    String title = "Hello to the myfaces dynamic blogging Groovy JSF 1.2 Blog "
-    String title1 = """\
+  String title = "Hello to the myfaces dynamic blogging Groovy JSF 1.2 Blog "
+  String title1 = """\
                     You can alter the code for this small blogging application on the fly,
                     you even can add new classes on the fly and Grooy will pick it up
                     (you can use every groovy feature as untyped references or multiline comments)
                     """
 
-    String firstName = ""
-    String lastName = ""
-    String topic = ""
+  String firstName = ""
+  String lastName = ""
+  String topic = ""
 
-    String content = ""
-
-  
-    public String addEntry() {
-        log.info("adding entry");
-
-        def service = JSFUtil.resolveVariable("blogService")
-
-        if (service == null) {
-            log.error("service not found")
-        } else {
-            log.info("service found")
-
-        }
-
-        BlogEntry entry = new BlogEntry()
-        //we now map it in the verbose way, the lean way would be to do direct introspection attribute mapping
-
-        entry.firstName = firstName
-        entry.lastName = lastName
-        entry.topic = topic
-        entry.content = content
+  String content = ""
 
 
-        service.addEntry2(entry)
+  public String addEntry() {
+    log.info("adding entry");
 
-        //we stay on the same page
-        return null;
+    def service = JSFUtil.resolveVariable("blogService")
+
+    if (service == null) {
+      log.error("service not found")
+    } else {
+      log.info("service found")
+
     }
 
-  
+    BlogEntry entry = new BlogEntry()
+    //we now map it in the verbose way, the lean way would be to do direct introspection attribute mapping
+
+    entry.firstName = firstName
+    entry.lastName = lastName
+    entry.topic = topic
+    entry.content = content
+
+
+    service.addEntry2(entry)
+
+    //we stay on the same page
+    return null;
+  }
+
 }

@@ -46,16 +46,13 @@ public class JavaDependencyScannerMT implements ClassScanner {
     static final int MAX_PARALLEL_SCANS = VALUE_POOL_SIZE;
     Semaphore threadCtrl = new Semaphore(MAX_PARALLEL_SCANS);
 
-
     List<String> _scanPaths = new LinkedList<String>();
 
     //we stack this to get an easier handling in a multithreaded environment
     final Stack<DependencyScanner> dependencyScanner = new Stack<DependencyScanner>();
 
-
     ScriptingWeaver _weaver;
     Log log = LogFactory.getLog(JavaDependencyScannerMT.class.getName());
-
 
     public JavaDependencyScannerMT(ScriptingWeaver weaver) {
         this._weaver = weaver;
@@ -63,7 +60,6 @@ public class JavaDependencyScannerMT implements ClassScanner {
             dependencyScanner.push(new DefaultDependencyScanner());
         }
     }
-
 
     public synchronized void scanPaths() {
 
@@ -121,7 +117,6 @@ public class JavaDependencyScannerMT implements ClassScanner {
 
         try {
 
-
             threadCtrl.acquire();
             //problem with the thread locals set we have to shift all the needed constats
             //in and pass them into the thread
@@ -155,11 +150,9 @@ public class JavaDependencyScannerMT implements ClassScanner {
         }
     }
 
-
     protected ClassLoader getClassLoader() {
         return new RecompiledClassLoader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
     }
-
 
     public void clearListeners() {
     }
@@ -176,18 +169,18 @@ public class JavaDependencyScannerMT implements ClassScanner {
         //not needed anymore since we only rely on full scans and full recompile now
     }
 
-      public void scanAndMarkChange() {
+    public void scanAndMarkChange() {
 
         final Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
-        Map <Integer, Boolean> recompileMap = WeavingContext.getRefreshContext().getDaemon().getSystemRecompileMap();
-        Map <String, ReloadingMetadata> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
+        Map<Integer, Boolean> recompileMap = WeavingContext.getRefreshContext().getDaemon().getSystemRecompileMap();
+        Map<String, ReloadingMetadata> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
         Boolean alreadyTainted = recompileMap.get(getEngineType());
-        if(alreadyTainted != null && alreadyTainted) {
+        if (alreadyTainted != null && alreadyTainted) {
             return;
         }
 
-        for(String clazz: possibleDynamicClasses) {
-            if(!classMap.containsKey(clazz)) {
+        for (String clazz : possibleDynamicClasses) {
+            if (!classMap.containsKey(clazz)) {
                 recompileMap.put(getEngineType(), Boolean.TRUE);
             }
         }

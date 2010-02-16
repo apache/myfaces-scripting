@@ -17,7 +17,7 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
  *
  * so er have to set the all others instance var to a specialized reloading strategy
  * and cope with the rest the standard java way by not doing anything
- * 
+ *
  */
 public class GroovyGlobalReloadingStrategy extends org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy {
 

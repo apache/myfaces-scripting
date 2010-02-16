@@ -117,7 +117,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
             StringWriter compilerOutput = new StringWriter();
             // Invoke the Javac compiler
             Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
-            Object[] compilerArguments = new Object[]{buildCompilerArguments(sourcePath, targetPath, loader), new PrintWriter(compilerOutput)};
+            Object[] compilerArguments = new Object[]{buildCompilerArgumentsWhitelisted(sourcePath, targetPath, loader), new PrintWriter(compilerOutput)};
             logCommandLine(compilerArguments);
 
             Integer returnCode = (Integer) compile.invoke(null, compilerArguments);
@@ -162,6 +162,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
             if (!targetPath.exists()) {
                 targetPath.mkdirs();
             }
+
+            //TODO make a whitelist check here
             Object[] compilerArguments = new Object[]{buildCompilerArguments(sourcePath, targetPath, file.getAbsolutePath(), loader), new PrintWriter(compilerOutput)};
             logCommandLine(compilerArguments);
 
@@ -204,6 +206,29 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
     }
 
     // ------------------------------------------ Utility methods
+
+    /**
+     * <p/>
+     * Creates the arguments for the compiler, i.e. builds up an array of arguments
+     * that one would pass to the javac compiler to compile a full path instead of a single file
+     *
+     * @param sourcePath the path to the source directory
+     * @param targetPath the path to the target directory
+     * @return an array of arguments that you have to pass to the Javac compiler
+     */
+    protected String[] buildCompilerArgumentsWhitelisted(File sourcePath, File targetPath, ClassLoader loader) {
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA), "*.java");
+
+        List arguments = getDefaultArguments(sourcePath, targetPath, loader);
+
+        // Append the source file that is to be compiled. Note that the user specifies only a relative file location.
+        for (File sourceFile : sourceFiles) {
+            arguments.add(sourceFile.getAbsolutePath());
+        }
+        return (String[]) arguments.toArray(new String[0]);
+    }
+
+
 
     /**
      * <p/>

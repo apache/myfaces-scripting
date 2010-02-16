@@ -21,7 +21,7 @@ package org.apache.myfaces.javaloader.blog;
 /**
  * @author werpu2
  * @date: 01.09.2009
- *
+ * <p/>
  * This is the domain object we now edit it
  */
 public class BlogEntry {

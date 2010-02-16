@@ -41,26 +41,26 @@ public class StringResource extends Resource {
     @Override
     public InputStream getInputStream() {
 
-        return new ByteArrayInputStream(resourceString.getBytes());  
+        return new ByteArrayInputStream(resourceString.getBytes());
     }
 
     @Override
     public String getRequestPath() {
-        return null;  
+        return null;
     }
 
     @Override
     public Map<String, String> getResponseHeaders() {
-        return null;  
+        return null;
     }
 
     @Override
     public URL getURL() {
-        return null;  
+        return null;
     }
 
     @Override
     public boolean userAgentNeedsUpdate(FacesContext context) {
-        return false;  
+        return false;
     }
 }

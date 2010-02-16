@@ -14,13 +14,13 @@
             <ui:insert name="title">Ext-Scripting Groovy Blog Example</ui:insert>
         </h1>
 
-        <h:form id="form" >
+        <h:form id="form">
 
             <div class="left" style="margin-top: 3px;">
                 <h:panelGrid id="grid" columns="1" styleClass="stdBox">
                     <h:outputText id="title1" styleClass="title" value="#{javaBlogView.title}"/>
                     <h:outputText id="title11" styleClass="title1" value="#{javaBlogView.title1}"/>
-           
+
                     <hr/>
 
                     <h:panelGrid columns="2" columnClasses="label, input">
@@ -33,7 +33,7 @@
                     </h:panelGrid>
                     <h:panelGrid columns="2" columnClasses="label, input">
                         <h:outputText styleClass="label" value="Content"/>
-                        <h:inputTextarea  value="#{blogView.content}"/>
+                        <h:inputTextarea value="#{blogView.content}"/>
                     </h:panelGrid>
                     <hr/>
                     <h:commandButton styleClass="btn" action="#{blogView.addEntry}" value="Add Blog Entry"/>

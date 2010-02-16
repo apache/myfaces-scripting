@@ -41,7 +41,6 @@ public class ReloadingMetadata {
     volatile long timestamp = 0l;
     volatile int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
 
-
     public boolean isTainted() {
         return tainted;
     }

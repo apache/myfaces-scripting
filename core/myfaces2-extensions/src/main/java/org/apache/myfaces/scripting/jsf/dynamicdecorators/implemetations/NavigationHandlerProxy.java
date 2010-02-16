@@ -48,7 +48,6 @@ public class NavigationHandlerProxy extends NavigationHandler implements Decorat
         _delegate.handleNavigation(facesContext, s, s1);
     }
 
-
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }

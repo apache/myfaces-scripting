@@ -21,7 +21,6 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
  * class dependency maps
  * note this class is thread save
@@ -86,7 +85,6 @@ public class ClassDependencies {
             removeReferenced(toDelete);
         }
     }
-
 
     public Set<String> getReferringClasses(String referencedClass) {
         return reverseIndex.get(referencedClass);

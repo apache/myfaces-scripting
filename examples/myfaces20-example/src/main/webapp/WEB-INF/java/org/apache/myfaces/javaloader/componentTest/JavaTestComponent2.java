@@ -33,7 +33,6 @@ public class JavaTestComponent2 extends UIInput implements Markable {
         setRendererType("at.irian.JavaTestRenderer");
     }
 
-
     public String getMarker() {
         return "<h1>Component 2 marker</h1>";
     }

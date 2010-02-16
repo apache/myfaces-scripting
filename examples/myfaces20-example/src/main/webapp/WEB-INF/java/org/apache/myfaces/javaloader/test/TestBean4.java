@@ -21,7 +21,6 @@ package org.apache.myfaces.javaloader.test;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-
 @ManagedBean(name = "javatestbean4")
 @SessionScoped
 

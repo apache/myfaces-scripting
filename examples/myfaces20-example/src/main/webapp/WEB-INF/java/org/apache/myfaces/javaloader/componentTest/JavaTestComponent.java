@@ -26,15 +26,15 @@ import javax.faces.component.FacesComponent;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Simple component to be picked up by
+ *          <p/>
+ *          Simple component to be picked up by
  */
 
 @FacesComponent("at.irian.JavaTestComponent")
 public class JavaTestComponent extends UIInput implements Markable {
 
     String _testAttr;
-    
+
     enum PropertyKeys {
         inc, testAttr, testAttr2, testAttr3, testAttr4
     }
@@ -43,15 +43,14 @@ public class JavaTestComponent extends UIInput implements Markable {
         setRendererType("at.irian.JavaTestRenderer");
     }
 
-    
     public String getMarker() {
         return "<h2>Component 1 marker</h2>";
     }
 
     public void setMarker() {
-       
+
     }
-    
+
     public int getInc() {
         return (Integer) getStateHelper().eval(PropertyKeys.inc, 1);
     }
@@ -87,7 +86,7 @@ public class JavaTestComponent extends UIInput implements Markable {
     /**
      * Ok guys, lets add a new attribute to the component
      * which is displayed in our browser page
-     *
+     * <p/>
      * Note we are on jsf 2 level
      */
 
@@ -97,6 +96,6 @@ public class JavaTestComponent extends UIInput implements Markable {
 
     public void setTestAttr4(String testAttr) {
         getStateHelper().put(PropertyKeys.testAttr4, testAttr);
-    } 
+    }
 
 }

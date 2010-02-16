@@ -31,7 +31,6 @@ import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import java.io.File;
 import java.net.URL;
 
-
 /**
  * @author werpu
  */
@@ -51,7 +50,6 @@ public class JavaDynamicClassIdentifierTest {
 
         DynamicClassloader throwAwayClassloader = new DynamicClassloader(this.getClass().getClassLoader(), rootPath.getPath());
 
-
         try {
             probe2 = throwAwayClassloader.loadClass("org.apache.myfaces.scripting.core.classIdentifier.Probe2", false).newInstance();
         } catch (Throwable e) {
@@ -62,12 +60,10 @@ public class JavaDynamicClassIdentifierTest {
         TWeavingContext.setWeaverForTesting(weaver);
     }
 
-
     @Test
     public void isDynamic() {
         assertFalse("Class should be static", TWeavingContext.isDynamic(probe1.getClass()));
         assertTrue("Class should be dynamic", TWeavingContext.isDynamic(probe2.getClass()));
     }
-
 
 }

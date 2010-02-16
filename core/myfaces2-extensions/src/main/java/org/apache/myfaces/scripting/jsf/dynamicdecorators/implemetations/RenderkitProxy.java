@@ -48,17 +48,15 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     RenderKit _delegate = null;
 
-
     public RenderkitProxy(RenderKit delegate) {
         _delegate = delegate;
     }
-
 
     public void addRenderer(String componentFamily, String rendererType, Renderer renderer) {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-        if(rendererType.equals("at.irian.JavaTestRenderer")) {
+        if (rendererType.equals("at.irian.JavaTestRenderer")) {
             System.out.println("debugpoint found");
         }
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_RENDERER);
@@ -83,6 +81,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     //TODO probably not needed anymore
+
     private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
         ClientBehaviorRenderer rendr2;
         //WeavingContext.getWeaver().fullClassScan();
@@ -96,6 +95,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     //TODO probably not needed anymore
+
     private Renderer handleAnnotationChange(String s, String s1) {
         Renderer rendr2;
 
@@ -132,7 +132,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         renderer = (ClientBehaviorRenderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER);
         _delegate.addClientBehaviorRenderer(s, renderer);
     }
-
 
     @Override
     public ClientBehaviorRenderer getClientBehaviorRenderer(String s) {
@@ -172,7 +171,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return _delegate;
     }
 
-
     private final void weaveDelegate() {
         _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_RENDERKIT);
     }
@@ -189,7 +187,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         }
         return instance;
     }
-
 
     private final boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context

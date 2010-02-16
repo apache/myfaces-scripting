@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.api;
 
-
 import java.lang.annotation.Annotation;
 
 /**
@@ -34,17 +33,16 @@ public interface AnnotationScanListener extends ClassScanListener {
     /**
      * returns true if the annotation marked by the incoming parameter is supported by this scanner
      *
-     * @param annotation        the supported annotation as neutral string representation of its class
-     * @return                  in case of support
+     * @param annotation the supported annotation as neutral string representation of its class
+     * @return in case of support
      */
     public boolean supportsAnnotation(String annotation);
-
 
     /**
      * class file registration of the supported annotation
      *
-     * @param clazz             the class to be registered
-     * @param annotationName    the annotation for the class
+     * @param clazz          the class to be registered
+     * @param annotationName the annotation for the class
      */
     public void register(Class clazz, Annotation annotationName);
 
@@ -52,7 +50,7 @@ public interface AnnotationScanListener extends ClassScanListener {
      * purges the class from the correct places of the myfaces registry
      * so that the artifact is not reachable anymore
      *
-     * @param className         the class name for the class which needs to be purged
+     * @param className the class name for the class which needs to be purged
      */
     public void purge(String className);
 }

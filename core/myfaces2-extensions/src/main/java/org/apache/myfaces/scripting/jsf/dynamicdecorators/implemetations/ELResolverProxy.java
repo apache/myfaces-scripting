@@ -63,7 +63,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
             return newRetVal;
 
-
         } else if (retVal == null) {
             retVal = reloadAnnotatedBean(elContext, base, property, null);
         }
@@ -101,7 +100,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return newRetVal;
     }
 
-
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
         if (retVal != null && WeavingContext.isDynamic((Class) retVal)) {
@@ -126,15 +124,12 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return _delegate.getCommonPropertyType(elContext, o);
     }
 
-
     public ELResolverProxy(ELResolver delegate) {
         _delegate = delegate;
     }
 
-
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
 
 }

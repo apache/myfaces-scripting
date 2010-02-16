@@ -23,5 +23,5 @@ package org.apache.myfaces.javaloader.blog;
  */
 public interface BlogServiceInterface {
     public void addEntry(BlogEntry entry);
-    
+
 }

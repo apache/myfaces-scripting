@@ -58,7 +58,6 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
         return checked;
     }
 
-
     public int getEngineType(Class clazz) {
         if (isDynamic(clazz)) {
             return ScriptingConst.ENGINE_TYPE_GROOVY;

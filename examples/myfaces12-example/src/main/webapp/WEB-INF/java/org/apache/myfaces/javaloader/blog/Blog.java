@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import java.lang.Deprecated;
 
 import org.apache.myfaces.javaloader.blog.DependencyTestAnnotation;
+
 import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
 
 /**
@@ -34,44 +35,35 @@ import static org.apache.myfaces.javaloader.blog.JSFUtil.*;
 
 public class Blog {
 
+    String title = "Hello to the MyFaces dynamic Java blogging example";
+    String title1 = "You can alter the code for this small blogging application on the fly, " +
+            "you even can add new classes on the fly and Java will pick it up";
 
-    String title        =   "Hello to the MyFaces dynamic Java blogging example";
-    String title1       =   "You can alter the code for this small blogging application on the fly, " +
-                            "you even can add new classes on the fly and Java will pick it up";
-
-    
     String title3 = "bla";
     String title4 = "bla2";
 
     String title5 = "test  from title5";
 
+    String firstName = "";
+    String lastName = "";
+    String topic = "";
 
-
-    String firstName    = "";
-    String lastName     = "";
-    String topic        = "";
-
-    String content      = "";
-
+    String content = "";
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
 
-
-    public String addEntry2 () {
+    public String addEntry2() {
         getLog().info("adding entry");
 
         BlogService service = (BlogService) JSFUtil.resolveVariable("javaBlogService");
-
-
 
         if (service == null) {
             getLog().error("service   not found");
         } else {
             getLog().info("service found");
         }
-
 
         BlogEntry entry = new BlogEntry();
         //we now map it in the verbose way, the lean way would be to do direct introspection attribute mapping
@@ -80,8 +72,6 @@ public class Blog {
         entry.setLastName(lastName);
         entry.setTopic(topic);
         entry.setContent(content);
-
-
 
         if (service != null) {
             /*convenience method to call a method on an object dynamically
@@ -103,16 +93,13 @@ public class Blog {
         return null;
     }
 
-
     public String getTitle() {
-        return  title;
+        return title;
     }
-    
 
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public String getTitle1() {
         return title1;
@@ -150,7 +137,6 @@ public class Blog {
         return content;
     }
 
-
     public void setContent(String content) {
         this.content = content;
     }
@@ -171,7 +157,6 @@ public class Blog {
         this.title4 = title4;
     }
 
-
     public String getTitle5() {
         return title5;
     }
@@ -179,6 +164,5 @@ public class Blog {
     public void setTitle5(String title5) {
 
     }
-    
 
 }

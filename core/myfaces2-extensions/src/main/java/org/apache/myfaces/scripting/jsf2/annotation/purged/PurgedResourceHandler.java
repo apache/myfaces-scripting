@@ -33,7 +33,6 @@ public class PurgedResourceHandler extends ResourceHandler implements Decorated 
 
     private static final String DOES_NOT_EXIST = "Resource Handler does not exist";
 
-
     ResourceHandler _delegate;
 
     public PurgedResourceHandler(ResourceHandler delegate) {

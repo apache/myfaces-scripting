@@ -36,7 +36,6 @@ public class SourcFileDeltaHolder {
     public static final int STATE_ADDED = 2;
     public static final int STATE_DELETED = 3;
 
-
     /**
      * state holder
      */
@@ -72,7 +71,6 @@ public class SourcFileDeltaHolder {
         }
         return retVal;
     }
-
 
     public SourceFilesetStateHolder getInitialState() {
         return _initialState;

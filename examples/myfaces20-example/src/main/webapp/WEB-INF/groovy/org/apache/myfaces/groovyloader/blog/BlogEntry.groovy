@@ -22,17 +22,16 @@ package org.apache.myfaces.groovyloader.blog;
  * The entry class 
  */
 public class BlogEntry {
-  
-    String firstName = ""
-    String lastName = ""
-    String topic = ""
-    String content = ""
 
-  
-  
-    public String getTopic() {
-        return topic;
-    }
+  String firstName = ""
+  String lastName = ""
+  String topic = ""
+  String content = ""
 
+
+
+  public String getTopic() {
+    return topic;
+  }
 
 }

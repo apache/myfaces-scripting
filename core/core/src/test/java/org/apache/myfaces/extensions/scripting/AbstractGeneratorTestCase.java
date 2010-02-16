@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 /**
  * <p>Base class for test cases that generate Java source files.</p>
  */

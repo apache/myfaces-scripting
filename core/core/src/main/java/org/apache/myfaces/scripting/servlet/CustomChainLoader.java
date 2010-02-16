@@ -45,7 +45,6 @@ public class CustomChainLoader extends ClassLoaderExtension {
     static String CUSTOM_LOADER_PATHS = "org.apache.myfaces.scripting.groovy.LOADER_PATHS";
     static String CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.scripting.java.LOADER_PATHS";
 
-
     String classRoot = "";
     String scriptingRoot = "";
     ScriptingWeaver scriptingWeaver = null;
@@ -53,7 +52,6 @@ public class CustomChainLoader extends ClassLoaderExtension {
     private static final String JAVA_SOURCE_ROOT = "/WEB-INF/java/";
 
     Log log = LogFactory.getLog(CustomChainLoader.class);
-
 
     //TODO move the entire init code into the weavers
     //every weaver should know itself how to initialize itself
@@ -70,7 +68,6 @@ public class CustomChainLoader extends ClassLoaderExtension {
         //does not trigger upon initialisation
         WeavingContext.setWeaver(this.scriptingWeaver);
     }
-
 
     private void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) {
         String additionalLoaderPaths;
@@ -114,7 +111,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
         else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
             return null;
         }
-        if(name.contains(".Blog")) {
+        if (name.contains(".Blog")) {
             log.debug("Debugpoint found for Blog");
         }
 

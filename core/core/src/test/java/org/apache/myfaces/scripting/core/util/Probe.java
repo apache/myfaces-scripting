@@ -41,7 +41,6 @@ public class Probe {
         throw new NullPointerException("for test");
     }
 
-
     public boolean testMethod3(String param1) {
         return true;
     }
@@ -49,6 +48,5 @@ public class Probe {
     public static boolean testMethod4(String param1, String param2) {
         return true;
     }
-
 
 }

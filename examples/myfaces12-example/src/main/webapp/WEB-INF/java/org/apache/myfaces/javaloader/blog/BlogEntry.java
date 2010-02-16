@@ -18,20 +18,17 @@
  */
 package org.apache.myfaces.javaloader.blog;
 
-
-
 /**
  * @author werpu2
  * @date: 01.09.2009
  */
 public class BlogEntry {
 
-    String firstName    =   "";
-    String lastName     =   "";
-    String topic        =   "";
-    String content      =   "";
+    String firstName = "";
+    String lastName = "";
+    String topic = "";
+    String content = "";
 
-    
     public String getFirstName() {
         return firstName;
     }

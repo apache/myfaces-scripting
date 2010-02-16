@@ -25,27 +25,27 @@ import javax.faces.context.FacesContext
  * @author Werner Punz
  */
 class TestNavigationHandler extends NavigationHandler {
-    NavigationHandler _delegate = null;
+  NavigationHandler _delegate = null;
 
-    public TestNavigationHandler() {
-        super();
+  public TestNavigationHandler() {
+    super();
 
-    }
-
-    
-    public TestNavigationHandler(NavigationHandler delegate) {
-        super();
-        _delegate = delegate
-        
-    }
+  }
 
 
+  public TestNavigationHandler(NavigationHandler delegate) {
+    super();
+    _delegate = delegate
 
-    public void handleNavigation(FacesContext facesContext, String s, String s1) {
-        // if(delegate != null)
-        System.out.println("handle navigation")
-      
-        _delegate.handleNavigation(facesContext, s, s1)
-    }
+  }
+
+
+
+  public void handleNavigation(FacesContext facesContext, String s, String s1) {
+    // if(delegate != null)
+    System.out.println("handle navigation")
+
+    _delegate.handleNavigation(facesContext, s, s1)
+  }
 
 }

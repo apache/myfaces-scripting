@@ -187,7 +187,6 @@ public class ReloadingClassLoader extends URLClassLoader {
         }
     }
 
-
     // ------------------------------------------ Public methods
 
     /**

@@ -40,7 +40,6 @@ public class PurgedLifecycle extends Lifecycle implements Decorated {
         _delegate = delegate;
     }
 
-
     @Override
     public void addPhaseListener(PhaseListener listener) {
         throw new RuntimeException(DOES_NOT_EXIST);

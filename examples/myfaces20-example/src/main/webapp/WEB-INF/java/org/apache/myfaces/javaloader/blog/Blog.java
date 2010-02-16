@@ -20,6 +20,7 @@ package org.apache.myfaces.javaloader.blog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
 
 /**
@@ -30,36 +31,30 @@ import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
 @DependencyTestAnnotation
 public class Blog {
 
-    String title        =   "Hello to the myfaces dynamic blogging example";
-    String title1       =   "You can alter the code for this small blogging application on the fly, " +
-                           "you even can add new classes on the fly and Java will pick it up";
+    String title = "Hello to the myfaces dynamic blogging example";
+    String title1 = "You can alter the code for this small blogging application on the fly, " +
+            "you even can add new classes on the fly and Java will pick it up";
 
     String title3 = "bla";
     String title4 = "bla2";
 
     String title5 = "test from title5";
 
+    String firstName = "";
+    String lastName = "";
+    String topic = "";
 
-    String firstName    = "";
-    String lastName     = "";
-    String topic        = "";
-
-    String content      = "";
-
-    
-
+    String content = "";
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
 
-
-    public String addEntry2 () {
+    public String addEntry2() {
         getLog().info("adding entry2");
 
         BlogServiceInterface service = (BlogServiceInterface) resolveVariable("javaBlogService");
 
-        
         if (service == null) {
             getLog().error("service not found");
         } else {
@@ -73,7 +68,6 @@ public class Blog {
         entry.setLastName(lastName);
         entry.setTopic(topic);
         entry.setContent(content);
-
 
         if (service != null) {
             /*convenience method to call a method on an object dynamically
@@ -92,18 +86,13 @@ public class Blog {
             service.addEntry(entry);
         }
 
-      
-        
         //we stay on the same page
         return null;
     }
 
-
     public String getTitle() {
         return title;
     }
-
-
 
     public void setTitle(String title) {
         this.title = title;
@@ -145,7 +134,6 @@ public class Blog {
         return content;
     }
 
-
     public void setContent(String content) {
         this.content = content;
     }
@@ -165,7 +153,6 @@ public class Blog {
     public void setTitle4(String title4) {
         this.title4 = title4;
     }
-
 
     public String getTitle5() {
         return title5;

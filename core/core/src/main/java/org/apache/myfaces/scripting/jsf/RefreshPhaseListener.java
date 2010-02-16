@@ -51,9 +51,7 @@ public class RefreshPhaseListener implements PhaseListener {
         if (requestMap.containsKey(EQ_KEY)) return;
         requestMap.put(EQ_KEY, Boolean.TRUE);
 
-
         WeavingContext.doRequestRefreshes();
-
 
     }
 

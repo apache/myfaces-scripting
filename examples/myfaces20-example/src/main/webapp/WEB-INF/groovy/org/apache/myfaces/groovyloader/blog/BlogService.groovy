@@ -30,26 +30,26 @@ import javax.faces.bean.ApplicationScoped;
 @ManagedBean(name = "blogService")
 @ApplicationScoped
 public class BlogService {
-    List blogEntries = new ArrayList()
+  List blogEntries = new ArrayList()
 
-    public java.util.List getBlogEntries() {
-        return blogEntries
-    }
-
-  public void addEntry2(BlogEntry entry) {
-      Log log = LogFactory.getLog(BlogService.class)
-      log.info("Adding entry 2, topic: " + entry.topic)
-      blogEntries.add (entry)
-
-      log.info("blogentries size"+blogEntries.size())
+  public java.util.List getBlogEntries() {
+    return blogEntries
   }
 
-    public void addEntry(BlogEntry entry) {
-        Log log = LogFactory.getLog(BlogService.class)
-        log.info("Adding entry, topic: " + entry.topic)
-        blogEntries.add (entry)
+  public void addEntry2(BlogEntry entry) {
+    Log log = LogFactory.getLog(BlogService.class)
+    log.info("Adding entry 2, topic: " + entry.topic)
+    blogEntries.add(entry)
 
-        log.info("blogentries size"+blogEntries.size())
-    }
+    log.info("blogentries size" + blogEntries.size())
+  }
+
+  public void addEntry(BlogEntry entry) {
+    Log log = LogFactory.getLog(BlogService.class)
+    log.info("Adding entry, topic: " + entry.topic)
+    blogEntries.add(entry)
+
+    log.info("blogentries size" + blogEntries.size())
+  }
 
 }

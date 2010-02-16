@@ -43,11 +43,9 @@ public class FileStrategy implements Strategy {
         pattern = pattern.trim().replaceAll("\\.", "\\\\.");
         pattern = "." + pattern;
 
-
         rePattern = Pattern.compile(pattern);
 
     }
-
 
     List<File> _foundFiles = new LinkedList<File>();
 

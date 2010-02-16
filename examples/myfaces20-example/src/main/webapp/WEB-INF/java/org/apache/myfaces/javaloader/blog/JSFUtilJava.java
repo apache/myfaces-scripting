@@ -32,11 +32,10 @@ import static org.apache.myfaces.scripting.core.util.ReflectUtil.executeMethod;
  * A helper for JSF and introspection related tasks
  */
 public class JSFUtilJava {
-    
+
     public JSFUtilJava() {
     }
-    
-    
+
     /**
      * resolves a variable in the current facesContext
      *
@@ -51,23 +50,20 @@ public class JSFUtilJava {
         Object elContext = executeMethod(facesContext, "getELContext");
         Object elResolver = executeMethod(elContext, "getELResolver");
 
-
-            /*
-             if you want to enable this then use
-             org.apache.myfaces.scripting.java.JAR_PATHS
-             pointing towards the lingering jars
-             The compiler cannot pick up the implicit containers classpaths
-
+        /*
+         if you want to enable this then use
+         org.apache.myfaces.scripting.java.JAR_PATHS
+         pointing towards the lingering jars
+         The compiler cannot pick up the implicit containers classpaths
 
 
 
-            */
-            //we use the introspection calls here to achieve our goal that way
-            //we can shift the dependency resolution from compile time to runtime
-            return executeMethod(elResolver, "getValue",  elContext, null,  beanName);
-            // return FacesContext.getCurrentInstance().getELContext().getELResolver().getRendererType(FacesContext.getCurrentInstance().getELContext(), null, beanName);
 
-
+        */
+        //we use the introspection calls here to achieve our goal that way
+        //we can shift the dependency resolution from compile time to runtime
+        return executeMethod(elResolver, "getValue", elContext, null, beanName);
+        // return FacesContext.getCurrentInstance().getELContext().getELResolver().getRendererType(FacesContext.getCurrentInstance().getELContext(), null, beanName);
 
     }
 

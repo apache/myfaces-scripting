@@ -22,14 +22,11 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
 
-
-
 /**
  * @author werpu2
  * @date: 01.09.2009
  */
 public class BlogService {
-
 
     /**
      * note we cannot cast on dynamically referenced
@@ -48,7 +45,7 @@ public class BlogService {
     @DependencyTestAnnotation
     public void addEntry2(BlogEntry entry) {
         if (entry != null) {
-           blogEntries.add(entry);
+            blogEntries.add(entry);
         }
     }
 

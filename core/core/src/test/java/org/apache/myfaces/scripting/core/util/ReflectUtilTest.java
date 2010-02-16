@@ -23,7 +23,6 @@ import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
 
 import org.junit.Test;
 
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$

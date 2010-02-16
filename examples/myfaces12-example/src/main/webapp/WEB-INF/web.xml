@@ -18,10 +18,10 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<web-app xmlns = "http://java.sun.com/xml/ns/j2ee"
-         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation = "http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-         version = "2.4">
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
 
     <description>MyProject web.xml</description>
 
@@ -83,7 +83,7 @@
          <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
      </context-param>
      -->
-   
+
     <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead

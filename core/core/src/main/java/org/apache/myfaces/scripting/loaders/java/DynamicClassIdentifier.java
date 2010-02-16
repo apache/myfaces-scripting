@@ -50,7 +50,6 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
         return false;
     }
 
-
     private Map<String, Boolean> getAlreadyChecked() {
         Map<String, Boolean> checked = (Map<String, Boolean>) _checked.get();
         if (checked == null) {
@@ -59,7 +58,6 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
         }
         return checked;
     }
-
 
     private final boolean checkForAnnotation(Class clazz) {
         //Annotation identifier = clazz.getAnnotation(ScriptingClass.class);

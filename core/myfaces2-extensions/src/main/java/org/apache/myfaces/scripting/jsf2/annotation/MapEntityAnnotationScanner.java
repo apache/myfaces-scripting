@@ -39,7 +39,6 @@ public abstract class MapEntityAnnotationScanner extends BaseAnnotationScanListe
         _annotationParms = annotationParms;
     }
 
-
     public void register(Class clazz, Annotation annotation) {
 
         Map<String, Object> parms = new HashMap<String, Object>(_annotationParms.length);
@@ -53,11 +52,8 @@ public abstract class MapEntityAnnotationScanner extends BaseAnnotationScanListe
         }
     }
 
-
     protected abstract void addEntity(Class clazz, Map<String, Object> params);
 
-
     protected abstract boolean hasToReregister(Map params, Class clazz);
-
 
 }

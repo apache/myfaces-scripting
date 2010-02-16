@@ -10,7 +10,7 @@
         <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
 
         <variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
-           
+
     </application>
 
     <!-- managed beans of the simple hello world app -->
@@ -23,7 +23,7 @@
     </managed-bean>
 
 
-     <managed-bean>
+    <managed-bean>
         <managed-bean-name>groovyBean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.groovy.GroovyBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
@@ -32,7 +32,7 @@
             <value>#{springBean}</value>
         </managed-property>
     </managed-bean>
-     
+
     <!-- navigation rules for helloWorld.jsp -->
     <navigation-rule>
         <from-view-id>/helloWorld.xhtml</from-view-id>

@@ -46,14 +46,12 @@ import java.util.Iterator;
  */
 public class FacesContextProxy extends FacesContext implements Decorated {
 
-
     public FacesContext _delegate = null;
 
     private void weaveDelegate() {
         if (_delegate != null)
             _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_FACESCONTEXT);
     }
-
 
     public ELContext getELContext() {
         return _delegate.getELContext();
@@ -135,7 +133,6 @@ public class FacesContextProxy extends FacesContext implements Decorated {
     public void responseComplete() {
         _delegate.responseComplete();
     }
-
 
     public FacesContextProxy(FacesContext delegate) {
         _delegate = delegate;

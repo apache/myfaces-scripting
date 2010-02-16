@@ -25,7 +25,6 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.Application;
 
-
 /**
  * Application factory which introduces
  * scripting proxies for their artefacts

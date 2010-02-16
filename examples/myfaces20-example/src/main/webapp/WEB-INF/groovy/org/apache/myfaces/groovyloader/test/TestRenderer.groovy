@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext
 import javax.faces.component.UIComponent
 import javax.faces.context.ResponseWriter;
 
-   
 /**
  * @author Werner Punz
  */
@@ -52,7 +51,7 @@ public class TestRenderer extends HtmlTextRendererBase {
             Test for attribute: $uiComponent.testattr
         """
 
- 
+
     super.encodeBegin(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
   }
 

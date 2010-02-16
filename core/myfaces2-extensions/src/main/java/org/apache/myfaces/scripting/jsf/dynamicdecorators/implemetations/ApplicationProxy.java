@@ -61,11 +61,9 @@ public class ApplicationProxy extends Application implements Decorated {
      */
     Map<String, String> _behaviors = new ConcurrentHashMap();
 
-
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
     }
-
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
@@ -134,7 +132,6 @@ public class ApplicationProxy extends Application implements Decorated {
 
     }
 
-
     public ExpressionFactory getExpressionFactory() {
         weaveDelegate();
         return _delegate.getExpressionFactory();
@@ -158,7 +155,6 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         return _delegate.getELContextListeners();
     }
-
 
     public ActionListener getActionListener() {
         weaveDelegate();
@@ -336,7 +332,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addConverter(String converterId, String converterClass) {
         weaveDelegate();
-       /* if (converterClass.equals(PurgedConverter.class.getName())) {
+        /* if (converterClass.equals(PurgedConverter.class.getName())) {
             //purged case we do a full rescane
             WeavingContext.getWeaver().fullClassScan();
             Converter componentToChange = _delegate.createConverter(converterId);
@@ -391,7 +387,6 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         return _delegate.getConverterIds();
     }
-
 
     public Iterator<Class<?>> getConverterTypes() {
         weaveDelegate();
@@ -455,7 +450,6 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.createValueBinding(s);
     }
 
-
     @Override
     public void addBehavior(String behaviorId, String behaviorClass) {
         weaveDelegate();
@@ -498,7 +492,6 @@ public class ApplicationProxy extends Application implements Decorated {
 
         return retVal;
     }
-
 
     @Override
     public UIComponent createComponent(FacesContext facesContext, Resource resource) {
@@ -648,7 +641,6 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.unsubscribeFromEvent(aClass, systemEventListener);
     }
 
-
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -663,7 +655,6 @@ public class ApplicationProxy extends Application implements Decorated {
         }
         return instance;
     }
-
 
     private final boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
@@ -688,7 +679,6 @@ public class ApplicationProxy extends Application implements Decorated {
         }
         return oldComponent;
     }
-
 
     private UIComponent handeAnnotationChange(UIComponent oldComponent, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(componentType);

@@ -35,7 +35,6 @@ public class ClassScanStrategy implements Strategy {
     String _rootDir;
     ClassLoader _loader;
 
-
     public ClassScanStrategy(ClassLoader loader, String rootDir, Set<String> whiteList, DependencyScanner scanner) {
         this._scanner = scanner;
         this._rootDir = rootDir;
@@ -52,6 +51,5 @@ public class ClassScanStrategy implements Strategy {
 
         WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(className, classDependencies);
     }
-
 
 }

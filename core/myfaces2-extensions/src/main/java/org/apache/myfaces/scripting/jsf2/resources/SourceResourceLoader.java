@@ -56,11 +56,10 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
         }
         Set<String> retVals = new HashSet<String>(resourceRoots.size());
         //for (String resourceRoot : resourceRoots) {
-            retVals.add( getPrefix() + "/" + path);
+        retVals.add(getPrefix() + "/" + path);
         //}
         return retVals;
     }
-
 
     @Override
     public URL getResourceURL(ResourceMeta resourceMeta) {
@@ -70,14 +69,12 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
                 return super.getResourceURL(resourceMeta);
             }
 
-
             for (String resourceRoot : resourceRoots) {
                 File resourceFile = new File(resourceRoot + getPrefix() + "/" + resourceMeta.toString());
-                if(resourceFile.exists()) {
+                if (resourceFile.exists()) {
                     return resourceFile.toURI().toURL();
                 }
             }
-
 
             return super.getResourceURL(resourceMeta);
         }
@@ -88,20 +85,18 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
 
     @Override
     public InputStream getResourceInputStream(ResourceMeta resourceMeta) {
-         try {
+        try {
             List<String> resourceRoots = WeavingContext.getConfiguration().getResourceDirs();
             if (resourceRoots == null || resourceRoots.isEmpty()) {
                 return super.getResourceInputStream(resourceMeta);
             }
 
-
             for (String resourceRoot : resourceRoots) {
                 File resourceFile = new File(resourceRoot + getPrefix() + "/" + resourceMeta.toString());
-                if(resourceFile.exists()) {
+                if (resourceFile.exists()) {
                     return new FileInputStream(resourceFile);
                 }
             }
-
 
             return super.getResourceInputStream(resourceMeta);
         }

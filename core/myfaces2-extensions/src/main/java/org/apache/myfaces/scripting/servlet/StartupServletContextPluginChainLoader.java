@@ -71,8 +71,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
      */
     private void initInitialCompileAndScan(ScriptingWeaver weaver) {
         //log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
-        weaver.requestRefresh();
-        //weaver.fullClassScan();
+        weaver.initiateStartup();
     }
 
     /**
@@ -172,6 +171,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     }
 
     public void preDestroy(ServletContextEvent evt) {
+
     }
 
     public void postDestroy(ServletContextEvent evt) {

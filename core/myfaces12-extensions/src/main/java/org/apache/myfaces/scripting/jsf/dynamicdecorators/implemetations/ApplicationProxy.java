@@ -60,7 +60,6 @@ public class ApplicationProxy extends Application implements Decorated {
 
     volatile Application _delegate;
 
-
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
     }
@@ -365,7 +364,6 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getConverterIds();
     }
 
-
     public Iterator<Class> getConverterTypes() {
         weaveDelegate();
         return _delegate.getConverterTypes();
@@ -412,7 +410,6 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.createValueBinding(s);
     }
 
-
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -427,7 +424,6 @@ public class ApplicationProxy extends Application implements Decorated {
         }
         return instance;
     }
-
 
     private final boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context

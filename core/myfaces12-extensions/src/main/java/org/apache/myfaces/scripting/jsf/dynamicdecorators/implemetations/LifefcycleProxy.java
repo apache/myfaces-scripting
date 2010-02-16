@@ -34,12 +34,10 @@ import javax.faces.FacesException;
  */
 public class LifefcycleProxy extends Lifecycle implements Decorated {
 
-
     private void weaveDelegate() {
         if (_delegate != null)
             _delegate = (Lifecycle) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_LIFECYCLE);
     }
-
 
     public LifefcycleProxy(Lifecycle delegate) {
         _delegate = delegate;

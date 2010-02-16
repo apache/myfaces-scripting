@@ -14,9 +14,6 @@
     <url>http://www.apache.org</url>
 
 
-    
-
-    
     <dependencies>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -54,12 +51,12 @@
             <version>1.2.8</version>
             <scope>compile</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
             <version>1.0</version>
         </dependency>
-      
+
         <dependency>
             <groupId>com.sun.facelets</groupId>
             <artifactId>jsf-facelets</artifactId>
@@ -72,7 +69,7 @@
             <version>1.2</version>
             <scope>runtime</scope>
         </dependency>
-        
+
 
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>
@@ -86,6 +83,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
     </dependencies>
 </project>

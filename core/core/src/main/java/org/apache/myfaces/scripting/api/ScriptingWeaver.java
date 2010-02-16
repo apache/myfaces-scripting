@@ -42,7 +42,6 @@ public interface ScriptingWeaver {
      */
     public void appendCustomScriptPath(String scriptPath);
 
-
     /**
      * @param o            the object which has to be reloaded
      * @param artifactType an identifier for the artifact type so that its reloading strategies can
@@ -111,6 +110,12 @@ public interface ScriptingWeaver {
      * simply compile per file
      */
     public void fullRecompile();
+
+    /**
+     * initiates all startup actions which have to be performed
+     * on the scripting subsystems during startup
+     */
+    public void initiateStartup();
 
     /**
      * callback for artifact request refreshes

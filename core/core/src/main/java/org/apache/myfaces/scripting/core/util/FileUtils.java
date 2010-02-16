@@ -22,6 +22,7 @@ import org.apache.myfaces.scripting.loaders.java.util.DirStrategy;
 import org.apache.myfaces.scripting.loaders.java.util.FileStrategy;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -137,6 +138,26 @@ public class FileUtils {
     public static List<File> fetchSourceFiles(File sourcePath, String fileType) {
         FileStrategy strategy = new FileStrategy(fileType);
         listFiles(sourcePath, strategy);
+
+        return strategy.getFoundFiles();
+    }
+
+    /**
+     * fetches the source files from a list of source paths
+     *
+     * @param sourcePaths the collection of paths to be searched for
+     * @param fileType    the filetype to be searched for
+     * @return a list of files found
+     */
+    public static List<File> fetchSourceFiles(Collection<String> sourcePaths, String fileType) {
+        FileStrategy strategy = new FileStrategy(fileType);
+
+        for (String sourcePath : sourcePaths) {
+            File fSourcePath = new File(sourcePath);
+            if (fSourcePath.exists()) {
+                listFiles(fSourcePath, strategy);
+            }
+        }
 
         return strategy.getFoundFiles();
     }

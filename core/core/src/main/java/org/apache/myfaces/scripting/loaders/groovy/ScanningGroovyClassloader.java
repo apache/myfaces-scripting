@@ -38,9 +38,10 @@ import java.util.Collection;
  * Scanning Groovy class loader
  * a groovy classloader which adds dependency scanning
  * as the java compiler part
- *
+ * <p/>
  * that way we can properly add artefact refreshing
  * to avoid classcast exceptions also on groovy level
+ *
  * @deprecated
  */
 public class ScanningGroovyClassloader extends GroovyClassLoader {
@@ -64,37 +65,36 @@ public class ScanningGroovyClassloader extends GroovyClassLoader {
     }
 
     /**
-        * creates a ClassCollector for a new compilation.
-        *
-        * @param unit the compilationUnit
-        * @param su   the SoruceUnit
-        * @return the ClassCollector
-        */
-       protected ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {
-           InnerLoader loader = (InnerLoader) AccessController.doPrivileged(new PrivilegedAction() {
-               public Object run() {
-                   return new InnerLoader(ScanningGroovyClassloader.this);
-               }
-           });
-           return new MyClassCollector(loader, unit, su);
-       }
+     * creates a ClassCollector for a new compilation.
+     *
+     * @param unit the compilationUnit
+     * @param su   the SoruceUnit
+     * @return the ClassCollector
+     */
+    protected ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {
+        InnerLoader loader = (InnerLoader) AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                return new InnerLoader(ScanningGroovyClassloader.this);
+            }
+        });
+        return new MyClassCollector(loader, unit, su);
+    }
 
-       public static class MyClassCollector extends ClassCollector {
+    public static class MyClassCollector extends ClassCollector {
 
-           public MyClassCollector(InnerLoader cl, CompilationUnit unit, SourceUnit su) {
-               super(cl, unit, su);
-           }
+        public MyClassCollector(InnerLoader cl, CompilationUnit unit, SourceUnit su) {
+            super(cl, unit, su);
+        }
 
+        protected Class onClassNode(ClassWriter classWriter, ClassNode classNode) {
+            byte[] code = classWriter.toByteArray();
 
-           protected Class onClassNode(ClassWriter classWriter, ClassNode classNode) {
-               byte[] code = classWriter.toByteArray();
-               
-               //TODO add the scanning code here which changes our metadata and places
-               //the dependencies
+            //TODO add the scanning code here which changes our metadata and places
+            //the dependencies
 
-               return createClass(code, classNode);
-           }
+            return createClass(code, classNode);
+        }
 
-       }
+    }
 
 }

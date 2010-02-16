@@ -26,12 +26,12 @@ import org.apache.commons.logging.LogFactory;
 
 
 public class BlogService {
-    List blogEntries = new ArrayList()
+  List blogEntries = new ArrayList()
 
-    public void addEntry2(BlogEntry entry) {
-        Log log = LogFactory.getLog(BlogService.class)
-        log.info("(BlogService.addEntry2): Adding entry")
-        blogEntries << entry
-    }
+  public void addEntry2(BlogEntry entry) {
+    Log log = LogFactory.getLog(BlogService.class)
+    log.info("(BlogService.addEntry2): Adding entry")
+    blogEntries << entry
+  }
 
 }

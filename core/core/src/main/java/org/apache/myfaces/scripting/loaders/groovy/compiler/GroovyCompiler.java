@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
  */
-public class GroovyCompiler  implements org.apache.myfaces.scripting.sandbox.compiler.Compiler {
+public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.compiler.Compiler {
 
     /**
      * The logger instance for this class.
@@ -68,7 +68,7 @@ public class GroovyCompiler  implements org.apache.myfaces.scripting.sandbox.com
 
     public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) {
 
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.groovy");
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY), "*.groovy");
 
         StringWriter compilerOutput = new StringWriter();
 
@@ -118,6 +118,8 @@ public class GroovyCompiler  implements org.apache.myfaces.scripting.sandbox.com
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
             throws CompilationException {
         StringWriter compilerOutput = new StringWriter();
+
+        //TODO add whitelist check here
 
         CompilationUnit compilationUnit = new CompilationUnit(
                 buildCompilerConfiguration(sourcePath, targetPath, classLoader));

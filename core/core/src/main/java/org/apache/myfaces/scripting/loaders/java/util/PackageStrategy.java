@@ -43,7 +43,6 @@ public class PackageStrategy
     Set<String> _foundFiles;
     Pattern rePattern;
 
-
     public PackageStrategy(Set<String> target, String pattern) {
         pattern = pattern.trim().replaceAll("\\.", "\\\\.");
         pattern = "." + pattern;

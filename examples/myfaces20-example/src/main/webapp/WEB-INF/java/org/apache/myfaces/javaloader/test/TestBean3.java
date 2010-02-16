@@ -33,16 +33,11 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
-
 public class TestBean3 {
     String sayHello = "hello world";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 
-
-    
-
-    
     private String myText() {
         return "Hello World from bean3 ";
     }
@@ -55,7 +50,6 @@ public class TestBean3 {
         return hello2;
     }
 
-
     public void setSayHello(String hello) {
         this.sayHello = hello;
         System.out.println("hello world");
@@ -64,10 +58,9 @@ public class TestBean3 {
     public void setResource(String param) {
 
     }
-    
 
     public String getResource() {
-     /*   ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
+        /*   ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
         Resource resource = handler.createResource("testResource");
         InputStream istr = resource.getInputStream();
         BufferedReader rdr = new BufferedReader(new InputStreamReader(istr));

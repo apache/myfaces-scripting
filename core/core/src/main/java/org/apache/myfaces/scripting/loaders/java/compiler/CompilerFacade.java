@@ -44,14 +44,13 @@ public class CompilerFacade implements DynamicCompiler {
 
     Log log = LogFactory.getLog(this.getClass());
 
-
     public CompilerFacade() {
         super();
 
         compiler = JavaCompilerFactory.getInstance().getCompilerInstance();
     }
 
-     public CompilerFacade(boolean allowJSR) {
+    public CompilerFacade(boolean allowJSR) {
         super();
 
         compiler = JavaCompilerFactory.getInstance().getCompilerInstance(allowJSR);
@@ -70,7 +69,7 @@ public class CompilerFacade implements DynamicCompiler {
             //TODO do a full compile and block the compile for the rest of the request
             //so that we do not run into endless compile cycles
             RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
-            classLoader.setSourceRoot(sourceRoot); 
+            classLoader.setSourceRoot(sourceRoot);
             CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
             displayMessages(result);
             if (result.hasErrors()) {
@@ -133,6 +132,5 @@ public class CompilerFacade implements DynamicCompiler {
             log.error(error.getMessage());
         }
     }
-
 
 }

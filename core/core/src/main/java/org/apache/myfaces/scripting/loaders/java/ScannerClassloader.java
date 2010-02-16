@@ -18,7 +18,6 @@ import java.util.Map;
 
 /**
  * A specialized non tainting classloader for our scanners
- *
  */
 public class ScannerClassloader extends ClassLoader {
 
@@ -59,9 +58,8 @@ public class ScannerClassloader extends ClassLoader {
 
         File target = getClassFile(className);
         if (!target.exists()) {
-            return super.loadClass(className);    
+            return super.loadClass(className);
         }
-
 
         ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
         if (data != null && !data.isTainted()) {
@@ -103,9 +101,6 @@ public class ScannerClassloader extends ClassLoader {
         }
 
     }
-
-
-
 
 }
 

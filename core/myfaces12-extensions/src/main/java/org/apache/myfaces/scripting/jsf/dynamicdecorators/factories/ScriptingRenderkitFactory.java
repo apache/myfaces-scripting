@@ -59,7 +59,6 @@ public class ScriptingRenderkitFactory extends RenderKitFactory implements Decor
         return _delegate.getRenderKitIds();
     }
 
-
     public void setDelegate(RenderKitFactory delegate) {
         _delegate = delegate;
     }

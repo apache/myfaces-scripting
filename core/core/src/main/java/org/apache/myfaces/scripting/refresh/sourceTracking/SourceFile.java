@@ -30,7 +30,6 @@ public class SourceFile {
     File _sourceFile = null;
     String _rootPath = null;
 
-
     public SourceFile(File sourceFile, String rootPath) {
         _sourceFile = sourceFile;
         _rootPath = rootPath;

@@ -37,7 +37,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
     private static final String PAR_DEFAULT = "forClass";
 
     Map<AnnotationEntry, String> _inverseIndex = new HashMap<AnnotationEntry, String>();
-    
+
     class AnnotationEntry {
         String value;
         Class forClass;
@@ -57,8 +57,6 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
                 return false;
             }
             AnnotationEntry toCompare = (AnnotationEntry) incoming;
-
-
 
             boolean firstEquals = compareValuePair(value, toCompare.getValue());
             boolean secondEquals = compareValuePair(forClass, toCompare.getForClass());
@@ -111,7 +109,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, forClass);
         _alreadyRegistered.put(clazz.getName(), entry);
         _inverseIndex.put(entry, clazz.getName());
-        
+
         getApplication().addConverter(entry.getValue(), clazz.getName());
     }
 
@@ -123,7 +121,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         AnnotationEntry entry = new AnnotationEntry(value, forClass);
 
         AnnotationEntry alreadyRegistered = (AnnotationEntry) _alreadyRegistered.get(clazz.getName());
-       
+
         return (alreadyRegistered == null) || alreadyRegistered.equals(entry);
     }
 
@@ -139,7 +137,7 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
             return;
         }
         String _oldConverterClass = _inverseIndex.get(entry);
-        if(_oldConverterClass.equals(className)) {
+        if (_oldConverterClass.equals(className)) {
             Application application = getApplication();
             application.addConverter(entry.getValue(), PurgedConverter.class.getName());
             _inverseIndex.put(entry, className);

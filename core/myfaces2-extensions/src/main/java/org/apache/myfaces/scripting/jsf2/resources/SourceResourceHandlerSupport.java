@@ -34,7 +34,7 @@ import javax.faces.context.FacesContext;
  * a delegate is used to limit the binding between
  * the "parent" class and the child class
  * in this case it simply makes sense to avoid any internal sideeffects
- * between getResourceLoaders and the other methods 
+ * between getResourceLoaders and the other methods
  */
 public class SourceResourceHandlerSupport implements ResourceHandlerSupport {
 

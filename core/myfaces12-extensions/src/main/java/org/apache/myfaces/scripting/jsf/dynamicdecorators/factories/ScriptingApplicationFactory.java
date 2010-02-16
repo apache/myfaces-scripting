@@ -25,7 +25,6 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.Application;
 
-
 /**
  * Application factory which introduces
  * scripting proxies for their artefacts
@@ -53,7 +52,6 @@ public class ScriptingApplicationFactory extends ApplicationFactory implements D
 
     public Application getApplication() {
         Application retVal = _delegate.getApplication();  //To change body of implemented methods use File | Settings | File Templates.
-
 
         if (scriptingEnabled && !(retVal instanceof ApplicationProxy))
             retVal = new ApplicationProxy(retVal);

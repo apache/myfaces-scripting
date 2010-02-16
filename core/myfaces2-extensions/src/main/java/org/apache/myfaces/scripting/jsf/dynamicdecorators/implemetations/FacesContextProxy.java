@@ -47,14 +47,12 @@ import java.util.List;
  */
 public class FacesContextProxy extends FacesContext implements Decorated {
 
-
     public FacesContext _delegate = null;
 
     private void weaveDelegate() {
         if (_delegate != null)
             _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_FACESCONTEXT);
     }
-
 
     public ELContext getELContext() {
         return _delegate.getELContext();
@@ -137,12 +135,10 @@ public class FacesContextProxy extends FacesContext implements Decorated {
         _delegate.responseComplete();
     }
 
-
     public FacesContextProxy(FacesContext delegate) {
         _delegate = delegate;
         weaveDelegate();
     }
-
 
     //TODO add support for myfaces 2.0 fully here
 

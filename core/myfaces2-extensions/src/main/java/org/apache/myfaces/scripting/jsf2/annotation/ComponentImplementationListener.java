@@ -36,11 +36,9 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
         _entityParamValue = "value";
     }
 
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesComponent.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     protected void addEntity(Class clazz, String val) {
         if (log.isTraceEnabled()) {
@@ -49,17 +47,15 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
         getApplication().addComponent(val, clazz.getName());
         //register the renderer if not registered
 
-
         _alreadyRegistered.put(clazz.getName(), val);
     }
-
 
     @Override
     public void purge(String className) {
         super.purge(className);
         //no purge needed we already have a different class
         //registered
-        if(!_alreadyRegistered.containsKey(className)) {
+        if (!_alreadyRegistered.containsKey(className)) {
             return;
         }
         String val = (String) _alreadyRegistered.remove(className);

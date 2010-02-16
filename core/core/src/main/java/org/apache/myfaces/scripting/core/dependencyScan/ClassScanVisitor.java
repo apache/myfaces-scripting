@@ -43,7 +43,6 @@ class ClassScanVisitor implements ClassVisitor {
         this.dependencies = dependencies;
     }
 
-
     public void setDependencyTarget(Set<String> dependencyTarget) {
         dependencies = dependencyTarget;
     }
@@ -67,7 +66,7 @@ class ClassScanVisitor implements ClassVisitor {
     public AnnotationVisitor visitAnnotation(String desc,
                                              boolean visible) {
         ClassScanUtils.logParmList(dependencies, whiteList, desc);
-       
+
         return null;
     }
 

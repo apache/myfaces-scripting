@@ -19,6 +19,7 @@
 package org.apache.myfaces.javaloader.test;
 
 import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +31,7 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+
 @ManagedBean(name = "javatestbean")
 @SessionScoped
 public class TestBean2 {
@@ -50,7 +52,6 @@ public class TestBean2 {
         return hello2;
     }
 
-
     public void setSayHello(String hello) {
         this.sayHello = hello;
         System.out.println("hello world");
@@ -65,23 +66,21 @@ public class TestBean2 {
     }
 
     public String getResource() throws java.io.IOException {
-         /*  ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
-           Resource resource = handler.createResource("testResource");
-           InputStream istr = resource.getInputStream();
-           BufferedReader rdr = new BufferedReader(new InputStreamReader(istr));
-           StringBuilder strBuf = new StringBuilder();
-           String line = null;
-           try {
-               while ((line = rdr.readLine()) != null) {
-                   strBuf.append(line);
-               }
-           } catch (IOException ex) {
+        /*  ResourceHandler handler = FacesContext.getCurrentInstance().getApplication().getResourceHandler();
+      Resource resource = handler.createResource("testResource");
+      InputStream istr = resource.getInputStream();
+      BufferedReader rdr = new BufferedReader(new InputStreamReader(istr));
+      StringBuilder strBuf = new StringBuilder();
+      String line = null;
+      try {
+          while ((line = rdr.readLine()) != null) {
+              strBuf.append(line);
+          }
+      } catch (IOException ex) {
 
-           };
-           return strBuf.toString(); */
-           return "hello world";
-       }
-    
+      };
+      return strBuf.toString(); */
+        return "hello world";
+    }
 
- 
 }

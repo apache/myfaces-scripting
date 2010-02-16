@@ -92,7 +92,7 @@ public class WeavingContext {
         WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_CONFIGURATION));
         //WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
         WeavingContext.setExternalContext(context);
-    } 
+    }
 
     public static CompilationResult getCompilationResult(Integer scriptingEngine) {
         return _compilationResults.get(scriptingEngine);
@@ -270,7 +270,5 @@ public class WeavingContext {
         //we can enforce a prematurely cleanup that way
         _referenceThreadHolder = null;
     }
-
-
 
 }

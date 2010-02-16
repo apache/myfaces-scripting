@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedBehavior;
@@ -49,11 +48,10 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
         getApplication().addBehavior(val, clazz.getName());
     }
 
-
     @Override
     public void purge(String className) {
         super.purge(className);
-        if(!_alreadyRegistered.containsKey(className)) {
+        if (!_alreadyRegistered.containsKey(className)) {
             return;
         }
 

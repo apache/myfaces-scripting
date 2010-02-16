@@ -43,7 +43,6 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     String _classPath = null;
     RecompiledClassLoader classLoader = null;
 
-
     public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
         _delegate = standardJavaFileManager;
@@ -51,7 +50,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     }
 
     public void refreshClassloader() {
-        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA,".java");
+        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
     }
 
     @Override
@@ -79,7 +78,6 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     public Iterable<? extends JavaFileObject> getJavaFileObjectsSingle(String files) {
         return _delegate.getJavaFileObjects(files);
     }
-
 
     public String getClassPath() {
         if (_classPath != null) {
@@ -113,11 +111,8 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
         return (_classPath = retStr);
     }
 
-
     public File getTempDir() {
         return WeavingContext.getConfiguration().getCompileTarget();
     }
-
-
 
 }

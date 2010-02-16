@@ -27,8 +27,8 @@ import javax.faces.component.UIComponent
  */
 class TestValidator implements Validator {
 
-    public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        println "validating testvalidation  "
-    }
+  public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) {
+    println "validating testvalidation  "
+  }
 
 }

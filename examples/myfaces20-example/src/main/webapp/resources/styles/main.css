@@ -86,7 +86,7 @@ div.errorBox {
     display: block;
     overflow: auto;
     border: 1px solid white;
-    color:#dedddd;
+    color: #dedddd;
     opacity: 0.92;
 
     -moz-border-radius: 10px;
@@ -97,7 +97,7 @@ div.errorBox {
     margin-left: 10px;
 
     background-image: url("../resources/img/gradient2.png");
-    background-repeat:repeat-x;
+    background-repeat: repeat-x;
 }
 
 div.errorBox .line {
@@ -106,7 +106,7 @@ div.errorBox .line {
 
     border: 1px dashed black;
     background-color: #ccccff;
-    color:black;
+    color: black;
     padding: 5px;
     margin-top: 10px;
     margin-left: auto;

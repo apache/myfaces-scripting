@@ -65,25 +65,23 @@ public class RecompiledClassLoader extends ClassLoader {
     }
 
     public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
-        this(classLoader,scriptingEngine, engineExtension);
+        this(classLoader, scriptingEngine, engineExtension);
         _unTaintClasses = untaint;
     }
-
 
     RecompiledClassLoader() {
     }
 
-
     /*
-     * TODO the classcast exception is caused by a loadClassInternal triggered
-     * at the time the referencing class is loaded and then by another classload
-     * at the time the bean is refreshed
-     *
-     * we have to check if a class is loaded by loadClassInternal then
-     * no other refresh should happen but the loaded class should be issued again)
-     *
-     * Dont know how to resolve that for now
-     */
+    * TODO the classcast exception is caused by a loadClassInternal triggered
+    * at the time the referencing class is loaded and then by another classload
+    * at the time the bean is refreshed
+    *
+    * we have to check if a class is loaded by loadClassInternal then
+    * no other refresh should happen but the loaded class should be issued again)
+    *
+    * Dont know how to resolve that for now
+    */
 
     @Override
     public InputStream getResourceAsStream(String name) {
@@ -124,13 +122,11 @@ public class RecompiledClassLoader extends ClassLoader {
                 }
                 // Erzeugt aus dem byte Feld ein Class Object.
                 Class retVal = null;
-                
-
 
                 //we have to do it here because just in case
                 //a dependend class is loaded as well we run into classcast exceptions
                 if (data != null) {
-                     data.setTainted(false);
+                    data.setTainted(false);
 
                     //storeReloadableDefinitions(className, target, fileLength, fileContent)
                     retVal = super.defineClass(className, fileContent, 0, fileLength);
@@ -154,8 +150,7 @@ public class RecompiledClassLoader extends ClassLoader {
             }
         }
 
-
-        return super.loadClass(className);    
+        return super.loadClass(className);
     }
 
     private Class<?> storeReloadableDefinitions(String className, File target, int fileLength, byte[] fileContent) {
@@ -184,7 +179,6 @@ public class RecompiledClassLoader extends ClassLoader {
             log.warn("Warning source for class:" + className + " could not be found");
             return retVal;
         }
-
 
         reloadingMetaData.setFileName(fileName);
         reloadingMetaData.setSourcePath(rootDir);

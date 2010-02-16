@@ -26,9 +26,9 @@ import javax.faces.event.ActionEvent
  */
 class TestActionListener implements ActionListener {
 
-    public void processAction(ActionEvent event) {
-        println "processing action from actionlistener"
-    }
+  public void processAction(ActionEvent event) {
+    println "processing action from actionlistener"
+  }
 
 }
 

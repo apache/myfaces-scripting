@@ -38,7 +38,8 @@ public interface Compiler {
      * @param file        the file of the class you want to compile
      * @param classLoader the class loader for dependent classes
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
-     * @throws org.apache.myfaces.scripting.api.CompilationException if a severe error occured while trying to compile a file
+     * @throws org.apache.myfaces.scripting.api.CompilationException
+     *          if a severe error occured while trying to compile a file
      */
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
             throws org.apache.myfaces.scripting.api.CompilationException;
@@ -53,9 +54,10 @@ public interface Compiler {
      * @param targetPath  the path to the target directory
      * @param classLoader the class loader for dependent classes
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
-     * @throws org.apache.myfaces.scripting.api.CompilationException if a severe error occurred while trying to compile a file
+     * @throws org.apache.myfaces.scripting.api.CompilationException
+     *          if a severe error occurred while trying to compile a file
      */
-    public CompilationResult compile(File sourcePath, File targetPath,  ClassLoader classLoader)
+    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader)
             throws org.apache.myfaces.scripting.api.CompilationException;
 
 }

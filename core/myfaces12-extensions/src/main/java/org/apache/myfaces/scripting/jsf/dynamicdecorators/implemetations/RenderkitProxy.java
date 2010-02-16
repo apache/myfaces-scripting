@@ -43,11 +43,9 @@ public class RenderkitProxy extends RenderKit implements Decorated {
 
     RenderKit _delegate = null;
 
-
     public RenderkitProxy(RenderKit delegate) {
         _delegate = delegate;
     }
-
 
     public void addRenderer(String componentFamily, String rendererType, Renderer renderer) {
         weaveDelegate();
@@ -81,7 +79,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return _delegate;
     }
 
-
     private final void weaveDelegate() {
         _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_RENDERKIT);
     }
@@ -96,7 +93,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         }
         return instance;
     }
-
 
     private final boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context

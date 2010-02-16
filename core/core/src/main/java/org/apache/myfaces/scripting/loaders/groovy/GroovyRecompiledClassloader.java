@@ -23,7 +23,6 @@ import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 /**
  * The reloading throw away classloder
  * for groovy artifacts
- * 
  */
 public class GroovyRecompiledClassloader extends RecompiledClassLoader {
     public GroovyRecompiledClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {

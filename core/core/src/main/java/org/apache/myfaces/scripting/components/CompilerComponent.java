@@ -94,7 +94,7 @@ public class CompilerComponent extends UIOutput {
     public void setScriptingLanguage(String scriptingLanguage) {
         _scriptingLanguage = scriptingLanguage;
     }
-    
+
     public String getErrorsLabel() {
         if (_errorsLabel != null) {
             return _errorsLabel;

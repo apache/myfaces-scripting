@@ -86,8 +86,9 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
 
         DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
 
-        getLog().info("[EXT-SCRIPTING] Doing a full recompile");
+        //TODO add whitelist check here
 
+        getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(new File[]{toCompile});
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
@@ -121,7 +122,7 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
 
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourceRoot, CompilerConst.JAVA_WILDCARD);
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA), CompilerConst.JAVA_WILDCARD);
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[sourceFiles.size()]));
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
@@ -171,18 +172,18 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
      */
     private String createErrorMessage(Diagnostic diagnostic) {
         StringBuilder retVal = new StringBuilder(256);
-        if(diagnostic == null) {
+        if (diagnostic == null) {
             return retVal.toString();
         }
         retVal.append(CompilerConst.STD_ERROR_HEAD);
         String message = diagnostic.getMessage(Locale.getDefault());
-        message = (message == null)? "":message;
+        message = (message == null) ? "" : message;
         retVal.append(message);
         retVal.append(diagnostic.getLineNumber());
 
         retVal.append("\n\n");
         String source = diagnostic.getSource().toString();
-        source = (source == null)? "No source info":source;
+        source = (source == null) ? "No source info" : source;
         retVal.append(source);
 
         return retVal.toString();

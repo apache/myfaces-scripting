@@ -20,7 +20,7 @@
         <tag-name>testcomponent</tag-name>
         <component>
             <component-type>org.apache.myfaces.groovyloader.test.TestComponent</component-type>
-             <renderer-type>org.apache.myfaces.groovyloader.test.Test</renderer-type> 
+            <renderer-type>org.apache.myfaces.groovyloader.test.Test</renderer-type>
         </component>
     </tag>
 </facelet-taglib>

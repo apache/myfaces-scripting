@@ -29,20 +29,18 @@ import javax.faces.bean.ApplicationScoped;
 
 
 public class BlogService2 {
-    List blogEntries = new ArrayList()
+  List blogEntries = new ArrayList()
 
-    public java.util.List getBlogEntries() {
-        return blogEntries
-    }
+  public java.util.List getBlogEntries() {
+    return blogEntries
+  }
 
-    public void addEntry(def entry) {
-        Log log = LogFactory.getLog(BlogService.class)
-        log.info("Adding entry, topic xxx: " + entry.topic)
-        blogEntries.add (entry)
+  public void addEntry(def entry) {
+    Log log = LogFactory.getLog(BlogService.class)
+    log.info("Adding entry, topic xxx: " + entry.topic)
+    blogEntries.add(entry)
 
-        log.info("blogentries size"+blogEntries.size())
-    }
+    log.info("blogentries size" + blogEntries.size())
+  }
 
-
-    
 }

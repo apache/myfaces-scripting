@@ -44,7 +44,7 @@ public class Configuration {
 
     boolean _initialCompile = true;
 
-    List<String> _packageWhiteList = new LinkedList<String>();
+    Set<String> _packageWhiteList = new HashSet<String>();
 
     List<String> _additionalClassPath = new LinkedList<String>();
 
@@ -58,7 +58,46 @@ public class Configuration {
     volatile List<String> _resourceDirs = new CopyOnWriteArrayList<String>();
 
     public Collection<String> getSourceDirs(int scriptingEngine) {
-        return _sourceDirs.get(scriptingEngine);
+        Collection<String> retVal = _sourceDirs.get(scriptingEngine);
+        if (retVal == null) return Collections.EMPTY_SET;
+        return retVal;
+    }
+
+    /**
+     * returns a set of whitelisted subdirs hosting the source
+     *
+     * @param scriptingEngine
+     * @return
+     */
+    public Collection<String> getWhitelistedSourceDirs(int scriptingEngine) {
+        List<String> origSourceDirs = _sourceDirs.get(scriptingEngine);
+        if (_packageWhiteList.isEmpty()) {
+            return origSourceDirs;
+        }
+
+        return mergeWhitelisted(origSourceDirs);
+    }
+
+    /**
+     * merges the whitelisted packages with the sourcedirs and generates a final list
+     * which left join of both sets - the ones which do not exist in reality
+     *
+     * @param origSourceDirs the original source dirs
+     * @return the joined existing subset of all directories which exist
+     */
+    private Collection<String> mergeWhitelisted(List<String> origSourceDirs) {
+        List<String> retVal = new ArrayList(_packageWhiteList.size() * origSourceDirs.size() + origSourceDirs.size());
+
+        for (String whitelisted : _packageWhiteList) {
+            whitelisted = whitelisted.replaceAll("\\.", File.separator);
+            for (String sourceDir : origSourceDirs) {
+                String newSourceDir = sourceDir + File.separator + whitelisted;
+                if ((new File(newSourceDir)).exists()) {
+                    retVal.add(newSourceDir);
+                }
+            }
+        }
+        return retVal;
     }
 
     public void addSourceDir(int scriptingEngine, String sourceDir) {
@@ -94,11 +133,11 @@ public class Configuration {
         _packageWhiteList.add(pkg);
     }
 
-    public List<String> getPackageWhiteList() {
+    public Set<String> getPackageWhiteList() {
         return _packageWhiteList;
     }
 
-    public void setPackageWhiteList(List<String> packageWhiteList) {
+    public void setPackageWhiteList(Set<String> packageWhiteList) {
         this._packageWhiteList = packageWhiteList;
     }
 

@@ -17,10 +17,10 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<faces-config xmlns = "http://java.sun.com/xml/ns/javaee"
-              xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation = "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-              version = "2.0">
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
 
 
     <!-- managed beans of the simple hello world app -->
@@ -31,20 +31,19 @@
     </managed-bean>
 
 
-
     <managed-bean>
         <managed-bean-name>testbean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.groovyloader.test.TestBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-<!--
-    <managed-bean>
-        <managed-bean-name>javatestbean</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.javaloader.test.TestBean2</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
--->    
+    <!--
+        <managed-bean>
+            <managed-bean-name>javatestbean</managed-bean-name>
+            <managed-bean-class>org.apache.myfaces.javaloader.test.TestBean2</managed-bean-class>
+            <managed-bean-scope>request</managed-bean-scope>
+        </managed-bean>
+    -->
 
 
     <managed-bean>
@@ -70,11 +69,11 @@
     </application>
 
     <lifecycle>
-       <phase-listener>
+        <phase-listener>
             org.apache.myfaces.groovyloader.test.TestPhaseListener
         </phase-listener>
     </lifecycle>
-    
+
 
     <!-- navigation rules for helloWorld.jsp -->
     <navigation-rule>

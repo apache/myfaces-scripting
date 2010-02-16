@@ -41,6 +41,5 @@ public class ListTest {
 
         System.out.println(testlist2.size());
 
-
     }
 }

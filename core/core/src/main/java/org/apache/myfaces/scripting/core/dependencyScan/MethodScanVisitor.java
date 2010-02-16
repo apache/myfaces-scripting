@@ -34,8 +34,7 @@ import java.util.logging.Logger;
 
 class MethodScanVisitor implements MethodVisitor {
 
-   // static final Logger log = Logger.getLogger("ClassScanVisitor");
-    
+    // static final Logger log = Logger.getLogger("ClassScanVisitor");
 
     final Set<String> dependencies;
     final Set<String> whiteList;
@@ -82,27 +81,27 @@ class MethodScanVisitor implements MethodVisitor {
 
     public void visitTypeInsn(int i, String castType) {
         //cast
-       // log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
+        // log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
         ClassScanUtils.logParmList(dependencies, whiteList, castType);
     }
 
     public void visitFieldInsn(int i, String s, String s1, String s2) {
-    //    log.log(Level.INFO, "visitFieldInsn {0} {1} {2}", new Object[]{s, s1, s2});
+        //    log.log(Level.INFO, "visitFieldInsn {0} {1} {2}", new Object[]{s, s1, s2});
         //ClassScanUtils.logParmList(dependencies, castType);
         //we have to deal with static imports as special case of field insertions
-       if(s1 != null && s1.length() > 6 && s1.startsWith("class$")) {
+        if (s1 != null && s1.length() > 6 && s1.startsWith("class$")) {
             //special fallback for groovy static imports which are added as fields
-            s1 = "L"+s1.substring(6).replaceAll("\\$",".")+";";
-            ClassScanUtils.logParmList(dependencies, whiteList,s1, s2);
-       } else {
+            s1 = "L" + s1.substring(6).replaceAll("\\$", ".") + ";";
+            ClassScanUtils.logParmList(dependencies, whiteList, s1, s2);
+        } else {
             ClassScanUtils.logParmList(dependencies, whiteList, s2);
         }
     }
 
     public void visitMethodInsn(int i, String s, String s1, String s2) {
 
-     //   log.log(Level.INFO, "visitMethodIsn {0} {1} {2}", new Object[]{s, s1, s2});
-        ClassScanUtils.logParmList(dependencies, whiteList,"L"+s+";", s2);
+        //   log.log(Level.INFO, "visitMethodIsn {0} {1} {2}", new Object[]{s, s1, s2});
+        ClassScanUtils.logParmList(dependencies, whiteList, "L" + s + ";", s2);
     }
 
     public void visitJumpInsn(int i, Label label) {

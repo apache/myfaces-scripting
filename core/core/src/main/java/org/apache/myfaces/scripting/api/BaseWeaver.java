@@ -156,10 +156,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     public Class reloadScriptingClass(Class aclass) {
         ReloadingMetadata metadata = getClassMap().get(aclass.getName());
-        if(aclass.getName().contains("TestRenderer1")) {
-            System.out.println("Debugpoint found");
-        }
-
+        
 
         if (metadata == null)
             return aclass;
@@ -175,7 +172,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //another chance just in case someone has reloaded between
             //the last if and synchronized, that way we can reduce the number of waiting threads
             if (!metadata.isTainted()) {
-                //if not tained then we can recycle the last class loaded
+                //if not tainted then we can recycle the last class loaded
                 return metadata.getAClass();
             }
             return loadScriptingClassFromFile(metadata.getSourcePath(), metadata.getFileName());
@@ -255,7 +252,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     /**
-     * full scan, scans for all artefacts in all files
+     * full scan, scans for all artifacts in all files
      */
     public void fullClassScan() {
         _dependencyScanner.scanPaths();
@@ -265,6 +262,20 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         }
         _annotationScanner.scanPaths();
 
+    }
+
+    public void initiateStartup() {
+        if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
+            // we set a lock over the compile and bean refresh
+            //and an inner check again to avoid unneeded compile triggers
+            synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
+                if (WeavingContext.getConfiguration().isInitialCompile() && WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
+                    recompileRefresh();
+                    return;
+                }
+            }
+        }
+        _beanHandler.personalScopeRefresh();
     }
 
     public void requestRefresh() {
@@ -322,7 +333,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //for the entire length of the request,
             try {
                 //TODO fix this
-                if(! scriptPath.trim().equals(""))
+                if (!scriptPath.trim().equals(""))
                     _compiler.compileAllFiles(scriptPath, _classPath);
             } catch (ClassNotFoundException e) {
                 _log.error(e);

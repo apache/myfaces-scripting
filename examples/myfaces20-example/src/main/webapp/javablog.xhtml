@@ -11,13 +11,12 @@
 
     <ui:define name="body">
 
-        
 
         <h1>
             <ui:insert name="title">Ext-Scripting Javablog Example</ui:insert>
         </h1>
 
-        <h:form id="form" >
+        <h:form id="form">
 
             <div class="left" style="margin-top: 3px;">
                 <h:panelGrid id="grid" columns="1" styleClass="stdBox">
@@ -38,7 +37,7 @@
                     </h:panelGrid>
                     <h:panelGrid columns="2" columnClasses="label, input">
                         <h:outputText styleClass="label" value="Content"/>
-                        <h:inputTextarea  value="#{javaBlogView.content}"/>
+                        <h:inputTextarea value="#{javaBlogView.content}"/>
                     </h:panelGrid>
                     <hr/>
                     <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry2}" value="Add Blog Entry"/>

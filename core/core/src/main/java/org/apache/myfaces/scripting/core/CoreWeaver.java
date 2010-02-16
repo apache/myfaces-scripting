@@ -40,7 +40,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
-
     public CoreWeaver(ScriptingWeaver... weavers) {
         _weavers.addAll(Arrays.asList(weavers));
     }
@@ -50,7 +49,6 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public Object reloadScriptingInstance(Object o, int artefactType) {
-
 
         for (ScriptingWeaver weaver : _weavers) {
             if (weaver.isDynamic(o.getClass())) {
@@ -117,6 +115,12 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     public void fullRecompile() {
         for (ScriptingWeaver weaver : _weavers) {
             weaver.fullRecompile();
+        }
+    }
+
+    public void initiateStartup() {
+        for (ScriptingWeaver weaver : _weavers) {
+            weaver.initiateStartup();
         }
     }
 

@@ -27,14 +27,14 @@ import javax.faces.component.UIComponent
  */
 class TestConverter implements Converter {
 
-    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
-        print "converting $s"
-        return s;
-    }
+  public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
+    print "converting $s"
+    return s;
+  }
 
-    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        print "converting back  aa"
-        return ((String) o);
-    }
+  public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
+    print "converting back  aa"
+    return ((String) o);
+  }
 
 }

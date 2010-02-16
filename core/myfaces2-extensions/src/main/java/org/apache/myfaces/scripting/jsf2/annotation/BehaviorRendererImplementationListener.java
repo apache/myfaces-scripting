@@ -43,7 +43,6 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
 
     Map<AnnotationEntry, String> _inverseIndex = new HashMap<AnnotationEntry, String>();
 
-
     class AnnotationEntry {
         String rendererType;
         String renderKitId;
@@ -71,11 +70,11 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
 
         @Override
         public int hashCode() {
-            return (checkForNull(rendererType)+"_"+checkForNull(renderKitId)).hashCode();    //To change body of overridden methods use File | Settings | File Templates.
+            return (checkForNull(rendererType) + "_" + checkForNull(renderKitId)).hashCode();    //To change body of overridden methods use File | Settings | File Templates.
         }
 
         private String checkForNull(String in) {
-            return (in == null)? "":in; 
+            return (in == null) ? "" : in;
         }
 
         protected boolean compareValuePair(Object val1, Object val2) {
@@ -112,10 +111,9 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
         AnnotationEntry entry = new AnnotationEntry(value, renderKitId);
         _alreadyRegistered.put(clazz.getName(), entry);
         _inverseIndex.put(entry, clazz.getName());
-        
+
         getApplication().addConverter(entry.getRendererType(), clazz.getName());
     }
-
 
     @Override
     protected boolean hasToReregister(Map params, Class clazz) {
@@ -132,23 +130,19 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
         return alreadyRegistered.equals(entry);
     }
 
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(FacesBehaviorRenderer.class.getName());
     }
 
-
     private RenderKitFactory getRenderKitFactory() {
         return (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
     }
-
 
     private RenderKit getRenderkit(String renderKitId) {
         RenderKitFactory factory = getRenderKitFactory();
         RenderKit renderKit = factory.getRenderKit(FacesContext.getCurrentInstance(), renderKitId);
         return renderKit;
     }
-
 
     @Override
     public void purge(String className) {
@@ -164,7 +158,7 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
             if (rendererClass != null && rendererClass.equals(className)) {
                 _inverseIndex.put(entry, PurgedClientBehaviorRenderer.class.getName());
                 renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
-            }   
+            }
         } catch (InstantiationException e) {
             log.error(e);
         } catch (IllegalAccessException e) {

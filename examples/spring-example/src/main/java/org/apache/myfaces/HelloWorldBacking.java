@@ -20,11 +20,10 @@ package org.apache.myfaces;
 
 /**
  * A typical simple backing bean, that is backed to <code>helloworld.jsp</code>
- * 
- * @author <a href="mailto:matzew@apache.org">Matthias We�endorf</a> 
+ *
+ * @author <a href="mailto:matzew@apache.org">Matthias We�endorf</a>
  */
-public class HelloWorldBacking
-{
+public class HelloWorldBacking {
 
     //properties
     private String name;
@@ -32,26 +31,23 @@ public class HelloWorldBacking
     /**
      * default empty constructor
      */
-    public HelloWorldBacking()
-    {
+    public HelloWorldBacking() {
     }
 
     //-------------------getter & setter
-    public String getName()
-    {
+
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
     /**
      * Method that is backed to a submit button of a form.
      */
-    public String send()
-    {
+    public String send() {
         //do real logic
         return ("success");
     }

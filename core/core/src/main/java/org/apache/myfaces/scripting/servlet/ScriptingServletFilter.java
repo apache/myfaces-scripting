@@ -27,7 +27,6 @@ import javax.servlet.*;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  * Scripting servlet filter
  *
@@ -36,7 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ScriptingServletFilter implements Filter {
 
     ServletContext context = null;
-
 
     public void init(FilterConfig filterConfig) throws ServletException {
         context = filterConfig.getServletContext();
@@ -55,19 +53,16 @@ public class ScriptingServletFilter implements Filter {
         }
     }
 
-
     public void destroy() {
 
         WeavingContext.clean();
     }
-
 
     //we mark the request beginning and end for further synchronisation issues
 
     private final AtomicInteger getRequestCnt() {
         return (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
     }
-
 
     private int markRequestStart() {
         return getRequestCnt().incrementAndGet();

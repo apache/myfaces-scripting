@@ -41,7 +41,6 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
             _delegate = (Lifecycle) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_LIFECYCLE);
     }
 
-
     public LifefcycleProxy(Lifecycle delegate) {
         _delegate = delegate;
     }
@@ -74,7 +73,6 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
         weaveDelegate();
         _delegate.render(facesContext);
     }
-
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.

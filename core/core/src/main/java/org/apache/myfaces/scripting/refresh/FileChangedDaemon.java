@@ -66,7 +66,6 @@ public class FileChangedDaemon extends Thread {
     ScriptingWeaver _weavers = null;
     WeakReference externalContext;
 
-  
     public void initWeavingContext(Object externalContext) {
         if (this.externalContext != null) return;
         this.externalContext = new WeakReference(externalContext);

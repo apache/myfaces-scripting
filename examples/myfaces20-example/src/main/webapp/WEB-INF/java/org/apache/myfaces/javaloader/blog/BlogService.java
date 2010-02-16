@@ -28,8 +28,6 @@ import java.util.List;
  */
 public class BlogService implements BlogServiceInterface {
 
-
-    
     /**
      * note we cannot cast on dynamically referenced
      * and recompiled objects which are shared between beans

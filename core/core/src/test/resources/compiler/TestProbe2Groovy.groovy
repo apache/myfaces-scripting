@@ -5,6 +5,6 @@ package compiler;
  */
 
 public class TestProbe2Groovy {
-  
+
 }
 

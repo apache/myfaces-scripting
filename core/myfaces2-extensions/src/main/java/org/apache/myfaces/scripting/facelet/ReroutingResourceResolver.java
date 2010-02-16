@@ -20,7 +20,6 @@ public class ReroutingResourceResolver extends DefaultResourceResolver {
     volatile boolean _initiated = false;
     List<String> _resourceDirs = null;
 
-
     Log log = LogFactory.getLog(this.getClass());
 
     @Override

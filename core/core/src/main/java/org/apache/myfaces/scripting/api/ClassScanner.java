@@ -43,6 +43,5 @@ public interface ClassScanner {
 
     public void scanClass(Class clazz);
 
-
     public void scanAndMarkChange();
 }

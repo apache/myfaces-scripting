@@ -72,14 +72,9 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
         this._dependencyScanner = new JavaDependencyScanner(this);
     }
 
-   
-
     public JavaScriptingWeaver() {
         super(ScriptingConst.JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
     }
-
-
-   
 
     protected String getLoadingInfo(String file) {
         return "[EXT-SCRIPTING] Loading Java file:" + file;
@@ -109,7 +104,6 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     public void scanForAddedClasses() {
         _dependencyScanner.scanAndMarkChange();
     }
-   
 
     protected DynamicCompiler instantiateCompiler() {
         return new CompilerFacade();

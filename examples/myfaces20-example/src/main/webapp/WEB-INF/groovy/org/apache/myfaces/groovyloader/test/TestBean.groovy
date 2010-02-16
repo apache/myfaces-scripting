@@ -22,29 +22,29 @@ package org.apache.myfaces.groovyloader.test
  */
 
 class TestBean {
-    String helloworld = "hallo ist - die bean"
+  String helloworld = "hallo ist - die bean"
 
-    //note you can add new atrtributes
-    //no setter or getter is needed
-    //and with a single request you will get the
-    //attribute be used in your page
-    //give it a try
+  //note you can add new atrtributes
+  //no setter or getter is needed
+  //and with a single request you will get the
+  //attribute be used in your page
+  //give it a try
 
-    //String newAttribute = "This is a new attribute"
-    //uncomment this and add a control to the page displaying it
+  //String newAttribute = "This is a new attribute"
+  //uncomment this and add a control to the page displaying it
 
-    public String getHelloworld() {
-        return helloworld
-    }
-
-
-    public String doit() {
-        print "doit called"
-        return null
-    }
+  public String getHelloworld() {
+    return helloworld
+  }
 
 
-    public String getXxx() {
-        " Simple text you can change me on the fly"
-    }
+  public String doit() {
+    print "doit called"
+    return null
+  }
+
+
+  public String getXxx() {
+    " Simple text you can change me on the fly"
+  }
 }

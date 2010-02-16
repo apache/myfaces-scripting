@@ -42,12 +42,10 @@ public class JavaDependencyScanner implements ClassScanner {
 
     List<String> _scanPaths = new LinkedList<String>();
 
-
     DependencyScanner _dependecyScanner = new DefaultDependencyScanner();
 
     ScriptingWeaver _weaver;
     Log log = LogFactory.getLog(JavaDependencyScanner.class.getName());
-
 
     public JavaDependencyScanner(ScriptingWeaver weaver) {
         this._weaver = weaver;
@@ -56,12 +54,11 @@ public class JavaDependencyScanner implements ClassScanner {
 
     public synchronized void scanPaths() {
         //only one dependency check per refresh makes sense in our case
-        if(WeavingContext.getRefreshContext().isDependencyScanned(getEngineType())) {
+        if (WeavingContext.getRefreshContext().isDependencyScanned(getEngineType())) {
             return;
         } else {
             WeavingContext.getRefreshContext().setDependencyScanned(getEngineType(), true);
         }
-
 
         if (log.isInfoEnabled()) {
             log.info("[EXT-SCRITPING] starting class dependency scan");
@@ -95,11 +92,9 @@ public class JavaDependencyScanner implements ClassScanner {
         }
     }
 
-
     protected ClassLoader getClassLoader() {
         return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", RecompiledClassLoader.tempDir);
     }
-
 
     public void clearListeners() {
     }
@@ -119,15 +114,15 @@ public class JavaDependencyScanner implements ClassScanner {
     public void scanAndMarkChange() {
 
         final Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
-        Map <Integer, Boolean> recompileMap = WeavingContext.getRefreshContext().getDaemon().getSystemRecompileMap();
-        Map <String, ReloadingMetadata> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
+        Map<Integer, Boolean> recompileMap = WeavingContext.getRefreshContext().getDaemon().getSystemRecompileMap();
+        Map<String, ReloadingMetadata> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
         Boolean alreadyTainted = recompileMap.get(getEngineType());
-        if(alreadyTainted != null && alreadyTainted) {
+        if (alreadyTainted != null && alreadyTainted) {
             return;
         }
 
-        for(String clazz: possibleDynamicClasses) {
-            if(!classMap.containsKey(clazz)) {
+        for (String clazz : possibleDynamicClasses) {
+            if (!classMap.containsKey(clazz)) {
                 recompileMap.put(getEngineType(), Boolean.TRUE);
             }
         }

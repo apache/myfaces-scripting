@@ -20,34 +20,34 @@ package org.apache.myfaces.blank;
 
 /**
  * A typical simple backing bean, that is backed to <code>helloworld.jsp</code>
- * 
  */
 public class HelloWorldController {
 
-    
     //properties
     private String name;
-    
+
     /**
      * default empty constructor
      */
-    public HelloWorldController(){
+    public HelloWorldController() {
     }
-    
+
     //-------------------getter & setter
+
     public String getName() {
         ClassLoader cls = Thread.currentThread().getContextClassLoader();
         return name;
     }
+
     public void setName(String name) {
         ClassLoader cls = Thread.currentThread().getContextClassLoader();
         this.name = name;
     }
-    
+
     /**
      * Method that is backed to a submit button of a form.
      */
-    public String send(){
+    public String send() {
         //do real logic, return a string which will be used for the navigation system of JSF
         return "success";
     }

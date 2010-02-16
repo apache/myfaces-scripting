@@ -12,35 +12,29 @@ import javax.faces.view.facelets.TagHandlerDelegate;
 import javax.faces.view.facelets.TagHandlerDelegateFactory;
 import javax.faces.view.facelets.ValidatorHandler;
 
-
-public class TagHandlerDelegateFactoryImpl extends TagHandlerDelegateFactory
-{
+public class TagHandlerDelegateFactoryImpl extends TagHandlerDelegateFactory {
 
     @Override
     public TagHandlerDelegate createBehaviorHandlerDelegate(
-            BehaviorHandler owner)
-    {
+            BehaviorHandler owner) {
         return new BehaviorTagHandlerDelegate(owner);
     }
 
     @Override
     public TagHandlerDelegate createComponentHandlerDelegate(
-            ComponentHandler owner)
-    {
+            ComponentHandler owner) {
         return new ReloadingComponentTagHandlerDelegate(owner);
     }
 
     @Override
     public TagHandlerDelegate createConverterHandlerDelegate(
-            ConverterHandler owner)
-    {
+            ConverterHandler owner) {
         return new ConverterTagHandlerDelegate(owner);
     }
 
     @Override
     public TagHandlerDelegate createValidatorHandlerDelegate(
-            ValidatorHandler owner)
-    {
+            ValidatorHandler owner) {
         return new ValidatorTagHandlerDelegate(owner);
     }
 

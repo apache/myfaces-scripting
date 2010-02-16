@@ -37,7 +37,6 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
     LifecycleFactory _delegate;
     boolean scriptingEnabled = false;
 
-
     public ScriptingLifecycleFactory(LifecycleFactory delegate) {
         _delegate = delegate;
         scriptingEnabled = WeavingContext.isScriptingEnabled();

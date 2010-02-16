@@ -35,7 +35,6 @@ public class ScriptingConst {
 
     public static final String CONTEXT_VALUE_DIVIDER = ",";
 
-
     public static final String RELOAD_MAP = "reloadMap";
     public static final String SESS_BEAN_REFRESH_TIMER = "sessbeanrefrsh";
 

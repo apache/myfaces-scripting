@@ -17,11 +17,11 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<faces-config version = "1.2"
-              xmlns = "http://java.sun.com/xml/ns/javaee"
-              xmlns:xi = "http://www.w3.org/2001/XInclude"
-              xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation = "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+<faces-config version="1.2"
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xi="http://www.w3.org/2001/XInclude"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
 
     <!-- managed beans of the simple hello world app -->
     <managed-bean>
@@ -71,7 +71,7 @@
         <navigation-handler>
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
         </navigation-handler>
-        
+
     </application>
 
     <lifecycle>

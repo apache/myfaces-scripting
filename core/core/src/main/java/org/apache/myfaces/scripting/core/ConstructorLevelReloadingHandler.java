@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
 /**
  * Reloading handler which
  * tries to reload classes and objects
@@ -42,11 +41,9 @@ public class ConstructorLevelReloadingHandler extends ReloadingInvocationHandler
 
     ScriptingWeaver _weaver = null;
 
-
     public void setLoadedClass(Class loadedClass) {
         _loadedClass = loadedClass;
     }
-
 
     public ConstructorLevelReloadingHandler(Object rootObject) {
         _loadedClass = rootObject.getClass();
@@ -56,7 +53,6 @@ public class ConstructorLevelReloadingHandler extends ReloadingInvocationHandler
     public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
         return reloadInvoke(method, objects);
     }
-
 
     protected Object reloadInvoke(Method method, Object[] objects) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         if (_weaver == null)

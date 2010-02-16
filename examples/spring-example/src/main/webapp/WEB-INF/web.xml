@@ -58,16 +58,20 @@
 
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-        of the deployment dir</description>
+            of the deployment dir
+        </description>
         <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/groovy</param-value>
+        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/groovy
+        </param-value>
     </context-param>
 
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-        of the deployment dir</description>
+            of the deployment dir
+        </description>
         <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
-        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/java</param-value>
+        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/java
+        </param-value>
     </context-param>
 
     <context-param>

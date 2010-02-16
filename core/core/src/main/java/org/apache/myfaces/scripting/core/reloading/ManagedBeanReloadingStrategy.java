@@ -58,7 +58,7 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
     }
 
     public ScriptingWeaver getWeaver() {
-        return _weaver;  
+        return _weaver;
     }
 
     public void setWeaver(ScriptingWeaver weaver) {

@@ -21,7 +21,6 @@ package org.apache.myfaces.javaloader.other;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.Resource;
 
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$

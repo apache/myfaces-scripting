@@ -45,7 +45,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
     private static final String SCOPE_NONE = "none";
     private static final String SCOPE_CUSTOM = "custom";
 
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
     }
@@ -58,7 +57,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         javax.faces.bean.ManagedBean annCasted = (javax.faces.bean.ManagedBean) ann;
 
         String beanName = annCasted.name();
-
 
         beanName = beanName.replaceAll("\"", "");
         if (!hasToReregister(beanName, clazz)) {
@@ -93,7 +91,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         mbean.setScope(scope);
     }
 
-
     private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
         for (Field field : fields) {
             if (log.isTraceEnabled()) {
@@ -123,7 +120,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         }
     }
 
-
     /**
      * <p>Return an array of all <code>Field</code>s reflecting declared
      * fields in this class, or in any superclass other than
@@ -144,12 +140,10 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         return (Field[]) fields.values().toArray(new Field[fields.size()]);
     }
 
-
     protected boolean hasToReregister(String name, Class clazz) {
         ManagedBean mbean = (ManagedBean) _alreadyRegistered.get(name);
         return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
     }
-
 
     @SuppressWarnings("unchecked")
     public void purge(String className) {

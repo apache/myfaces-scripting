@@ -37,7 +37,7 @@ public interface DynamicCompiler {
      * compiles a single file into a class
      *
      * @param sourceRoot the source search path (root of our source)
-     * @param classPath the classpath for the compiler
+     * @param classPath  the classpath for the compiler
      * @param filePath   the relative path of our file
      * @return a valid java class of our file
      * @throws ClassNotFoundException in case of the class neither could be found

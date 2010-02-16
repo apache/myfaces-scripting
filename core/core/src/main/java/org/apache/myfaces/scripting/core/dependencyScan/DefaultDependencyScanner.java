@@ -71,7 +71,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
 
         try {
             Class toCheck = loader.loadClass(className);
-            if(toCheck == null) {
+            if (toCheck == null) {
                 return;
             }
             scanCurrentClass(loader, retVal, className, whiteList);
@@ -86,6 +86,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
 
     /**
      * scans the hierarchy of a given class
+     *
      * @param loader
      * @param retVal
      * @param whiteList

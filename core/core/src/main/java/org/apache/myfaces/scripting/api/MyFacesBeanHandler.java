@@ -48,7 +48,7 @@ public class MyFacesBeanHandler implements BeanHandler {
      * types, this is a corner case but it still can happen)
      */
     public void scanDependencies() {
-        if(FacesContext.getCurrentInstance() == null) {
+        if (FacesContext.getCurrentInstance() == null) {
             return;
         }
         //TODO make this enabled also if the facesContext is not yet fully active
@@ -64,9 +64,9 @@ public class MyFacesBeanHandler implements BeanHandler {
         for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
             Object retVal = ReflectUtil.executeMethod(entry.getValue(), "getManagedProperties");
             Iterator it = null;
-            if(retVal instanceof Collection) {
+            if (retVal instanceof Collection) {
                 //Myfaces 2.x
-                it = ((Collection)retVal).iterator();
+                it = ((Collection) retVal).iterator();
             } else {
                 //older versions
                 it = (Iterator) retVal;
@@ -386,8 +386,6 @@ public class MyFacesBeanHandler implements BeanHandler {
      * @return true if the current bean class fulfills our refresh criteria
      */
     protected boolean hasToBeRefreshed(Set<String> tainted, Class managedBeanClass) {
-
-
 
         return WeavingContext.isDynamic(managedBeanClass) && tainted.contains(managedBeanClass.getName());
     }

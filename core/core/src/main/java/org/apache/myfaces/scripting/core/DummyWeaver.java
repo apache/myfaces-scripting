@@ -62,7 +62,7 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public ScriptingWeaver getWeaverInstance(Class weaverClass) {
-        return this;  //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 
     public void fullClassScan() {
@@ -70,6 +70,9 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
 
     public void fullRecompile() {
 
+    }
+
+    public void initiateStartup() {
     }
 
     public void requestRefresh() {
@@ -80,7 +83,6 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void scanForAddedClasses() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

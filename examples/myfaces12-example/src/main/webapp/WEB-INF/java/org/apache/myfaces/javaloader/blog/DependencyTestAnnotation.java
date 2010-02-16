@@ -20,9 +20,7 @@ package org.apache.myfaces.javaloader.blog;
 
 import java.lang.annotation.*;
 
-
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DependencyTestAnnotation {
 
-    
 }

@@ -42,19 +42,19 @@ import java.io.IOException;
  * class to the other
  */
 @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-    public class JavaTestRenderer1 extends HtmlTextRendererBase {
+public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Log log = LogFactory.getLog(JavaTestRenderer1.class);
-    
+
     private static final String MSG2 = "Hello world from Renderer 1";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         JavaTestComponent myComponent = (JavaTestComponent) component;
-        
+
         ResponseWriter writer = context.getResponseWriter();
         test(myComponent, writer);
-        
+
         //hello(writer);
         writer.flush();
     }
@@ -62,9 +62,9 @@ import java.io.IOException;
     private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
         writer.write(MSG2);
         writer.write(myComponent.getMarker());
-        writer.write("<h1/>TestAttr: "+myComponent.getTestAttr()+" | "+myComponent.getTestAttr3()+"</h1>");
+        writer.write("<h1/>TestAttr: " + myComponent.getTestAttr() + " | " + myComponent.getTestAttr3() + "</h1>");
         /*lets add the new attribute as extra output*/
-        writer.write("<h2>"+myComponent.getTestAttr4()+"</h2>");
+        writer.write("<h2>" + myComponent.getTestAttr4() + "</h2>");
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
