@@ -20,6 +20,9 @@ package org.apache.myfaces.extensions.scripting.groovyCompiler;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.scripting.api.Configuration;
+import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
 import org.apache.myfaces.scripting.core.util.FileUtils;
@@ -70,6 +73,9 @@ public class GroovyCompilerTest {
         probe1 = new File(sourcePath1);
         probe2 = new File(sourcePath2);
         root = new File(rootPath);
+
+        WeavingContext.setConfiguration(new Configuration());
+        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_GROOVY, root.getAbsolutePath());
     }
 
     @Test
@@ -96,6 +102,33 @@ public class GroovyCompilerTest {
         } catch (CompilationException e) {
             fail(e.toString());
         }
+    }
+
+
+    @Test
+    public void testFullCompileWhitelist() {
+        File targetDir = null;
+
+        File target = FileUtils.getTempDir();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        target.mkdirs();
+        target.deleteOnExit();
+
+        WeavingContext.getConfiguration().addWhitelistPackage("compiler.myPackage");
+
+        CompilationResult result = compiler.compile(root, target, loader);
+
+        assertTrue("result has no errors", !result.hasErrors());
+
+        assertTrue("target exists files are compiled into the target", target != null);
+        File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1Groovy.class");
+        File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2Groovy.class");
+        File classFile3 = new File(target.getAbsolutePath() + "/compiler/myPackage/WhiteListedProbeGroovy.class");
+
+        assertTrue("Classfile1 is compiled into the target", !classFile1.exists());
+        assertTrue("Classfile2 is compiled into the target", !classFile2.exists());
+        assertTrue("Classfile2 is compiled into the target", classFile3.exists());
+
     }
 
     @Test

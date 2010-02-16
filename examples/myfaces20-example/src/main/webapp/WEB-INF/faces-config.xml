@@ -59,21 +59,24 @@
     </managed-bean>
 
     <application>
+        <!--
         <navigation-handler>
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
         </navigation-handler>
+        -->
         <resource-handler>
             org.apache.myfaces.scripting.jsf2.resources.SourceResourceHandler
         </resource-handler>
 
     </application>
 
+    <!--
     <lifecycle>
         <phase-listener>
             org.apache.myfaces.groovyloader.test.TestPhaseListener
         </phase-listener>
     </lifecycle>
-
+    -->
 
     <!-- navigation rules for helloWorld.jsp -->
     <navigation-rule>
@@ -93,7 +96,7 @@
         </navigation-case>
     </navigation-rule>
 
-
+    <!--
     <validator>
         <validator-id>org.apache.myfaces.groovyloader.test.TestValidator</validator-id>
         <validator-class>org.apache.myfaces.groovyloader.test.TestValidator</validator-class>
@@ -115,5 +118,5 @@
             <renderer-class>org.apache.myfaces.groovyloader.test.TestRenderer</renderer-class>
         </renderer>
     </render-kit>
-
+     -->
 </faces-config>

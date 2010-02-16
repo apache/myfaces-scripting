@@ -66,7 +66,7 @@ public class GroovyCompiler implements Compiler {
 
     public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) {
 
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.groovy");
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY), "*.groovy");
 
         StringWriter compilerOutput = new StringWriter();
 
