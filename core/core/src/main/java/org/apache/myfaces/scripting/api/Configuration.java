@@ -42,6 +42,12 @@ public class Configuration {
 
     volatile File _compileTarget = FileUtils.getTempDir();
 
+    boolean _initialCompile = true;
+
+    List<String> _packageWhiteList = new LinkedList<String>();
+
+    List<String> _additionalClassPath = new LinkedList<String>();
+
     /**
      * we keep track of separate resource dirs
      * for systems which can use resource loaders
@@ -74,5 +80,37 @@ public class Configuration {
 
     public List<String> getResourceDirs() {
         return _resourceDirs;
+    }
+
+    public boolean isInitialCompile() {
+        return _initialCompile;
+    }
+
+    public void setInitialCompile(boolean initialCompile) {
+        this._initialCompile = initialCompile;
+    }
+
+    public void addWhitelistPackage(String pkg) {
+        _packageWhiteList.add(pkg);
+    }
+
+    public List<String> getPackageWhiteList() {
+        return _packageWhiteList;
+    }
+
+    public void setPackageWhiteList(List<String> packageWhiteList) {
+        this._packageWhiteList = packageWhiteList;
+    }
+
+    public void addAdditionalClassPath(String path) {
+        _additionalClassPath.add(path);
+    }
+
+    public List<String> getAdditionalClassPath() {
+        return _additionalClassPath;
+    }
+
+    public void setAdditionalClassPath(List<String> additionalClassPath) {
+        this._additionalClassPath = additionalClassPath;
     }
 }

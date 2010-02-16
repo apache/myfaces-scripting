@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +25,7 @@ import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.webapp.StartupListener;
@@ -47,7 +47,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class StartupServletContextPluginChainLoader implements StartupListener {
     final Log log = LogFactory.getLog(this.getClass());
 
-
     public void preInit(ServletContextEvent servletContextEvent) {
 
         log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
@@ -64,7 +63,6 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         initInitialCompileAndScan(weaver);
     }
-
 
     /**
      * initiates the first compile and scan in the subsystem
@@ -125,15 +123,46 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
      * @param servletContext the applications servlet context
      */
     private void initConfig(ServletContext servletContext) {
-        Configuration conf = new Configuration();
+        final Configuration conf = new Configuration();
         servletContext.setAttribute(ScriptingConst.CTX_CONFIGURATION, conf);
         WeavingContext.setConfiguration(conf);
+        //we now add the resource loader path here
 
-        String resourceDirs = servletContext.getInitParameter(ScriptingConst.INIT_PARAM_RESOURCE_PATH);
-        if (!StringUtils.isBlank(resourceDirs)) {
-            String[] splittedResourceDirs = resourceDirs.split(",");
-            for (String resourceDir : splittedResourceDirs) {
-                conf.addResourceDir(resourceDir);
+        /*
+         * we define a set of closures (inner classes) which make
+         * our code more reusable we define a strategy
+         * for each comma delimited set of values
+         */
+        Strategy addResourceDirStrategy = new Strategy() {
+            public void apply(Object element) {
+                conf.addResourceDir((String) element);
+            }
+        };
+        Strategy addAdditionalClassPathStrategy = new Strategy() {
+            public void apply(Object element) {
+                conf.addAdditionalClassPath((String) element);
+            }
+        };
+        Strategy addWhiteListPackageStrategy = new Strategy() {
+            public void apply(Object element) {
+                conf.addWhitelistPackage((String) element);
+            }
+        };
+
+        /**
+         * We now apply the values into our own lists
+         */
+        applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_RESOURCE_PATH), addResourceDirStrategy);
+        applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_RESOURCE_PATH), addAdditionalClassPathStrategy);
+        applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_RESOURCE_PATH), addWhiteListPackageStrategy);
+
+    }
+
+    private void applyEntries(String val, Strategy strategy) {
+        if (!StringUtils.isBlank(val)) {
+            String[] splittedVal = val.split(ScriptingConst.CONTEXT_VALUE_DIVIDER);
+            for (String singleVal : splittedVal) {
+                strategy.apply(singleVal);
             }
         }
     }

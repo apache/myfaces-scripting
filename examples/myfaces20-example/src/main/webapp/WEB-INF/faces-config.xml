@@ -109,10 +109,6 @@
         <component-class>org.apache.myfaces.groovyloader.test.TestComponent</component-class>
     </component>
 
-
-    
-
-
     <render-kit>
         <renderer>
             <component-family>javax.faces.Input</component-family>

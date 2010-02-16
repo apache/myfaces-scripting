@@ -30,6 +30,11 @@ public class ScriptingConst {
     public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.SCRIPTING_GROOVYFACTORY";
     public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.SCRIPTING_REQUSINGLETON";
 
+    public static final String SCRIPTING_PACKAGE_WHITELIST = "org.apache.myfaces.SCRIPTING_PGK_WHITELIST";
+    public static final String SCRIPTING_ADDITIONAL_CLASSPATH = "org.apache.myfaces.SCRIPTING_ADDITIONAL_CLASSPATH";
+
+    public static final String CONTEXT_VALUE_DIVIDER = ",";
+
 
     public static final String RELOAD_MAP = "reloadMap";
     public static final String SESS_BEAN_REFRESH_TIMER = "sessbeanrefrsh";
