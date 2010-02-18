@@ -182,8 +182,12 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         retVal.append(diagnostic.getLineNumber());
 
         retVal.append("\n\n");
-        String source = diagnostic.getSource().toString();
-        source = (source == null) ? "No source info" : source;
+
+        String source = "No additional source info";
+
+        if(diagnostic.getSource() != null) {
+            source = diagnostic.getSource().toString();
+        }
         retVal.append(source);
 
         return retVal.toString();
