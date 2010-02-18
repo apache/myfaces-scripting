@@ -31,7 +31,7 @@ import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
 @DependencyTestAnnotation
 public class Blog {
 
-    String title = "Hello to the MyFaces dynamic blogging example";
+    String title = "<h1>Hello to the MyFaces dynamic blogging example</h1>";
     String title1 = "You can alter the code for this small blogging application on the fly, " +
             "you even can add new classes on the fly and Java will pick it up";
 
