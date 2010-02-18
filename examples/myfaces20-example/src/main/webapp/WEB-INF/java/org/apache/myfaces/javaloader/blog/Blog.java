@@ -27,11 +27,10 @@ import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
  * @author werpu2
  * @date: 01.09.2009
  */
-
 @DependencyTestAnnotation
 public class Blog {
 
-    String title = "<h1>Hello to the MyFaces dynamic blogging example</h1>";
+    String title = "<h3>Hello to the MyFaces dynamic blogging example</h3>";
     String title1 = "You can alter the code for this small blogging application on the fly, " +
             "you even can add new classes on the fly and Java will pick it up";
 
@@ -45,6 +44,7 @@ public class Blog {
     String topic = "";
 
     String content = "";
+    
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());

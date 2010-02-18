@@ -20,10 +20,10 @@
 
             <div class="left" style="margin-top: 3px;">
                 <h:panelGrid id="grid" columns="1" styleClass="stdBox">
-                    <h:outputText id="title1" styleClass="title" value="#{javaBlogView.title}"/>
-                    <h:outputText id="title11" styleClass="title1" value="#{javaBlogView.title1}"/>
-                    <h:outputText value="#{javaBlogView.title3}"/>
-                    <h:outputText value="#{javaBlogView.title4}"/>
+                    <h:outputFormat id="title1" escape="false" styleClass="title" value="#{javaBlogView.title}"/>
+                    <h:outputFormat id="title11" escape="false"  styleClass="title1" value="#{javaBlogView.title1}"/>
+                    <h:outputFormat escape="false"  value="#{javaBlogView.title3}"/>
+                    <h:outputFormat escape="false"  value="#{javaBlogView.title4}"/>
 
                     <hr/>
 
