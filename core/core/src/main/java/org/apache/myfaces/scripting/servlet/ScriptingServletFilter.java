@@ -80,6 +80,7 @@ public class ScriptingServletFilter implements Filter {
                     "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
             active = false;
         }
+        return retVal;
     }
 
     private int markRequestStart() {
