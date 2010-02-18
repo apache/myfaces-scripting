@@ -27,6 +27,7 @@ import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -41,18 +42,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ScriptingServletFilter implements Filter {
 
     ServletContext context = null;
-    static volatile boolean active = true;
+    static volatile boolean active = false;
+    static volatile boolean warned = false;
 
     public void init(FilterConfig filterConfig) throws ServletException {
         context = filterConfig.getServletContext();
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        assertInitialized();
         if (!active) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-
         markRequestStart();
         WeavingContext.initThread(context);
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
@@ -65,6 +67,24 @@ public class ScriptingServletFilter implements Filter {
         }
     }
 
+    /**
+     * Checks for an initialized system and if not the filter will be deactivated
+     */
+    private void assertInitialized() {
+        if(active) return;
+
+        AtomicBoolean startup = (AtomicBoolean) context.getAttribute(ScriptingConst.CTX_STARTUP);
+        if (startup == null) {
+            if(!warned) {
+                Log log = LogFactory.getLog(ScriptingServletFilter.class);
+                log.error("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
+                        "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
+                active = false;
+            }
+        }
+        active = !startup.get();
+    }
+
     public void destroy() {
 
         WeavingContext.clean();
@@ -74,12 +94,7 @@ public class ScriptingServletFilter implements Filter {
 
     private final AtomicInteger getRequestCnt() {
         AtomicInteger retVal = (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
-        if (retVal == null) {
-            Log log = LogFactory.getLog(ScriptingServletFilter.class);
-            log.error("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
-                    "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
-            active = false;
-        }
+
         return retVal;
     }
 

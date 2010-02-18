@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.startup;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
@@ -25,6 +26,8 @@ import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.application.Application;
+import javax.servlet.ServletContext;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -41,16 +44,16 @@ public class IntialScanAnnotationListener implements SystemEventListener {
     }
 
     public void processEvent(SystemEvent event) {
-        if (!event.getClass().equals(PostConstructApplicationEvent.class)) {
-            return;
-        }
-        //we can rely on being in the same thread as the original
-        //startup context listener, so the initial weaver still is activated
-        ScriptingWeaver weaver = WeavingContext.getWeaver();
+            if (!event.getClass().equals(PostConstructApplicationEvent.class)) {
+                return;
+            }
+            //we can rely on being in the same thread as the original
+            //startup context listener, so the initial weaver still is activated
+            ScriptingWeaver weaver = WeavingContext.getWeaver();
 
-        weaver.fullRecompile();
-        //we now do a full source or precompiled annotation scan
-        //the entire scripting subsystem should be initialized by now
-        weaver.fullClassScan();
+            weaver.fullRecompile();
+            //we now do a full source or precompiled annotation scan
+            //the entire scripting subsystem should be initialized by now
+            weaver.fullClassScan();
     }
 }

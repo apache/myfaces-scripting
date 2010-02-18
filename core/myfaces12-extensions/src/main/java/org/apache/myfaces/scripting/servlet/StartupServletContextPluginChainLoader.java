@@ -33,6 +33,7 @@ import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -56,6 +57,8 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         if (servletContext == null) return;
 
         servletContext.setAttribute(ScriptingConst.CTX_REQUEST_CNT, new AtomicInteger(0));
+        servletContext.setAttribute(ScriptingConst.CTX_STARTUP, new AtomicBoolean(Boolean.TRUE));
+
 
         initConfig(servletContext);
         CustomChainLoader loader = initChainLoader(servletContext);
@@ -169,6 +172,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     }
 
     public void postInit(ServletContextEvent evt) {
+        evt.getServletContext().setAttribute(ScriptingConst.CTX_STARTUP, new AtomicBoolean(Boolean.FALSE));
 
     }
 

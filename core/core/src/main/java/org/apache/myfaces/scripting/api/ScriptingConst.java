@@ -69,6 +69,9 @@ public class ScriptingConst {
 
     public static final String CTX_REQUEST_CNT = "RequestCnt";
     public static final String CTX_CONFIGURATION = "ExtScriptingConfig";
+    public static final String CTX_STARTUP = "ExtScriptingStartup";
+    
+
     public static final String INIT_PARAM_RESOURCE_PATH = "org.apache.myfaces.scripting.resources.LOADER_PATHS";
     public static final String FILE_EXTENSION_GROOVY = ".groovy";
     public static final String GROOVY_FILE_ENDING = ".groovy";
