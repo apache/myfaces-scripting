@@ -34,7 +34,7 @@ div#backGroundFloat {
     background-color: yellow;
 }
 
-.stdBox, .messageBox {
+.stdBox, .stdBoxBig, .messageBox {
     display: block;
     width: 400px;
     border: 1px solid white;
@@ -48,13 +48,41 @@ div#backGroundFloat {
 
 }
 
-.stdBox {
+.stdBoxBig {
+    width: 800px;
+}
+
+.stdBox, .stdBoxBig {
     background-color: white;
     background-image: url("../resources/img/gradient1.jpg");
 }
 
 .messageBox {
     background-image: url("../resources/img/gradient2.png");
+}
+
+/*=================================================
+Standard Menu
+===================================================*/
+div#menu {
+    background-color: white;
+    opacity: 0.9;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    padding: 5px;
+    font-weight: bold;
+
+}
+
+div#menu a {
+    color: blue;
+    margin-right: 10px;
+}
+
+div#menu a:hover {
+    color: red;
 }
 
 /*==================================================
