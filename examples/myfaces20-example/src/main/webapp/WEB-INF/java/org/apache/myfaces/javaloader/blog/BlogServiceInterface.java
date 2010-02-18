@@ -25,4 +25,5 @@ public interface BlogServiceInterface extends BaseInterface {
     
     public void addEntry(BlogEntry entry);
 
+    
 }

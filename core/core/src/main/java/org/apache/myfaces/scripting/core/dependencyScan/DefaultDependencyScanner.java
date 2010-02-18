@@ -75,8 +75,12 @@ public class DefaultDependencyScanner implements DependencyScanner {
                 return;
             }
             scanCurrentClass(loader, retVal, className, whiteList);
-            scanHierarchy(loader, retVal, whiteList, toCheck, true);
 
+            //we scan the hierarchy because we might have compiled-uncompiled-compiled connections, the same goes for the interfaces
+            //the basic stuff can be covered by our class scanning but for more advanced usecase we have to walk the entire hierarchy per class!
+            scanHierarchy(loader, retVal, whiteList, toCheck, true);
+            //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
+            scanInterfaces(loader, retVal, whiteList, toCheck);
         } catch (ClassNotFoundException e) {
             log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" + e);
         }
