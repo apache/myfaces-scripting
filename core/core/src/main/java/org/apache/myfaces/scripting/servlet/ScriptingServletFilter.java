@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -29,18 +31,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Scripting servlet filter
+ * 
+ * TODO we have a concurrency problem here, what if a request
+ * hits the filter while the
+ * init system is not entirely finished yet
  *
  * @author Werner Punz
  */
 public class ScriptingServletFilter implements Filter {
 
     ServletContext context = null;
+    static volatile boolean active = true;
 
     public void init(FilterConfig filterConfig) throws ServletException {
         context = filterConfig.getServletContext();
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        if (!active) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         markRequestStart();
         WeavingContext.initThread(context);
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
@@ -61,7 +73,13 @@ public class ScriptingServletFilter implements Filter {
     //we mark the request beginning and end for further synchronisation issues
 
     private final AtomicInteger getRequestCnt() {
-        return (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
+        AtomicInteger retVal = (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
+        if (retVal == null) {
+            Log log = LogFactory.getLog(ScriptingServletFilter.class);
+            log.error("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
+                    "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
+            active = false;
+        }
     }
 
     private int markRequestStart() {
