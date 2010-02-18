@@ -18,19 +18,9 @@
  */
 package org.apache.myfaces.javaloader.test;
 
-import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
-
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.application.ResourceHandler;
-import javax.faces.application.Resource;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
 
 @ManagedBean(name = "javatestbean")
 @SessionScoped

@@ -35,12 +35,10 @@ public class HelloWorldController {
     //-------------------getter & setter
 
     public String getName() {
-        ClassLoader cls = Thread.currentThread().getContextClassLoader();
         return name;
     }
 
     public void setName(String name) {
-        ClassLoader cls = Thread.currentThread().getContextClassLoader();
         this.name = name;
     }
 

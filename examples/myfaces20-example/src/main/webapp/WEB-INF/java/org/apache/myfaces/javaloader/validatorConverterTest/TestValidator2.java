@@ -18,15 +18,14 @@
  */
 package org.apache.myfaces.javaloader.validatorConverterTest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
-import javax.faces.validator.ValidatorException;
-import javax.faces.validator.Validator;
+import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
