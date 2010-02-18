@@ -435,7 +435,7 @@ public class ApplicationProxy extends Application implements Decorated {
         //the validators are recreated every request we do not have to deal with them on method level
         Validator newRetVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_VALIDATOR);
         if (newRetVal != retVal) {
-            return _delegate.createValidator(validatorId);
+            _delegate.createValidator(validatorId);
         }
         return retVal;
     }

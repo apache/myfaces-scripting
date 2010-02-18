@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.objectweb.asm.*;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +53,11 @@ class ClassScanVisitor implements ClassVisitor {
         //log.log(Level.INFO, "{0} extends {1} ", new String[]{name, superName});
 
         ClassScanUtils.logParmList(dependencies, whiteList, superName);
+        if(interfaces != null && interfaces.length > 0) {
+            for(String currInterface: interfaces) {
+                ClassScanUtils.logParmList(dependencies, whiteList, currInterface);
+            }
+        }
     }
 
     public void visitSource(String source, String debug) {

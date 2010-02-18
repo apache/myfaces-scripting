@@ -21,6 +21,7 @@ package org.apache.myfaces.javaloader.validatorConverterTest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.validator.ValidatorException;
@@ -32,11 +33,12 @@ import javax.faces.validator.FacesValidator;
  * @version $Revision$ $Date$
  */
 @FacesValidator(value = "at.irian.CustomValidator")
-
 public class TestValidator2 implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        Log log = LogFactory.getLog(TestValidator1.class);
-        log.info("Hello world from TestValidator2");
+   
+        if(!((String)value).trim().equals("hello world")) {
+            LogFactory.getLog(TestValidator1.class).error("validation failed");
+            throw new ValidatorException(new FacesMessage("validation failed from validator 1 please input hello world, original input" + ((String)value),"validation failed from validator 1 please input hello world, original input" + ((String)value)));
+        }
     }
-
 }

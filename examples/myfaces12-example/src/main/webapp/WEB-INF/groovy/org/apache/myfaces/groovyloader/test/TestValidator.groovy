@@ -21,6 +21,9 @@ package org.apache.myfaces.groovyloader.test
 import javax.faces.validator.Validator
 import javax.faces.context.FacesContext
 import javax.faces.component.UIComponent
+import javax.faces.FacesException
+import javax.faces.application.FacesMessage
+import javax.faces.validator.ValidatorException
 
 /**
  * @author Werner Punz
@@ -28,6 +31,10 @@ import javax.faces.component.UIComponent
 class TestValidator implements Validator {
 
   public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) {
+    if(!((String)o).equals("hello world")) {
+      print ("error found")
+      throw new ValidatorException (new FacesMessage("Validation failed for field please input hello world"))
+    }
     println "validating testvalidation  "
   }
 

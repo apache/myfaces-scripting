@@ -75,13 +75,31 @@ public class DefaultDependencyScanner implements DependencyScanner {
                 return;
             }
             scanCurrentClass(loader, retVal, className, whiteList);
-            scanHierarchy(loader, retVal, whiteList, toCheck);
-
-            //TODO now lets do the same for the interfaces and their parents
+            scanHierarchy(loader, retVal, whiteList, toCheck, true);
 
         } catch (ClassNotFoundException e) {
             log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" + e);
         }
+    }
+
+    private void scanInterfaces(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck) {
+        Class[] interfaces = toCheck.getInterfaces();
+        if (interfaces == null || interfaces.length == 0) {
+            return;
+        }
+
+        for (Class currentInterface : interfaces) {
+            if (ClassScanUtils.isStandardNamespace(currentInterface.getName())) {
+                continue;
+            }
+            scanCurrentClass(loader, retVal, currentInterface.getName(), whiteList);
+
+            //We scan also our parent interfaces to get a full coverage
+            //but since interfaces do not implement anything we can cover
+            //the parents
+            scanHierarchy(loader, retVal, whiteList, currentInterface, false);
+        }
+
     }
 
     /**
@@ -92,12 +110,21 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * @param whiteList
      * @param toCheck
      */
-    private void scanHierarchy(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck) {
+    private void scanHierarchy(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck, boolean interfaceCheck) {
         Class parent = toCheck.getSuperclass();
 
         while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
+            if (interfaceCheck) {
+                //we recursively descend into our interfaces, it should not
+                //get any cyclic calls the tainting mechanism should prevent that
+                //and also the descension into parents, determinism should be
+                //enabled by both measures
+                scanInterfaces(loader, retVal, whiteList, parent);
+            }
+
             scanCurrentClass(loader, retVal, parent.getName(), whiteList);
             parent = parent.getSuperclass();
+
         }
     }
 

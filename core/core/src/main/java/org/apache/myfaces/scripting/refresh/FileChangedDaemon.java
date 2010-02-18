@@ -99,8 +99,8 @@ public class FileChangedDaemon extends Thread {
 
                 if (classMap == null || classMap.size() == 0)
                     continue;
-
-                checkForChanges();
+                 if(contextInitialized)
+                    checkForChanges();
             } catch (Throwable e) {
                 log.error(e.getMessage());
             }

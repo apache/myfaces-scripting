@@ -86,6 +86,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     private void initRefreshContext(ServletContext servletContext) {
         RefreshContext rContext = new RefreshContext();
         servletContext.setAttribute("RefreshContext", rContext);
+        rContext.getDaemon().initWeavingContext(servletContext);
         WeavingContext.setRefreshContext(rContext);
     }
 
