@@ -84,14 +84,20 @@ public class Blog {
             * the same behavior you get from scripting engines!
             * 
             */
-            //service.addEntry(entry);
-            //executeMethod(service, "addEntry",  entry);
+
+            //include for presentation 3
+            entry.setTopic(debuggingTest());
             service.addEntry(entry);
         }
 
         //we stay on the same page
         return null;
     }
+
+    //include for presentation 3
+    /*public String debuggingTest() {
+        return "Debugging Topic set via dynamic code";
+    }*/
 
     public String getTitle() {
         return title;
