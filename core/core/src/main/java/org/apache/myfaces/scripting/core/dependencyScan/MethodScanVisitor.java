@@ -60,7 +60,7 @@ class MethodScanVisitor implements MethodVisitor {
 
     public void visitAttribute(Attribute attribute) {
         //log.log(Level.INFO, "MethodAttr {0}:", attribute.type);
-
+        System.out.println(attribute.type);
     }
 
     public void visitCode() {

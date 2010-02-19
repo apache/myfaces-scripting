@@ -123,7 +123,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
                 //get any cyclic calls the tainting mechanism should prevent that
                 //and also the descension into parents, determinism should be
                 //enabled by both measures
-                scanInterfaces(loader, retVal, whiteList, parent);
+                //scanInterfaces(loader, retVal, whiteList, parent);
             }
 
             scanCurrentClass(loader, retVal, parent.getName(), whiteList);

@@ -46,12 +46,8 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
         _delegate = standardJavaFileManager;
-        refreshClassloader();
     }
 
-    public void refreshClassloader() {
-        classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
-    }
 
     @Override
     public JavaFileObject getJavaFileForOutput(Location location, String s, JavaFileObject.Kind kind, FileObject fileObject) throws IOException {
@@ -60,7 +56,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
 
     @Override
     public ClassLoader getClassLoader(Location location) {
-        return classLoader;
+        return Thread.currentThread().getContextClassLoader();
     }
 
     public ClassLoader getClassLoader() {

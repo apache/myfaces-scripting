@@ -53,8 +53,8 @@ class ClassScanVisitor implements ClassVisitor {
         //log.log(Level.INFO, "{0} extends {1} ", new String[]{name, superName});
 
         ClassScanUtils.logParmList(dependencies, whiteList, superName);
-        if(interfaces != null && interfaces.length > 0) {
-            for(String currInterface: interfaces) {
+        if (interfaces != null && interfaces.length > 0) {
+            for (String currInterface : interfaces) {
                 ClassScanUtils.logParmList(dependencies, whiteList, currInterface);
             }
         }
@@ -78,7 +78,7 @@ class ClassScanVisitor implements ClassVisitor {
 
     public void visitAttribute(Attribute attr) {
         //log.log(Level.INFO, "Attribute: {0}", attr.type);
-
+        System.out.println(attr.getClass().getName());
     }
 
     public void visitInnerClass(String name, String outerName,
@@ -97,12 +97,32 @@ class ClassScanVisitor implements ClassVisitor {
     public MethodVisitor visitMethod(int access, String name,
                                      String desc, String signature, String[] exceptions) {
         //log.log(Level.INFO, "Method {0} {1} ", new Object[]{name, desc});
-        //String subDesc = desc.substring(desc.indexOf('(') + 1, desc.lastIndexOf(")"));
-        //String[] parms = subDesc.split(";");
+        int lParen = desc.indexOf("(");
+        int rParen = desc.indexOf(")");
+        if (rParen - lParen <= 2) {
+            if (desc.indexOf(")L") != -1) {
+                //TODO handle templated files Lbla<Lbla;>;
+                String [] retVal = desc.substring(desc.indexOf(")L") + 2).split(";");
+                ClassScanUtils.logParmList(dependencies, whiteList, retVal);
+            }
+            return new MethodScanVisitor(dependencies, whiteList);
+        }
+        String subDesc = desc.substring(desc.indexOf("(") + 2, desc.lastIndexOf(")"));
+        String[] parms = subDesc.split(";");
+        String[] retVal = null;
+        //We have a class return value after our params list
+        if (desc.indexOf(")L") != -1) {
+            retVal = desc.substring(desc.indexOf(")L") + 2).split(";");
+            ClassScanUtils.logParmList(dependencies, whiteList, retVal);
+        }
+        if (exceptions != null) {
+            ClassScanUtils.logParmList(dependencies, whiteList, exceptions);
+        }
 
-        //ClassScanUtils.logParmList(dependencies, parms);
+        ClassScanUtils.logParmList(dependencies, whiteList, parms);
 
         //we now have to dig into the method to cover more, the parms are covered by our method scanner
+      
         return new MethodScanVisitor(dependencies, whiteList);
     }
 

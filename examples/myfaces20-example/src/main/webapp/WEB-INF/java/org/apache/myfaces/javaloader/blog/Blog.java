@@ -21,6 +21,8 @@ package org.apache.myfaces.javaloader.blog;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.context.FacesContext;
+
 import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
 
 /**
@@ -30,7 +32,7 @@ import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
 @DependencyTestAnnotation
 public class Blog {
 
-    String title = "<h3>Hello to the MyFaces dynamic blogging example</h3>";
+    String title = "<h3>Hello to the MyFaces Dynamic Blogging Example</h3>";
     String title1 = "You can alter the code for this small blogging application on the fly, " +
             "you even can add new classes on the fly and Java will pick it up";
 
@@ -68,6 +70,7 @@ public class Blog {
         entry.setLastName(lastName);
         entry.setTopic(topic);
         entry.setContent(content);
+
 
         if (service != null) {
             /*convenience method to call a method on an object dynamically

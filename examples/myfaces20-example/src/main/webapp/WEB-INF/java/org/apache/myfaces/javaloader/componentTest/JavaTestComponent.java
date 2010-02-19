@@ -44,7 +44,7 @@ public class JavaTestComponent extends UIInput implements Markable {
     }
 
     public String getMarker() {
-        return "<h2>Component 1 marker</h2>";
+        return "<h4>Component 1 marker</h4>";
     }
 
     public void setMarker() {

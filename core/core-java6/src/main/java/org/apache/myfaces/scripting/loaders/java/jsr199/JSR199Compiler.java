@@ -98,7 +98,6 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         } catch (ClassNotFoundException e) {
             throw new CompilationException(e);
         }
-        fileManager.refreshClassloader();
         return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
 
     }
@@ -131,7 +130,6 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         } catch (ClassNotFoundException e) {
             throw new CompilationException(e);
         }
-        fileManager.refreshClassloader();
         return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
     }
 

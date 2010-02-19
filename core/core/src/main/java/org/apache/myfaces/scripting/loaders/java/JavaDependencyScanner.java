@@ -93,7 +93,7 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     protected ClassLoader getClassLoader() {
-        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", RecompiledClassLoader.tempDir);
+        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", WeavingContext.getConfiguration().getCompileTarget());
     }
 
     public void clearListeners() {

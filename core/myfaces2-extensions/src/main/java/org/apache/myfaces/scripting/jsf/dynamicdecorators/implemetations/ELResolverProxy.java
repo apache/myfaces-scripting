@@ -52,6 +52,9 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
 
+            if(retVal.getClass().getName().equals("BlogEntry")) {
+                System.out.println(Thread.currentThread().getContextClassLoader().getClass().toString());
+            }
             newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
 
             if (newRetVal != retVal) {

@@ -25,10 +25,15 @@ import javax.faces.context.ResponseWriter;
 
 /**
  * @author Werner Punz
- */
+ */ 
 public class TestRenderer extends HtmlTextRendererBase {
 
   public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) {
+
+    //uncomment for demo 1
+    //facesContext.responseWriter.write(myNewString())
+
+
     facesContext.responseWriter.write """
             <h1>Hello from a groovy JSF components renderer </h1>
 
@@ -51,7 +56,6 @@ public class TestRenderer extends HtmlTextRendererBase {
             Test for attribute: $uiComponent.testattr
         """
 
-
     super.encodeBegin(facesContext, uiComponent);    //To change body of overridden methods use File | Settings | File Templates.
   }
 
@@ -61,6 +65,14 @@ public class TestRenderer extends HtmlTextRendererBase {
     facesContext.getResponseWriter().write """\
             encode end here
         """
-
   }
+
+
+  //uncomment for demo 1
+  /*def myNewString() {
+    return """\
+    <h1 style="color: yellow;"> hello world from new String </h1>
+    """
+  } */
+  
 }

@@ -122,7 +122,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             //TODO we need another loader here which adds the meta information if not present to our
             //managed beans
             try {
-                ScannerClassloader loader = new ScannerClassloader(Thread.currentThread().getContextClassLoader(), -1, null, RecompiledClassLoader.tempDir);
+                ScannerClassloader loader = new ScannerClassloader(Thread.currentThread().getContextClassLoader(), -1, null, WeavingContext.getConfiguration().getCompileTarget());
 
                 Class clazz = null;
                 //in case the class does not exist we have to load it from our weavingcontext

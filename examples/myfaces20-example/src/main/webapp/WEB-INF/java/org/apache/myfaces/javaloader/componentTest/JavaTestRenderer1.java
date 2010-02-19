@@ -53,20 +53,24 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         JavaTestComponent myComponent = (JavaTestComponent) component;
 
         ResponseWriter writer = context.getResponseWriter();
+        writer.write("<h3>Renderer Demo Java Renderer 1</h3>");
+        //uncomment for demo 1
         test(myComponent, writer);
 
-        //hello(writer);
         writer.flush();
     }
+
+
+    
+    //uncomment for demo 1
 
     private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
         writer.write(MSG2);
         writer.write(myComponent.getMarker());
-        writer.write("<h1/>TestAttr: " + myComponent.getTestAttr() + " | " + myComponent.getTestAttr3() + "</h1>");
-        /*lets add the new attribute as extra output*/
-        writer.write("<h2>" + myComponent.getTestAttr4() + "</h2>");
+        writer.write("<h4 style='color: red;'>TestAttr: " + myComponent.getTestAttr() + " | " + myComponent.getTestAttr3() + "</h4>");
+        writer.write("<h4>" + myComponent.getTestAttr4() + "</h4>");
     }
-
+    
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         log.info("JavaTestRenderer1.encodeEnd");
     }

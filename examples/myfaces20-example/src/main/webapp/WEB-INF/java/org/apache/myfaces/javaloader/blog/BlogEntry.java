@@ -19,17 +19,17 @@
 package org.apache.myfaces.javaloader.blog;
 
 /**
- * @author werpu2
- * @date: 01.09.2009
- * <p/>
- * This is the domain object we now edit it
+ * Domain object for our mini blogging example
+ * Holds the entered blogging data
  */
 public class BlogEntry {
 
+    
     String firstName = "";
     String lastName = "";
     String topic = "";
     String content = "";
+    
 
     public String getFirstName() {
         return firstName;
@@ -62,4 +62,5 @@ public class BlogEntry {
     public void setContent(String content) {
         this.content = content;
     }
+    
 }

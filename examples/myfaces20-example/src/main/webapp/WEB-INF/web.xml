@@ -116,7 +116,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-        <param-value>/WEB-INF/facelets/groovy-taglib.xml;/WEB-INF/facelets/extscripting.taglib.xml</param-value>
+        <param-value>/WEB-INF/facelets/groovy-taglib.xml;/WEB-INF/facelets/extscripting.taglib.xml;/WEB-INF/facelets/tomahawk.taglib.xml</param-value>
     </context-param>
 
 
