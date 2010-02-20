@@ -21,6 +21,7 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 import org.objectweb.asm.*;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,11 +52,14 @@ class ClassScanVisitor implements ClassVisitor {
     public void visit(int version, int access, String name,
                       String signature, String superName, String[] interfaces) {
         //log.log(Level.INFO, "{0} extends {1} ", new String[]{name, superName});
+         if(name.contains("BlogService")) {
+            System.out.println("Debugpint found");
+        }
 
-        ClassScanUtils.logParmList(dependencies, whiteList, superName);
+        registerDependency(Type.getObjectType(superName), "Super name[" + superName + "]");
         if (interfaces != null && interfaces.length > 0) {
             for (String currInterface : interfaces) {
-                ClassScanUtils.logParmList(dependencies, whiteList, currInterface);
+                registerDependency(Type.getObjectType(currInterface), "interface [" + superName + "]");
             }
         }
     }
@@ -71,7 +75,7 @@ class ClassScanVisitor implements ClassVisitor {
 
     public AnnotationVisitor visitAnnotation(String desc,
                                              boolean visible) {
-        ClassScanUtils.logParmList(dependencies, whiteList, desc);
+        registerDependency(Type.getType(desc), "registering annotation [" + desc + "]");
 
         return null;
     }
@@ -89,40 +93,28 @@ class ClassScanVisitor implements ClassVisitor {
     public FieldVisitor visitField(int access, String name, String desc,
                                    String signature, Object value) {
         //log.log(Level.INFO, "Field:{0} {1} ", new Object[]{desc, name});
-        ClassScanUtils.logParmList(dependencies, whiteList, desc);
+        registerDependency(Type.getType(desc), "field type  [" + desc + "]");
 
         return null;
     }
 
+    private void registerDependency(Type dependency, String desc) {
+        String className = dependency.getClassName();
+        if (className.endsWith("[]")) {
+            className = className.substring(0, className.indexOf("["));
+        }
+        ClassScanUtils.logParmList(dependencies, whiteList, className);
+    }
+
     public MethodVisitor visitMethod(int access, String name,
                                      String desc, String signature, String[] exceptions) {
-        //log.log(Level.INFO, "Method {0} {1} ", new Object[]{name, desc});
-        int lParen = desc.indexOf("(");
-        int rParen = desc.indexOf(")");
-        if (rParen - lParen <= 2) {
-            if (desc.indexOf(")L") != -1) {
-                //TODO handle templated files Lbla<Lbla;>;
-                String [] retVal = desc.substring(desc.indexOf(")L") + 2).split(";");
-                ClassScanUtils.logParmList(dependencies, whiteList, retVal);
-            }
-            return new MethodScanVisitor(dependencies, whiteList);
-        }
-        String subDesc = desc.substring(desc.indexOf("(") + 2, desc.lastIndexOf(")"));
-        String[] parms = subDesc.split(";");
-        String[] retVal = null;
-        //We have a class return value after our params list
-        if (desc.indexOf(")L") != -1) {
-            retVal = desc.substring(desc.indexOf(")L") + 2).split(";");
-            ClassScanUtils.logParmList(dependencies, whiteList, retVal);
-        }
-        if (exceptions != null) {
-            ClassScanUtils.logParmList(dependencies, whiteList, exceptions);
+
+        registerDependency(Type.getReturnType(desc), "Return type of the method [" + name + "]");
+
+        for (Type argumentType : Type.getArgumentTypes(desc)) {
+            registerDependency(argumentType, "Argument type of the method [" + name + "]");
         }
 
-        ClassScanUtils.logParmList(dependencies, whiteList, parms);
-
-        //we now have to dig into the method to cover more, the parms are covered by our method scanner
-      
         return new MethodScanVisitor(dependencies, whiteList);
     }
 

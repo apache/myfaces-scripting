@@ -148,11 +148,8 @@ class ClassScanUtils {
      */
     public static void logParmList(Collection<String> dependencies, final Set<String> whiteList, final String... parameters) {
         for (String singleParameter : parameters) {
-            if (singleParameter == null) continue;
-            if (singleParameter.equals("")) continue;
-            singleParameter = internalClassDescriptorToSource(singleParameter);
-            if (singleParameter == null || isStandardNamespace(singleParameter)) continue;
-
+            if (singleParameter == null || singleParameter.trim().equals("") || isStandardNamespace(singleParameter)) continue;
+       
             String[] packages = singleParameter.split("\\.");
 
             StringBuilder fullPackage = null;

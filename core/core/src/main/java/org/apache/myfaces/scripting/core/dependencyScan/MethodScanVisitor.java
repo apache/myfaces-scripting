@@ -18,10 +18,7 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Attribute;
-import org.objectweb.asm.Label;
+import org.objectweb.asm.*;
 
 import java.util.Set;
 import java.util.logging.Level;
@@ -49,18 +46,21 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     public AnnotationVisitor visitAnnotation(String description, boolean b) {
-        ClassScanUtils.logParmList(dependencies, whiteList, description);
+        registerDependency(Type.getType(description), "registering annotation ["+description+"]");
+        
 
         return null;
     }
 
-    public AnnotationVisitor visitParameterAnnotation(int i, String s, boolean b) {
+    public AnnotationVisitor visitParameterAnnotation(int i, String description, boolean b) {
+        registerDependency(Type.getType(description), "registering annotation ["+description+"]");
+
         return null;
     }
 
     public void visitAttribute(Attribute attribute) {
         //log.log(Level.INFO, "MethodAttr {0}:", attribute.type);
-        System.out.println(attribute.type);
+        //System.out.println(attribute.type);
     }
 
     public void visitCode() {
@@ -82,26 +82,64 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTypeInsn(int i, String castType) {
         //cast
         // log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
-        ClassScanUtils.logParmList(dependencies, whiteList, castType);
+        registerDependency(Type.getObjectType(castType), "cast registered type["+castType+"]");
     }
 
+    private void registerDependency(Type dependency, String desc) {
+
+        String className = dependency.getClassName();
+        if(className.endsWith("[]")) {
+            className = className.substring(0, className.indexOf("["));
+        }
+        if(dependency.getClassName().contains("javaloader.blog.BlogEntry")) {
+            System.out.println("Debugpint found");
+        }
+        ClassScanUtils.logParmList(dependencies, whiteList, className);
+    }
+
+    /**
+     *
+     * @param i
+     * @param s  hosting classname of field (always the calling class afaik)
+     * @param s1 internal descriptor TODO check if it needs treatment, but I assume static imports need it
+     * @param s2  field type
+     */
     public void visitFieldInsn(int i, String s, String s1, String s2) {
         //    log.log(Level.INFO, "visitFieldInsn {0} {1} {2}", new Object[]{s, s1, s2});
-        //ClassScanUtils.logParmList(dependencies, castType);
         //we have to deal with static imports as special case of field insertions
         if (s1 != null && s1.length() > 6 && s1.startsWith("class$")) {
             //special fallback for groovy static imports which are added as fields
             s1 = "L" + s1.substring(6).replaceAll("\\$", ".") + ";";
-            ClassScanUtils.logParmList(dependencies, whiteList, s1, s2);
-        } else {
-            ClassScanUtils.logParmList(dependencies, whiteList, s2);
+            registerDependency(Type.getType(s1), "field insn s1 [" + s1 + "]");
+        }
+        if (s2 != null) {
+            registerDependency(Type.getType(s2), "field insn s2 [" + s2 + "]");
         }
     }
 
+    /**
+     * Method call
+     * @param i internal counter
+     * @param s hosting classname of the method
+     * @param s1 method name
+     * @param s2 params list
+     */
     public void visitMethodInsn(int i, String s, String s1, String s2) {
+        //s2 arguments list
+        if (s2 != null) {
+            registerDependency(Type.getReturnType(s2), "Registering return type [" + s2 + "]");
+            Type[] argumentTypes = Type.getArgumentTypes(s2);
+            if (argumentTypes != null) {
+                for (Type argumentType : argumentTypes) {
+                    registerDependency(argumentType, "Registering argument type [" + s2 + "]");
+                }
+            }
+        }
+        //s1 method name, can be ignored
+        //   s hosting classname
+        if (s != null)
+            registerDependency(Type.getObjectType(s), "registering callee type [" + s + "]");
 
-        //   log.log(Level.INFO, "visitMethodIsn {0} {1} {2}", new Object[]{s, s1, s2});
-        ClassScanUtils.logParmList(dependencies, whiteList, "L" + s + ";", s2);
     }
 
     public void visitJumpInsn(int i, Label label) {
@@ -135,15 +173,13 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTryCatchBlock(Label label, Label label1, Label label2, String catchType) {
         //try catch block type information in the last string
         //log.log(Level.INFO, "visitTryCatchBlock: {0} {1} {2} {3}", new Object[]{label.toString(), label1.toString(), label2.toString(), catchType});
-        ClassScanUtils.logParmList(dependencies, whiteList, catchType);
+        registerDependency(Type.getObjectType(catchType), "catch registered type["+catchType+"]");
 
     }
 
     public void visitLocalVariable(String s, String referenceType, String s2, Label label, Label label1, int i) {
         //local variable on method level
-        //log.log(Level.INFO, "LocalVar: {0} {1} {2}", new String[]{s, referenceType, s2});
-        ClassScanUtils.logParmList(dependencies, whiteList, referenceType);
-
+        registerDependency(Type.getType(referenceType), "local variable registered type["+referenceType+"]");
     }
 
     public void visitLineNumber(int i, Label label) {

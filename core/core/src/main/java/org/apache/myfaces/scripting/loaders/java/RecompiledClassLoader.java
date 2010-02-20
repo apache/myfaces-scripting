@@ -18,21 +18,7 @@
  */
 package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
-import org.apache.myfaces.scripting.core.util.FileUtils;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.refresh.RefreshContext;
-import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URLClassLoader;
-import java.util.Collection;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -46,19 +32,19 @@ public class RecompiledClassLoader extends ClassLoader {
     String _engineExtension;
     boolean _unTaintClasses = true;
     String _sourceRoot;
-    RecompiledClassLoaderInternal _throwAwayLoader = null;
+    ThrowawayClassloader _throwAwayLoader = null;
 
     public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
         super(classLoader);
         _scriptingEngine = scriptingEngine;
         _engineExtension = engineExtension;
-        _throwAwayLoader = new RecompiledClassLoaderInternal(classLoader, scriptingEngine, engineExtension);
+        _throwAwayLoader = new ThrowawayClassloader(classLoader, scriptingEngine, engineExtension);
     }
 
     public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
         this(classLoader, scriptingEngine, engineExtension);
         _unTaintClasses = untaint;
-        _throwAwayLoader = new RecompiledClassLoaderInternal(getParent(), scriptingEngine, engineExtension, untaint);
+        _throwAwayLoader = new ThrowawayClassloader(getParent(), scriptingEngine, engineExtension, untaint);
     }
 
     RecompiledClassLoader() {
@@ -71,7 +57,7 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
-        _throwAwayLoader = new RecompiledClassLoaderInternal(getParent(), _scriptingEngine, _engineExtension, _unTaintClasses);
+        _throwAwayLoader = new ThrowawayClassloader(getParent(), _scriptingEngine, _engineExtension, _unTaintClasses);
         _throwAwayLoader.setSourceRoot(getSourceRoot());
         return _throwAwayLoader.loadClass(className);
     }

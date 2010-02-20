@@ -61,6 +61,4 @@ public class BlogService implements BlogServiceInterface {
     public String getTest() {
         return "ddd";
     }
-
-    
 }

@@ -23,14 +23,14 @@ import java.util.List
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import javax.faces.bean.ManagedBean
-import javax.faces.bean.ApplicationScoped;
-
-
+import javax.faces.bean.ApplicationScoped
+import javax.faces.bean.RequestScoped;
 
 
 public class BlogService2 {
   List blogEntries = new ArrayList()
 
+  
   public java.util.List getBlogEntries() {
     return blogEntries
   }
@@ -38,6 +38,7 @@ public class BlogService2 {
   public void addEntry(def entry) {
     Log log = LogFactory.getLog(BlogService.class)
     log.info("Adding entry, topic xxx: " + entry.topic)
+    entry.topic = "topic from blogservice 2"
     blogEntries.add(entry)
 
     log.info("blogentries size" + blogEntries.size())

@@ -23,6 +23,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.FacesRenderer;
 
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
@@ -31,6 +32,7 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "Hello world from Renderer 2";

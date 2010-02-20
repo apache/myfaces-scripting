@@ -19,7 +19,7 @@ import java.util.Collection;
  * 
  */
 @JavaThrowAwayClassloader
-public class RecompiledClassLoaderInternal extends ClassLoader {
+public class ThrowawayClassloader extends ClassLoader {
 
     public static File tempDir = null;
     static double _tempMarker = Math.random();
@@ -29,7 +29,7 @@ public class RecompiledClassLoaderInternal extends ClassLoader {
 
     String sourceRoot;
 
-    public RecompiledClassLoaderInternal(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
+    public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
         super(classLoader);
         if (tempDir == null) {
             synchronized (this.getClass()) {
@@ -44,12 +44,12 @@ public class RecompiledClassLoaderInternal extends ClassLoader {
         _engineExtension = engineExtension;
     }
 
-    public RecompiledClassLoaderInternal(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
+    public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
         this(classLoader, scriptingEngine, engineExtension);
         _unTaintClasses = untaint;
     }
 
-    RecompiledClassLoaderInternal() {
+    ThrowawayClassloader() {
     }
 
     /*

@@ -52,6 +52,7 @@ public class Blog {
         return LogFactory.getLog(this.getClass());
     }
 
+    
     public String addEntry2() {
         getLog().info("adding entry2");
 
@@ -86,7 +87,7 @@ public class Blog {
             */
 
             //include for presentation 3
-            entry.setTopic(debuggingTest());
+            //entry.setTopic(debuggingTest());
             service.addEntry(entry);
         }
 
