@@ -18,17 +18,16 @@
  */
 package org.apache.myfaces.groovyloader.blog
 
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 import org.apache.myfaces.groovyloader.blog.JSFUtil;
-import org.apache.myfaces.groovyloader.blog.BlogService;
+import org.apache.myfaces.groovyloader.blog.BlogService
+import java.util.logging.Logger;
 
 
 
 public class Blog {
   //bug application and session scoped beans  are not refreshed structurally yet
 
-  Log log = LogFactory.getLog(Blog.class)
+  Logger log = Logger.getLogger(Blog.class.getName())
 
   String title = "Hello to the myfaces dynamic blogging Groovy JSF 1.2 Blog "
   String title1 = """\
@@ -50,7 +49,7 @@ public class Blog {
     def service = JSFUtil.resolveVariable("blogService")
 
     if (service == null) {
-      log.error("service not found")
+      log.severe("service not found")
     } else {
       log.info("service found")
 

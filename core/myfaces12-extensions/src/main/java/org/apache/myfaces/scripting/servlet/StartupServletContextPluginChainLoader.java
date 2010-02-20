@@ -19,22 +19,21 @@
 package org.apache.myfaces.scripting.servlet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.myfaces.scripting.api.Configuration;
-import org.apache.myfaces.scripting.core.util.Strategy;
-import org.apache.myfaces.webapp.StartupListener;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.Strategy;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
+import org.apache.myfaces.webapp.StartupListener;
 
-import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
+
 
 /**
  * @author werpu
@@ -47,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *         configuration before the MyFaces init itself starts!
  */
 public class StartupServletContextPluginChainLoader implements StartupListener {
-    final Log log = LogFactory.getLog(this.getClass());
+    final Logger log = Logger.getLogger(this.getClass().getName());
 
     public void preInit(ServletContextEvent servletContextEvent) {
 

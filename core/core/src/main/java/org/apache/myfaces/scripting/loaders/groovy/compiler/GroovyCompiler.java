@@ -18,14 +18,12 @@
  */
 package org.apache.myfaces.scripting.loaders.groovy.compiler;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
-import org.apache.myfaces.scripting.api.*;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -37,8 +35,9 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
@@ -48,7 +47,7 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
     /**
      * The logger instance for this class.
      */
-    private static final Log logger = LogFactory.getLog(GroovyCompiler.class);
+    private static final Logger logger = Logger.getLogger(GroovyCompiler.class.getName());
 
     // ------------------------------------------ Compiler methods
 
@@ -170,9 +169,9 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
             return new CompilationResult.CompilationMessage(
                     syntaxErrorMessage.getCause().getLine(), syntaxErrorMessage.getCause().getMessage());
         } else {
-            if (logger.isDebugEnabled()) {
-                logger.debug(
-                        "This compiler came across an unknown message kind ['" + message + "']. It will be ignored.");
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE,
+                        "This compiler came across an unknown message kind ['{0}']. It will be ignored.", message);
             }
 
             return null;

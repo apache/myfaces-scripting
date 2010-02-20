@@ -18,13 +18,9 @@
  */
 package org.apache.myfaces.groovyloader.blog
 
+import java.util.logging.Logger
 import javax.faces.bean.ApplicationScoped
 import javax.faces.bean.ManagedBean
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
-import javax.faces.bean.RequestScoped
-
-
 
 @ManagedBean(name = "blogService")
 @ApplicationScoped
@@ -36,7 +32,7 @@ public class BlogService {
   }
 
   public void addEntry2(BlogEntry entry) {
-    Log log = LogFactory.getLog(BlogService.class)
+    Logger log = Logger.getLogger(BlogService.class.getName())
     log.info("Adding entry 2, topic: " + entry.topic)
 
     blogEntries.add(entry)
@@ -45,7 +41,7 @@ public class BlogService {
   }
 
   public void addEntry(BlogEntry entry) {
-    Log log = LogFactory.getLog(BlogService.class)
+    Logger log = Logger.getLog(BlogService.class.getName())
     log.info("Adding entry, topic: " + entry.topic)
     blogEntries.add(entry)
 

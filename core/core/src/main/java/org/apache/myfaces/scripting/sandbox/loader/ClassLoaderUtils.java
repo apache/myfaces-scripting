@@ -18,15 +18,13 @@
  */
 package org.apache.myfaces.scripting.sandbox.loader;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * <p>Utility class for class loading purposes, e.g. to determine the classpath of a
@@ -37,7 +35,7 @@ public class ClassLoaderUtils {
     /**
      * The logger instance for this class.
      */
-    private static final Log logger = LogFactory.getLog(ClassLoaderUtils.class);
+    private static final Logger logger = Logger.getLogger(ClassLoaderUtils.class.getName());
 
     // ------------------------------------------ Public methods
 

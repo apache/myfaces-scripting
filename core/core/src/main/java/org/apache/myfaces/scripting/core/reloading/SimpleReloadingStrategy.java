@@ -19,12 +19,12 @@
 package org.apache.myfaces.scripting.core.reloading;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -82,7 +82,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
 
             return newObject;
         } catch (Exception e) {
-            getLog().error(e);
+            getLog().log(Level.SEVERE, "reload {0}", e.getMessage());
         }
         return null;
 
@@ -103,16 +103,16 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
         try {
             BeanUtils.copyProperties(target, src);
         } catch (IllegalAccessException e) {
-            getLog().debug(e);
+            getLog().log(Level.FINEST,e.toString());
             //this is wanted
         } catch (InvocationTargetException e) {
-            getLog().debug(e);
+            getLog().log(Level.FINEST,e.toString());
             //this is wanted
         }
     }
 
-    protected Log getLog() {
-        return LogFactory.getLog(this.getClass());
+    protected Logger getLog() {
+        return Logger.getLogger(this.getClass().getName());
     }
 
     public ScriptingWeaver getWeaver() {

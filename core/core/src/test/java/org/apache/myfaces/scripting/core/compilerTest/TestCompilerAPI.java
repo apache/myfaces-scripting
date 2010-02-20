@@ -20,22 +20,18 @@ package org.apache.myfaces.scripting.core.compilerTest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

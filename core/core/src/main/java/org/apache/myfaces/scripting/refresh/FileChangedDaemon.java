@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.refresh;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
@@ -28,8 +26,11 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author werpu
@@ -62,7 +63,7 @@ public class FileChangedDaemon extends Thread {
 
     boolean running = false;
     boolean contextInitialized = false;
-    Log log = LogFactory.getLog(FileChangedDaemon.class);
+    Logger log = Logger.getLogger(FileChangedDaemon.class.getName());
     ScriptingWeaver _weavers = null;
     WeakReference externalContext;
 
@@ -99,13 +100,14 @@ public class FileChangedDaemon extends Thread {
 
                 if (classMap == null || classMap.size() == 0)
                     continue;
-                 if(contextInitialized)
+                if (contextInitialized)
                     checkForChanges();
             } catch (Throwable e) {
-                log.error(e.getMessage());
+                log.log(Level.SEVERE, "[EXT-SCRIPTING]  {0} {1}", new String[]{e.getMessage(), e.toString()});
+
             }
         }
-        if (log.isInfoEnabled()) {
+        if (log.isLoggable(Level.INFO)) {
             log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
         }
     }
@@ -169,15 +171,15 @@ public class FileChangedDaemon extends Thread {
     }
 
     private void printInfo(ReloadingMetadata it) {
-        if (log.isInfoEnabled()) {
-            log.info("[EXT-SCRIPTING] Tainting Dependency:" + it.getFileName());
+        if (log.isLoggable(Level.INFO)) {
+            log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFileName());
         }
     }
 
     private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
-        if (log.isInfoEnabled()) {
-            log.info("[EXT-SCRIPTING] comparing" + it.getKey() + "Dates:" + proxyFile.lastModified() + "-" + it.getValue().getTimestamp());
-            log.info("[EXT-SCRIPTING] Tainting:" + it.getValue().getFileName());
+        if (log.isLoggable(Level.INFO)) {
+            log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getTimestamp())});
+            log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
         }
     }
 

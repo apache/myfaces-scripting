@@ -18,13 +18,11 @@
  */
 package org.apache.myfaces.javaloader.validatorConverterTest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -33,7 +31,7 @@ import javax.faces.validator.ValidatorException;
 
 public class TestValidator1 implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        Log log = LogFactory.getLog(TestValidator1.class);
+        Logger log = Logger.getLogger(TestValidator1.class.getName());
         log.info("Hello world from TestValidator1");
     }
 }

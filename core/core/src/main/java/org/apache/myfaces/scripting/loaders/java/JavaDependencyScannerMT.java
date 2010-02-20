@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -32,6 +30,8 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -52,7 +52,7 @@ public class JavaDependencyScannerMT implements ClassScanner {
     final Stack<DependencyScanner> dependencyScanner = new Stack<DependencyScanner>();
 
     ScriptingWeaver _weaver;
-    Log log = LogFactory.getLog(JavaDependencyScannerMT.class.getName());
+    Logger log = Logger.getLogger(JavaDependencyScannerMT.class.getName());
 
     public JavaDependencyScannerMT(ScriptingWeaver weaver) {
         this._weaver = weaver;
@@ -63,7 +63,7 @@ public class JavaDependencyScannerMT implements ClassScanner {
 
     public synchronized void scanPaths() {
 
-        if (log.isInfoEnabled()) {
+        if (log.isLoggable(Level.INFO)) {
             log.info("[EXT-SCRITPING] starting class dependency scan");
         }
         long start = System.currentTimeMillis();
@@ -105,8 +105,8 @@ public class JavaDependencyScannerMT implements ClassScanner {
                 }
             }
             long end = System.currentTimeMillis();
-            if (log.isInfoEnabled()) {
-                log.info("[EXT-SCRITPING] class dependency scan finished, duration: " + (end - start) + " ms");
+            if (log.isLoggable(Level.FINE)) {
+                log.log(Level.FINE,"[EXT-SCRITPING] class dependency scan finished, duration: {0} ms",Long.toString(end - start));
             }
         } finally {
             WeavingContext.cleanThreadingData();

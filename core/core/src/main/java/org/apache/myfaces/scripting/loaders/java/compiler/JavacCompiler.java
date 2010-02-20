@@ -18,25 +18,27 @@
  */
 package org.apache.myfaces.scripting.loaders.java.compiler;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
-import org.apache.myfaces.scripting.api.*;
+import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.scripting.api.CompilerConst;
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLClassLoader;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>A compiler implementation that utilizes some internal classes that enable you to
@@ -54,7 +56,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
     /**
      * The logger instance for this class.
      */
-    private static final Log logger = LogFactory.getLog(JavacCompiler.class);
+    private static final Logger logger = Logger.getLogger(JavacCompiler.class.getName());
 
     /**
      * The class name of the javac compiler. Note that this class
@@ -171,7 +173,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                     compilerArguments);
 
             CompilationResult result = new CompilationResult(compilerOutput.toString());
-            if (returnCode == null || returnCode.intValue() != 0) {
+            if (returnCode == null || returnCode != 0) {
                 result.registerError(new CompilationResult.CompilationMessage(-1,
                         "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
@@ -190,16 +192,16 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
     }
 
     private void logCommandLine(Object[] compilerArguments) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             StringBuilder commandLine = new StringBuilder();
             commandLine.append("javac ");
             for (String compilerArgument : (String[]) compilerArguments[0]) {
                 commandLine.append(compilerArgument);
                 commandLine.append(" ");
             }
-            logger.debug(commandLine.toString());
+            logger.log(Level.FINE,commandLine.toString());
         }
-        if (logger.isInfoEnabled()) {
+        if (logger.isLoggable(Level.INFO)) {
             logger.info("[EXT-SCRIPTING] compiling java");
         }
 
@@ -319,8 +321,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
         // If the user has already included the tools.jar in the classpath we don't have
         // to create a custom class loader as the class is already available.
         if (ClassUtils.isPresent(JAVAC_MAIN)) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Seemingly the required JAR file '$JAVA_HOME$/lib/tools.jar' has already been "
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, "Seemingly the required JAR file '$JAVA_HOME$/lib/tools.jar' has already been "
                         + "put on the classpath as the class '" + JAVAC_MAIN + "' is present. So there's no "
                         + "need to create a custom classloader for the Javac compiler.");
             }
@@ -340,8 +342,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                 // If the user hasn't specified the URL to the tools.jar file, we'll try to find it on our own.
                 File toolsJarFile = new File(javaHome, "lib" + File.separatorChar + "tools.jar");
                 if (toolsJarFile.exists()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.log(Level.FINE,
                                 "The required JAR file '$JAVA_HOME$/lib/tools.jar' has been found ['" + toolsJarFile.getAbsolutePath()
                                         + "']. A custom URL classloader will be created for the Javac compiler.");
                     }
@@ -354,8 +356,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                             "[$JAVA_HOME$: '" + System.getProperty("java.home") + "']");
                 }
             } else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("The user has specified the required JAR file '$JAVA_HOME$/lib/tools.jar' ['"
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, "The user has specified the required JAR file '$JAVA_HOME$/lib/tools.jar' ['"
                             + toolsJar.toExternalForm() + "']. A custom URL classloader will be created for the Javac compiler.");
                 }
 

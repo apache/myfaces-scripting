@@ -18,9 +18,9 @@
  */
 package org.apache.myfaces.groovyloader.blog;
 
+
+import java.util.logging.Logger
 import javax.faces.context.FacesContext
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Utils class to keep the code clean and mean
@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 public class JSFUtil {
 
   public static Object resolveVariable(String beanName) {
-    Log log = LogFactory.getLog(JSFUtil.class)
+    Logger log = Logger.getLogger(JSFUtil.class.getName())
     log.info("ElResolver Instance:" + FacesContext.getCurrentInstance().getELContext().getELResolver().toString())
     return FacesContext.getCurrentInstance().getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().getELContext(), null, beanName)
   }

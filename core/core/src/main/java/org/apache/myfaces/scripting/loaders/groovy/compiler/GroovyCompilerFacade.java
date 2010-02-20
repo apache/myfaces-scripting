@@ -18,18 +18,18 @@
  */
 package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyRecompiledClassloader;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -43,7 +43,7 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
     //ContainerFileManager fileManager = null;
 
-    Log log = LogFactory.getLog(this.getClass());
+    Logger log = Logger.getLogger(this.getClass().getName());
     GroovyCompiler compiler;
 
     public GroovyCompilerFacade() {
@@ -118,10 +118,10 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.error("[EXT-SCRIPTING] Groovy compiler error:" + error.getLineNumber() + "-" + error.getMessage());
+            log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler error: {0} - {1}", new String[]{Long.toString(error.getLineNumber()), error.getMessage()});
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
-            log.error("[EXT-SCRIPTING] Groovy compiler warning:" + error.getMessage());
+            log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler warning: {0}", error.getMessage());
         }
         WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
     }

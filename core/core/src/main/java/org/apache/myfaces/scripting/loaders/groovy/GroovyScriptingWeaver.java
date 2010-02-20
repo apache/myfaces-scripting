@@ -1,13 +1,10 @@
 package org.apache.myfaces.scripting.loaders.groovy;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.groovyloader.core.StandardGroovyReloadingStrategy;
 import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.Cast;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.groovy.compiler.GroovyCompilerFacade;
 
 import javax.faces.context.FacesContext;

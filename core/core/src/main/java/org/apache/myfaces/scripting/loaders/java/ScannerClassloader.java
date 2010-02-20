@@ -1,9 +1,6 @@
 package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
-import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
@@ -12,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 

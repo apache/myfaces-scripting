@@ -23,6 +23,7 @@ import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedBehavior;
 
 import javax.faces.component.behavior.FacesBehavior;
+import java.util.logging.Level;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -41,8 +42,8 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
     }
 
     protected void addEntity(Class clazz, String val) {
-        if (log.isTraceEnabled()) {
-            log.trace("addBehavior(" + val + ","
+        if (log.isLoggable(Level.FINEST)) {
+            log.log(Level.FINEST, "addBehavior(" + val + ","
                     + clazz.getName() + ")");
         }
         getApplication().addBehavior(val, clazz.getName());

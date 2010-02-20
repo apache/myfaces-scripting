@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -29,6 +27,9 @@ import java.beans.FeatureDescriptor;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Logger;
+
+
 
 /**
  * EL Resolver which is scripting enabled
@@ -36,7 +37,7 @@ import java.util.Set;
  * @author Werner Punz
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
-    Log log = LogFactory.getLog(ELResolverProxy.class);
+    Logger log = Logger.getLogger(ELResolverProxy.class.getName());
 
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
         //request, class is loaded anew hence we already have picked up the new code

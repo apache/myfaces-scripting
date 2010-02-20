@@ -20,8 +20,7 @@ package org.apache.myfaces.groovyloader.blog
 
 import org.apache.myfaces.groovyloader.blog.BlogEntry;
 import java.util.List
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger
 
 
 
@@ -29,7 +28,7 @@ public class BlogService {
   List blogEntries = new ArrayList()
 
   public void addEntry2(BlogEntry entry) {
-    Log log = LogFactory.getLog(BlogService.class)
+    Logger log = Logger.getLogger(BlogService.class)
     log.info("(BlogService.addEntry2): Adding entry")
     blogEntries << entry
   }

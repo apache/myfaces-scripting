@@ -27,6 +27,7 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import javax.faces.bean.*;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -93,14 +94,14 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
 
     private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
         for (Field field : fields) {
-            if (log.isTraceEnabled()) {
-                log.trace("  Scanning field '" + field.getName() + "'");
+            if (log.isLoggable(Level.FINEST)) {
+                log.log(Level.FINEST,"  Scanning field '" + field.getName() + "'");
             }
             javax.faces.bean.ManagedProperty property = (javax.faces.bean.ManagedProperty) field
                     .getAnnotation(javax.faces.bean.ManagedProperty.class);
             if (property != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("  Field '" + field.getName()
+                if (log.isLoggable(Level.FINE)) {
+                    log.log(Level.FINE,"  Field '" + field.getName()
                             + "' has a @ManagedProperty annotation");
                 }
 

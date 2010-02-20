@@ -160,9 +160,9 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
                 renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
             }
         } catch (InstantiationException e) {
-            log.error(e);
+            log.severe(e.toString());
         } catch (IllegalAccessException e) {
-            log.error(e);
+            log.severe(e.toString());
         }
     }
 

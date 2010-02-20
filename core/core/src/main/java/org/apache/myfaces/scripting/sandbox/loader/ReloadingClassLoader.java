@@ -18,11 +18,9 @@
  */
 package org.apache.myfaces.scripting.sandbox.loader;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
 import org.apache.myfaces.scripting.sandbox.loader.support.ClassFileLoader;
 import org.apache.myfaces.scripting.sandbox.loader.support.OverridingClassLoader;
+import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +28,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>A class loader implementation that enables you to reload certain classes. It automatically
@@ -63,7 +63,7 @@ public class ReloadingClassLoader extends URLClassLoader {
     /**
      * The logger instance for this class.
      */
-    private static final Log logger = LogFactory.getLog(ReloadingClassLoader.class);
+    private static final Logger logger = Logger.getLogger(ReloadingClassLoader.class.getName());
 
     /**
      * A table of class names and the according class loaders. It's basically like
@@ -145,8 +145,8 @@ public class ReloadingClassLoader extends URLClassLoader {
                     reloadClass(className);
                 }
             } else {
-                if (logger.isTraceEnabled()) {
-                    logger.trace("A new dynamic class '"
+                if (logger.isLoggable(Level.FINEST)) {
+                    logger.log(Level.FINEST, "A new dynamic class '"
                             + className + "' has been found by this class loader '" + this + "'.");
                 }
 
@@ -182,7 +182,7 @@ public class ReloadingClassLoader extends URLClassLoader {
         try {
             return new URL[]{compilationDirectory.toURI().toURL()};
         } catch (IOException ex) {
-            logger.error("Couldn't resolve the URL to the compilation directory '" + compilationDirectory + "'.", ex);
+            logger.log(Level.SEVERE, "Couldn't resolve the URL to the compilation directory {0} {1} {2} ", new String[]{compilationDirectory.getAbsolutePath(), ex.getMessage(), ex.toString()});
             return new URL[0];
         }
     }
@@ -238,7 +238,7 @@ public class ReloadingClassLoader extends URLClassLoader {
         }
 
         ThrowAwayClassLoader oldClassLoader = classLoaders.put(className, classLoader);
-        if (logger.isInfoEnabled()) {
+        if (logger.isLoggable(Level.INFO)) {
             if (oldClassLoader != null) {
                 logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
                         + classLoader + "' as this class loader is supposed to reload the class '" + className + "'.");

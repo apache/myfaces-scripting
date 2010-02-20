@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.loaders.java.compiler;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.CompilationException;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -30,6 +28,8 @@ import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -42,7 +42,7 @@ import java.io.File;
 public class CompilerFacade implements DynamicCompiler {
     protected org.apache.myfaces.scripting.api.Compiler compiler = null;
 
-    Log log = LogFactory.getLog(this.getClass());
+    Logger log = Logger.getLogger(this.getClass().getName());
 
     public CompilerFacade() {
         super();
@@ -73,11 +73,11 @@ public class CompilerFacade implements DynamicCompiler {
             CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
             displayMessages(result);
             if (result.hasErrors()) {
-                log.error("Compiler output:" + result.getCompilerOutput());
+                log.log(Level.WARNING, "Compiler output:{0}", result.getCompilerOutput());
             }
 
         } catch (org.apache.myfaces.scripting.api.CompilationException e) {
-            log.error(e);
+            log.log(Level.SEVERE, "CompilationException : {0} {1}", new String[]{e.getMessage(), e.toString()});
         }
     }
 
@@ -118,18 +118,18 @@ public class CompilerFacade implements DynamicCompiler {
             displayMessages(result);
             return WeavingContext.getConfiguration().getCompileTarget();
         } catch (CompilationException e) {
-            log.error(e);
+            log.log(Level.SEVERE, "CompilationException : {0} {1}", new String[]{e.getMessage(), e.toString()});
         }
         return null;
     }
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.error(error.getLineNumber() + "-" + error.getMessage());
+            log.log(Level.WARNING, "[EXT-SCRIPTING] Compile Error: {0} - {1}", new String[]{Long.toString(error.getLineNumber()), error.getMessage()});
 
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
-            log.error(error.getMessage());
+            log.warning(error.getMessage());
         }
     }
 

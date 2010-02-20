@@ -18,12 +18,10 @@
  */
 package org.apache.myfaces.scripting.jsf;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.util.logging.Logger;
 
 /**
  * Servlet context plugin which provides a cleaner initialisation
@@ -33,7 +31,7 @@ import javax.servlet.ServletContext;
  */
 public class StartupServletContextPlugin implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        Log log = LogFactory.getLog(this.getClass());
+        Logger log = Logger.getLogger(this.getClass().getName());
 
         log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
 

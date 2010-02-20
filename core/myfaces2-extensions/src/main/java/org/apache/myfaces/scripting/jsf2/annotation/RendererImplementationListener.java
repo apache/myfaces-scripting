@@ -30,6 +30,7 @@ import javax.faces.render.Renderer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -124,8 +125,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         _inverseIndex.put(entry, clazz.getName());
         _alreadyRegistered.put(clazz.getName(), entry);
 
-        if (log.isTraceEnabled()) {
-            log.trace("addRenderer(" + renderKitId + ", "
+        if (log.isLoggable(Level.FINEST)) {
+            log.log(Level.FINEST, "addRenderer(" + renderKitId + ", "
                     + entry.getComponentFamily() + ", " + entry.getRendererType()
                     + ", " + clazz.getName() + ")");
         }
@@ -133,9 +134,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         try {
             renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), (Renderer) clazz.newInstance());
         } catch (InstantiationException e) {
-            log.error(e);
+            log.severe(e.toString());
         } catch (IllegalAccessException e) {
-            log.error(e);
+            log.severe(e.toString());
         }
     }
 
@@ -188,9 +189,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
                 renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
             }
         } catch (InstantiationException e) {
-            log.error(e);
+            log.severe(e.toString());
         } catch (IllegalAccessException e) {
-            log.error(e);
+            log.severe(e.toString());
         }
     }
 }

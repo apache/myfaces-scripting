@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -30,6 +28,8 @@ import javax.faces.context.FacesContext;
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * EL Resolver which is scripting enabled
@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
 
-    Log log = LogFactory.getLog(ELResolverProxy.class);
+    Logger log = Logger.getLogger(ELResolverProxy.class.getName());
     ELResolver _delegate = null;
 
     static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
@@ -52,7 +52,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
 
-            if(retVal.getClass().getName().equals("BlogEntry")) {
+            if (retVal.getClass().getName().equals("BlogEntry")) {
                 System.out.println(Thread.currentThread().getContextClassLoader().getClass().toString());
             }
             newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
@@ -87,8 +87,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
                 RuntimeConfig config = RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
                 Map<String, org.apache.myfaces.config.element.ManagedBean> mbeans = config.getManagedBeans();
                 if (!mbeans.containsKey(property.toString())) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
+                    if (log.isLoggable(Level.FINE)) {
+                        log.log(Level.FINE,"[EXT-SCRIPTING] ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
                     }
                     _delegate.setValue(elContext, base, property, null);
 

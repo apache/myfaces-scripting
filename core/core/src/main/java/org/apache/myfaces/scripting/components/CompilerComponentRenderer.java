@@ -19,17 +19,16 @@
 package org.apache.myfaces.scripting.components;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Renderer for the compiler component
@@ -68,8 +67,8 @@ public class CompilerComponentRenderer extends HtmlTextRendererBase {
 
                 break;
             case ScriptingConst.ENGINE_TYPE_NO_ENGINE:
-                Log log = LogFactory.getLog(this.getClass());
-                log.warn("Warning engine not found");
+                Logger log = Logger.getLogger(this.getClass().getName());
+                log.warning("Warning engine not found");
                 break;
 
         }

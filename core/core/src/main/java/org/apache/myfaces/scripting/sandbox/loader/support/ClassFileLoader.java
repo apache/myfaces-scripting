@@ -18,14 +18,13 @@
  */
 package org.apache.myfaces.scripting.sandbox.loader.support;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>This class loader actually loads the newly compiled classes. Each newly compiled class
@@ -39,7 +38,7 @@ public class ClassFileLoader extends AbstractThrowAwayClassLoader {
     /**
      * The logger instance for this class.
      */
-    private static final Log logger = LogFactory.getLog(ClassFileLoader.class);
+    private static final Logger logger = Logger.getLogger(ClassFileLoader.class.getName());
 
     /**
      * The .class file that contains the byte code for the class that this class loader is going to load.
@@ -81,8 +80,8 @@ public class ClassFileLoader extends AbstractThrowAwayClassLoader {
             return new URL[]{classFile.toURI().toURL()};
         }
         catch (IOException ex) {
-            logger.error("Couldn't resolve the URL to the class file '"
-                    + classFile + "' that this class loader '" + this + "' should load.", ex);
+            logger.log(Level.SEVERE, "Couldn't resolve the URL to the class file {0}  that this class loader {1} should load,  {2} {3}", new String [] {classFile.getAbsolutePath() ,  this.getClassName(), ex.getMessage(), ex.toString()});
+
             return new URL[0];
         }
     }

@@ -19,14 +19,13 @@
 package org.apache.myfaces.javaloader.componentTest;
 
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -45,7 +44,7 @@ import java.io.IOException;
 
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
-    static Log log = LogFactory.getLog(JavaTestRenderer1.class);
+    static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());
 
     private static final String MSG2 = "Hello world from Renderer 1";
 

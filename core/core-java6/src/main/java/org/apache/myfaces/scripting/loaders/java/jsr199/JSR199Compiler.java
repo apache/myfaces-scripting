@@ -18,20 +18,20 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.CompilationException;
 import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 
 import javax.tools.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -144,12 +144,12 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
      */
     private void handleDiagnostics(DiagnosticCollector<JavaFileObject> diagnosticCollector) throws ClassNotFoundException {
         if (diagnosticCollector.getDiagnostics().size() > 0) {
-            Log log = LogFactory.getLog(this.getClass());
+            Logger log = Logger.getLogger(this.getClass().getName());
             StringBuilder errors = new StringBuilder();
             CompilationResult result = new CompilationResult("");
             for (Diagnostic diagnostic : diagnosticCollector.getDiagnostics()) {
                 String error = createErrorMessage(diagnostic);
-                log.error(error);
+                log.log(Level.WARNING, "[EXT-SCRIPTING] Compiler: {0}", error);
                 result.getErrors().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
                 errors.append(error);
             }
@@ -183,7 +183,7 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
 
         String source = "No additional source info";
 
-        if(diagnostic.getSource() != null) {
+        if (diagnostic.getSource() != null) {
             source = diagnostic.getSource().toString();
         }
         retVal.append(source);
@@ -191,8 +191,8 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         return retVal.toString();
     }
 
-    private final Log getLog() {
-        return LogFactory.getLog(this.getClass());
+    private final Logger getLog() {
+        return Logger.getLogger(this.getClass().getName());
     }
 
 }

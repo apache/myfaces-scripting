@@ -18,12 +18,10 @@
  */
 package org.apache.myfaces.javaloader.blog;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.faces.context.FacesContext;
+import java.util.logging.Logger;
 
-import static org.apache.myfaces.scripting.core.util.ReflectUtil.*;
+import static org.apache.myfaces.scripting.core.util.ReflectUtil.executeMethod;
 
 /**
  * @author werpu2
@@ -43,7 +41,7 @@ public class JSFUtil {
      * @return
      */
     public static Object resolveVariable(String beanName) {
-        Log log = LogFactory.getLog(JSFUtil.class);
+        Logger log = Logger.getLogger(JSFUtil.class.getName());
         Object facesContext = FacesContext.getCurrentInstance();
 
         Object elContext = executeMethod(facesContext, "getELContext");

@@ -19,8 +19,6 @@
 package org.apache.myfaces.scripting.servlet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -29,6 +27,8 @@ import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 
 import javax.servlet.ServletContext;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * a custom chainloader which adds a groovy loading
@@ -51,7 +51,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
     private static final String GROOVY_SOURCE_ROOT = "/WEB-INF/groovy/";
     private static final String JAVA_SOURCE_ROOT = "/WEB-INF/java/";
 
-    Log log = LogFactory.getLog(CustomChainLoader.class);
+    Logger log = Logger.getLogger(CustomChainLoader.class.getName());
 
     //TODO move the entire init code into the weavers
     //every weaver should know itself how to initialize itself
@@ -112,7 +112,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
             return null;
         }
         if (name.contains(".Blog")) {
-            log.debug("Debugpoint found for Blog");
+            log.log(Level.FINE, "Debugpoint found for Blog");
         }
 
         return scriptingWeaver.loadScriptingClassFromName(name);

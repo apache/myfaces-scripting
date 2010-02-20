@@ -18,15 +18,13 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -35,7 +33,7 @@ import java.util.Collection;
 
 public class ReflectUtil {
 
-    static Log log = LogFactory.getLog(ReflectUtil.class);
+    static Logger log = Logger.getLogger(ReflectUtil.class.getName());
 
     public static Object instantiate(String clazz, Object... varargs) {
         return instantiate(ClassUtils.forName(clazz), varargs);

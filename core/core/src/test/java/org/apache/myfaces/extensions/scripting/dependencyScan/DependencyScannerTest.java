@@ -18,14 +18,13 @@
  */
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
 import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
 import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -36,7 +35,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class DependencyScannerTest {
 
-    Log log = LogFactory.getLog(DependencyScannerTest.class.getName());
+    Logger log = Logger.getLogger(DependencyScannerTest.class.getName());
+
     private static final String PROBE1 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe";
     private static final String PROBE2 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe2";
     private static final String PROBE3 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3";

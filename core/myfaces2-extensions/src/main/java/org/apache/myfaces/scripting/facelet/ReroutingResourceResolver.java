@@ -1,7 +1,5 @@
 package org.apache.myfaces.scripting.facelet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.view.facelets.impl.DefaultResourceResolver;
 
@@ -9,6 +7,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * decorated Facelet resource resolver to reroute
@@ -20,7 +19,7 @@ public class ReroutingResourceResolver extends DefaultResourceResolver {
     volatile boolean _initiated = false;
     List<String> _resourceDirs = null;
 
-    Log log = LogFactory.getLog(this.getClass());
+    Logger log = Logger.getLogger(this.getClass().getName());
 
     @Override
     public URL resolveUrl(String path) {
@@ -36,7 +35,7 @@ public class ReroutingResourceResolver extends DefaultResourceResolver {
                 if (resource.exists()) try {
                     return resource.toURI().toURL();
                 } catch (MalformedURLException e) {
-                    log.error(e);
+                    log.severe(e.toString());
                 }
             }
         }

@@ -1,7 +1,5 @@
 package org.apache.myfaces.scripting.loaders.java;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
@@ -13,10 +11,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * we move the throw away mechanism into our classloader for cleaner code coverage
- * 
  */
 @JavaThrowAwayClassloader
 public class ThrowawayClassloader extends ClassLoader {
@@ -111,10 +110,10 @@ public class ThrowawayClassloader extends ClassLoader {
                     //storeReloadableDefinitions(className, target, fileLength, fileContent)
                     //try {
 
-                        retVal = super.defineClass(className, fileContent, 0, fileLength);
+                    retVal = super.defineClass(className, fileContent, 0, fileLength);
 
                     //} catch (java.lang.LinkageError e) {
-                        //something has interfered in a dirty manner (direct classforname instead) we generate a quick throw away classloader to fix this
+                    //something has interfered in a dirty manner (direct classforname instead) we generate a quick throw away classloader to fix this
                     //    ClassLoader loader = new RecompiledClassLoader(this.getParent(), _scriptingEngine, _engineExtension);
                     //    retVal = loader.loadClass(className);
                     //}
@@ -141,7 +140,6 @@ public class ThrowawayClassloader extends ClassLoader {
         return super.loadClass(className);
     }
 
-
     private Class<?> storeReloadableDefinitions(String className, File target, int fileLength, byte[] fileContent) {
         Class retVal;
         retVal = super.defineClass(className, fileContent, 0, fileLength);
@@ -164,8 +162,8 @@ public class ThrowawayClassloader extends ClassLoader {
         }
 
         if (rootDir == null) {
-            Log log = LogFactory.getLog(this.getClass().getName());
-            log.warn("Warning source for class:" + className + " could not be found");
+            Logger log = Logger.getLogger(this.getClass().getName());
+            log.log(Level.WARNING, "Warning source for class: {0} could not be found", className);
             return retVal;
         }
 

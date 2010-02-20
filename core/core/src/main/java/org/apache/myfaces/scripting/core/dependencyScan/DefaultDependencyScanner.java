@@ -18,13 +18,13 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.objectweb.asm.ClassReader;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -39,7 +39,7 @@ import java.util.Set;
 public class DefaultDependencyScanner implements DependencyScanner {
 
     final ClassScanVisitor cp = new ClassScanVisitor();
-    Log log = LogFactory.getLog(this.getClass().getName());
+    Logger log = Logger.getLogger(this.getClass().getName());
 
     public DefaultDependencyScanner() {
     }
@@ -82,7 +82,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
             scanInterfaces(loader, retVal, whiteList, toCheck);
         } catch (ClassNotFoundException e) {
-            log.error("DefaultDependencyScanner.investigateInheritanceHierarchy()" + e);
+            log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() {0}", e.getMessage());
         }
     }
 
@@ -149,7 +149,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             cr = new ExtendedClassReader(loader, currentClassName);
             cr.accept(cp, 0);
         } catch (IOException e) {
-            log.error(e);
+            log.log(Level.SEVERE, "scanCurrentClass () {0}", e.getMessage());
         }
     }
 

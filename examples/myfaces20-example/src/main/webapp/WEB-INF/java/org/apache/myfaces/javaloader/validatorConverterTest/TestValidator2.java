@@ -24,8 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -34,10 +33,10 @@ import org.apache.commons.logging.LogFactory;
 @FacesValidator(value = "at.irian.CustomValidator")
 public class TestValidator2 implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-   
-        if(!((String)value).trim().equals("hello world")) {
-            LogFactory.getLog(TestValidator1.class).error("validation failed");
-            throw new ValidatorException(new FacesMessage("validation failed from validator 1 please input hello world, original input" + ((String)value),"validation failed from validator 1 please input hello world, original input" + ((String)value)));
+
+        if (!((String) value).trim().equals("hello world")) {
+            Logger.getLogger(TestValidator1.class.getName()).severe("validation failed");
+            throw new ValidatorException(new FacesMessage("validation failed from validator 1 please input hello world, original input" + ((String) value), "validation failed from validator 1 please input hello world, original input" + ((String) value)));
         }
     }
 }

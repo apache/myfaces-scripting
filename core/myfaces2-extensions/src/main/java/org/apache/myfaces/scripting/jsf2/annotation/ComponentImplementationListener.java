@@ -23,6 +23,7 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.PurgedComponent;
 
 import javax.faces.component.FacesComponent;
+import java.util.logging.Level;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -41,8 +42,8 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
     }
 
     protected void addEntity(Class clazz, String val) {
-        if (log.isTraceEnabled()) {
-            log.trace("addComponent(" + val + "," + clazz.getName() + ")");
+        if (log.isLoggable(Level.FINEST)) {
+            log.log(Level.FINEST, "addComponent(" + val + "," + clazz.getName() + ")");
         }
         getApplication().addComponent(val, clazz.getName());
         //register the renderer if not registered

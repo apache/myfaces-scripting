@@ -19,20 +19,14 @@
 package org.apache.myfaces.scripting.loaders.groovy;
 
 import groovy.lang.GroovyClassLoader;
-import groovyjarjarasm.asm.ClassVisitor;
 import groovyjarjarasm.asm.ClassWriter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.SourceUnit;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Scanning Groovy class loader

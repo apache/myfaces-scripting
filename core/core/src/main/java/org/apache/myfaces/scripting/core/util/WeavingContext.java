@@ -18,9 +18,6 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
@@ -29,12 +26,14 @@ import org.apache.myfaces.scripting.core.DummyWeaver;
 import org.apache.myfaces.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
+import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 
 import javax.servlet.ServletContext;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * A set of weaving context class called
@@ -171,8 +170,8 @@ public class WeavingContext {
     public static ScriptingWeaver getWeaver() {
         ScriptingWeaver weaver = (ScriptingWeaver) _weaverHolder.get();
         if (weaver == null) {
-            Log log = LogFactory.getLog(WeavingContext.class);
-            log.warn(WARN_WEAVER_NOT_SET);
+            Logger log = Logger.getLogger(WeavingContext.class.getName());
+            log.warning(WARN_WEAVER_NOT_SET);
             _weaverHolder.set(new DummyWeaver());
         }
         return (ScriptingWeaver) _weaverHolder.get();

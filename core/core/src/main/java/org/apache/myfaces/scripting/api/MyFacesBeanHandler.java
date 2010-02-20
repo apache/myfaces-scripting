@@ -1,7 +1,5 @@
 package org.apache.myfaces.scripting.api;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.ListEntries;
 import org.apache.myfaces.config.element.ManagedBean;
@@ -14,6 +12,8 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Bean handler implementation
@@ -300,8 +300,8 @@ public class MyFacesBeanHandler implements BeanHandler {
      */
 
     private void removeBeanReferences(ManagedBean bean) {
-        if (getLog().isInfoEnabled()) {
-            getLog().info("[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences(" + bean.getManagedBeanName() + ")");
+        if (getLog().isLoggable(Level.INFO)) {
+            getLog().log(Level.INFO,"[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences({0})", bean.getManagedBeanName());
         }
 
         String scope = bean.getManagedBeanScope();
@@ -319,8 +319,8 @@ public class MyFacesBeanHandler implements BeanHandler {
     /**
      * @return the log for this class
      */
-    protected Log getLog() {
-        return LogFactory.getLog(this.getClass());
+    protected Logger getLog() {
+        return Logger.getLogger(this.getClass().getName());
     }
 
     /**

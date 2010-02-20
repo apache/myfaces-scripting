@@ -18,15 +18,13 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.config.RuntimeConfig;
 
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -34,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class BaseAnnotationScanListener {
-    Log log = LogFactory.getLog(this.getClass());
+    Logger log = Logger.getLogger(this.getClass().getName());
     static Map<String, Object> _alreadyRegistered = new ConcurrentHashMap<String, Object>(8, 0.75f, 1);
 
     protected RuntimeConfig getRuntimeConfig() {

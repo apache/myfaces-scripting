@@ -18,18 +18,18 @@
  */
 package org.apache.myfaces.scripting.api;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
+import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz
@@ -67,7 +67,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     private BeanHandler _beanHandler;
     protected String _classPath = "";
-    protected Log _log = LogFactory.getLog(this.getClass());
+
+    Logger _log = Logger.getLogger(this.getClass().getName());
 
     private String _fileEnding = null;
     private int _scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
@@ -156,7 +157,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     public Class reloadScriptingClass(Class aclass) {
         ReloadingMetadata metadata = getClassMap().get(aclass.getName());
-        
 
         if (metadata == null)
             return aclass;
@@ -217,8 +217,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
-    protected Log getLog() {
-        return LogFactory.getLog(this.getClass());
+    protected Logger getLog() {
+        return _log;
     }
 
     protected boolean assertScriptingEngine(ReloadingMetadata reloadMeta) {
@@ -336,7 +336,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 if (!scriptPath.trim().equals(""))
                     _compiler.compileAllFiles(scriptPath, _classPath);
             } catch (ClassNotFoundException e) {
-                _log.error(e);
+                _log.log(Level.SEVERE, e.getMessage());
             }
 
         }
@@ -386,7 +386,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             return null;
         }
 
-        if (_log.isInfoEnabled()) {
+        if (_log.isLoggable(Level.INFO)) {
             _log.info(getLoadingInfo(file));
         }
 

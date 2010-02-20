@@ -18,12 +18,9 @@
  */
 package org.apache.myfaces.javaloader.blog;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
-
-import static org.apache.myfaces.javaloader.blog.JSFUtilJava.*;
+import static org.apache.myfaces.javaloader.blog.JSFUtilJava.resolveVariable;
 
 /**
  * @author werpu2
@@ -47,8 +44,8 @@ public class Blog {
 
     String content = "";
 
-    private Log getLog() {
-        return LogFactory.getLog(this.getClass());
+    private Logger getLog() {
+        return Logger.getLogger(this.getClass().getName());
     }
 
     public String addEntry2() {
@@ -58,7 +55,7 @@ public class Blog {
         BlogServiceInterface service = (BlogServiceInterface) resolveVariable("javaBlogService");
 
         if (service == null) {
-            getLog().error("service not found");
+            getLog().severe("service not found");
         } else {
             getLog().info("service found");
         }

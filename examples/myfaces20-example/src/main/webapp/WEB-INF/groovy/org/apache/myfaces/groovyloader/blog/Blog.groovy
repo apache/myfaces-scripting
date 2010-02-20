@@ -18,20 +18,16 @@
  */
 package org.apache.myfaces.groovyloader.blog
 
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
-import org.apache.myfaces.groovyloader.blog.JSFUtil;
-import org.apache.myfaces.groovyloader.blog.BlogService
+import java.util.logging.Logger
 import javax.faces.bean.ManagedBean
-import javax.faces.bean.SessionScoped
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.RequestScoped
 
 @ManagedBean(name = "blogView")
 @RequestScoped
 public class Blog {
   //bug application and session scoped beans  are not refreshed structurally yet
 
-  Log log = LogFactory.getLog(Blog.class)
+  Logger log = Logger.getLogger(Blog.class.getName())
 
   String title = "Hello to the myfaces 2.0  Groovy dynamic blogging"
   String title1 = "You can alter the code for this small blogging application on the fly, you even can add new classes on the fly and Grooy will pick it up"
@@ -49,7 +45,7 @@ public class Blog {
     def service = JSFUtil.resolveVariable("blogService")
 
     if (service == null) {
-      log.error("service not found")
+      log.severe("service not found")
     } else {
       log.info("service found")
 

@@ -18,17 +18,14 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.refresh.RefreshContext;
 
 import javax.servlet.*;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /**
  * Scripting servlet filter
@@ -76,8 +73,8 @@ public class ScriptingServletFilter implements Filter {
         AtomicBoolean startup = (AtomicBoolean) context.getAttribute(ScriptingConst.CTX_STARTUP);
         if (startup == null) {
             if(!warned) {
-                Log log = LogFactory.getLog(ScriptingServletFilter.class);
-                log.error("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
+                Logger log = Logger.getLogger(ScriptingServletFilter.class.getName());
+                log.warning("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
                         "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
                 active = false;
             }
