@@ -23,12 +23,12 @@ package org.apache.myfaces.javaloader.blog;
  * Holds the entered blogging data
  */
 public class BlogEntry {
-
     
     String firstName = "";
     String lastName = "";
     String topic = "";
     String content = "";
+
     
 
     public String getFirstName() {

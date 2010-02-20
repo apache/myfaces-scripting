@@ -46,16 +46,15 @@ public class Blog {
     String topic = "";
 
     String content = "";
-    
 
     private Log getLog() {
         return LogFactory.getLog(this.getClass());
     }
 
-    
     public String addEntry2() {
         getLog().info("adding entry2");
-
+        
+        /*important we have an indirection over an interface here*/
         BlogServiceInterface service = (BlogServiceInterface) resolveVariable("javaBlogService");
 
         if (service == null) {
@@ -71,7 +70,6 @@ public class Blog {
         entry.setLastName(lastName);
         entry.setTopic(topic);
         entry.setContent(content);
-
 
         if (service != null) {
             /*convenience method to call a method on an object dynamically

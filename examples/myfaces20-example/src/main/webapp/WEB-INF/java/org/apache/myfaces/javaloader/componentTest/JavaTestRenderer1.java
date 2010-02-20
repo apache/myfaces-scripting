@@ -56,7 +56,7 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         ResponseWriter writer = context.getResponseWriter();
         writer.write("<h3>Renderer Demo Java Renderer 1</h3>");
         //uncomment for demo 1
-        test(myComponent, writer);
+        //test(myComponent, writer);
 
         writer.flush();
     }
@@ -65,12 +65,12 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
     
     //uncomment for demo 1
 
-    private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
+   /* private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
         writer.write(MSG2);
         writer.write(myComponent.getMarker());
         writer.write("<h4 style='color: red;'>TestAttr: " + myComponent.getTestAttr() + " | " + myComponent.getTestAttr3() + "</h4>");
         writer.write("<h4>" + myComponent.getTestAttr4() + "</h4>");
-    }
+    }*/
     
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         log.info("JavaTestRenderer1.encodeEnd");

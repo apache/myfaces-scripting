@@ -49,7 +49,7 @@ public class BlogService implements BlogServiceInterface {
             blogEntries.add(entry);
         }
     }
-
+    
     public List<Object> getBlogEntries() {
         return blogEntries;
     }
