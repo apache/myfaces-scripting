@@ -51,10 +51,6 @@ class ClassScanVisitor implements ClassVisitor {
 
     public void visit(int version, int access, String name,
                       String signature, String superName, String[] interfaces) {
-        //log.log(Level.INFO, "{0} extends {1} ", new String[]{name, superName});
-         if(name.contains("BlogService")) {
-            System.out.println("Debugpint found");
-        }
 
         registerDependency(Type.getObjectType(superName), "Super name[" + superName + "]");
         if (interfaces != null && interfaces.length > 0) {

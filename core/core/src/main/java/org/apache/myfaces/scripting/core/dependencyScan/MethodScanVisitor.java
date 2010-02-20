@@ -91,9 +91,7 @@ class MethodScanVisitor implements MethodVisitor {
         if(className.endsWith("[]")) {
             className = className.substring(0, className.indexOf("["));
         }
-        if(dependency.getClassName().contains("javaloader.blog.BlogEntry")) {
-            System.out.println("Debugpint found");
-        }
+       
         ClassScanUtils.logParmList(dependencies, whiteList, className);
     }
 
