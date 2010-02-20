@@ -82,7 +82,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
 
             return newObject;
         } catch (Exception e) {
-            getLog().log(Level.SEVERE, "reload {0}", e.getMessage());
+            getLog().log(Level.SEVERE, "reload ", e);
         }
         return null;
 

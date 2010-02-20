@@ -77,7 +77,7 @@ public class CompilerFacade implements DynamicCompiler {
             }
 
         } catch (org.apache.myfaces.scripting.api.CompilationException e) {
-            log.log(Level.SEVERE, "CompilationException : {0} {1}", new String[]{e.getMessage(), e.toString()});
+            log.log(Level.SEVERE, "CompilationException : ", e);
         }
     }
 
@@ -118,7 +118,7 @@ public class CompilerFacade implements DynamicCompiler {
             displayMessages(result);
             return WeavingContext.getConfiguration().getCompileTarget();
         } catch (CompilationException e) {
-            log.log(Level.SEVERE, "CompilationException : {0} {1}", new String[]{e.getMessage(), e.toString()});
+            log.log(Level.SEVERE, "CompilationException :", e);
         }
         return null;
     }

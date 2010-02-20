@@ -24,5 +24,6 @@ package org.apache.myfaces.javaloader.blog;
 public interface BlogServiceInterface extends BaseInterface {
     
     public void addEntry(BlogEntry entry);
+
     
 }

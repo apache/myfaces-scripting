@@ -336,7 +336,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 if (!scriptPath.trim().equals(""))
                     _compiler.compileAllFiles(scriptPath, _classPath);
             } catch (ClassNotFoundException e) {
-                _log.log(Level.SEVERE, e.getMessage());
+                _log.logp(Level.SEVERE, "BaseWeaver","fullyRecompile", e.getMessage(), e);
             }
 
         }

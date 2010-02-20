@@ -28,6 +28,7 @@ import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -160,9 +161,9 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
                 renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
             }
         } catch (InstantiationException e) {
-            log.severe(e.toString());
+            log.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            log.severe(e.toString());
+            log.log(Level.SEVERE, "", e);
         }
     }
 

@@ -103,7 +103,7 @@ public class FileChangedDaemon extends Thread {
                 if (contextInitialized)
                     checkForChanges();
             } catch (Throwable e) {
-                log.log(Level.SEVERE, "[EXT-SCRIPTING]  {0} {1}", new String[]{e.getMessage(), e.toString()});
+                log.log(Level.SEVERE, "[EXT-SCRIPTING]", e);
 
             }
         }

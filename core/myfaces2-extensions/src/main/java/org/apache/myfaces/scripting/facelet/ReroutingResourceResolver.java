@@ -7,6 +7,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -35,7 +36,7 @@ public class ReroutingResourceResolver extends DefaultResourceResolver {
                 if (resource.exists()) try {
                     return resource.toURI().toURL();
                 } catch (MalformedURLException e) {
-                    log.severe(e.toString());
+                    log.log(Level.SEVERE, "",e);
                 }
             }
         }

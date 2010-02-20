@@ -134,9 +134,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         try {
             renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), (Renderer) clazz.newInstance());
         } catch (InstantiationException e) {
-            log.severe(e.toString());
+            log.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            log.severe(e.toString());
+            log.log(Level.SEVERE, "", e);
         }
     }
 
@@ -189,9 +189,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
                 renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
             }
         } catch (InstantiationException e) {
-            log.severe(e.toString());
+            log.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            log.severe(e.toString());
+            log.log(Level.SEVERE, "", e);
         }
     }
 }

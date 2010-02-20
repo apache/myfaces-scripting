@@ -82,7 +82,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
             scanInterfaces(loader, retVal, whiteList, toCheck);
         } catch (ClassNotFoundException e) {
-            log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() {0}", e.getMessage());
+            log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
         }
     }
 
@@ -149,7 +149,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
             cr = new ExtendedClassReader(loader, currentClassName);
             cr.accept(cp, 0);
         } catch (IOException e) {
-            log.log(Level.SEVERE, "scanCurrentClass () {0}", e.getMessage());
+            log.log(Level.SEVERE, "scanCurrentClass () ", e);
         }
     }
 
