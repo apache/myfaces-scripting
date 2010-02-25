@@ -33,7 +33,7 @@ public class ClassDependencies {
      * classname
      * <p/>
      * <p/>
-     * the key is a dependency a class has the value is a set of classes which depend on the current class
+     * the key is a dependency a class has the _value is a set of classes which depend on the current class
      */
     private Map<String, Set<String>> reverseIndex = new ConcurrentHashMap<String, Set<String>>();
 
