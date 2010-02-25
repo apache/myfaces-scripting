@@ -284,10 +284,9 @@ public class ReloadingClassLoader extends URLClassLoader {
      * @param parentClassLoader the parent ClassLoader to use
      * @return a copy of the current reloading class loader
      */
-    @SuppressWarnings("unused")
     public ReloadingClassLoader cloneWithParentClassLoader(ClassLoader parentClassLoader) {
         ReloadingClassLoader classLoader =
-                new ReloadingClassLoader(parentClassLoader, compilationDirectory);
+                cloneClassLoader(parentClassLoader, compilationDirectory);
 
         // Note that we don't have to create "deep copies" as the class loaders in the map
         // are immutable anyway (they are only supposed to load a single class) and additionally
@@ -300,6 +299,14 @@ public class ReloadingClassLoader extends URLClassLoader {
     }
 
     // ------------------------------------------ Utility methods
+
+    /**
+     * <p>Creates and returns new instance of a reloading class loader which is basically a clone of this one.</p>
+     *
+     */
+    protected ReloadingClassLoader cloneClassLoader(ClassLoader parentClassLoader, File compilationDirectory) {
+        return new ReloadingClassLoader(parentClassLoader, compilationDirectory);
+    }
 
     /**
      * <p>Resolves and returns a File handle that represents the class file of

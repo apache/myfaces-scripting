@@ -123,7 +123,7 @@ public class ClassLoaderUtils {
                 }
             } else {
                 if (logger.isWarnEnabled()) {
-                    logger.warn("Resolving the classpath of the classloader '" + parent + "' - One of its parent class"
+                    logger.warn("Resolving the classpath of the class loader '" + parent + "' - One of its parent class"
                             + " loaders is no URLClassLoader '" + classLoader + "', which means it's possible that"
                             + " some classpath entries aren't in the final outcome of this method call.");
                 }

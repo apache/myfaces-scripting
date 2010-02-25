@@ -32,11 +32,10 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.*;
-import java.util.List;
 
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
+ * 
  */
 public class GroovyCompiler implements Compiler {
 

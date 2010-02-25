@@ -136,5 +136,15 @@ public class DependencyAwareReloadingClassLoader extends ReloadingClassLoader {
             reloadClass(dependentClassName);
         }
     }
+
+    /**
+     * <p>Creates and returns new instance of a reloading class loader which is basically a clone of this one.</p>
+     *
+     */
+    @Override
+    protected ReloadingClassLoader cloneClassLoader(ClassLoader parentClassLoader, File compilationDirectory) {
+        return new DependencyAwareReloadingClassLoader(
+                scanner, registry, parentClassLoader, compilationDirectory);
+    }
     
 }
