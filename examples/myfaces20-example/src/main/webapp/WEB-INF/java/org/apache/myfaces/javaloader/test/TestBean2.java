@@ -26,7 +26,7 @@ import javax.faces.event.ComponentSystemEvent;
 @SessionScoped
 public class TestBean2 {
 
-    String sayHello = "hello world test xxx";
+    String sayHello = "<h2>hello world test</h2>";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 

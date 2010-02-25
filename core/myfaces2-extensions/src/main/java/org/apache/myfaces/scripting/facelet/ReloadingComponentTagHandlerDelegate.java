@@ -34,9 +34,9 @@ public class ReloadingComponentTagHandlerDelegate extends TagHandlerDelegate {
         if (WeavingContext.isDynamic(comp.getClass())) {
             //TODO hook our own component code in here
         }
-        if (comp.getClass().getName().contains("JavaTestComponent")) {
-            System.out.println("Debugpoint found");
-        }
+        //if (comp.getClass().getName().contains("JavaTestComponent")) {
+        //    System.out.println("Debugpoint found");
+        //}
 
         _delegate.apply(ctx, comp);
     }

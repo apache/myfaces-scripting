@@ -44,6 +44,13 @@ public class DefaultDependencyScanner implements DependencyScanner {
     public DefaultDependencyScanner() {
     }
 
+    public synchronized final void fetchDependencies(ClassLoader loader, String className, DependencyRegistry registry) {
+        Set<String> retVal = new HashSet<String>();
+        investigateInheritanceHierarchy(loader, className, registry);
+    }
+
+    ;
+
     /**
      * @param className the class name of the class which has to be investigated for the code dependencies
      * @return a set of dependencies as string representation of their class names
@@ -84,6 +91,37 @@ public class DefaultDependencyScanner implements DependencyScanner {
         } catch (ClassNotFoundException e) {
             log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
         }
+    }
+
+    /**
+     * this investigates the classes inheritance hierarchy for
+     * more dependencies, for now annotations and interfaces
+     * are omitted since they are not vital to our jsf dependency checks
+     * (maybe in the long run we will add interfaces and annotations as well
+     * but for now we will leave them away for speed reasons)
+     *
+     * @param loader    the classLoader which should be used for the hierarchy scanning
+     * @param className the className which has to be investigated
+     * @param registry  the dependency registry
+     */
+    private void investigateInheritanceHierarchy(ClassLoader loader, String className, DependencyRegistry registry) {
+        //we now have to fetch the parent hierarchy
+
+        /* try {
+            Class toCheck = loader.loadClass(className);
+            if (toCheck == null) {
+                return;
+            }
+            scanCurrentClass(loader, retVal, className, whiteList);
+
+            //we scan the hierarchy because we might have compiled-uncompiled-compiled connections, the same goes for the interfaces
+            //the basic stuff can be covered by our class scanning but for more advanced usecase we have to walk the entire hierarchy per class!
+            scanHierarchy(loader, retVal, whiteList, toCheck, true);
+            //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
+            scanInterfaces(loader, retVal, whiteList, toCheck);
+        } catch (ClassNotFoundException e) {
+            log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
+        }*/
     }
 
     private void scanInterfaces(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck) {

@@ -17,10 +17,10 @@
             <h:panelGroup styleClass="left">
                 <h:panelGroup styleClass="stdBox">
                     <h:messages />
-
+                        
                     <h3>Validator Test 1</h3>
                     <h:outputText id="output1" value="Please enter your name"/>
-                    <h:outputText value="aaa#{javatestbean4.hello}"/>
+                    <h:outputText value="#{javatestbean4.hello}"/>
                     <h:inputText id="input1" value="#{helloWorld.name}" required="true">
                         <grv:groovyvalidator/>
                     </h:inputText>
@@ -38,7 +38,7 @@
                     <h3>Bean Tests</h3>
                     <h:outputFormat value="#{testbean.xxx}"/>
                     <br/>
-                    <h:outputFormat value="#{javatestbean.sayHello}"/>
+                    <h:outputFormat escape="false" value="#{javatestbean.sayHello}"/>
                 </h:panelGroup>
                 <h:panelGroup styleClass="stdBox">
                     <h3>Converter Test 1</h3>

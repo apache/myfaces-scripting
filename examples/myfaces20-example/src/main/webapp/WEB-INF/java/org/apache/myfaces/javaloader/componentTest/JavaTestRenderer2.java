@@ -32,6 +32,8 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
+
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "<h2> Hello world from Renderer 2 </h2>";
@@ -42,7 +44,7 @@ public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ResponseWriter writer = context.getResponseWriter();
-        writer.write(MSG);
+        writer.write(((JavaTestComponent)component).getMyHello());
         writer.write(MSG2);
         writer.write((String) ReflectUtil.executeMethod(component, "getMarker"));
     }

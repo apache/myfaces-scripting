@@ -44,10 +44,22 @@ public class BlogService implements BlogServiceInterface {
 
     @DependencyTestAnnotation
     public void addEntry(BlogEntry entry) {
+  	  if (entry != null) {
+		  //entry.setTopic("MyTopic");
+          blogEntries.add(entry);
+      }
 
-        if (entry != null) {
-            blogEntries.add(entry);
-        }
+  	  
+    	
+  	  addEntryInternal(entry);
+    }
+    
+   private void addEntryInternal(BlogEntry entry) {
+    	  System.out.println("hello world");
+    	  if (entry != null) {
+    		  entry.setTopic("MyTopic");
+              blogEntries.add(entry);
+          }
     }
 
     public List<Object> getBlogEntries() {
@@ -57,6 +69,7 @@ public class BlogService implements BlogServiceInterface {
     public void setBlogEntries(List<Object> blogEntries) {
         this.blogEntries = blogEntries;
     }
+
 
     public String getTest() {
         return "ddd";

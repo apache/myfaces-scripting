@@ -98,4 +98,10 @@ public class JavaTestComponent extends UIInput implements Markable {
         getStateHelper().put(PropertyKeys.testAttr4, testAttr);
     }
 
+    
+
+    public String getMyHello() {
+        return "myHelloworld";
+    }
+
 }

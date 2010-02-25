@@ -37,5 +37,24 @@ import java.util.Set;
  *          classes from dynamically loaded packages
  */
 public interface DependencyScanner {
+
+    /**
+     * fetch the dependencies from a given classname and
+     * register them in a registry
+     *
+     * @param loader    the classloader responsible for serving the infrastructure
+     * @param className the classname from which the dependencies have to be fetched
+     * @param registry  our registry which should store the dependencies
+     */
+    public void fetchDependencies(ClassLoader loader, String className, DependencyRegistry registry);
+
+    /**
+     * soon to be deprecated, fetch dependencies working on an existing whitelist system
+     *
+     * @param loader
+     * @param className
+     * @param whiteList
+     * @return
+     */
     public Set<String> fetchDependencies(ClassLoader loader, String className, Set<String> whiteList);
 }

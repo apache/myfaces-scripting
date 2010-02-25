@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class DependencyRegistry {
     List<ClassFilter> _filters = new LinkedList<ClassFilter>();
+    
     List<String> _dependencies = new LinkedList<String>();
 
     ClassDependencies dependencyMap = new ClassDependencies();
@@ -44,7 +45,7 @@ public class DependencyRegistry {
         //for now we code it into a list like we used to do before
         //but in the long run we have to directly register
         //to save one step
-
+        _dependencies.add(dependency);
     }
 
     public List<String> getDependencies() {
@@ -55,7 +56,7 @@ public class DependencyRegistry {
      * flush to flush down our stored dependencies into our final map
      */
     public void flush() {
-
+        
     }
 
 }

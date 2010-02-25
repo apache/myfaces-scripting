@@ -17,6 +17,7 @@ h1 {
     text-align: center;
 }
 
+
 div#backGroundFloat {
     position: fixed;
     z-index: -1;
