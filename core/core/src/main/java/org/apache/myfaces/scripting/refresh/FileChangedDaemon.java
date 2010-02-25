@@ -21,6 +21,7 @@ package org.apache.myfaces.scripting.refresh;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
+import org.apache.myfaces.scripting.core.dependencyScan.DependencyRegistry;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.servlet.ServletContext;
@@ -48,6 +49,10 @@ public class FileChangedDaemon extends Thread {
 
     Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
     ClassDependencies dependencyMap = new ClassDependencies();
+
+    DependencyRegistry _dependencyRegistry = new DependencyRegistry();
+
+
 
     /**
      * this map is a shortcut for the various scripting engines

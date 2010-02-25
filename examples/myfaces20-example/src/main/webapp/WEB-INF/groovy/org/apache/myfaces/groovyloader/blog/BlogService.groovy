@@ -41,7 +41,8 @@ public class BlogService {
   }
 
   public void addEntry(BlogEntry entry) {
-    Logger log = Logger.getLog(BlogService.class.getName())
+    
+    Logger log = Logger.getLogger(BlogService.class.getName())
     log.info("Adding entry, topic: " + entry.topic)
     blogEntries.add(entry)
 

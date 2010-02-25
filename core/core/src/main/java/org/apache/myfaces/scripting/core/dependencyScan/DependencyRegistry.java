@@ -12,6 +12,8 @@ public class DependencyRegistry {
     List<ClassFilter> _filters = new LinkedList<ClassFilter>();
     List<String> _dependencies = new LinkedList<String>();
 
+    ClassDependencies dependencyMap = new ClassDependencies();
+
     public DependencyRegistry() {
         _filters.add(new StandardNamespaceFilter());
     }
@@ -47,6 +49,13 @@ public class DependencyRegistry {
 
     public List<String> getDependencies() {
         return _dependencies;
+    }
+
+    /**
+     * flush to flush down our stored dependencies into our final map
+     */
+    public void flush() {
+
     }
 
 }

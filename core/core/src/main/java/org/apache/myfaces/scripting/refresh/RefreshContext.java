@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.refresh;
 
+import org.apache.myfaces.scripting.core.dependencyScan.DependencyRegistry;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
@@ -75,6 +76,7 @@ public class RefreshContext {
     public final static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
 
     private volatile AtomicInteger currentlyRunningRequests = null;
+
 
     public long getPersonalScopedBeanRefresh() {
         return personalScopedBeanRefresh;
