@@ -22,8 +22,8 @@ import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
-import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.*;
+import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
@@ -42,7 +42,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
     List<String> _scanPaths = new LinkedList<String>();
 
-    DependencyScanner _dependecyScanner = new DefaultDependencyScanner();
+    RegistryBasedDependencyScanner _dependecyScanner = new RegistryBasedDependencyScanner();
 
     ScriptingWeaver _weaver;
     Logger log = Logger.getLogger(JavaDependencyScanner.class.getName());
@@ -83,13 +83,10 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
-        Set<String> referencedClasses = _dependecyScanner.fetchDependencies(loader, dynamicClass, possibleDynamicClasses);
-        //we make it in two ops because if we do the self dependency
-        //removal in the scanner itself the code  should not break
-        referencedClasses.remove(dynamicClass);
-        if (!referencedClasses.isEmpty()) {
-            WeavingContext.getFileChangedDaemon().getDependencyMap().addDependencies(dynamicClass, referencedClasses);
-        }
+        Strategy registrationStrategy = new DependencyMapRegistrationStrategy(dynamicClass, WeavingContext.getFileChangedDaemon().getDependencyMap());
+        DependencyRegistry scanRegistry = new DependencyRegistryImpl(registrationStrategy);
+        scanRegistry.addFilter(new WhitelistFilter(possibleDynamicClasses));
+        _dependecyScanner.fetchDependencies(loader, dynamicClass, scanRegistry);
     }
 
     protected ClassLoader getClassLoader() {

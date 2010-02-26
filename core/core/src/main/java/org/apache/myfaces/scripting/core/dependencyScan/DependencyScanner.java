@@ -54,7 +54,7 @@ public interface DependencyScanner {
      * @param loader
      * @param className
      * @param whiteList
-     * @return
+     * @return a list of dependencies from the class &lt;className&gt;
      */
     public Set<String> fetchDependencies(ClassLoader loader, String className, Set<String> whiteList);
 }

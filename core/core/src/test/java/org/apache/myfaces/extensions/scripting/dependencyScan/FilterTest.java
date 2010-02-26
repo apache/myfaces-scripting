@@ -1,6 +1,5 @@
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.myfaces.scripting.core.dependencyScan.DependencyRegistry;
 import org.apache.myfaces.scripting.core.dependencyScan.StandardNamespaceFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.WhitelistFilter;
 import org.junit.Test;

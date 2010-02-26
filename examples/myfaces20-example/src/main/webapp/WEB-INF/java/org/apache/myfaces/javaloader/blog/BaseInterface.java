@@ -5,6 +5,5 @@ package org.apache.myfaces.javaloader.blog;
  */
 
 public interface BaseInterface {
-//comment
 	
 }

@@ -18,12 +18,10 @@
  */
 package org.apache.myfaces.scripting.refresh;
 
-import org.apache.myfaces.scripting.core.dependencyScan.DependencyRegistry;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

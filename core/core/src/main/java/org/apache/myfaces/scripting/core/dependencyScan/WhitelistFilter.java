@@ -23,6 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Filter class which depends upon a list of whitelisted packages
+ * wildcards in this filter are implicit which means
+ *
+ * org.apache.myfaces includes all files
+ * under org.apache.myfaces
  */
 public class WhitelistFilter implements ClassFilter {
 
@@ -42,6 +46,10 @@ public class WhitelistFilter implements ClassFilter {
             return retVal;
         }
 
+        public boolean hasChildren() {
+            return !_value.isEmpty();
+        }
+
         public Map<String, WhiteListNode> getValue() {
             return _value;
         }
@@ -55,7 +63,13 @@ public class WhitelistFilter implements ClassFilter {
         }
     }
 
-    public WhitelistFilter(List<String> whiteList) {
+    public WhitelistFilter(String... whiteList) {
+        for (String singlePackage : whiteList) {
+            addEntry(singlePackage);
+        }
+    }
+
+    public WhitelistFilter(Collection<String> whiteList) {
         for (String singlePackage : whiteList) {
             addEntry(singlePackage);
         }
@@ -69,15 +83,36 @@ public class WhitelistFilter implements ClassFilter {
         }
     }
 
-    public boolean isAllowed(String clazz) {
+    public final boolean isAllowed(String clazz) {
         String[] subParts = clazz.split("\\.");
         WhiteListNode currPackage = _whiteList;
+        WhiteListNode parentPackage = null;
         for (String subPart : subParts) {
             currPackage = currPackage.get(subPart);
-            if (currPackage == null) {
+            if (isRootPackageMismatch(currPackage, parentPackage)) {
+                return false;
+            } else if (isSubpackage(currPackage, parentPackage)) {
+                return true;
+            } else if (isMismatch(currPackage)) {
                 return false;
             }
+
+            parentPackage = currPackage;
         }
         return true;
+    }
+
+    //special conditions extracted for readability reasons in the core
+    //algorithm
+    private boolean isMismatch(WhiteListNode currPackage) {
+        return currPackage == null;
+    }
+
+    private boolean isSubpackage(WhiteListNode currPackage, WhiteListNode parentPackage) {
+        return currPackage == null && parentPackage != null && !parentPackage.hasChildren();
+    }
+
+    private boolean isRootPackageMismatch(WhiteListNode currPackage, WhiteListNode parentPackage) {
+        return currPackage == null && parentPackage == null;
     }
 }

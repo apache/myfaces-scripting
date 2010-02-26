@@ -36,61 +36,27 @@ import java.util.logging.Logger;
  *          and can be used as a singleton
  *          <p/>
  */
-public class DefaultDependencyScanner implements DependencyScanner {
+public class RegistryBasedDependencyScanner {
+    final ClassScanVisitor _cp = new ClassScanVisitor();
+    Logger _log = Logger.getLogger(this.getClass().getName());
 
-    final ClassScanVisitor cp = new ClassScanVisitor();
-    Logger log = Logger.getLogger(this.getClass().getName());
+    public RegistryBasedDependencyScanner() {
 
-    public DefaultDependencyScanner() {
     }
 
     public synchronized final void fetchDependencies(ClassLoader loader, String className, DependencyRegistry registry) {
         Set<String> retVal = new HashSet<String>();
         investigateInheritanceHierarchy(loader, className, registry);
+        registry.flush();
     }
-
-    ;
 
     /**
      * @param className the class name of the class which has to be investigated for the code dependencies
      * @return a set of dependencies as string representation of their class names
+     * @deprecated
      */
     public synchronized final Set<String> fetchDependencies(ClassLoader loader, String className, final Set<String> whiteList) {
-        Set<String> retVal = new HashSet<String>();
-        investigateInheritanceHierarchy(loader, retVal, className, whiteList);
-        return retVal;
-    }
-
-    /**
-     * this investigates the classes inheritance hierarchy for
-     * more dependencies, for now annotations and interfaces
-     * are omitted since they are not vital to our jsf dependency checks
-     * (maybe in the long run we will add interfaces and annotations as well
-     * but for now we will leave them away for speed reasons)
-     *
-     * @param loader    the classLoader which should be used for the hierarchy scanning
-     * @param retVal    the receiving set
-     * @param className the className which has to be investigated
-     * @param whiteList the package scanning whitelist
-     */
-    private void investigateInheritanceHierarchy(ClassLoader loader, Set<String> retVal, String className, Set<String> whiteList) {
-        //we now have to fetch the parent hierarchy
-
-        try {
-            Class toCheck = loader.loadClass(className);
-            if (toCheck == null) {
-                return;
-            }
-            scanCurrentClass(loader, retVal, className, whiteList);
-
-            //we scan the hierarchy because we might have compiled-uncompiled-compiled connections, the same goes for the interfaces
-            //the basic stuff can be covered by our class scanning but for more advanced usecase we have to walk the entire hierarchy per class!
-            scanHierarchy(loader, retVal, whiteList, toCheck, true);
-            //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
-            scanInterfaces(loader, retVal, whiteList, toCheck);
-        } catch (ClassNotFoundException e) {
-            log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
-        }
+        return null;
     }
 
     /**
@@ -107,24 +73,24 @@ public class DefaultDependencyScanner implements DependencyScanner {
     private void investigateInheritanceHierarchy(ClassLoader loader, String className, DependencyRegistry registry) {
         //we now have to fetch the parent hierarchy
 
-        /* try {
+        try {
             Class toCheck = loader.loadClass(className);
             if (toCheck == null) {
                 return;
             }
-            scanCurrentClass(loader, retVal, className, whiteList);
+            scanCurrentClass(loader, className, registry);
 
             //we scan the hierarchy because we might have compiled-uncompiled-compiled connections, the same goes for the interfaces
             //the basic stuff can be covered by our class scanning but for more advanced usecase we have to walk the entire hierarchy per class!
-            scanHierarchy(loader, retVal, whiteList, toCheck, true);
+            scanHierarchy(loader, toCheck, registry, true);
             //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
-            scanInterfaces(loader, retVal, whiteList, toCheck);
+            scanInterfaces(loader, toCheck, registry);
         } catch (ClassNotFoundException e) {
-            log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
-        }*/
+            _log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
+        }
     }
 
-    private void scanInterfaces(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck) {
+    private void scanInterfaces(ClassLoader loader, Class toCheck, DependencyRegistry registry) {
         Class[] interfaces = toCheck.getInterfaces();
         if (interfaces == null || interfaces.length == 0) {
             return;
@@ -134,25 +100,58 @@ public class DefaultDependencyScanner implements DependencyScanner {
             if (ClassScanUtils.isStandardNamespace(currentInterface.getName())) {
                 continue;
             }
-            scanCurrentClass(loader, retVal, currentInterface.getName(), whiteList);
+            scanCurrentClass(loader, currentInterface.getName(), registry);
 
             //We scan also our parent interfaces to get a full coverage
             //but since interfaces do not implement anything we can cover
             //the parents
-            scanHierarchy(loader, retVal, whiteList, currentInterface, false);
+            scanHierarchy(loader, currentInterface, registry, false);
         }
-
     }
 
     /**
-     * scans the hierarchy of a given class
+     * Scans the interface hierarchy of our class
+     * the normal interface scan is processed already on class level
+     * this method is needed to process our parent interface relationships
+     * before triggering the ASM bytecode processing
      *
-     * @param loader
-     * @param retVal
-     * @param whiteList
-     * @param toCheck
+     * @param loader         the infrastructural classloader
+     * @param toCheck        the class which needs to be checked
+     * @param registry       the dependency registry
+     * @param interfaceCheck if true also interfaces within the hierarchy will be processed, false if not
      */
-    private void scanHierarchy(ClassLoader loader, Set<String> retVal, Set<String> whiteList, Class toCheck, boolean interfaceCheck) {
+    private void scanInterfaces(ClassLoader loader, Class toCheck, DependencyRegistry registry, boolean interfaceCheck) {
+        Class parent = toCheck.getSuperclass();
+
+        while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
+            if (interfaceCheck) {
+                //we recursively descend into our interfaces
+                scanInterfaces(loader, parent, registry);
+            }
+
+            scanCurrentClass(loader, parent.getName(), registry);
+            parent = parent.getSuperclass();
+
+        }
+    }
+
+    /**
+     * scans the parent child relationship hierarchy
+     * We have to go through the entire hierarchy except for standard
+     * namespaces due to the fact that we have to cover source <->binary<->source
+     * dependencies with binary being binary classes never to be refreshed
+     * <p/>
+     * Note we can optionally do some interface checks here
+     * for now annotations are only processed by the class scanner itself
+     * so we do not process any annotation inheritance on this level
+     * we will add the feature later
+     *
+     * @param loader         the infrastructural classloader
+     * @param toCheck        the class which needs to be checked
+     * @param registry       the dependency registry
+     * @param interfaceCheck if true also interfaces within the hierarchy will be processed, false if not
+     */
+    private void scanHierarchy(ClassLoader loader, Class toCheck, DependencyRegistry registry, boolean interfaceCheck) {
         Class parent = toCheck.getSuperclass();
 
         while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
@@ -164,7 +163,7 @@ public class DefaultDependencyScanner implements DependencyScanner {
                 //scanInterfaces(loader, retVal, whiteList, parent);
             }
 
-            scanCurrentClass(loader, retVal, parent.getName(), whiteList);
+            scanCurrentClass(loader, parent.getName(), registry);
             parent = parent.getSuperclass();
 
         }
@@ -174,20 +173,19 @@ public class DefaultDependencyScanner implements DependencyScanner {
      * scans one level of the inheritance hierarchy
      *
      * @param loader           the classLoader which should be used for the hierarchy scanning
-     * @param retVal           the receiving set
      * @param currentClassName the className which has to be investigated
-     * @param whiteList        the package scanning whitelist
+     * @param registry         the dependency registry
      */
-    private void scanCurrentClass(ClassLoader loader, Set<String> retVal, String currentClassName, Set<String> whiteList) {
-        cp.setDependencyTarget(retVal);
-        cp.setWhiteList(whiteList);
+    private void scanCurrentClass(ClassLoader loader, String currentClassName, DependencyRegistry registry) {
+        _cp.setDependencyRegistry(registry);
+
         ClassReader cr;
 
         try {
             cr = new ExtendedClassReader(loader, currentClassName);
-            cr.accept(cp, 0);
+            cr.accept(_cp, 0);
         } catch (IOException e) {
-            log.log(Level.SEVERE, "scanCurrentClass () ", e);
+            _log.log(Level.SEVERE, "scanCurrentClass() ", e);
         }
     }
 

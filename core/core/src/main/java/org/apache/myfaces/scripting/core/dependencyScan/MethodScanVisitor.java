@@ -21,8 +21,6 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 import org.objectweb.asm.*;
 
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -33,12 +31,14 @@ class MethodScanVisitor implements MethodVisitor {
 
     // static final Logger log = Logger.getLogger("ClassScanVisitor");
 
-    final Set<String> dependencies;
-    final Set<String> whiteList;
+    String _currentlyVisitedClass = null;
+    DependencyRegistry _dependencyRegistry = null;
 
-    public MethodScanVisitor(Set<String> dependencies, Set<String> whiteList) {
-        this.dependencies = dependencies;
-        this.whiteList = whiteList;
+
+
+    public MethodScanVisitor(String currentlyVisitedClass, DependencyRegistry registry) {
+        _currentlyVisitedClass = currentlyVisitedClass;
+        _dependencyRegistry = registry;
     }
 
     public AnnotationVisitor visitAnnotationDefault() {
@@ -46,14 +46,13 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     public AnnotationVisitor visitAnnotation(String description, boolean b) {
-        registerDependency(Type.getType(description), "registering annotation ["+description+"]");
-        
+        registerDependency(Type.getType(description), "registering annotation [" + description + "]");
 
         return null;
     }
 
     public AnnotationVisitor visitParameterAnnotation(int i, String description, boolean b) {
-        registerDependency(Type.getType(description), "registering annotation ["+description+"]");
+        registerDependency(Type.getType(description), "registering annotation [" + description + "]");
 
         return null;
     }
@@ -82,25 +81,26 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTypeInsn(int i, String castType) {
         //cast
         // log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
-        registerDependency(Type.getObjectType(castType), "cast registered type["+castType+"]");
+        registerDependency(Type.getObjectType(castType), "cast registered type[" + castType + "]");
     }
 
     private void registerDependency(Type dependency, String desc) {
 
         String className = dependency.getClassName();
-        if(className.endsWith("[]")) {
+        if (className.endsWith("[]")) {
             className = className.substring(0, className.indexOf("["));
         }
-       
-        ClassScanUtils.logParmList(dependencies, whiteList, className);
+
+        if (_dependencyRegistry != null) {
+            _dependencyRegistry.addDependency(_currentlyVisitedClass, className);
+        }
     }
 
     /**
-     *
      * @param i
      * @param s  hosting classname of field (always the calling class afaik)
      * @param s1 internal descriptor TODO check if it needs treatment, but I assume static imports need it
-     * @param s2  field type
+     * @param s2 field type
      */
     public void visitFieldInsn(int i, String s, String s1, String s2) {
         //    log.log(Level.INFO, "visitFieldInsn {0} {1} {2}", new Object[]{s, s1, s2});
@@ -117,8 +117,9 @@ class MethodScanVisitor implements MethodVisitor {
 
     /**
      * Method call
-     * @param i internal counter
-     * @param s hosting classname of the method
+     *
+     * @param i  internal counter
+     * @param s  hosting classname of the method
      * @param s1 method name
      * @param s2 params list
      */
@@ -171,13 +172,13 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTryCatchBlock(Label label, Label label1, Label label2, String catchType) {
         //try catch block type information in the last string
         //log.log(Level.INFO, "visitTryCatchBlock: {0} {1} {2} {3}", new Object[]{label.toString(), label1.toString(), label2.toString(), catchType});
-        registerDependency(Type.getObjectType(catchType), "catch registered type["+catchType+"]");
+        registerDependency(Type.getObjectType(catchType), "catch registered type[" + catchType + "]");
 
     }
 
     public void visitLocalVariable(String s, String referenceType, String s2, Label label, Label label1, int i) {
         //local variable on method level
-        registerDependency(Type.getType(referenceType), "local variable registered type["+referenceType+"]");
+        registerDependency(Type.getType(referenceType), "local variable registered type[" + referenceType + "]");
     }
 
     public void visitLineNumber(int i, Label label) {

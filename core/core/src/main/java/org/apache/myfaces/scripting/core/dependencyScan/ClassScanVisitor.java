@@ -20,38 +20,35 @@ package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.objectweb.asm.*;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The central visitor for the class scanner. ASM uses a visitor interface for high performance
+ * to step through classes.
+ * <p/>
+ * We reuse this pattern to get the best performance possible in this critical part of the application
+ * which also is triggered by the startup process.
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 class ClassScanVisitor implements ClassVisitor {
 
-    Set<String> dependencies;
-    Set<String> whiteList;
-    static final Logger log = Logger.getLogger("ClassScanVisitor");
+    DependencyRegistry _dependencyRegistry;
+    String _currentlyVistedClass;
+    static final Logger _log = Logger.getLogger(ClassScanVisitor.class.getName());
 
     public ClassScanVisitor() {
-
     }
 
-    public ClassScanVisitor(Set<String> dependencies) {
-        super();
-        this.dependencies = dependencies;
-    }
-
-    public void setDependencyTarget(Set<String> dependencyTarget) {
-        dependencies = dependencyTarget;
+    public ClassScanVisitor(DependencyRegistry registry) {
+        _dependencyRegistry = registry;
     }
 
     public void visit(int version, int access, String name,
                       String signature, String superName, String[] interfaces) {
-
+        _currentlyVistedClass = Type.getObjectType(name).getClassName();
         registerDependency(Type.getObjectType(superName), "Super name[" + superName + "]");
         if (interfaces != null && interfaces.length > 0) {
             for (String currInterface : interfaces) {
@@ -61,24 +58,24 @@ class ClassScanVisitor implements ClassVisitor {
     }
 
     public void visitSource(String source, String debug) {
-        //log.log(Level.INFO, "source: {0}", source);
+        //_log._log(Level.INFO, "source: {0}", source);
     }
 
-    public void visitOuterClass(String owner, String name, String desc) {
+    public void visitOuterClass(String owner, String name, String description) {
         //nothing has to be done here I guess because
         //we only try to fetch the dependencies
     }
 
-    public AnnotationVisitor visitAnnotation(String desc,
+    public AnnotationVisitor visitAnnotation(String description,
                                              boolean visible) {
-        registerDependency(Type.getType(desc), "registering annotation [" + desc + "]");
+        registerDependency(Type.getType(description), "registering annotation [" + description + "]");
 
         return null;
     }
 
-    public void visitAttribute(Attribute attr) {
-        //log.log(Level.INFO, "Attribute: {0}", attr.type);
-        System.out.println(attr.getClass().getName());
+    public void visitAttribute(Attribute attribute) {
+        //_log._log(Level.INFO, "Attribute: {0}", attribute.type);
+        System.out.println(attribute.getClass().getName());
     }
 
     public void visitInnerClass(String name, String outerName,
@@ -86,40 +83,44 @@ class ClassScanVisitor implements ClassVisitor {
         //same as outer class
     }
 
-    public FieldVisitor visitField(int access, String name, String desc,
+    public FieldVisitor visitField(int access, String name, String description,
                                    String signature, Object value) {
-        //log.log(Level.INFO, "Field:{0} {1} ", new Object[]{desc, name});
-        registerDependency(Type.getType(desc), "field type  [" + desc + "]");
+        //_log._log(Level.INFO, "Field:{0} {1} ", new Object[]{description, name});
+        registerDependency(Type.getType(description), "field type  [" + description + "]");
 
         return null;
     }
 
-    private void registerDependency(Type dependency, String desc) {
+    private void registerDependency(Type dependency, String description) {
         String className = dependency.getClassName();
         if (className.endsWith("[]")) {
             className = className.substring(0, className.indexOf("["));
         }
-        ClassScanUtils.logParmList(dependencies, whiteList, className);
+
+        if (_dependencyRegistry != null) {
+            _dependencyRegistry.addDependency(_currentlyVistedClass, className);
+        }
+
     }
 
     public MethodVisitor visitMethod(int access, String name,
-                                     String desc, String signature, String[] exceptions) {
+                                     String description, String signature, String[] exceptions) {
 
-        registerDependency(Type.getReturnType(desc), "Return type of the method [" + name + "]");
+        registerDependency(Type.getReturnType(description), "Return type of the method [" + name + "]");
 
-        for (Type argumentType : Type.getArgumentTypes(desc)) {
+        for (Type argumentType : Type.getArgumentTypes(description)) {
             registerDependency(argumentType, "Argument type of the method [" + name + "]");
         }
-
-        return new MethodScanVisitor(dependencies, whiteList);
+        return new MethodScanVisitor(_currentlyVistedClass, _dependencyRegistry);
     }
 
     public void visitEnd() {
-        //log.info("}");
+        //_log.info("}");
     }
 
-    public void setWhiteList(Set<String> whiteList) {
-        this.whiteList = whiteList;
+    public void setDependencyRegistry(DependencyRegistry dependencyRegistry) {
+        _dependencyRegistry = dependencyRegistry;
     }
+
 }
 

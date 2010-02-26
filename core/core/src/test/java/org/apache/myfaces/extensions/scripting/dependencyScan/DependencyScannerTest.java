@@ -18,8 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
-import org.apache.myfaces.scripting.core.dependencyScan.DefaultDependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.*;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -42,43 +41,19 @@ public class DependencyScannerTest {
     private static final String PROBE3 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3";
     private static final String PROBE4 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe4";
     private static final String PROBE_PAR = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.ProbeParent";
-    private static final String STRING = "java.lang.String";
     private static final String DUMMY = "org.apache.xxx";
     private static final String PROBE_NAMESPACE = "org.apache.myfaces.extensions.scripting";
 
+
     @Test
-    public void testScan() {
-        Set<String> whiteList = new HashSet<String>();
-        whiteList.add(DUMMY);
-        whiteList.add(PROBE_NAMESPACE);
-
-        long before = System.currentTimeMillis();
-
-        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, whiteList);
-        long after = System.currentTimeMillis();
-
-        log.info("execution time" + (after - before));
-
-        assertTrue(retVal.size() > 0);
-
-        assertFalse(retVal.contains(STRING));
-
-        assertTrue(retVal.contains(PROBE2));
-        assertTrue(retVal.contains(PROBE3));
-        assertTrue(retVal.contains(PROBE4));
-        assertTrue(retVal.contains(PROBE_PAR));
-
-    }
-
-    public void testClassDependencies() {
-        Set<String> whiteList = new HashSet<String>();
-        whiteList.add(DUMMY);
-        whiteList.add(PROBE_NAMESPACE);
-
-        Set<String> retVal = (new DefaultDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, whiteList);
+    public void testClassDependencies2() {
         ClassDependencies dependencyMap = new ClassDependencies();
-
-        dependencyMap.addDependencies(PROBE1, retVal);
+        DependencyRegistry testRegistry = new DependencyRegistryImpl(new DependencyMapRegistrationStrategy(PROBE1, dependencyMap));
+        testRegistry.addFilter(new WhitelistFilter(DUMMY, PROBE_NAMESPACE));
+        long before = System.currentTimeMillis();
+        (new RegistryBasedDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, testRegistry);
+        long after = System.currentTimeMillis();
+        log.info("Execution time registry based scan" + (after - before));
 
         assertTrue("Dependency Test1", dependencyMap.getReferringClasses(PROBE2).contains(PROBE1));
         assertTrue("Dependency Test2", dependencyMap.getReferringClasses(PROBE3).contains(PROBE1));
