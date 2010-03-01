@@ -26,6 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A scan visitor on method level
+ * to cope with method scoped dependencies like inlined
+ * fully qualified names, annotations, local variables
+ * etc...
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -97,7 +102,7 @@ class MethodScanVisitor implements MethodVisitor {
 
     }
 
-    private void registerDependency(Type dependency, String desc) {
+    private void registerDependency(Type dependency, String description) {
 
         String className = dependency.getClassName();
         if (className.endsWith("[]")) {
@@ -110,7 +115,7 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     /**
-     * @param opCode
+     * @param opCode     the opCode of the insert statement
      * @param owner      hosting classname of field (always the calling class afaik)
      * @param name       internal descriptor
      * @param descriptor field type
