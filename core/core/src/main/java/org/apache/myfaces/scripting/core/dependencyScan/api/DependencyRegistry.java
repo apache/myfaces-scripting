@@ -20,5 +20,12 @@ public interface DependencyRegistry {
      */
     void addDependency(Integer engineType, String rootClass, String currentlyVisitedClass, String dependency);
 
+    /**
+     * Flush which is issued at the end of processing to flush
+     * any content which has not been yet processed into our content holding
+     * data structures
+     *
+     * @param engineType the engine type which has issued the flush operation
+     */
     void flush(Integer engineType);
 }
