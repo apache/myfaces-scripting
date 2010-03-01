@@ -85,12 +85,8 @@ public class JavaDependencyScanner implements ClassScanner {
         return ScriptingConst.ENGINE_TYPE_JAVA;
     }
 
-    private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
+    private void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
 
-        //TODO move the strategy fixed into our dependency scan to get this layer out
-        //we wont need it probably anymore anyway
-
-     
         ExternalFilterDependencyRegistry scanRegistry = (ExternalFilterDependencyRegistry) WeavingContext.getRefreshContext().getDependencyRegistry(getEngineType());
         if (scanRegistry == null) {
             scanRegistry = new DependencyRegistryImpl(getEngineType(), WeavingContext.getFileChangedDaemon().getDependencyMap());
@@ -98,7 +94,8 @@ public class JavaDependencyScanner implements ClassScanner {
         } else {
             scanRegistry.clearFilters();
         }
-        //We have to dynamically redjust the filters
+
+        //We have to dynamically readjust the filters
         scanRegistry.addFilter(new WhitelistFilter(possibleDynamicClasses));
 
         _depencyScanner.fetchDependencies(loader, getEngineType(), dynamicClass, WeavingContext.getRefreshContext().getDependencyRegistry());
