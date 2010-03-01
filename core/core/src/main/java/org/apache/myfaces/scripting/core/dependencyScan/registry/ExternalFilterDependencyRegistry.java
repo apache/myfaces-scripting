@@ -33,10 +33,10 @@ public interface ExternalFilterDependencyRegistry extends DependencyRegistry {
      * to pre-check if a class is allowed to pass or not
      *
      * @param className      the classname to be checked
-     * @param scanIdentifier an identifier for the current scan type (jsf java scan for instance)
+     * @param engineType an identifier for the current scan type (jsf java scan for instance)
      * @return true if it is false otherwise
      */
-    public boolean isAllowed(String scanIdentifier, String className);
+    public boolean isAllowed(Integer engineType, String className);
 
     /**
      * Flush operation to batch sync
@@ -45,5 +45,5 @@ public interface ExternalFilterDependencyRegistry extends DependencyRegistry {
      * (will be removed later once we have all the code transitioned
      * to the registry system)
      */
-    void flush(String scanIdentifier);
+    void flush(Integer engineType);
 }

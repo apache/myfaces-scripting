@@ -1,6 +1,7 @@
 package org.apache.myfaces.scripting.core.dependencyScan.registry;
 
 import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.ScanIdentifierFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.StandardNamespaceFilter;
 import org.apache.myfaces.scripting.core.util.Strategy;
 
@@ -14,15 +15,20 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry 
 
     Map<String, Set<String>> _dependencies = new HashMap<String, Set<String>>();
 
-    Strategy _dependencyTarget = null;
+    final Strategy _dependencyTarget;
+    final Integer _engineType;
 
-    public DependencyRegistryImpl(Strategy dependencyTarget) {
-        _filters.add(new StandardNamespaceFilter());
+    public DependencyRegistryImpl(Integer engineType, Strategy dependencyTarget) {
         _dependencyTarget = dependencyTarget;
+        _engineType = engineType;
+
+        _filters.add(new ScanIdentifierFilter(_engineType));
+        _filters.add(new StandardNamespaceFilter());
     }
 
     public void clearFilters() {
         _filters.clear();
+        _filters.add(new ScanIdentifierFilter(_engineType));
         _filters.add(new StandardNamespaceFilter());
     }
 
@@ -30,16 +36,16 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry 
         _filters.add(filter);
     }
 
-    public boolean isAllowed(String scanIdentifier, String className) {
+    public boolean isAllowed(Integer engineType, String className) {
         for (ClassFilter filter : _filters) {
-            if (!filter.isAllowed(className)) {
+            if (!filter.isAllowed(_engineType, className)) {
                 return false;
             }
         }
         return true;
     }
 
-    public void addDependency(String scanIdentifier, String source, String dependency) {
+    public void addDependency(Integer engineType, String source, String dependency) {
         if (source.equals(dependency)) {
             return;
         }
@@ -48,7 +54,7 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry 
             return;
         }
 
-        if (!isAllowed(scanIdentifier, dependency)) {
+        if (!isAllowed(engineType, dependency)) {
             return;
         }
         //for now we code it into a list like we used to do before
@@ -73,7 +79,7 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry 
     /**
      * flush to flush down our stored dependencies into our final map
      */
-    public void flush(String scanIdentifier) {
+    public void flush(Integer engineType) {
         _dependencyTarget.apply(_dependencies);
     }
 

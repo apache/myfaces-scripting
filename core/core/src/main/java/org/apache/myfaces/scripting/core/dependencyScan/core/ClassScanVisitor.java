@@ -37,7 +37,7 @@ public class ClassScanVisitor implements ClassVisitor {
 
     ExternalFilterDependencyRegistry _dependencyRegistry;
     String _currentlyVistedClass;
-    String _scanIdentifier;
+    Integer _engineType;
     static final Logger _log = Logger.getLogger(ClassScanVisitor.class.getName());
 
     public ClassScanVisitor() {
@@ -100,7 +100,7 @@ public class ClassScanVisitor implements ClassVisitor {
         }
 
         if (_dependencyRegistry != null) {
-            _dependencyRegistry.addDependency(_scanIdentifier, _currentlyVistedClass, className);
+            _dependencyRegistry.addDependency(_engineType, _currentlyVistedClass, className);
         }
 
     }
@@ -113,7 +113,7 @@ public class ClassScanVisitor implements ClassVisitor {
         for (Type argumentType : Type.getArgumentTypes(description)) {
             registerDependency(argumentType, "Argument type of the method [" + name + "]");
         }
-        return new MethodScanVisitor(_scanIdentifier, _currentlyVistedClass, _dependencyRegistry);
+        return new MethodScanVisitor(_engineType, _currentlyVistedClass, _dependencyRegistry);
     }
 
     public void visitEnd() {
@@ -124,8 +124,8 @@ public class ClassScanVisitor implements ClassVisitor {
         _dependencyRegistry = dependencyRegistry;
     }
 
-    public void setScanIdentifier(String scanIdentifier) {
-        _scanIdentifier = scanIdentifier;
+    public void setEngineType(Integer engineType) {
+        _engineType = engineType;
     }
 }
 

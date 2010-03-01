@@ -46,7 +46,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
     List<String> _scanPaths = new LinkedList<String>();
 
-    DependencyScanner _dependecyScanner = new DependencyScanner();
+    DependencyScanner _depencyScanner = new DependencyScanner();
 
     ScriptingWeaver _weaver;
     Logger log = Logger.getLogger(JavaDependencyScanner.class.getName());
@@ -88,13 +88,9 @@ public class JavaDependencyScanner implements ClassScanner {
 
     private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
         Strategy registrationStrategy = new DependencyMapRegistrationStrategy(dynamicClass, WeavingContext.getFileChangedDaemon().getDependencyMap());
-        ExternalFilterDependencyRegistry scanRegistry = new DependencyRegistryImpl(registrationStrategy);
+        ExternalFilterDependencyRegistry scanRegistry = new DependencyRegistryImpl(getEngineType(), registrationStrategy);
         scanRegistry.addFilter(new WhitelistFilter(possibleDynamicClasses));
-        _dependecyScanner.fetchDependencies(loader, getScanIdentifier(), dynamicClass, scanRegistry);
-    }
-
-    protected String getScanIdentifier() {
-        return ScriptingConst.ENGINE_TYPE_JAVA+"_Scan";
+        _depencyScanner.fetchDependencies(loader, getEngineType(), dynamicClass, scanRegistry);
     }
 
     protected ClassLoader getClassLoader() {

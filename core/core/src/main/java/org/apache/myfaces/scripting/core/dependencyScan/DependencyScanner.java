@@ -48,12 +48,12 @@ public class DependencyScanner {
 
     }
 
-    public synchronized final void fetchDependencies(ClassLoader loader, String scanIdentifier, String className, ExternalFilterDependencyRegistry registry) {
+    public synchronized final void fetchDependencies(ClassLoader loader, Integer engineType, String className, ExternalFilterDependencyRegistry registry) {
         Set<String> retVal = new HashSet<String>();
-        _cp.setScanIdentifier(scanIdentifier);
+        _cp.setEngineType(engineType);
 
         investigateInheritanceHierarchy(loader, className, registry);
-        registry.flush(scanIdentifier);
+        registry.flush(engineType);
     }
 
     /**

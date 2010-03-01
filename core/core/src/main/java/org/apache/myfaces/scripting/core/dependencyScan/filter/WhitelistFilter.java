@@ -85,7 +85,7 @@ public class WhitelistFilter implements ClassFilter {
         }
     }
 
-    public final boolean isAllowed(String clazz) {
+    public final boolean isAllowed(Integer engineType, String clazz) {
         String[] subParts = clazz.split("\\.");
         WhiteListNode currPackage = _whiteList;
         WhiteListNode parentPackage = null;

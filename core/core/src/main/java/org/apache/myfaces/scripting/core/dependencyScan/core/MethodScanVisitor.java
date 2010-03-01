@@ -31,15 +31,13 @@ class MethodScanVisitor implements MethodVisitor {
     // static final Logger log = Logger.getLogger("ClassScanVisitor");
 
     String _currentlyVisitedClass = null;
-    String _scanIdentifier = null;
+    Integer _engineType = null;
     ExternalFilterDependencyRegistry _dependencyRegistry = null;
 
-
-
-    public MethodScanVisitor(String scanIdentifier, String currentlyVisitedClass, ExternalFilterDependencyRegistry registry) {
+    public MethodScanVisitor(Integer engineType, String currentlyVisitedClass, ExternalFilterDependencyRegistry registry) {
         _currentlyVisitedClass = currentlyVisitedClass;
         _dependencyRegistry = registry;
-        _scanIdentifier = scanIdentifier;
+        _engineType = engineType;
     }
 
     public AnnotationVisitor visitAnnotationDefault() {
@@ -93,7 +91,7 @@ class MethodScanVisitor implements MethodVisitor {
         }
 
         if (_dependencyRegistry != null) {
-            _dependencyRegistry.addDependency(_scanIdentifier, _currentlyVisitedClass, className);
+            _dependencyRegistry.addDependency(_engineType, _currentlyVisitedClass, className);
         }
     }
 

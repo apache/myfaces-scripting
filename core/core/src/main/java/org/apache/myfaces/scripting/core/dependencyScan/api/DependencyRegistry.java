@@ -17,5 +17,5 @@ public interface DependencyRegistry {
      * @param source     the source which includes or casts the dependencies
      * @param dependency the dependency to be added
      */
-    void addDependency(String scanIdentifier, String source, String dependency);
+    void addDependency(Integer engineType, String source, String dependency);
 }

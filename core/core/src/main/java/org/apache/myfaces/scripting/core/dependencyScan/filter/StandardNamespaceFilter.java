@@ -1,6 +1,6 @@
 package org.apache.myfaces.scripting.core.dependencyScan.filter;
 
-import org.apache.myfaces.scripting.core.dependencyScan.ClassScanUtils;
+import org.apache.myfaces.scripting.core.dependencyScan.core.ClassScanUtils;
 import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
 
 /**
@@ -8,7 +8,7 @@ import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
  */
 public class StandardNamespaceFilter implements ClassFilter {
 
-    public boolean isAllowed(String clazz) {
+    public boolean isAllowed(Integer engineType, String clazz) {
         return !ClassScanUtils.isStandardNamespace(clazz);
     }
 }
