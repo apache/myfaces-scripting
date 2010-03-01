@@ -44,11 +44,16 @@ public class DependencyScannerTest {
     private static final String PROBE2 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe2";
     private static final String PROBE3 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3";
     private static final String PROBE4 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe4";
+    private static final String GENERICS_PROBE = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.GenericsProbe";
+
     private static final String PROBE_PAR = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.ProbeParent";
     private static final String DUMMY = "org.apache.xxx";
     private static final String PROBE_NAMESPACE = "org.apache.myfaces.extensions.scripting";
 
-
+    /**
+     * Basic dependency scanning test, which tests
+     * for basic intra class relationships
+     */
     @Test
     public void testClassDependencies2() {
         ClassDependencies dependencyMap = new ClassDependencies();
@@ -66,4 +71,21 @@ public class DependencyScannerTest {
 
     }
 
+    /**
+     * Test for
+     * https://issues.apache.org/jira/browse/EXTSCRIPT-70
+     */
+    @Test
+    public void testGenerics() {
+        ClassDependencies dependencyMap = new ClassDependencies();
+        ExternalFilterDependencyRegistry testRegistry = new DependencyRegistryImpl(ScriptingConst.ENGINE_TYPE_JAVA, dependencyMap);
+        testRegistry.addFilter(new WhitelistFilter(DUMMY, PROBE_NAMESPACE));
+        long before = System.currentTimeMillis();
+        (new StandardDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, GENERICS_PROBE, testRegistry);
+        long after = System.currentTimeMillis();
+        log.info("Execution time registry based scan" + (after - before));
+
+        assertTrue("GenericsDependencyTest 1", dependencyMap.getReferringClasses(PROBE1).contains(GENERICS_PROBE));
+        assertTrue("GenericsDependencyTest 2", dependencyMap.getReferringClasses(PROBE2).contains(GENERICS_PROBE));
+    }
 }

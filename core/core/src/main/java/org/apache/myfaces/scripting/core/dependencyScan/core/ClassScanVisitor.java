@@ -21,7 +21,9 @@ package org.apache.myfaces.scripting.core.dependencyScan.core;
 import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyRegistry;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.objectweb.asm.*;
+import org.objectweb.asm.signature.SignatureReader;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,9 +47,9 @@ public class ClassScanVisitor implements ClassVisitor {
     public ClassScanVisitor() {
     }
 
-    public ClassScanVisitor(String _scanIdentifier, String rootClass, ExternalFilterDependencyRegistry registry) {
+    public ClassScanVisitor(Integer engineType, String rootClass, ExternalFilterDependencyRegistry registry) {
         _dependencyRegistry = registry;
-        _scanIdentifier = _scanIdentifier;
+        _engineType = engineType;
         _rootClass = rootClass;
     }
 
@@ -55,6 +57,8 @@ public class ClassScanVisitor implements ClassVisitor {
                       String signature, String superName, String[] interfaces) {
         _currentlyVistedClass = Type.getObjectType(name).getClassName();
         registerDependency(Type.getObjectType(superName), "Super name[" + superName + "]");
+        handleGenerics(signature, true);
+
         if (interfaces != null && interfaces.length > 0) {
             for (String currInterface : interfaces) {
                 registerDependency(Type.getObjectType(currInterface), "interface [" + superName + "]");
@@ -63,12 +67,14 @@ public class ClassScanVisitor implements ClassVisitor {
     }
 
     public void visitSource(String source, String debug) {
-        //_log._log(Level.INFO, "source: {0}", source);
+        _log.log(Level.FINEST, "visitSource: {0}", source);
     }
 
     public void visitOuterClass(String owner, String name, String description) {
         //nothing has to be done here I guess because
         //we only try to fetch the dependencies
+        _log.log(Level.FINEST, "visitOuterClass: {0} {1} {2}", new String [] {owner, name, description});
+
     }
 
     public AnnotationVisitor visitAnnotation(String description,
@@ -86,11 +92,13 @@ public class ClassScanVisitor implements ClassVisitor {
     public void visitInnerClass(String name, String outerName,
                                 String innerName, int access) {
         //same as outer class
+        _log.log(Level.FINEST, "visitInnerClass: {0}  {1} {2} ", new String [] {name, outerName, innerName});
     }
 
     public FieldVisitor visitField(int access, String name, String description,
                                    String signature, Object value) {
         //_log._log(Level.INFO, "Field:{0} {1} ", new Object[]{description, name});
+        handleGenerics(signature, false);
         registerDependency(Type.getType(description), "field type  [" + description + "]");
 
         return null;
@@ -113,10 +121,22 @@ public class ClassScanVisitor implements ClassVisitor {
 
         registerDependency(Type.getReturnType(description), "Return type of the method [" + name + "]");
 
+        handleGenerics(signature, true);
+
         for (Type argumentType : Type.getArgumentTypes(description)) {
             registerDependency(argumentType, "Argument type of the method [" + name + "]");
         }
         return new MethodScanVisitor(_engineType, _rootClass, _currentlyVistedClass, _dependencyRegistry);
+    }
+
+    private void handleGenerics(String signature, boolean accept) {
+        if(signature != null && signature.contains("<")) {
+            SignatureReader reader = new SignatureReader(signature);
+            if(accept)
+                reader.accept(new DependencySignatureVisitor(_dependencyRegistry,_engineType, _rootClass, _currentlyVistedClass));
+            else
+                reader.acceptType(new DependencySignatureVisitor(_dependencyRegistry,_engineType, _rootClass, _currentlyVistedClass));
+        }
     }
 
     public void visitEnd() {
