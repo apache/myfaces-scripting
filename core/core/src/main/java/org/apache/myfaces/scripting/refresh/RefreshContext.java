@@ -107,7 +107,7 @@ public class RefreshContext {
         return _dependencyRegistry.getSubregistry(scriptingEngine);
     }
 
-    public void setDependencyRegistries(int scriptingEngine, DependencyRegistry registry) {
+    public void setDependencyRegistry(int scriptingEngine, DependencyRegistry registry) {
         _dependencyRegistry.addSubregistry(scriptingEngine, registry);
     }
 

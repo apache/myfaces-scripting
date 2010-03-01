@@ -25,10 +25,8 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.StandardDependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
-import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyMapRegistrationStrategy;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
-import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
@@ -96,7 +94,7 @@ public class JavaDependencyScanner implements ClassScanner {
         ExternalFilterDependencyRegistry scanRegistry = (ExternalFilterDependencyRegistry) WeavingContext.getRefreshContext().getDependencyRegistry(getEngineType());
         if (scanRegistry == null) {
             scanRegistry = new DependencyRegistryImpl(getEngineType(), WeavingContext.getFileChangedDaemon().getDependencyMap());
-
+            WeavingContext.getRefreshContext().setDependencyRegistry(getEngineType(), scanRegistry);
         } else {
             scanRegistry.clearFilters();
         }
