@@ -1,4 +1,4 @@
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.api;
 
 /**
  * Generic filter pattern interface

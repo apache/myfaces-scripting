@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.core;
 
 import org.objectweb.asm.ClassReader;
 

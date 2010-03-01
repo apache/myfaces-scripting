@@ -16,8 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.core;
 
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;

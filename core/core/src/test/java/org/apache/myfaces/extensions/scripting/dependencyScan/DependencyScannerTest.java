@@ -18,11 +18,14 @@
  */
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.myfaces.scripting.core.dependencyScan.*;
+import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.core.ClassDependencies;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyMapRegistrationStrategy;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertFalse;
@@ -48,10 +51,10 @@ public class DependencyScannerTest {
     @Test
     public void testClassDependencies2() {
         ClassDependencies dependencyMap = new ClassDependencies();
-        DependencyRegistry testRegistry = new DependencyRegistryImpl(new DependencyMapRegistrationStrategy(PROBE1, dependencyMap));
+        ExternalFilterDependencyRegistry testRegistry = new DependencyRegistryImpl(new DependencyMapRegistrationStrategy(PROBE1, dependencyMap));
         testRegistry.addFilter(new WhitelistFilter(DUMMY, PROBE_NAMESPACE));
         long before = System.currentTimeMillis();
-        (new RegistryBasedDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, testRegistry);
+        (new DependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, testRegistry);
         long after = System.currentTimeMillis();
         log.info("Execution time registry based scan" + (after - before));
 

@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.filter;
+
+import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

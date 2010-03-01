@@ -1,7 +1,7 @@
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.myfaces.scripting.core.dependencyScan.StandardNamespaceFilter;
-import org.apache.myfaces.scripting.core.dependencyScan.WhitelistFilter;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.StandardNamespaceFilter;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
 import org.junit.Test;
 
 import java.util.LinkedList;

@@ -22,7 +22,11 @@ import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.dependencyScan.*;
+import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyMapRegistrationStrategy;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
@@ -42,7 +46,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
     List<String> _scanPaths = new LinkedList<String>();
 
-    RegistryBasedDependencyScanner _dependecyScanner = new RegistryBasedDependencyScanner();
+    DependencyScanner _dependecyScanner = new DependencyScanner();
 
     ScriptingWeaver _weaver;
     Logger log = Logger.getLogger(JavaDependencyScanner.class.getName());
@@ -84,9 +88,13 @@ public class JavaDependencyScanner implements ClassScanner {
 
     private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
         Strategy registrationStrategy = new DependencyMapRegistrationStrategy(dynamicClass, WeavingContext.getFileChangedDaemon().getDependencyMap());
-        DependencyRegistry scanRegistry = new DependencyRegistryImpl(registrationStrategy);
+        ExternalFilterDependencyRegistry scanRegistry = new DependencyRegistryImpl(registrationStrategy);
         scanRegistry.addFilter(new WhitelistFilter(possibleDynamicClasses));
-        _dependecyScanner.fetchDependencies(loader, dynamicClass, scanRegistry);
+        _dependecyScanner.fetchDependencies(loader, getScanIdentifier(), dynamicClass, scanRegistry);
+    }
+
+    protected String getScanIdentifier() {
+        return ScriptingConst.ENGINE_TYPE_JAVA+"_Scan";
     }
 
     protected ClassLoader getClassLoader() {

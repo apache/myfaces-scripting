@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.refresh;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.dependencyScan.ClassDependencies;
+import org.apache.myfaces.scripting.core.dependencyScan.core.ClassDependencies;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.servlet.ServletContext;

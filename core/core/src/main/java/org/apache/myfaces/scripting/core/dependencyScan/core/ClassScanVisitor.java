@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.core;
 
+import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.objectweb.asm.*;
 
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -33,17 +33,19 @@ import java.util.logging.Logger;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-class ClassScanVisitor implements ClassVisitor {
+public class ClassScanVisitor implements ClassVisitor {
 
-    DependencyRegistry _dependencyRegistry;
+    ExternalFilterDependencyRegistry _dependencyRegistry;
     String _currentlyVistedClass;
+    String _scanIdentifier;
     static final Logger _log = Logger.getLogger(ClassScanVisitor.class.getName());
 
     public ClassScanVisitor() {
     }
 
-    public ClassScanVisitor(DependencyRegistry registry) {
+    public ClassScanVisitor(String _scanIdentifier, ExternalFilterDependencyRegistry registry) {
         _dependencyRegistry = registry;
+        _scanIdentifier = _scanIdentifier;
     }
 
     public void visit(int version, int access, String name,
@@ -98,7 +100,7 @@ class ClassScanVisitor implements ClassVisitor {
         }
 
         if (_dependencyRegistry != null) {
-            _dependencyRegistry.addDependency(_currentlyVistedClass, className);
+            _dependencyRegistry.addDependency(_scanIdentifier, _currentlyVistedClass, className);
         }
 
     }
@@ -111,16 +113,19 @@ class ClassScanVisitor implements ClassVisitor {
         for (Type argumentType : Type.getArgumentTypes(description)) {
             registerDependency(argumentType, "Argument type of the method [" + name + "]");
         }
-        return new MethodScanVisitor(_currentlyVistedClass, _dependencyRegistry);
+        return new MethodScanVisitor(_scanIdentifier, _currentlyVistedClass, _dependencyRegistry);
     }
 
     public void visitEnd() {
         //_log.info("}");
     }
 
-    public void setDependencyRegistry(DependencyRegistry dependencyRegistry) {
+    public void setDependencyRegistry(ExternalFilterDependencyRegistry dependencyRegistry) {
         _dependencyRegistry = dependencyRegistry;
     }
 
+    public void setScanIdentifier(String scanIdentifier) {
+        _scanIdentifier = scanIdentifier;
+    }
 }
 

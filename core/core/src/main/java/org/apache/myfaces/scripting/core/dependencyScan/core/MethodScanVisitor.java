@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.core;
 
+import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.objectweb.asm.*;
-
-import java.util.Set;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -32,13 +31,15 @@ class MethodScanVisitor implements MethodVisitor {
     // static final Logger log = Logger.getLogger("ClassScanVisitor");
 
     String _currentlyVisitedClass = null;
-    DependencyRegistry _dependencyRegistry = null;
+    String _scanIdentifier = null;
+    ExternalFilterDependencyRegistry _dependencyRegistry = null;
 
 
 
-    public MethodScanVisitor(String currentlyVisitedClass, DependencyRegistry registry) {
+    public MethodScanVisitor(String scanIdentifier, String currentlyVisitedClass, ExternalFilterDependencyRegistry registry) {
         _currentlyVisitedClass = currentlyVisitedClass;
         _dependencyRegistry = registry;
+        _scanIdentifier = scanIdentifier;
     }
 
     public AnnotationVisitor visitAnnotationDefault() {
@@ -92,7 +93,7 @@ class MethodScanVisitor implements MethodVisitor {
         }
 
         if (_dependencyRegistry != null) {
-            _dependencyRegistry.addDependency(_currentlyVisitedClass, className);
+            _dependencyRegistry.addDependency(_scanIdentifier, _currentlyVisitedClass, className);
         }
     }
 

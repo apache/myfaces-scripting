@@ -29,6 +29,10 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
 
     @Override
     public void scanPaths() {
-        super.scanPaths();    //To change body of overridden methods use File | Settings | File Templates.
+        super.scanPaths();    
+    }
+
+    protected String getScanIdentifier() {
+        return ScriptingConst.ENGINE_TYPE_GROOVY + "_Scan";
     }
 }

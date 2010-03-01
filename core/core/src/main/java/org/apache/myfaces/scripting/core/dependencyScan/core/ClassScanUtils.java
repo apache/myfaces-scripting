@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.core;
 
 import java.util.Collection;
 import java.util.Set;
@@ -27,7 +27,7 @@ import java.util.Set;
  *          <p/>
  *          Utils which store the shared code
  */
-class ClassScanUtils {
+public class ClassScanUtils {
     public static final String BINARY_PACKAGE = "\\/";
 
     private static final String DOMAIN_JAVA = "java.";

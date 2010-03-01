@@ -1,20 +1,20 @@
-package org.apache.myfaces.scripting.core.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan.registry;
 
+import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.StandardNamespaceFilter;
 import org.apache.myfaces.scripting.core.util.Strategy;
-import org.objectweb.asm.*;
 
 import java.util.*;
 
 /**
- * Registry facade which is used to track our dependencies
+ * registry facade which is used to track our dependencies
  */
-public class DependencyRegistryImpl implements DependencyRegistry {
+public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry {
     List<ClassFilter> _filters = new LinkedList<ClassFilter>();
 
     Map<String, Set<String>> _dependencies = new HashMap<String, Set<String>>();
 
     Strategy _dependencyTarget = null;
-
 
     public DependencyRegistryImpl(Strategy dependencyTarget) {
         _filters.add(new StandardNamespaceFilter());
@@ -30,7 +30,7 @@ public class DependencyRegistryImpl implements DependencyRegistry {
         _filters.add(filter);
     }
 
-    public boolean isAllowed(String className) {
+    public boolean isAllowed(String scanIdentifier, String className) {
         for (ClassFilter filter : _filters) {
             if (!filter.isAllowed(className)) {
                 return false;
@@ -39,7 +39,7 @@ public class DependencyRegistryImpl implements DependencyRegistry {
         return true;
     }
 
-    public void addDependency(String source, String dependency) {
+    public void addDependency(String scanIdentifier, String source, String dependency) {
         if (source.equals(dependency)) {
             return;
         }
@@ -48,7 +48,7 @@ public class DependencyRegistryImpl implements DependencyRegistry {
             return;
         }
 
-        if (!isAllowed(dependency)) {
+        if (!isAllowed(scanIdentifier, dependency)) {
             return;
         }
         //for now we code it into a list like we used to do before
@@ -59,13 +59,12 @@ public class DependencyRegistryImpl implements DependencyRegistry {
 
     private Set<String> getDependencySet(String key) {
         Set<String> retVal = _dependencies.get(key);
-        if(retVal == null) {
+        if (retVal == null) {
             retVal = new HashSet<String>();
             _dependencies.put(key, retVal);
         }
         return retVal;
     }
-
 
     public Map<String, Set<String>> getDependencies() {
         return _dependencies;
@@ -74,7 +73,7 @@ public class DependencyRegistryImpl implements DependencyRegistry {
     /**
      * flush to flush down our stored dependencies into our final map
      */
-    public void flush() {
+    public void flush(String scanIdentifier) {
         _dependencyTarget.apply(_dependencies);
     }
 
