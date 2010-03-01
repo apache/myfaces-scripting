@@ -15,7 +15,7 @@ public class ScanIdentifierFilter implements ClassFilter {
         _engineType = engineType;
     }
 
-    public boolean isAllowed(String identifier, String clazz) {
+    public boolean isAllowed(Integer identifier, String clazz) {
         return _engineType.equals(identifier);  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

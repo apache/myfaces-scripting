@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.refresh;
 
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyRegistry;
+import org.apache.myfaces.scripting.core.dependencyScan.registry.MasterDependencyRegistry;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
@@ -73,8 +75,9 @@ public class RefreshContext {
      */
     public final static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
 
-    private volatile AtomicInteger currentlyRunningRequests = null;
+    private volatile AtomicInteger _currentlyRunningRequests = null;
 
+    private MasterDependencyRegistry _dependencyRegistry = new MasterDependencyRegistry();
 
     public long getPersonalScopedBeanRefresh() {
         return personalScopedBeanRefresh;
@@ -98,6 +101,14 @@ public class RefreshContext {
 
     public void setRecompileRecommended(int scriptingEngine, boolean recompileRecommended) {
         daemon.getSystemRecompileMap().put(scriptingEngine, recompileRecommended);
+    }
+
+    public DependencyRegistry getDependencyRegistry(int scriptingEngine) {
+        return _dependencyRegistry.getSubregistry(scriptingEngine);
+    }
+
+    public void setDependencyRegistries(int scriptingEngine, DependencyRegistry registry) {
+        _dependencyRegistry.addSubregistry(scriptingEngine, registry);
     }
 
     public boolean isDependencyScanned(int scriptingEngine) {
@@ -167,11 +178,11 @@ public class RefreshContext {
      *         probably deprecred
      */
     public AtomicInteger getCurrentlyRunningRequests() {
-        return currentlyRunningRequests;
+        return _currentlyRunningRequests;
     }
 
     public void setCurrentlyRunningRequests(AtomicInteger currentlyRunning) {
-        currentlyRunningRequests = currentlyRunning;
+        _currentlyRunningRequests = currentlyRunning;
     }
 
     /**
@@ -181,4 +192,11 @@ public class RefreshContext {
         WeavingContext.getWeaver();
     }
 
+    public MasterDependencyRegistry getDependencyRegistry() {
+        return _dependencyRegistry;
+    }
+
+    public void setDependencyRegistry(MasterDependencyRegistry dependencyRegistry) {
+        _dependencyRegistry = dependencyRegistry;
+    }
 }

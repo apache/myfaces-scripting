@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan.core;
 
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyRegistry;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.objectweb.asm.*;
 
@@ -35,17 +36,19 @@ import java.util.logging.Logger;
  */
 public class ClassScanVisitor implements ClassVisitor {
 
-    ExternalFilterDependencyRegistry _dependencyRegistry;
+    DependencyRegistry _dependencyRegistry;
     String _currentlyVistedClass;
     Integer _engineType;
+    String _rootClass;
     static final Logger _log = Logger.getLogger(ClassScanVisitor.class.getName());
 
     public ClassScanVisitor() {
     }
 
-    public ClassScanVisitor(String _scanIdentifier, ExternalFilterDependencyRegistry registry) {
+    public ClassScanVisitor(String _scanIdentifier, String rootClass, ExternalFilterDependencyRegistry registry) {
         _dependencyRegistry = registry;
         _scanIdentifier = _scanIdentifier;
+        _rootClass = rootClass;
     }
 
     public void visit(int version, int access, String name,
@@ -100,7 +103,7 @@ public class ClassScanVisitor implements ClassVisitor {
         }
 
         if (_dependencyRegistry != null) {
-            _dependencyRegistry.addDependency(_engineType, _currentlyVistedClass, className);
+            _dependencyRegistry.addDependency(_engineType, _rootClass, _currentlyVistedClass, className);
         }
 
     }
@@ -113,19 +116,24 @@ public class ClassScanVisitor implements ClassVisitor {
         for (Type argumentType : Type.getArgumentTypes(description)) {
             registerDependency(argumentType, "Argument type of the method [" + name + "]");
         }
-        return new MethodScanVisitor(_engineType, _currentlyVistedClass, _dependencyRegistry);
+        return new MethodScanVisitor(_engineType, _rootClass, _currentlyVistedClass, _dependencyRegistry);
     }
 
     public void visitEnd() {
         //_log.info("}");
     }
 
-    public void setDependencyRegistry(ExternalFilterDependencyRegistry dependencyRegistry) {
+    public void setDependencyRegistry(DependencyRegistry dependencyRegistry) {
         _dependencyRegistry = dependencyRegistry;
     }
 
     public void setEngineType(Integer engineType) {
         _engineType = engineType;
     }
+
+    public void setRootClass(String rootClass) {
+        _rootClass = rootClass;
+    }
 }
+
 

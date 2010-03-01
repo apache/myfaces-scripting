@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan.core;
 
-import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyRegistry;
 import org.objectweb.asm.*;
 
 /**
@@ -31,13 +31,15 @@ class MethodScanVisitor implements MethodVisitor {
     // static final Logger log = Logger.getLogger("ClassScanVisitor");
 
     String _currentlyVisitedClass = null;
+    String _rootClass;
     Integer _engineType = null;
-    ExternalFilterDependencyRegistry _dependencyRegistry = null;
+    DependencyRegistry _dependencyRegistry = null;
 
-    public MethodScanVisitor(Integer engineType, String currentlyVisitedClass, ExternalFilterDependencyRegistry registry) {
+    public MethodScanVisitor(Integer engineType, String rootClass, String currentlyVisitedClass, DependencyRegistry registry) {
         _currentlyVisitedClass = currentlyVisitedClass;
         _dependencyRegistry = registry;
         _engineType = engineType;
+        _rootClass = rootClass;
     }
 
     public AnnotationVisitor visitAnnotationDefault() {
@@ -91,7 +93,7 @@ class MethodScanVisitor implements MethodVisitor {
         }
 
         if (_dependencyRegistry != null) {
-            _dependencyRegistry.addDependency(_engineType, _currentlyVisitedClass, className);
+            _dependencyRegistry.addDependency(_engineType, _rootClass, _currentlyVisitedClass, className);
         }
     }
 

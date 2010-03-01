@@ -30,6 +30,7 @@ import java.util.Set;
  * A scan strategy for scanning class files within our api
  */
 @SuppressWarnings("unused")
+@Deprecated
 public class ClassScanStrategy implements Strategy {
     Set<String> _whiteList;
     DependencyScanner _scanner;

@@ -8,14 +8,17 @@ package org.apache.myfaces.scripting.core.dependencyScan.api;
  * Only classes which pass the whitelisting check will be processed
  */
 public interface DependencyRegistry {
-      /**
+    /**
      * adds a source dependency if it is able to pass the
      * filters
      * A dependency is only allowed to pass if it is able
      * to pass the internal filter list
      *
-     * @param source     the source which includes or casts the dependencies
-     * @param dependency the dependency to be added
+     * @param rootClass             the root class of this scan which all dependencies are referenced from
+     * @param currentlyVisitedClass the source which includes or casts the dependencies
+     * @param dependency            the dependency to be added
      */
-    void addDependency(Integer engineType, String source, String dependency);
+    void addDependency(Integer engineType, String rootClass, String currentlyVisitedClass, String dependency);
+
+    void flush(Integer engineType);
 }

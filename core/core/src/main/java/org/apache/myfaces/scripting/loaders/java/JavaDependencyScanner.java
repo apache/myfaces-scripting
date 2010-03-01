@@ -23,6 +23,7 @@ import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.StandardDependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyMapRegistrationStrategy;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
@@ -46,7 +47,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
     List<String> _scanPaths = new LinkedList<String>();
 
-    DependencyScanner _depencyScanner = new DependencyScanner();
+    DependencyScanner _depencyScanner = new StandardDependencyScanner();
 
     ScriptingWeaver _weaver;
     Logger log = Logger.getLogger(JavaDependencyScanner.class.getName());
@@ -87,10 +88,22 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     private final void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
-        Strategy registrationStrategy = new DependencyMapRegistrationStrategy(dynamicClass, WeavingContext.getFileChangedDaemon().getDependencyMap());
-        ExternalFilterDependencyRegistry scanRegistry = new DependencyRegistryImpl(getEngineType(), registrationStrategy);
+
+        //TODO move the strategy fixed into our dependency scan to get this layer out
+        //we wont need it probably anymore anyway
+
+     
+        ExternalFilterDependencyRegistry scanRegistry = (ExternalFilterDependencyRegistry) WeavingContext.getRefreshContext().getDependencyRegistry(getEngineType());
+        if (scanRegistry == null) {
+            scanRegistry = new DependencyRegistryImpl(getEngineType(), WeavingContext.getFileChangedDaemon().getDependencyMap());
+
+        } else {
+            scanRegistry.clearFilters();
+        }
+        //We have to dynamically redjust the filters
         scanRegistry.addFilter(new WhitelistFilter(possibleDynamicClasses));
-        _depencyScanner.fetchDependencies(loader, getEngineType(), dynamicClass, scanRegistry);
+
+        _depencyScanner.fetchDependencies(loader, getEngineType(), dynamicClass, WeavingContext.getRefreshContext().getDependencyRegistry());
     }
 
     protected ClassLoader getClassLoader() {

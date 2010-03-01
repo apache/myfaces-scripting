@@ -18,7 +18,8 @@
  */
 package org.apache.myfaces.extensions.scripting.dependencyScan;
 
-import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.dependencyScan.StandardDependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.core.ClassDependencies;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyMapRegistrationStrategy;
@@ -51,10 +52,10 @@ public class DependencyScannerTest {
     @Test
     public void testClassDependencies2() {
         ClassDependencies dependencyMap = new ClassDependencies();
-        ExternalFilterDependencyRegistry testRegistry = new DependencyRegistryImpl(new DependencyMapRegistrationStrategy(PROBE1, dependencyMap));
+        ExternalFilterDependencyRegistry testRegistry = new DependencyRegistryImpl(ScriptingConst.ENGINE_TYPE_JAVA, dependencyMap);
         testRegistry.addFilter(new WhitelistFilter(DUMMY, PROBE_NAMESPACE));
         long before = System.currentTimeMillis();
-        (new DependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), PROBE1, testRegistry);
+        (new StandardDependencyScanner()).fetchDependencies(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, PROBE1, testRegistry);
         long after = System.currentTimeMillis();
         log.info("Execution time registry based scan" + (after - before));
 
