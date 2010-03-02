@@ -65,6 +65,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         ManagedBean mbean = null;
         if (!hasToReregister(beanName, clazz)) {
             mbean = (ManagedBean) _alreadyRegistered.get(beanName);
+            //return;
         } else {
             mbean = new ManagedBean();
         }

@@ -46,7 +46,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
 
         Object retVal = _delegate.getValue(elContext, base, property);
-
+        
         Object newRetVal = null;
         //TODO simplify this, we do not need it anymore since we do our base scan at the beginning
 

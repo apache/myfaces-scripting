@@ -22,16 +22,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.RequestScoped;
 
-@ManagedBean(name = "javatestbean3")
+@ManagedBean(name = "javatestbean4xxx")
 @RequestScoped
-
 public class TestBean3 {
     String sayHello = "hello world";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 
     private String myText() {
-        return "Hello World from bean3 ";
+        return "Hello World from bean3 xxx";
     }
 
     public String getSayHello() {

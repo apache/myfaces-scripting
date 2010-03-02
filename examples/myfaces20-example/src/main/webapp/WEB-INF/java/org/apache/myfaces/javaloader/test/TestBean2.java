@@ -25,29 +25,37 @@ import javax.faces.bean.ManagedProperty;
 
 import javax.faces.event.ComponentSystemEvent;
 
+
 @ManagedBean(name = "javatestbean")
 @RequestScoped
-
 public class TestBean2 {
 
+    
     String sayHello = "<h2>hello world test</h2>";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 
     int cnt = 0;
 
-    //@ManagedProperty(value="#{TestBean3}")
+    
+    @ManagedProperty(value="#{javatestbean4xxx}")
     TestBean3 bean3;
+
+    @ManagedProperty(value="#{javatestbean4}")
+    TestBean4 bean4;
 
     public void validate(ComponentSystemEvent e) {
         System.out.println("Validating");
     }
 
+    
     public String getSayHello() {
         System.out.println("cnt++:" + cnt++);
-        return "hello from bean2";
+        
+        return   bean3.getSayHello();
     }
 
+    
     public String getSayHello2() {
         return hello2;
     }
@@ -89,5 +97,13 @@ public class TestBean2 {
 
     public void setBean3(TestBean3 bean3) {
         this.bean3 = bean3;
+    }
+
+    public TestBean4 getBean4() {
+        return bean4;
+    }
+
+    public void setBean4(TestBean4 bean4) {
+        this.bean4 = bean4;
     }
 }
