@@ -157,8 +157,6 @@ class MethodScanVisitor implements MethodVisitor {
             }
         }
 
-        //s1 method name, can be ignored
-        //   s hosting classname
         if (owner != null)
             registerDependency(Type.getObjectType(owner), "registering callee type [" + owner + "]");
 

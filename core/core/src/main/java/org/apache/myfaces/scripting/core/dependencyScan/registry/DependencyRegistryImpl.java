@@ -47,6 +47,7 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry 
     }
 
     public void addDependency(Integer engineType, String rootClass, String currentlyVisitedClass, String dependency) {
+        
         if (currentlyVisitedClass.equals(dependency)) {
             return;
         }

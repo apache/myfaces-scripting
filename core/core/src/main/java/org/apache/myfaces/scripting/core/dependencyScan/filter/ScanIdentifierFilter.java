@@ -9,13 +9,13 @@ import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
  */
 public class ScanIdentifierFilter implements ClassFilter {
 
-    private final Integer _engineType;
+    private final int _engineType;
 
-    public ScanIdentifierFilter(Integer engineType) {
+    public ScanIdentifierFilter(int engineType) {
         _engineType = engineType;
     }
 
     public boolean isAllowed(Integer identifier, String clazz) {
-        return _engineType.equals(identifier);  //To change body of implemented methods use File | Settings | File Templates.
+        return _engineType == identifier.intValue();  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
