@@ -32,14 +32,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A dependency scanner for
+ * our classes. This class is thread save on object level
+ * and can be used as a singleton
+ * <p/>
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          A dependency scanner for
- *          our classes
- *          <p /> this class is thread save on object level
- *          and can be used as a singleton
- *          <p/>
  */
 public class StandardDependencyScanner implements DependencyScanner {
     final ClassScanVisitor _cp = new ClassScanVisitor();
