@@ -22,7 +22,7 @@ import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.dependencyScan.DependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.StandardDependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyRegistryImpl;

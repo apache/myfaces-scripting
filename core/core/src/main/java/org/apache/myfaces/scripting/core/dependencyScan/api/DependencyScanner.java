@@ -18,45 +18,23 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan.api;
 
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyRegistry;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 
-import java.util.Set;
-
 /**
+ * Standard dependency scanner interface
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          A dependency scanner for
- *          our classes
- *          <p/>
- *          The idea beind it is that a dependency scanner
- *          should scan loaded classes for their dependencies
- *          into a whitelist of packages, a dynamically loaded class
- *          then now can taint other classes if altered
- *          which are in the whitelist so that those artefacts get reloaded
- *          <p/>
- *          The whitelist itself for now should only be
- *          classes from dynamically loaded packages
  */
 public interface DependencyScanner {
-
     /**
-     * fetch the dependencies from a given classname and
-     * register them in a registry
+     * main method every dependency scanner has to implement
      *
-     * @param loader    the classloader responsible for serving the infrastructure
-     * @param className the classname from which the dependencies have to be fetched
-     * @param registry  our registry which should store the dependencies
+     * @param loader     the classloader which is able to serve the requested class resources
+     * @param engineType integer value of the scanning triggering engine type
+     * @param className  of the class to be scanned
+     * @param registry   the registry which should receive the results of the scan
      */
-    public void fetchDependencies(ClassLoader loader, String className, ExternalFilterDependencyRegistry registry);
-
-    /**
-     * soon to be deprecated, fetch dependencies working on an existing whitelist system
-     *
-     * @param loader
-     * @param className
-     * @param whiteList
-     * @return a list of dependencies from the class &lt;className&gt;
-     */
-    public Set<String> fetchDependencies(ClassLoader loader, String className, Set<String> whiteList);
+    public void fetchDependencies(ClassLoader loader, Integer engineType, String className, DependencyRegistry registry);
 }

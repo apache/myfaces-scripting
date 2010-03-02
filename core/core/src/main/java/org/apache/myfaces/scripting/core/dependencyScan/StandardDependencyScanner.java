@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyRegistry;
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.core.ClassScanUtils;
 import org.apache.myfaces.scripting.core.dependencyScan.core.ClassScanVisitor;
 import org.apache.myfaces.scripting.core.dependencyScan.core.ExtendedClassReader;
