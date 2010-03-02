@@ -19,24 +19,23 @@
 
 package org.apache.myfaces.scripting.core.refreshContext;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.api.Configuration;
-import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
+ * Testcases for the refresh context
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -73,7 +72,6 @@ public class RefreshContextTest {
         WeavingContext.setRefreshContext(new RefreshContext());
     }
 
-
     @Test
     public void testTaingLog() {
         RefreshContext ctx = WeavingContext.getRefreshContext();
@@ -105,4 +103,25 @@ public class RefreshContextTest {
         assertTrue("three new entries in the log", ctx.getTaintHistory(0l).size() == 3);
 
     }
+
+    @Test
+    public void testTaintHistory() {
+        RefreshContext ctx = WeavingContext.getRefreshContext();
+        ctx.setTaintLogTimeout(3);
+
+        ReloadingMetadata data = new ReloadingMetadata();
+        data.setAClass(this.getClass());
+        data.setTainted(true);
+        data.setTimestamp(System.currentTimeMillis());
+
+        ctx.addTaintLogEntry(data);
+        ctx.addTaintLogEntry(data);
+        ctx.addTaintLogEntry(data);
+
+        Set<String> result = ctx.getTaintHistoryClasses(0l);
+        assertTrue("Taint history contains", result.contains(this.getClass().getName()));
+        assertTrue("Taint history size", result.size() == 1);
+
+    }
+
 }
