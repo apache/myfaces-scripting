@@ -19,13 +19,13 @@ import java.util.logging.Logger;
  * Bean handler implementation
  * which encapsulates the myfaces specific parts
  * of the bean processing
- *
- *
+ * <p/>
+ * <p/>
  * TODO bug multiuser handling not yet working
  * due to tainted being reset for beans once the
  * first user has run through the refresh,
  * others do not drop their code...
- *
+ * <p/>
  * we need a bean taint history so that
  * users refreshing get a blend of all tainted classes
  * since their last local refresh
@@ -281,6 +281,12 @@ public class MyFacesBeanHandler implements BeanHandler {
     private void refreshPersonalScopedBeans() {
         //the refreshing is only allowed if no compile is in progress
         //and vice versa
+        Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+        Long taintingPeriod = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
+        if (taintingPeriod == null) {
+            taintingPeriod = -1l;
+        }
+        Set<String> taintedInTime = WeavingContext.getRefreshContext().getTaintHistoryClasses(taintingPeriod);
 
         synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
             Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
@@ -290,11 +296,10 @@ public class MyFacesBeanHandler implements BeanHandler {
             //the bean map from outside we still get race conditions
             //But for most cases this mutex should be enough
             Map<String, ManagedBean> mbeansSnapshotView = makeSnapshot(mbeans);
-            Set<String> tainted = getTaintedClasses();
-            for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
 
+            for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
                 Class managedBeanClass = entry.getValue().getManagedBeanClass();
-                if (hasToBeRefreshed(tainted, managedBeanClass)) {
+                if (hasToBeRefreshed(taintedInTime, managedBeanClass)) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
                     removeCustomScopedBean(entry.getValue());
                 }

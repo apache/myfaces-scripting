@@ -52,7 +52,7 @@ public class TestBean2 {
     public String getSayHello() {
         System.out.println("cnt++:" + cnt++);
         
-        return   bean3.getSayHello();
+        return   bean4.getHello();
     }
 
     

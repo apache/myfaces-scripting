@@ -168,7 +168,7 @@ public class FileChangedDaemon extends Thread {
             metaData.setTainted(true);
             metaData.setTaintedOnce(true);
             dependencyTainted(metaData.getAClass().getName());
-
+            WeavingContext.getRefreshContext().addTaintLogEntry(metaData);
         }
     }
 

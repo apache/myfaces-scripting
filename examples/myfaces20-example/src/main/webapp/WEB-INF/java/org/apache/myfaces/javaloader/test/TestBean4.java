@@ -33,5 +33,6 @@ public class TestBean4 {
 
     public void setHello(String hello) {
         this.hello = hello;
-    }
+    } 
 }
+ 
