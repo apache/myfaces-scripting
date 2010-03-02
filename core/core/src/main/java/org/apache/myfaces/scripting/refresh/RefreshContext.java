@@ -27,15 +27,15 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * <p/>
+ * a context which holds information regarding the refresh cycle
+ * which can be picked up by the request filter for refreshing strategies
+ * <p/>
+ * That way we can avoid a separate session filter and a push system
+ * we use a pull system instead
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          a context which holds information regarding the refresh cycle
- *          which can be picked up by the request filter
- *          for refreshing strategies
- *          <p/>
- *          That way we can avoid a separate session filter and a push system
- *          we use a pull system instead
  */
 
 public class RefreshContext {
@@ -84,6 +84,17 @@ public class RefreshContext {
      */
     private static final long TIMEOUT_PERIOD = 10 * 60 * 1000;
 
+    /**
+     * This is a log which keeps track of the taints
+     * over time, we need that mostly for bean refreshes
+     * in multiuser surroundings, because only tainted beans need
+     * to be refreshed.
+     * Now if a user misses multiple updates he has to get a full
+     * set of changed classes to be able to drop all personal scoped beans tainted
+     * since the he refreshed last! Hence we have to move away from our
+     * two dimensional &lt;class, taint&gt; to a three dimensional &lt;class, taint, time&gt;
+     * view of things
+     */
     private List<TaintingHistoryEntry> _taintLog = Collections.synchronizedList(new LinkedList<TaintingHistoryEntry>());
 
     /**
@@ -122,6 +133,9 @@ public class RefreshContext {
      * garbage collects our tainting data
      * and removes all entries which are not
      * present anymore due to timeout
+     * this gc code is called asynchronously
+     * from our tainting thread to keep the
+     * performance intact
      */
     public void gcTaintLog() {
         long timeoutTimestamp = System.currentTimeMillis() - TIMEOUT_PERIOD;
@@ -285,21 +299,38 @@ public class RefreshContext {
         return _currentlyRunningRequests;
     }
 
+    /**
+     * setter for our currently running requests
+     *
+     * @param currentlyRunning the number of currently running requests
+     */
     public void setCurrentlyRunningRequests(AtomicInteger currentlyRunning) {
         _currentlyRunningRequests = currentlyRunning;
     }
 
     /**
-     * checks outside of the request scope for changes and taints the corresponding engine
+     * checks outside of the request
+     * scope for changes and taints
+     * the corresponding engine
      */
     public static void scanAndMarkChange() {
         WeavingContext.getWeaver();
     }
 
+    /**
+     * Returns our dependency registry
+     *
+     * @return the Master Dependency registry holding all subregistries
+     */
     public MasterDependencyRegistry getDependencyRegistry() {
         return _dependencyRegistry;
     }
 
+    /**
+     * Sets our master dependency registry
+     *
+     * @param dependencyRegistry the master dependency registry to be set
+     */
     public void setDependencyRegistry(MasterDependencyRegistry dependencyRegistry) {
         _dependencyRegistry = dependencyRegistry;
     }
