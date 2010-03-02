@@ -23,7 +23,7 @@ import org.apache.myfaces.scripting.core.dependencyScan.registry.MasterDependenc
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -79,10 +79,114 @@ public class RefreshContext {
 
     private MasterDependencyRegistry _dependencyRegistry = new MasterDependencyRegistry();
 
+    /**
+     * we keep a 10 minutes timeout period to keep the performance in place
+     */
+    private static final long TIMEOUT_PERIOD = 10 * 60 * 1000;
+
+    private List<TaintingHistoryEntry> _taintLog = Collections.synchronizedList(new LinkedList<TaintingHistoryEntry>());
+
+    /**
+     * internal class used by our own history log
+     */
+    class TaintingHistoryEntry {
+        long _timestamp;
+        ReloadingMetadata _data;
+
+        public TaintingHistoryEntry(ReloadingMetadata data) {
+            _data = data.getClone();
+            _timestamp = System.currentTimeMillis();
+        }
+
+        public long getTimestamp() {
+            return _timestamp;
+        }
+
+        public ReloadingMetadata getData() {
+            return _data;
+        }
+    }
+
+    /**
+     * adds a new entry into our taint log
+     * which allows us to access tainting data
+     * from a given point in time
+     *
+     * @param data the tainting data to be added
+     */
+    public void addTaintLogEntry(ReloadingMetadata data) {
+        _taintLog.add(new TaintingHistoryEntry(data));
+    }
+
+    /**
+     * garbage collects our tainting data
+     * and removes all entries which are not
+     * present anymore due to timeout
+     */
+    public void gcTaintLog() {
+        long timeoutTimestamp = System.currentTimeMillis() - TIMEOUT_PERIOD;
+        Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
+
+        while (it.hasNext()) {
+            TaintingHistoryEntry entry = it.next();
+            if (entry.getTimestamp() < timeoutTimestamp) {
+                it.remove();
+            }
+        }
+    }
+
+    /**
+     * Returns a set of tainting data from a given point in time up until now
+     *
+     * @param timestamp the point in time from which the tainting data has to be derived from
+     * @return a set of entries which are a union of all points in time beginning from timestamp
+     */
+    public Set<ReloadingMetadata> getTaintHistory(long timestamp) {
+        Set<ReloadingMetadata> retVal = new HashSet<ReloadingMetadata>();
+        Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
+
+        while (it.hasNext()) {
+            TaintingHistoryEntry entry = it.next();
+            if (entry.getTimestamp() >= timestamp) {
+                retVal.add(entry.getData());
+            }
+        }
+        return retVal;
+    }
+
+    /**
+     * Returns a set of tainted classes from a given point in time up until now
+     *
+     * @param timestamp the point in time from which the tainting data has to be derived from
+     * @return a set of classnames which are a union of all points in time beginning from timestamp
+     */
+    public Set<String> getTaintHistoryClasses(long timestamp) {
+        Set<String> retVal = new HashSet<String>();
+        Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
+
+        while (it.hasNext()) {
+            TaintingHistoryEntry entry = it.next();
+            if (entry.getTimestamp() >= timestamp) {
+                retVal.add(entry.getData().getAClass().getName());
+            }
+        }
+        return retVal;
+    }
+
+    /**
+     * returns the last global personal scoped bean refresh point in time
+     *
+     * @return a long value showing which personal bean refresh  was the last in time
+     */
     public long getPersonalScopedBeanRefresh() {
         return personalScopedBeanRefresh;
     }
 
+    /**
+     * setter for the global personal scope bean refresh
+     *
+     * @param personalScopedBeanRefresh
+     */
     public void setPersonalScopedBeanRefresh(long personalScopedBeanRefresh) {
         this.personalScopedBeanRefresh = personalScopedBeanRefresh;
     }

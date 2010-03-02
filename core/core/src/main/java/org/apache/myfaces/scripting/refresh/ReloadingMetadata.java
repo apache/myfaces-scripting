@@ -20,13 +20,16 @@ package org.apache.myfaces.scripting.refresh;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * data structure which holds the loaded data
  * for our taint thread
  *
  * @author Werner Punz
  */
-public class ReloadingMetadata {
+public class ReloadingMetadata implements Cloneable {
 
     /*
      * volatile due to the ram concurrency behavior
@@ -104,5 +107,16 @@ public class ReloadingMetadata {
 
     public void setAnnotated(boolean annotated) {
         this.annotated = annotated;
+    }
+
+    public ReloadingMetadata getClone() {
+        try {
+            return (ReloadingMetadata) clone();
+        } catch (CloneNotSupportedException e) {
+            Logger logger = Logger.getLogger(ReloadingMetadata.class.getName());
+            logger.log(Level.SEVERE, "", e);
+            //cannot happen
+        }
+        return null;
     }
 }

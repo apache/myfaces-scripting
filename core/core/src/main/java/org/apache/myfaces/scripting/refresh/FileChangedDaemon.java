@@ -138,9 +138,14 @@ public class FileChangedDaemon extends Thread {
                 printInfo(it, proxyFile);
                 meta.setTimestamp(proxyFile.lastModified());
                 dependencyTainted(meta.getAClass().getName());
+                
+                //we add our log entry for further reference
+                WeavingContext.getRefreshContext().addTaintLogEntry(meta);
             }
             //}
         }
+        //we clean up the taint log
+        WeavingContext.getRefreshContext().gcTaintLog();
     }
 
     /**
