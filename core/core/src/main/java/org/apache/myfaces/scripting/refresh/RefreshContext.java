@@ -82,7 +82,7 @@ public class RefreshContext {
     /**
      * we keep a 10 minutes timeout period to keep the performance in place
      */
-    private static final long TIMEOUT_PERIOD = 10 * 60 * 1000;
+    private volatile long _taintLogTimeout = 10 * 60 * 1000;
 
     /**
      * This is a log which keeps track of the taints
@@ -138,7 +138,7 @@ public class RefreshContext {
      * performance intact
      */
     public void gcTaintLog() {
-        long timeoutTimestamp = System.currentTimeMillis() - TIMEOUT_PERIOD;
+        long timeoutTimestamp = System.currentTimeMillis() - _taintLogTimeout;
         Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
 
         while (it.hasNext()) {
@@ -333,5 +333,22 @@ public class RefreshContext {
      */
     public void setDependencyRegistry(MasterDependencyRegistry dependencyRegistry) {
         _dependencyRegistry = dependencyRegistry;
+    }
+
+    /**
+     * getter for the taintlog timeout
+     * @return the taintlog timeout
+     */
+    public long getTaintLogTimeout() {
+        return _taintLogTimeout;
+    }
+
+    /**
+     * setter for the taintlog timeout
+     *
+     * @param taintLogTimeout a new timeout for the taintlog
+     */
+    public void setTaintLogTimeout(long taintLogTimeout) {
+        _taintLogTimeout = taintLogTimeout;
     }
 }
