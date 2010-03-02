@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>extscript-core</artifactId>
     <packaging>jar</packaging>
-    <name>MyFaces Extenion Scripting Core</name>
+    <name>MyFaces Extension Scripting Core</name>
 
     <description>
         Core of the MyFaces Extension-scripting
