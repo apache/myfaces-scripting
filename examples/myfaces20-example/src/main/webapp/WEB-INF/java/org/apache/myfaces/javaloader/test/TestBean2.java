@@ -20,22 +20,32 @@ package org.apache.myfaces.javaloader.test;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ManagedProperty;
+
 import javax.faces.event.ComponentSystemEvent;
 
 @ManagedBean(name = "javatestbean")
-@SessionScoped
+@RequestScoped
+
 public class TestBean2 {
 
     String sayHello = "<h2>hello world test</h2>";
     String hello2 = "hello from added attribute";
     String hello3 = "hello from  added attribute 2";
 
+    int cnt = 0;
+
+    //@ManagedProperty(value="#{TestBean3}")
+    TestBean3 bean3;
+
     public void validate(ComponentSystemEvent e) {
         System.out.println("Validating");
     }
 
     public String getSayHello() {
-        return sayHello;
+        System.out.println("cnt++:" + cnt++);
+        return "hello from bean2";
     }
 
     public String getSayHello2() {
@@ -73,4 +83,11 @@ public class TestBean2 {
         return "hello world";
     }
 
+    public TestBean3 getBean3() {
+        return bean3;
+    }
+
+    public void setBean3(TestBean3 bean3) {
+        this.bean3 = bean3;
+    }
 }

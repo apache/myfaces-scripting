@@ -18,6 +18,12 @@
  */
 package org.apache.myfaces.javaloader.test;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
+
+@ManagedBean(name = "javatestbean3")
+@RequestScoped
 
 public class TestBean3 {
     String sayHello = "hello world";

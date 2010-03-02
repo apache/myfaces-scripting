@@ -60,11 +60,15 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         String beanName = annCasted.name();
 
         beanName = beanName.replaceAll("\"", "");
+        //we need to reregister for every bean due to possible managed prop
+        //and scope changes
+        ManagedBean mbean = null;
         if (!hasToReregister(beanName, clazz)) {
-            return;
+            mbean = (ManagedBean) _alreadyRegistered.get(beanName);
+        } else {
+            mbean = new ManagedBean();
         }
 
-        ManagedBean mbean = new ManagedBean();
         mbean.setBeanClass(clazz.getName());
         mbean.setName(beanName);
         handleManagedpropertiesCompiled(mbean, fields(clazz));

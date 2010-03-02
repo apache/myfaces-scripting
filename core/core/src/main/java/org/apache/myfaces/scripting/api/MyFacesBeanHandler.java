@@ -19,6 +19,16 @@ import java.util.logging.Logger;
  * Bean handler implementation
  * which encapsulates the myfaces specific parts
  * of the bean processing
+ *
+ *
+ * TODO bug multiuser handling not yet working
+ * due to tainted being reset for beans once the
+ * first user has run through the refresh,
+ * others do not drop their code...
+ *
+ * we need a bean taint history so that
+ * users refreshing get a blend of all tainted classes
+ * since their last local refresh
  */
 public class MyFacesBeanHandler implements BeanHandler {
 
@@ -26,6 +36,8 @@ public class MyFacesBeanHandler implements BeanHandler {
      * scripting engine for this bean handler
      */
     int _scriptingEngine;
+    private static final String JAVA_POINT = "java.";
+    private static final String JAVAX_POINT = "javax.";
 
     /**
      * constructor
@@ -71,6 +83,10 @@ public class MyFacesBeanHandler implements BeanHandler {
                 //older versions
                 it = (Iterator) retVal;
             }
+
+            //create dependency graph on IOC level, to cover areas where
+            //the class dependency cannot work (object-object dependencies,
+            // source->binary->source references on call level
             while (it.hasNext()) {
                 ManagedProperty prop = (ManagedProperty) it.next();
                 String propClass = prop.getPropertyClass();
@@ -95,7 +111,7 @@ public class MyFacesBeanHandler implements BeanHandler {
             while (iter.hasNext()) {
                 Object value = ((Map.Entry) iter.next()).getValue();
                 String valueClass = value.getClass().getName();
-                if (valueClass.startsWith("java.") || valueClass.startsWith("javax.")) {
+                if (valueClass.startsWith(JAVA_POINT) || valueClass.startsWith(JAVAX_POINT)) {
                     continue;
                 }
                 handleObjectDependency(dynamicClasses, entry.getValue().getManagedBeanClassName(), valueClass);
@@ -117,7 +133,7 @@ public class MyFacesBeanHandler implements BeanHandler {
             while (iter.hasNext()) {
                 Object value = iter.next();
                 String valueClass = value.getClass().getName();
-                if (valueClass.startsWith("java.") || valueClass.startsWith("javax.")) {
+                if (valueClass.startsWith(JAVA_POINT) || valueClass.startsWith(JAVAX_POINT)) {
                     continue;
                 }
                 handleObjectDependency(dynamicClasses, entry.getValue().getManagedBeanClassName(), valueClass);
@@ -141,6 +157,12 @@ public class MyFacesBeanHandler implements BeanHandler {
     /**
      * Refreshes all managed beans
      * session, and personal scoped ones
+     * <p/>
+     * personal scoped beans are beans which
+     * have either
+     * <li> session scope </li>
+     * <li> page scope </li>
+     * <li> custom scope </li>
      */
     public void refreshAllManagedBeans() {
         if (FacesContext.getCurrentInstance() == null) {
@@ -168,6 +190,7 @@ public class MyFacesBeanHandler implements BeanHandler {
             getLog().info("[EXT-SCRIPTING] Tainting all beans to avoid classcast exceptions");
             if (managedBeanTainted) {
                 globalManagedBeanRefresh(mbeansSnapshotView);
+                //personalScopeRefresh();
             }
         }
     }
@@ -182,7 +205,7 @@ public class MyFacesBeanHandler implements BeanHandler {
 
         Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
-        if (timeOut == null || timeOut < globalBeanRefreshTimeout) {
+        if (timeOut == null || timeOut <= globalBeanRefreshTimeout) {
             refreshPersonalScopedBeans();
         }
     }
@@ -272,19 +295,8 @@ public class MyFacesBeanHandler implements BeanHandler {
 
                 Class managedBeanClass = entry.getValue().getManagedBeanClass();
                 if (hasToBeRefreshed(tainted, managedBeanClass)) {
-                    String scope = entry.getValue().getManagedBeanScope();
-
-                    if (scope != null && !scope.equalsIgnoreCase(ScriptingConst.SCOPE_APPLICATION)) {
-                        if (scope.equalsIgnoreCase(ScriptingConst.SCOPE_REQUEST)) {
-                            //request, nothing has to be done here
-                            break;
-                        }
-                        if (scope.equalsIgnoreCase(ScriptingConst.SCOPE_SESSION)) {
-                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
-                        } else {
-                            removeCustomScopedBean(entry.getValue());
-                        }
-                    }
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
+                    removeCustomScopedBean(entry.getValue());
                 }
             }
             updateBeanRefreshTime();
@@ -300,20 +312,20 @@ public class MyFacesBeanHandler implements BeanHandler {
      */
 
     private void removeBeanReferences(ManagedBean bean) {
-        if (getLog().isLoggable(Level.INFO)) {
-            getLog().log(Level.INFO,"[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences({0})", bean.getManagedBeanName());
+        if (getLog().isLoggable(Level.FINE)) {
+            getLog().log(Level.FINE, "[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences({0})", bean.getManagedBeanName());
         }
 
         String scope = bean.getManagedBeanScope();
 
-        if (scope != null && scope.equalsIgnoreCase(ScriptingConst.SCOPE_SESSION)) {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
-        } else if (scope != null && scope.equalsIgnoreCase(ScriptingConst.SCOPE_APPLICATION)) {
-            FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
-            //other scope
-        } else if (scope != null && !scope.equals(ScriptingConst.SCOPE_REQUEST)) {
-            removeCustomScopedBean(bean);
-        }
+        //if (scope != null && scope.equalsIgnoreCase(ScriptingConst.SCOPE_SESSION)) {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
+        //} else if (scope != null && scope.equalsIgnoreCase(ScriptingConst.SCOPE_APPLICATION)) {
+        FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
+        //other scope
+        //} else if (scope != null && !scope.equals(ScriptingConst.SCOPE_REQUEST)) {
+        removeCustomScopedBean(bean);
+        //}
     }
 
     /**
