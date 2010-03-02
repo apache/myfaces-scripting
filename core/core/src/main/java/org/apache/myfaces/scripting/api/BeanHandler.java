@@ -29,7 +29,7 @@ public interface BeanHandler {
     /**
      * scans all bean dependencies according to
      * their IoC information stored by the runtime
-     * (in our case the MyFaces runtime confing)
+     * (in our case the MyFaces runtime config)
      * and adds those into our backward referencing dependency map
      * to add further dependency information on IoC level
      * (we can have IoC dependencies which are bound by object
