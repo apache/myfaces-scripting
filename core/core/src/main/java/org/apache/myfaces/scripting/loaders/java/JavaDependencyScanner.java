@@ -82,7 +82,7 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     protected int getEngineType() {
-        return ScriptingConst.ENGINE_TYPE_JAVA;
+        return ScriptingConst.ENGINE_TYPE_JSF_JAVA;
     }
 
     private void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {

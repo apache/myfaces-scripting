@@ -66,6 +66,9 @@
 
     </application>
 
+
+    
+
     <lifecycle>
         <phase-listener>
             org.apache.myfaces.groovyloader.test.TestPhaseListener

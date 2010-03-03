@@ -42,7 +42,7 @@ public class ReloadingMetadata implements Cloneable {
     volatile String sourcePath = "";
     volatile Class aClass = null;
     volatile long timestamp = 0l;
-    volatile int scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+    volatile int scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
     public boolean isTainted() {
         return tainted;

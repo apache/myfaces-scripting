@@ -23,7 +23,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -73,7 +72,7 @@ public class TestCompilerAPI {
         root = new File(rootPath);
 
         WeavingContext.setConfiguration(new Configuration());
-        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JAVA, root.getAbsolutePath());
+        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JAVA, root.getAbsolutePath());
     }
 
     private String getScriptingFacadeClass(boolean allowJSR199) {
@@ -93,7 +92,7 @@ public class TestCompilerAPI {
 
     @Test
     public void testWhiteListedCompile() {
-        //WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA).clear();
+        //WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).clear();
         WeavingContext.getConfiguration().addWhitelistPackage("compiler.myPackage");
 
         try {

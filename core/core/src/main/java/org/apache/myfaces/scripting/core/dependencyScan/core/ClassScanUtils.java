@@ -53,7 +53,7 @@ public class ClassScanUtils {
      * @param in the page or fully qualified classname
      * @return true if it belongs to one of the standard namespaces, false if not
      */
-    public static boolean isStandardNamespace(String in) {
+    public static final boolean isStandardNamespace(String in) {
         //We don't use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
         //a precompiled regexp with match
 
@@ -89,7 +89,7 @@ public class ClassScanUtils {
      * @return true if the namespace is within the boundaries of the whitelist false otherwise
      */
     @SuppressWarnings("unused")
-    public static boolean allowedNamespaces(String classOrPackage, String[] nameSpaces) {
+    public static final boolean allowedNamespaces(String classOrPackage, String[] nameSpaces) {
 
         //ok this is probably the fastest way to iterate hence we use this old construct
         //a direct or would be faster but we cannot do it here since we are not dynamic here
@@ -108,7 +108,7 @@ public class ClassScanUtils {
      * @param internalClassName the internal class name
      * @return the changed classname in its sourceform
      */
-    public static String internalClassDescriptorToSource(String internalClassName) {
+    public static final String internalClassDescriptorToSource(String internalClassName) {
         //we strip the meta information which is not needed
         //aka start with ( strip all to )
 
@@ -146,7 +146,7 @@ public class ClassScanUtils {
      * @param whiteList    the whitelist of allowed dependencies
      * @param parameters   the list of dependencies which have to be added
      */
-    public static void logParmList(Collection<String> dependencies, final Set<String> whiteList, final String... parameters) {
+    public static final void logParmList(Collection<String> dependencies, final Set<String> whiteList, final String... parameters) {
         for (String singleParameter : parameters) {
             if (singleParameter == null || singleParameter.trim().equals("") || isStandardNamespace(singleParameter)) continue;
        

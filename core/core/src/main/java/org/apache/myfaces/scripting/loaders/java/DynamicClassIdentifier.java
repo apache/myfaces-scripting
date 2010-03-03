@@ -71,9 +71,9 @@ public class DynamicClassIdentifier implements org.apache.myfaces.scripting.api.
 
     public int getEngineType(Class clazz) {
         if (isDynamic(clazz)) {
-            return ScriptingConst.ENGINE_TYPE_JAVA;
+            return ScriptingConst.ENGINE_TYPE_JSF_JAVA;
         } else {
-            return ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+            return ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
         }
     }
 }

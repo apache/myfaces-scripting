@@ -1,5 +1,6 @@
 package org.apache.myfaces.scripting.core.dependencyScan.registry;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.core.ClassDependencies;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.ScanIdentifierFilter;
@@ -23,13 +24,13 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry 
         _dependencMap = dependencyMap;
         _engineType = engineType;
 
-        _filters.add(new ScanIdentifierFilter(_engineType));
+        _filters.add(new ScanIdentifierFilter(_engineType, ScriptingConst.ENGINE_TYPE_JSF_ALL, ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE));
         _filters.add(new StandardNamespaceFilter());
     }
 
     public void clearFilters() {
         _filters.clear();
-        _filters.add(new ScanIdentifierFilter(_engineType));
+        _filters.add(new ScanIdentifierFilter(_engineType, ScriptingConst.ENGINE_TYPE_JSF_ALL, ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE));
         _filters.add(new StandardNamespaceFilter());
     }
 

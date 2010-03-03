@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.myfaces.scripting.api;
 
 import org.apache.myfaces.config.RuntimeConfig;
@@ -5,6 +23,7 @@ import org.apache.myfaces.config.element.ListEntries;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.config.element.MapEntries;
 import org.apache.myfaces.config.impl.digester.elements.ManagedProperty;
+import org.apache.myfaces.scripting.core.dependencyScan.filter.StandardNamespaceFilter;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
@@ -19,16 +38,6 @@ import java.util.logging.Logger;
  * Bean handler implementation
  * which encapsulates the myfaces specific parts
  * of the bean processing
- * <p/>
- * <p/>
- * TODO bug multiuser handling not yet working
- * due to tainted being reset for beans once the
- * first user has run through the refresh,
- * others do not drop their code...
- * <p/>
- * we need a bean taint history so that
- * users refreshing get a blend of all tainted classes
- * since their last local refresh
  */
 public class MyFacesBeanHandler implements BeanHandler {
 
@@ -36,8 +45,12 @@ public class MyFacesBeanHandler implements BeanHandler {
      * scripting engine for this bean handler
      */
     int _scriptingEngine;
-    private static final String JAVA_POINT = "java.";
-    private static final String JAVAX_POINT = "javax.";
+
+    /**
+     * standard filter used internally
+     * by various methods
+     */
+    private static StandardNamespaceFilter STD_NAMESPACE_FILTER = new StandardNamespaceFilter();
 
     /**
      * constructor
@@ -60,98 +73,8 @@ public class MyFacesBeanHandler implements BeanHandler {
      * types, this is a corner case but it still can happen)
      */
     public void scanDependencies() {
-        if (FacesContext.getCurrentInstance() == null) {
-            return;
-        }
-        //TODO make this enabled also if the facesContext is not yet fully active
-        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-        Map<String, ManagedBean> mbeansSnapshotView;
 
-        synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
-            mbeansSnapshotView = makeSnapshot(mbeans);
-        }
 
-        Collection<String> dynamicClasses = WeavingContext.getWeaver().loadPossibleDynamicClasses();
-
-        for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
-            Object retVal = ReflectUtil.executeMethod(entry.getValue(), "getManagedProperties");
-            Iterator it = null;
-            if (retVal instanceof Collection) {
-                //Myfaces 2.x
-                it = ((Collection) retVal).iterator();
-            } else {
-                //older versions
-                it = (Iterator) retVal;
-            }
-
-            //create dependency graph on IOC level, to cover areas where
-            //the class dependency cannot work (object-object dependencies,
-            // source->binary->source references on call level
-            while (it.hasNext()) {
-                ManagedProperty prop = (ManagedProperty) it.next();
-                String propClass = prop.getPropertyClass();
-                handleObjectDependency(dynamicClasses, entry.getValue().getManagedBeanClassName(), propClass);
-                handleListEntries(dynamicClasses, entry);
-                handleMapEntries(dynamicClasses, entry);
-            }
-        }
-    }
-
-    /**
-     * check managed property maps
-     * for dependencies into other beans
-     *
-     * @param dynamicClasses the set of known dynamic classes
-     * @param entry          the current managed bean descriptor
-     */
-    private void handleMapEntries(Collection<String> dynamicClasses, Map.Entry<String, ManagedBean> entry) {
-        MapEntries entries = entry.getValue().getMapEntries();
-        if (entries != null) {
-            Iterator iter = entries.getMapEntries();
-            while (iter.hasNext()) {
-                Object value = ((Map.Entry) iter.next()).getValue();
-                String valueClass = value.getClass().getName();
-                if (valueClass.startsWith(JAVA_POINT) || valueClass.startsWith(JAVAX_POINT)) {
-                    continue;
-                }
-                handleObjectDependency(dynamicClasses, entry.getValue().getManagedBeanClassName(), valueClass);
-            }
-        }
-    }
-
-    /**
-     * check list entries of the managed bean facility
-     * for dependencies into other beans
-     *
-     * @param dynamicClasses the set of known dynamic classes to build the dependencies upon
-     * @param entry          the current managed bean descriptor
-     */
-    private void handleListEntries(Collection<String> dynamicClasses, Map.Entry<String, ManagedBean> entry) {
-        ListEntries entries = entry.getValue().getListEntries();
-        if (entries != null) {
-            Iterator iter = entries.getListEntries();
-            while (iter.hasNext()) {
-                Object value = iter.next();
-                String valueClass = value.getClass().getName();
-                if (valueClass.startsWith(JAVA_POINT) || valueClass.startsWith(JAVAX_POINT)) {
-                    continue;
-                }
-                handleObjectDependency(dynamicClasses, entry.getValue().getManagedBeanClassName(), valueClass);
-            }
-        }
-    }
-
-    /**
-     * handle an intra bean object to object dependency
-     *
-     * @param dynamicClasses           the collection of known dynamic classes
-     * @param beanClassName            the managed bean class name
-     * @param managedPropertyClassName the class name of the managed property
-     */
-    private void handleObjectDependency(Collection<String> dynamicClasses, String beanClassName, String managedPropertyClassName) {
-        if (dynamicClasses.contains(managedPropertyClassName)) {
-            WeavingContext.getFileChangedDaemon().getDependencyMap().addDependency(beanClassName, managedPropertyClassName);
-        }
     }
 
     /**

@@ -7,11 +7,7 @@ import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.loaders.groovy.compiler.GroovyCompilerFacade;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * A standard groovy weaver which isolates the weaving behavior
@@ -26,13 +22,13 @@ public class GroovyScriptingWeaver extends BaseWeaver {
      * @param servletContext
      */
     public GroovyScriptingWeaver(ServletContext servletContext) {
-        super(ScriptingConst.GROOVY_FILE_ENDING, ScriptingConst.ENGINE_TYPE_GROOVY);
+        super(ScriptingConst.GROOVY_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
         init();
 
     }
 
     public GroovyScriptingWeaver() {
-        super(ScriptingConst.FILE_EXTENSION_GROOVY, ScriptingConst.ENGINE_TYPE_GROOVY);
+        super(ScriptingConst.FILE_EXTENSION_GROOVY, ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
         init();
     }
 

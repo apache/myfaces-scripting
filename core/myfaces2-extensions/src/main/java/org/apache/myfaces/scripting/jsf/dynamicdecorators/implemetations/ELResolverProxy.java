@@ -46,11 +46,12 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
 
         Object retVal = _delegate.getValue(elContext, base, property);
-        
+
         Object newRetVal = null;
         //TODO simplify this, we do not need it anymore since we do our base scan at the beginning
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
+            //special case late el expression resolution, not catachable on class level
 
             if (retVal.getClass().getName().equals("BlogEntry")) {
                 System.out.println(Thread.currentThread().getContextClassLoader().getClass().toString());
@@ -58,7 +59,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
             newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
 
             if (newRetVal != retVal) {
-                _delegate.setValue(elContext, base, property, newRetVal);
+                setValue(elContext, base, property, newRetVal);
             }
 
             //in case we have an annotation change we have to deal with it differently
@@ -88,9 +89,9 @@ public class ELResolverProxy extends ELResolver implements Decorated {
                 Map<String, org.apache.myfaces.config.element.ManagedBean> mbeans = config.getManagedBeans();
                 if (!mbeans.containsKey(property.toString())) {
                     if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE,"[EXT-SCRIPTING] ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
+                        log.log(Level.FINE, "[EXT-SCRIPTING] ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
                     }
-                    _delegate.setValue(elContext, base, property, null);
+                    setValue(elContext, base, property, null);
 
                     //we only trigger this if the bean was deregistered, we now can reregister it again
                     WeavingContext.getWeaver().fullClassScan();
@@ -111,8 +112,12 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return retVal;
     }
 
-    public void setValue(ELContext elContext, Object o, Object o1, Object o2) throws NullPointerException, PropertyNotFoundException, PropertyNotWritableException, ELException {
-        _delegate.setValue(elContext, o, o1, o2);
+    public void setValue(ELContext elContext, Object base, Object property, Object value) throws NullPointerException, PropertyNotFoundException, PropertyNotWritableException, ELException {
+        //now to more complex relations...
+        if (base != null) {
+            WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), value.getClass().getName());
+        }
+        _delegate.setValue(elContext, base, property, value);
     }
 
     public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {

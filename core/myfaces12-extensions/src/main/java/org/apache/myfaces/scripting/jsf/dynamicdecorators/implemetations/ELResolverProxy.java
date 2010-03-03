@@ -60,7 +60,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
             Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
             if (newRetVal != retVal) {
-                _delegate.setValue(elContext, base, property, newRetVal);
+                setValue(elContext, base, property, newRetVal);
             }
             return newRetVal;
         }
@@ -77,8 +77,12 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return retVal;
     }
 
-    public void setValue(ELContext elContext, Object o, Object o1, Object o2) throws NullPointerException, PropertyNotFoundException, PropertyNotWritableException, ELException {
-        _delegate.setValue(elContext, o, o1, o2);
+    public void setValue(ELContext elContext, Object base, Object property, Object newRetVal) throws NullPointerException, PropertyNotFoundException, PropertyNotWritableException, ELException {
+         //now to more complex relations...
+        if(base != null) {
+             WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), newRetVal.getClass().getName());
+        }
+        _delegate.setValue(elContext, base, property, newRetVal);
     }
 
     public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {

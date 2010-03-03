@@ -53,7 +53,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
      * @param servletContext
      */
     public JavaScriptingWeaver(ServletContext servletContext) {
-        super(ScriptingConst.JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
+        super(ScriptingConst.JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         init();
 
     }
@@ -73,7 +73,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     }
 
     public JavaScriptingWeaver() {
-        super(ScriptingConst.JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JAVA);
+        super(ScriptingConst.JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
     }
 
     protected String getLoadingInfo(String file) {

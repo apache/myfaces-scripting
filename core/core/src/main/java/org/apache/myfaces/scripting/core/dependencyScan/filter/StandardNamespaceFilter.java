@@ -8,7 +8,7 @@ import org.apache.myfaces.scripting.core.dependencyScan.api.ClassFilter;
  */
 public class StandardNamespaceFilter implements ClassFilter {
 
-    public boolean isAllowed(Integer engineType, String clazz) {
+    public final boolean isAllowed(Integer engineType, String clazz) {
         return !ClassScanUtils.isStandardNamespace(clazz);
     }
 }

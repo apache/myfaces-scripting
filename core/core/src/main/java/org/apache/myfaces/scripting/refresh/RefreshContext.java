@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -79,6 +80,7 @@ public class RefreshContext {
 
     private MasterDependencyRegistry _dependencyRegistry = new MasterDependencyRegistry();
 
+    
     /**
      * we keep a 10 minutes timeout period to keep the performance in place
      */
@@ -117,6 +119,8 @@ public class RefreshContext {
             return _data;
         }
     }
+
+
 
     /**
      * adds a new entry into our taint log

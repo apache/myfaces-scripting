@@ -129,7 +129,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                 result.registerError(new CompilationResult.CompilationMessage(-1,
                         "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
             return result;
         } catch (NoSuchMethodException ex) {
             throw new CompilationException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
@@ -177,7 +177,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                 result.registerError(new CompilationResult.CompilationMessage(-1,
                         "Executing the javac compiler failed. The return code is '" + returnCode + "'." + compilerOutput.toString()));
             }
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
             return result;
         } catch (NoSuchMethodException ex) {
             throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
@@ -219,7 +219,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
      * @return an array of arguments that you have to pass to the Javac compiler
      */
     protected String[] buildCompilerArgumentsWhitelisted(File sourcePath, File targetPath, ClassLoader loader) {
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA), "*.java");
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA), "*.java");
 
         List arguments = getDefaultArguments(sourcePath, targetPath, loader);
 

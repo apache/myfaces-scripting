@@ -4,7 +4,6 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.JavaDependencyScanner;
-import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.scripting.loaders.java.ScannerClassloader;
 
 /**
@@ -19,12 +18,12 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
     @Override
     protected ClassLoader getClassLoader() {
         //TODO move the temp dir handling into the configuration
-        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, WeavingContext.getConfiguration().getCompileTarget());
+        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, WeavingContext.getConfiguration().getCompileTarget());
     }
 
     @Override
     protected int getEngineType() {
-        return ScriptingConst.ENGINE_TYPE_GROOVY;
+        return ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
     }
 
     @Override
@@ -33,6 +32,6 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
     }
 
     protected String getScanIdentifier() {
-        return ScriptingConst.ENGINE_TYPE_GROOVY + "_Scan";
+        return ScriptingConst.ENGINE_TYPE_JSF_GROOVY + "_Scan";
     }
 }

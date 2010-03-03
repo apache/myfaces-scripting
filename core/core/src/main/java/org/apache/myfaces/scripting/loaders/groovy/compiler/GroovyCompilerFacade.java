@@ -66,7 +66,7 @@ public class GroovyCompilerFacade implements DynamicCompiler {
         //displayMessages(result);
 
         //if (!result.hasErrors()) {
-        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ".groovy");
+        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ".groovy");
 
         //fileManager.refreshClassloader();
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
@@ -108,7 +108,7 @@ public class GroovyCompilerFacade implements DynamicCompiler {
      * @throws ClassNotFoundException
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_GROOVY, ".groovy");
+        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ".groovy");
         classLoader.setSourceRoot(sourceRoot);
         CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 
@@ -123,6 +123,6 @@ public class GroovyCompilerFacade implements DynamicCompiler {
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
             log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler warning: {0}", error.getMessage());
         }
-        WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
+        WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY, result);
     }
 }

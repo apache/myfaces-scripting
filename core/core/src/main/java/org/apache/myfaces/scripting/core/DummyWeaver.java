@@ -54,7 +54,7 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     }
 
     public int getScriptingEngine() {
-        return ScriptingConst.ENGINE_TYPE_ALL;
+        return ScriptingConst.ENGINE_TYPE_JSF_ALL;
     }
 
     public boolean isDynamic(Class clazz) {

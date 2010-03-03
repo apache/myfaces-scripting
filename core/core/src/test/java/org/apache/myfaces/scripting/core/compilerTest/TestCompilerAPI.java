@@ -69,7 +69,7 @@ public class TestCompilerAPI {
         root = new File(rootPath);
 
         WeavingContext.setConfiguration(new Configuration());
-        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JAVA, root.getAbsolutePath());
+        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JAVA, root.getAbsolutePath());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class TestCompilerAPI {
 
     @Test
     public void testWhiteListedCompile() {
-        //WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA).clear();
+        //WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).clear();
         WeavingContext.getConfiguration().addWhitelistPackage("compiler.myPackage");
 
         try {

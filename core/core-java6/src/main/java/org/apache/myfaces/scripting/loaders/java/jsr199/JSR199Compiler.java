@@ -98,7 +98,7 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         } catch (ClassNotFoundException e) {
             throw new CompilationException(e);
         }
-        return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
+        return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
 
     }
 
@@ -121,7 +121,7 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
 
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JAVA), CompilerConst.JAVA_WILDCARD);
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA), CompilerConst.JAVA_WILDCARD);
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[sourceFiles.size()]));
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
@@ -130,7 +130,7 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         } catch (ClassNotFoundException e) {
             throw new CompilationException(e);
         }
-        return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
+        return WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
     }
 
     /**
@@ -153,11 +153,11 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
                 result.getErrors().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
                 errors.append(error);
             }
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, result);
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
 
             throw new ClassNotFoundException("Compile error of java file:" + errors.toString());
         } else {
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA, new CompilationResult(""));
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, new CompilationResult(""));
         }
     }
 

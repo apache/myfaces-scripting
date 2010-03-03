@@ -67,7 +67,7 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
 
     public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) {
 
-        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_GROOVY), "*.groovy");
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_GROOVY), "*.groovy");
 
         StringWriter compilerOutput = new StringWriter();
 
@@ -85,7 +85,7 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
             compilationUnit.compile();
 
             result = new CompilationResult(compilerOutput.toString());
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY, result);
 
         } catch (CompilationFailedException ex) {
             // Register all collected error messages from the Groovy compiler
@@ -132,7 +132,7 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
 
             result = new CompilationResult(compilerOutput.toString());
 
-            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY, result);
+            WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY, result);
         } catch (CompilationFailedException ex) {
             // Register all collected error messages from the Groovy compiler
             result = new CompilationResult(compilerOutput.toString());

@@ -79,16 +79,16 @@ public class CompilerComponent extends UIOutput {
 
     public Integer getScriptingLanguageAsInt() {
         if (StringUtils.isBlank(_scriptingLanguage)) {
-            return ScriptingConst.ENGINE_TYPE_ALL;
+            return ScriptingConst.ENGINE_TYPE_JSF_ALL;
         } else {
             String scriptingLanguage = _scriptingLanguage.toLowerCase().trim();
             if (scriptingLanguage.equals("java")) {
-                return ScriptingConst.ENGINE_TYPE_JAVA;
+                return ScriptingConst.ENGINE_TYPE_JSF_JAVA;
             } else if (_scriptingLanguage.toLowerCase().trim().equals("groovy")) {
-                return ScriptingConst.ENGINE_TYPE_GROOVY;
+                return ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
             }
         }
-        return ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+        return ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
     }
 
     public void setScriptingLanguage(String scriptingLanguage) {

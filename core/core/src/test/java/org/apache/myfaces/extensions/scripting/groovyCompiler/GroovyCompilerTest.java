@@ -75,7 +75,7 @@ public class GroovyCompilerTest {
         root = new File(rootPath);
 
         WeavingContext.setConfiguration(new Configuration());
-        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_GROOVY, root.getAbsolutePath());
+        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_GROOVY, root.getAbsolutePath());
     }
 
     @Test

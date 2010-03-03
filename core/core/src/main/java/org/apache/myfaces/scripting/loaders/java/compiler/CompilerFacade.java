@@ -68,7 +68,7 @@ public class CompilerFacade implements DynamicCompiler {
         try {
             //TODO do a full compile and block the compile for the rest of the request
             //so that we do not run into endless compile cycles
-            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
+            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
             classLoader.setSourceRoot(sourceRoot);
             CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
             displayMessages(result);
@@ -86,7 +86,7 @@ public class CompilerFacade implements DynamicCompiler {
         String separator = FileUtils.getFileSeparatorForRegex();
         String className = filePath.replaceAll(separator, ".");
         className = ClassUtils.relativeFileToClassName(className);
-        RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
+        RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         try {
             classLoader.setSourceRoot(sourceRoot);
@@ -110,7 +110,7 @@ public class CompilerFacade implements DynamicCompiler {
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
         try {
-            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JAVA, ".java");
+            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
 
             CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 

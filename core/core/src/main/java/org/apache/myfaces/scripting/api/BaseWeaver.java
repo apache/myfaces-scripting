@@ -71,7 +71,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     Logger _log = Logger.getLogger(this.getClass().getName());
 
     private String _fileEnding = null;
-    private int _scriptingEngine = ScriptingConst.ENGINE_TYPE_NO_ENGINE;
+    private int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
     public BaseWeaver() {
         _reloadingStrategy = new GlobalReloadingStrategy(this);
@@ -411,7 +411,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         //no refresh needed because this is done in the case of java already by
         //the classloader
         //  if (retVal != null) {
-        //     refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JAVA);
+        //     refreshReloadingMetaData(sourceRoot, file, currentClassFile, retVal, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         //  }
 
         /**

@@ -47,26 +47,26 @@ public class CompilerComponentRenderer extends HtmlTextRendererBase {
         Integer scriptingLanguage = compilerComp.getScriptingLanguageAsInt();
         CompilationResult result = null;
         switch (scriptingLanguage) {
-            case ScriptingConst.ENGINE_TYPE_JAVA:
-                result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
+            case ScriptingConst.ENGINE_TYPE_JSF_JAVA:
+                result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
                 break;
-            case ScriptingConst.ENGINE_TYPE_GROOVY:
-                result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
+            case ScriptingConst.ENGINE_TYPE_JSF_GROOVY:
+                result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
                 break;
-            case ScriptingConst.ENGINE_TYPE_ALL:
+            case ScriptingConst.ENGINE_TYPE_JSF_ALL:
                 result = new CompilationResult("");
-                CompilationResult tempResult = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JAVA);
+                CompilationResult tempResult = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
                 if (tempResult != null) {
                     copyCompilationResult(result, tempResult);
                 }
 
-                tempResult = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_GROOVY);
+                tempResult = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
                 if (tempResult != null) {
                     copyCompilationResult(result, tempResult);
                 }
 
                 break;
-            case ScriptingConst.ENGINE_TYPE_NO_ENGINE:
+            case ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE:
                 Logger log = Logger.getLogger(this.getClass().getName());
                 log.warning("Warning engine not found");
                 break;
