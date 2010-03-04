@@ -41,6 +41,11 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
         return annotation.equals(FacesComponent.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(FacesComponent.class);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
     protected void addEntity(Class clazz, String val) {
         if (log.isLoggable(Level.FINEST)) {
             log.log(Level.FINEST, "addComponent(" + val + "," + clazz.getName() + ")");

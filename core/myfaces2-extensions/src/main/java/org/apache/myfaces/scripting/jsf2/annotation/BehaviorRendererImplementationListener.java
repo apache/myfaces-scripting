@@ -135,6 +135,11 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
         return annotation.equals(FacesBehaviorRenderer.class.getName());
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(FacesBehaviorRenderer.class);
+    }
+
+
     private RenderKitFactory getRenderKitFactory() {
         return (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
     }

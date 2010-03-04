@@ -50,6 +50,11 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(javax.faces.bean.ManagedBean.class);
+    }
+
+
     public void register(Class clazz, java.lang.annotation.Annotation ann) {
         String annotationName = ann.getClass().getName();
 

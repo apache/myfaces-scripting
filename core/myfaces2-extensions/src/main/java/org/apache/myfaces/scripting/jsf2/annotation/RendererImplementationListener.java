@@ -113,6 +113,10 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         return annotation.equals(FacesRenderer.class.getName());
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(FacesRenderer.class);
+    }
+
     @Override
     protected void addEntity(Class clazz, Map<String, Object> params) {
         String value = (String) params.get(PAR_FAMILY);

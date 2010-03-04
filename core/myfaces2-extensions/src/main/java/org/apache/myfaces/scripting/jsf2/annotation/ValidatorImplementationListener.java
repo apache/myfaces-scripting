@@ -107,6 +107,11 @@ public class ValidatorImplementationListener extends MapEntityAnnotationScanner 
         return annotation.equals(FacesValidator.class.getName());
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(FacesValidator.class);
+    }
+
+
     @Override
     protected void addEntity(Class clazz, Map<String, Object> params) {
         String value = (String) params.get(PAR_VALUE);

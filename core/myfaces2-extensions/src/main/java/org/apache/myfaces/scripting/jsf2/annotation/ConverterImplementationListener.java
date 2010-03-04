@@ -129,6 +129,11 @@ public class ConverterImplementationListener extends MapEntityAnnotationScanner 
         return annotation.equals(FacesConverter.class.getName());
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(FacesConverter.class);
+    }
+
+
     @Override
     public void purge(String className) {
         super.purge(className);

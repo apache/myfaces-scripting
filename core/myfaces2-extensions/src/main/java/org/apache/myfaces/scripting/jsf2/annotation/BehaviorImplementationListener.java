@@ -41,6 +41,11 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
         return annotation.equals(FacesBehavior.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public boolean supportsAnnotation(Class annotation) {
+        return annotation.equals(FacesBehavior.class);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
     protected void addEntity(Class clazz, String val) {
         if (log.isLoggable(Level.FINEST)) {
             log.log(Level.FINEST, "addBehavior(" + val + ","

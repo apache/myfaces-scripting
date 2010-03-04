@@ -169,7 +169,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         for (java.lang.annotation.Annotation ann : anns) {
             for (ClassScanListener cListener : _listeners) {
                 AnnotationScanListener listener = (AnnotationScanListener) cListener;
-                if (listener.supportsAnnotation(ann.annotationType().getName())) {
+                if (listener.supportsAnnotation(ann.annotationType())) {
                     listener.register(clazz, ann);
 
                     _registeredAnnotations.put(clazz.getName(), ann.annotationType().getName());
