@@ -39,6 +39,15 @@ public interface AnnotationScanListener extends ClassScanListener {
     public boolean supportsAnnotation(String annotation);
 
     /**
+     * returns true if the annotation marked by the incoming parameter is supported by this scanner
+     *
+     * @param annotation the supported annotation as neutral string representation of its class
+     * @return in case of support
+     */
+    public boolean supportsAnnotation(Class annotation);
+
+
+    /**
      * class file registration of the supported annotation
      *
      * @param clazz          the class to be registered

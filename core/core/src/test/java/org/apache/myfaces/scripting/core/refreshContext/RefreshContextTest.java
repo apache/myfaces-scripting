@@ -28,6 +28,7 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
@@ -123,5 +124,29 @@ public class RefreshContextTest {
         assertTrue("Taint history size", result.size() == 1);
 
     }
+
+    @Test
+    public void testTaintHistoryLastNoOfEntroies() {
+        RefreshContext ctx = WeavingContext.getRefreshContext();
+        ctx.setTaintLogTimeout(3);
+
+        ReloadingMetadata data = new ReloadingMetadata();
+        data.setAClass(this.getClass());
+        data.setTainted(true);
+        data.setTimestamp(System.currentTimeMillis());
+
+        ctx.addTaintLogEntry(data);
+        ctx.addTaintLogEntry(data);
+        ctx.addTaintLogEntry(data);
+
+        Collection<ReloadingMetadata> result = ctx.getLastTainted(100);
+        assertTrue("Taint history size", result.size() == 3);
+        result = ctx.getLastTainted(2);
+        assertTrue("Taint history size", result.size() == 2);
+        result = ctx.getLastTainted(0);
+        assertTrue("Taint history size", result.size() == 0);
+
+    }
+
 
 }

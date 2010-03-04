@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.*;
 
@@ -31,10 +32,9 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.*;
-import javax.faces.event.ActionListener;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import javax.faces.event.*;
 import javax.faces.validator.Validator;
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,11 +54,11 @@ public class ApplicationProxy extends Application implements Decorated {
     private static final String ERR_BEH_NOTFOUND = "Behavior annotation was moved but could not be found";
 
     /*
-     * separate map needed for the behavior ids, because
-     * the original is immutable
-     * we have to do a double bookkeeping
-     * here
-     */
+    * separate map needed for the behavior ids, because
+    * the original is immutable
+    * we have to do a double bookkeeping
+    * here
+    */
     Map<String, String> _behaviors = new ConcurrentHashMap();
 
     public ApplicationProxy(Application delegate) {
@@ -103,9 +103,9 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getResourceBundle(facesContext, s);
     }
 
-    public UIComponent createComponent(ValueExpression valueExpression, FacesContext facesContext, String s) throws FacesException, NullPointerException {
+    public UIComponent createComponent(ValueExpression valueExpression, FacesContext facesContext, String componentType) throws FacesException, NullPointerException {
         weaveDelegate();
-        UIComponent component = _delegate.createComponent(valueExpression, facesContext, s);
+        UIComponent component = _delegate.createComponent(valueExpression, facesContext, componentType);
         UIComponent oldComponent = component;
         //We can replace annotated components on the fly via
         //ApplicationImpl.addComponent(final String componentType, final String componentClassName)
@@ -125,11 +125,44 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
-            return handeAnnotationChange(component, valueExpression, facesContext, s);
+            return handleAnnotationChange(component, valueExpression, facesContext, componentType);
         }
 
         return component;
 
+    }
+
+    /**
+     * De-registers a single object entity from
+     * our listener event, the entity can implement either @ListenersFor or @ListenerFor
+     * The idea is that the annotation currently is mostly used on components and renderers to keep
+     * track of changes. The components and renderers are dynamically refreshed but to keep track of
+     * the listeners in our system we have to deregister the old instances upon refresh
+     * the new ones should be registered automatically by our code
+     *
+     * @param listener the listener object implementing our annotation
+     */
+    private void deregisterEventHandlers(Object listener) {
+        if (listener instanceof SystemEventListener && listener.getClass().isAnnotationPresent(ListenersFor.class)) {
+            ListenersFor listenerData = listener.getClass().getAnnotation(ListenersFor.class);
+            for (ListenerFor singleEntry : listenerData.value()) {
+                unsubscribeFromAnnotatedEvent(listener, singleEntry);
+            }
+        } else if (listener instanceof SystemEventListener && listener.getClass().isAnnotationPresent(ListenerFor.class)) {
+            ListenerFor listenerData = listener.getClass().getAnnotation(ListenerFor.class);
+            unsubscribeFromAnnotatedEvent(listener, listenerData);
+        }
+    }
+
+    /**
+     * De-registers a single listener entity which implements @ListenerFor
+     *
+     * @param listener     the listener object implementing the annotation
+     * @param listenerData the annotation data (we have it outside to cover both possible listener cases
+     */
+    private void unsubscribeFromAnnotatedEvent(Object listener, ListenerFor listenerData) {
+        Class systemEventClass = listenerData.systemEventClass();
+        unsubscribeFromEvent(systemEventClass, (SystemEventListener) listener);
     }
 
     public ExpressionFactory getExpressionFactory() {
@@ -250,7 +283,7 @@ public class ApplicationProxy extends Application implements Decorated {
         ViewHandler handler = _delegate.getViewHandler();
 
         /*
-        We proxy here to emable dynamic reloading for
+        We proxy here to enable dynamic reloading for
         methods in the long run, as soon as we hit
         java all our groovy reloading code is lost
         hence we have to work with proxies here
@@ -299,7 +332,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
-            return handeAnnotationChange(component, componentType);
+            return handleAnnotationChange(component, componentType);
         }
 
         return component;
@@ -319,7 +352,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
-            return handeAnnotationChange(component, valueBinding, facesContext, componentType);
+            return handleAnnotationChange(component, valueBinding, facesContext, componentType);
         }
 
         return component;
@@ -333,7 +366,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public void addConverter(String converterId, String converterClass) {
         weaveDelegate();
         /* if (converterClass.equals(PurgedConverter.class.getName())) {
-            //purged case we do a full rescane
+            //purged case we do a full rescan
             WeavingContext.getWeaver().fullClassScan();
             Converter componentToChange = _delegate.createConverter(converterId);
             if (componentToChange instanceof PurgedConverter) {
@@ -455,7 +488,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
 
         if (behaviorClass.equals(PurgedValidator.class.getName())) {
-            //purged case we do a full rescane
+            //purged case we do a full rescan
             WeavingContext.getWeaver().fullClassScan();
             Behavior behavior = (Behavior) _delegate.createBehavior(behaviorId);
             _behaviors.put(behaviorId, behaviorClass);
@@ -508,7 +541,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
-            return handeAnnotationChange(component, facesContext, resource);
+            return handleAnnotationChange(component, facesContext, resource);
         }
 
         return component;
@@ -529,7 +562,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
-            return handeAnnotationChange(component, facesContext, componentType, rendererType);
+            return handleAnnotationChange(component, facesContext, componentType, rendererType);
         }
 
         return component;
@@ -549,7 +582,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         //we now have to check for an annotation change, but only in case a reload has happened
         if (component.getClass().hashCode() != oldComponent.getClass().hashCode()) {
-            return handeAnnotationChange(component, valueExpression, facesContext, s, s1);
+            return handleAnnotationChange(component, valueExpression, facesContext, s, s1);
         }
 
         return component;
@@ -596,15 +629,15 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
     @Override
-    public void publishEvent(FacesContext facesContext, Class<? extends SystemEvent> eventClass, Class<?> aClass, Object o) {
+    public void publishEvent(FacesContext facesContext, Class<? extends SystemEvent> eventClass, Class<?> sourceBaseTye, Object source) {
         weaveDelegate();
-        _delegate.publishEvent(facesContext, eventClass, aClass, o);
+        _delegate.publishEvent(facesContext, eventClass, sourceBaseTye, source);
     }
 
     @Override
-    public void publishEvent(FacesContext facesContext, Class<? extends SystemEvent> eventClass, Object o) {
+    public void publishEvent(FacesContext facesContext, Class<? extends SystemEvent> eventClass, Object source) {
         weaveDelegate();
-        _delegate.publishEvent(facesContext, eventClass, o);
+        _delegate.publishEvent(facesContext, eventClass, source);
     }
 
     @Override
@@ -666,21 +699,20 @@ public class ApplicationProxy extends Application implements Decorated {
         return true;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String componentType) {
+    private UIComponent handleAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
         if (componentToChange instanceof PurgedComponent) {
             WeavingContext.getWeaver().fullClassScan();
             //via an additional create component we can check whether a purged component
             //was registered after the reload because the annotation has been removed
             componentToChange = _delegate.createComponent(valueExpression, facesContext, componentType);
-            //TODO reregister the renderer for the component because otherwise we get an npe here on renderkitlevel
 
             return componentToChange;
         }
         return oldComponent;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, String componentType) {
+    private UIComponent handleAnnotationChange(UIComponent oldComponent, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(componentType);
         if (componentToChange instanceof PurgedComponent) {
             WeavingContext.getWeaver().fullClassScan();
@@ -693,7 +725,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return oldComponent;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueBinding valueBinding, FacesContext context, String componentType) {
+    private UIComponent handleAnnotationChange(UIComponent oldComponent, ValueBinding valueBinding, FacesContext context, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueBinding, context, componentType);
         if (componentToChange instanceof PurgedComponent) {
             WeavingContext.getWeaver().fullClassScan();
@@ -706,7 +738,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return oldComponent;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, Resource resource) {
+    private UIComponent handleAnnotationChange(UIComponent oldComponent, FacesContext context, Resource resource) {
         UIComponent componentToChange = _delegate.createComponent(context, resource);
         if (componentToChange instanceof PurgedComponent) {
             WeavingContext.getWeaver().fullClassScan();
@@ -719,7 +751,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return oldComponent;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, FacesContext context, String componentType, String rendererType) {
+    private UIComponent handleAnnotationChange(UIComponent oldComponent, FacesContext context, String componentType, String rendererType) {
         UIComponent componentToChange = _delegate.createComponent(context, componentType, rendererType);
         if (componentToChange instanceof PurgedComponent) {
             WeavingContext.getWeaver().fullClassScan();
@@ -732,7 +764,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return oldComponent;
     }
 
-    private UIComponent handeAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
+    private UIComponent handleAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
         String family = oldComponent.getFamily();
         if (componentToChange instanceof PurgedComponent) {

@@ -80,7 +80,6 @@ public class RefreshContext {
 
     private MasterDependencyRegistry _dependencyRegistry = new MasterDependencyRegistry();
 
-    
     /**
      * we keep a 10 minutes timeout period to keep the performance in place
      */
@@ -120,8 +119,6 @@ public class RefreshContext {
         }
     }
 
-
-
     /**
      * adds a new entry into our taint log
      * which allows us to access tainting data
@@ -154,13 +151,29 @@ public class RefreshContext {
     }
 
     /**
+     * returns the last noOfEntries entries in the taint history
+     *
+     * @param noOfEntries the number of entries to be delivered
+     * @return a collection of the last &lt;noOfEntries&gt; entries
+     */
+    public Collection<ReloadingMetadata> getLastTainted(int noOfEntries) {
+        Iterator<TaintingHistoryEntry> it = _taintLog.subList(Math.max(_taintLog.size() - noOfEntries, 0), _taintLog.size()).iterator();
+        List<ReloadingMetadata> retVal = new LinkedList<ReloadingMetadata>();
+        while (it.hasNext()) {
+            TaintingHistoryEntry entry = it.next();
+            retVal.add(entry.getData());
+        }
+        return retVal;
+    }
+
+    /**
      * Returns a set of tainting data from a given point in time up until now
      *
      * @param timestamp the point in time from which the tainting data has to be derived from
      * @return a set of entries which are a union of all points in time beginning from timestamp
      */
-    public Set<ReloadingMetadata> getTaintHistory(long timestamp) {
-        Set<ReloadingMetadata> retVal = new HashSet<ReloadingMetadata>();
+    public Collection<ReloadingMetadata> getTaintHistory(long timestamp) {
+        List<ReloadingMetadata> retVal = new LinkedList<ReloadingMetadata>();
         Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
 
         while (it.hasNext()) {
@@ -341,6 +354,7 @@ public class RefreshContext {
 
     /**
      * getter for the taintlog timeout
+     *
      * @return the taintlog timeout
      */
     public long getTaintLogTimeout() {
