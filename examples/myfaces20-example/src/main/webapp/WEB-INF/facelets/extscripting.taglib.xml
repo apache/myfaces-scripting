@@ -14,4 +14,13 @@
             <renderer-type>org.apache.myfaces.scripting.components.CompilerComponentRenderer</renderer-type>
         </component>
     </tag>
+    <tag>
+         <tag-name>taintHistory</tag-name>
+         <component>
+             <component-type>org.apache.myfaces.scripting.components.TaintHistory</component-type>
+             <renderer-type>org.apache.myfaces.scripting.components.TaintHistoryRenderer</renderer-type>
+         </component>
+     </tag>
+
+
 </facelet-taglib>
