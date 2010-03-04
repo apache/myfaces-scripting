@@ -20,7 +20,6 @@
 package org.apache.myfaces.javaloader.componentTest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.components.CompilerComponent;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
@@ -32,7 +31,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -54,9 +55,12 @@ public class TaintHistoryRenderer extends HtmlTextRendererBase {
         startDiv(component, wrtr, "historyBox");
         int lastTainted = ((TaintHistory)component).getNoEntries();
 
+
         Collection<ReloadingMetadata> result = WeavingContext.getRefreshContext().getLastTainted(lastTainted);
         if (result == null || result.isEmpty()) {
             wrtr.write("No taint history found");
+        } else {
+            writeHistory(component, wrtr, result);
         }
         endDiv(wrtr);
 
@@ -64,33 +68,15 @@ public class TaintHistoryRenderer extends HtmlTextRendererBase {
 
     }
 
-    private void writeWarnings(UIComponent component, ResponseWriter wrtr, CompilationResult result) throws IOException {
-        startDiv(component, wrtr, "warnings");
-        for (CompilationResult.CompilationMessage msg : result.getWarnings()) {
+    private void writeHistory(UIComponent component, ResponseWriter wrtr, Collection<ReloadingMetadata> result) throws IOException {
+        startDiv(component, wrtr, "history");
+        for(ReloadingMetadata entry: result) {
             startDiv(component, wrtr, "line");
-            writeDiv(component, wrtr, "lineNo", String.valueOf(msg.getLineNumber()));
-            writeDiv(component, wrtr, "message", msg.getMessage());
+                writeDiv(component, wrtr, "timestamp", DateFormat.getInstance().format(new Date(entry.getTimestamp())));
+                writeDiv(component, wrtr, "changedFile", entry.getFileName());
             endDiv(wrtr);
         }
-        endDiv(wrtr);
-    }
 
-    private void writeWarningsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
-        if (!StringUtils.isBlank(compilerComp.getWarningsLabel())) {
-            startDiv(component, wrtr, "warningsLabel");
-            wrtr.write(compilerComp.getWarningsLabel());
-            endDiv(wrtr);
-        }
-    }
-
-    private void writeErrors(UIComponent component, ResponseWriter wrtr, CompilationResult result) throws IOException {
-        startDiv(component, wrtr, "errors");
-        for (CompilationResult.CompilationMessage msg : result.getErrors()) {
-            startDiv(component, wrtr, "line");
-            writeDiv(component, wrtr, "lineNo", String.valueOf(msg.getLineNumber()));
-            writeDiv(component, wrtr, "message", msg.getMessage());
-            endDiv(wrtr);
-        }
         endDiv(wrtr);
     }
 

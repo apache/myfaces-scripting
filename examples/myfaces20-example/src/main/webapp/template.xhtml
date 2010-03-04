@@ -40,6 +40,14 @@
         <exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>
     </h:panelGroup>
 
+    <h:panelGroup>
+        <h3>
+            <h:outputFormat value="Change History" escape="false"/>
+        </h3>
+        <exs:taintHistory noEntries="5" />
+    </h:panelGroup>
+
+
     <p>
         <ui:insert name="body">Hello World Example!</ui:insert>
     </p>

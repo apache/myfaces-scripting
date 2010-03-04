@@ -17,7 +17,6 @@ h1 {
     text-align: center;
 }
 
-
 div#backGroundFloat {
     position: fixed;
     z-index: -1;
@@ -85,6 +84,63 @@ div#menu a {
 div#menu a:hover {
     color: red;
 }
+
+/*==================================================
+    Basic CSS information for our
+    taint history component
+====================================================*/
+
+div.historyBox {
+    width: 820px;
+    heigh: 200px;
+
+    display: block;
+    overflow: auto;
+    border: 1px solid white;
+    color: #dedddd;
+    opacity: 0.92;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 5px;
+
+    padding: 5px;
+    margin-left: 10px;
+
+    background-image: url("../resources/img/gradient2.png");
+    background-repeat: repeat-x;
+}
+
+div.historyBox .line {
+    display: table;
+    width: 780px;
+
+    border: 1px dashed black;
+    background-color: #ccccff;
+    color: black;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+
+    border-radius: 5px;
+}
+
+div.historyBox .line .timestamp {
+    width: 120px;
+    float: left;
+    color: red;
+}
+
+div.historyBox .line .changedFile {
+    width: 650px;
+    overflow: hidden;
+    display: block;
+    float: left;
+}
+
 
 /*==================================================
     Basic CSS information for our compiler
