@@ -67,7 +67,7 @@
     </application>
 
 
-    
+
 
     <lifecycle>
         <phase-listener>
@@ -114,4 +114,10 @@
             <renderer-class>org.apache.myfaces.groovyloader.test.TestRenderer</renderer-class>
         </renderer>
     </render-kit>
+    <application>
+        <system-event-listener>
+            <system-event-listener-class>org.apache.myfaces.javaloader.eventTest.TestListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
+        </system-event-listener>
+    </application>
 </faces-config>

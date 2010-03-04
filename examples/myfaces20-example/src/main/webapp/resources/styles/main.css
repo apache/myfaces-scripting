@@ -88,6 +88,11 @@ div#menu a:hover {
 /*==================================================
     Basic CSS information for our
     taint history component
+    we do not use the compound
+    css for error and history
+    for readability reasons
+    although we have  load
+    of duplication here
 ====================================================*/
 
 div.historyBox {
@@ -140,7 +145,6 @@ div.historyBox .line .changedFile {
     display: block;
     float: left;
 }
-
 
 /*==================================================
     Basic CSS information for our compiler

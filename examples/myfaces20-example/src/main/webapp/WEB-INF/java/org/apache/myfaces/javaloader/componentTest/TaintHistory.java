@@ -21,13 +21,26 @@ package org.apache.myfaces.javaloader.componentTest;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIOutput;
+import javax.faces.event.*;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 @FacesComponent("org.apache.myfaces.scripting.components.TaintHistory")
-public class TaintHistory extends UIOutput {
+@ListenersFor( value = {
+        @ListenerFor(systemEventClass = PostAddToViewEvent.class),
+        @ListenerFor(systemEventClass = PreRenderComponentEvent.class)
+    }
+)
+public class TaintHistory extends UIOutput implements ComponentSystemEventListener {
+    static Logger _log = Logger.getLogger(TaintHistory.class.getName());
+
+    public void processEvent(ComponentSystemEvent event) {
+        _log.info("processing event"+event.getClass().getName());
+    }
+    
 
     static final int DEFAULT_NO_ENTRIES = 10;
 
@@ -45,6 +58,7 @@ public class TaintHistory extends UIOutput {
         getStateHelper().put(PropertyKeys.noEntries, entries);
     }
 
+    
     public int getNoEntries() {
         Integer retVal = (Integer) getStateHelper().eval(PropertyKeys.noEntries);
         if (retVal == null) {

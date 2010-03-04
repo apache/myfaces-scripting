@@ -29,6 +29,7 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.*;
 import javax.faces.render.FacesRenderer;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -43,18 +44,18 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 @FacesRenderer(componentFamily = "javax.faces.Output", rendererType = "org.apache.myfaces.scripting.components.TaintHistoryRenderer")
-public class TaintHistoryRenderer extends HtmlTextRendererBase {
-    static Logger _log = Logger.getLogger(JavaTestRenderer1.class.getName());
+public class TaintHistoryRenderer extends HtmlTextRendererBase  {
+    static Logger _log = Logger.getLogger(TaintHistoryRenderer.class.getName());
 
-  @Override
+
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 
         ResponseWriter wrtr = FacesContext.getCurrentInstance().getResponseWriter();
 
         startDiv(component, wrtr, "historyBox");
-        int lastTainted = ((TaintHistory)component).getNoEntries();
-
+        int lastTainted = ((TaintHistory) component).getNoEntries();
 
         Collection<ReloadingMetadata> result = WeavingContext.getRefreshContext().getLastTainted(lastTainted);
         if (result == null || result.isEmpty()) {
@@ -70,10 +71,10 @@ public class TaintHistoryRenderer extends HtmlTextRendererBase {
 
     private void writeHistory(UIComponent component, ResponseWriter wrtr, Collection<ReloadingMetadata> result) throws IOException {
         startDiv(component, wrtr, "history");
-        for(ReloadingMetadata entry: result) {
+        for (ReloadingMetadata entry : result) {
             startDiv(component, wrtr, "line");
-                writeDiv(component, wrtr, "timestamp", DateFormat.getInstance().format(new Date(entry.getTimestamp())));
-                writeDiv(component, wrtr, "changedFile", entry.getFileName());
+            writeDiv(component, wrtr, "timestamp", DateFormat.getInstance().format(new Date(entry.getTimestamp())));
+            writeDiv(component, wrtr, "changedFile", entry.getFileName());
             endDiv(wrtr);
         }
 

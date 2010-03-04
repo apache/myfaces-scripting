@@ -20,7 +20,6 @@ package org.apache.myfaces.scripting.jsf.dynamicdecorators.implemetations;
 
 import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.jsf2.annotation.purged.*;
 
@@ -34,7 +33,6 @@ import javax.faces.convert.Converter;
 import javax.faces.el.*;
 import javax.faces.event.*;
 import javax.faces.validator.Validator;
-import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,7 +57,74 @@ public class ApplicationProxy extends Application implements Decorated {
     * we have to do a double bookkeeping
     * here
     */
-    Map<String, String> _behaviors = new ConcurrentHashMap();
+    Map<String, String> _behaviors = new ConcurrentHashMap<String, String>();
+
+    /**
+     * special data structure to save our
+     * object -> proxy references
+     */
+    class EventHandlerProxyEntry {
+        Class event;
+        Decorated proxy;
+
+        EventHandlerProxyEntry(Class event, Decorated proxy) {
+            this.event = event;
+            this.proxy = proxy;
+        }
+
+        public Class getEvent() {
+            return event;
+        }
+
+        public void setEvent(Class event) {
+            this.event = event;
+        }
+
+        public Decorated getProxy() {
+            return proxy;
+        }
+
+        public void setProxy(Decorated proxy) {
+            this.proxy = proxy;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            EventHandlerProxyEntry that = (EventHandlerProxyEntry) o;
+
+            if (event != null ? !event.equals(that.event) : that.event != null) return false;
+            if (proxy != null ? !proxy.getDelegate().getClass().getName().equals(that.proxy.getDelegate().getClass().getName()) : that.proxy != null)
+                return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = event.hashCode();
+            result = 31 * result + proxy.getDelegate().getClass().getName().hashCode();
+            return result;
+        }
+    }
+
+    /**
+     * now at the first look this looks like a weird construct
+     * but the standard java set imposes this limit since
+     * we have to iterate over the entire set to reach the correct element
+     * the trick is to save the same object in as both key and value
+     * and now if we generate a new key on an object
+     * we can fetch our proxy which might already contain
+     * the same object in a refreshed state from the value
+     * part of the set, in our case
+     * using hashmaps should speed things up
+     * <p/>
+     * since we only have few write operations but access
+     * the map multithready we use concurrentHashMap here
+     */
+    Map<EventHandlerProxyEntry, EventHandlerProxyEntry> _eventHandlerIdx = new ConcurrentHashMap<EventHandlerProxyEntry, EventHandlerProxyEntry>();
 
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
@@ -653,25 +718,50 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public void subscribeToEvent(Class<? extends SystemEvent> eventClass, Class<?> aClass, SystemEventListener systemEventListener) {
         weaveDelegate();
+        systemEventListener = makeEventProxy(eventClass, systemEventListener);
         _delegate.subscribeToEvent(eventClass, aClass, systemEventListener);
     }
 
+    private SystemEventListener makeEventProxy(Class<? extends SystemEvent> eventClass, SystemEventListener systemEventListener) {
+        if (WeavingContext.isDynamic(systemEventListener.getClass())) {
+            systemEventListener = new SystemEventListenerProxy(systemEventListener);
+            EventHandlerProxyEntry entry = new EventHandlerProxyEntry(eventClass, (Decorated) systemEventListener);
+            _eventHandlerIdx.put(entry, entry);
+        }
+        return systemEventListener;
+    }
+
     @Override
-    public void subscribeToEvent(Class<? extends SystemEvent> aClass, SystemEventListener systemEventListener) {
+    public void subscribeToEvent(Class<? extends SystemEvent> eventClass, SystemEventListener systemEventListener) {
         weaveDelegate();
-        _delegate.subscribeToEvent(aClass, systemEventListener);
+        systemEventListener = makeEventProxy(eventClass, systemEventListener);
+        _delegate.subscribeToEvent(eventClass, systemEventListener);
     }
 
     @Override
     public void unsubscribeFromEvent(Class<? extends SystemEvent> eventClass, Class<?> aClass, SystemEventListener systemEventListener) {
         weaveDelegate();
+        systemEventListener = resolveEventProxy(eventClass, systemEventListener);
         _delegate.unsubscribeFromEvent(eventClass, aClass, systemEventListener);
     }
 
+    private SystemEventListener resolveEventProxy(Class<? extends SystemEvent> eventClass, SystemEventListener systemEventListener) {
+        if (WeavingContext.isDynamic(systemEventListener.getClass())) {
+            systemEventListener = new SystemEventListenerProxy(systemEventListener);
+            EventHandlerProxyEntry entry = new EventHandlerProxyEntry(eventClass, (Decorated) systemEventListener);
+            entry = _eventHandlerIdx.remove(entry);
+            if (entry != null) {
+                systemEventListener = (SystemEventListener) entry.getProxy().getDelegate();
+            }
+        }
+        return systemEventListener;
+    }
+
     @Override
-    public void unsubscribeFromEvent(Class<? extends SystemEvent> aClass, SystemEventListener systemEventListener) {
+    public void unsubscribeFromEvent(Class<? extends SystemEvent> eventClass, SystemEventListener systemEventListener) {
         weaveDelegate();
-        _delegate.unsubscribeFromEvent(aClass, systemEventListener);
+        systemEventListener = resolveEventProxy(eventClass, systemEventListener);
+        _delegate.unsubscribeFromEvent(eventClass, systemEventListener);
     }
 
     public Object getDelegate() {

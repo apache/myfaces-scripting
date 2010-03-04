@@ -2,14 +2,15 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
-<head>
+<h:head>
     <title>Hello World</title>
-</head>
+</h:head>
 <h:body>
 
 
         <h1> this example tests complex bean relationships for refreshing</h1>
         <h:form id="myForm">
+            <!--
             <h:outputScript name="jsf.js" library="javax.faces" target="head"/>
 
 
@@ -21,6 +22,18 @@
             
             <h:outputText value="#{receiver.myBean.hello}" />
             <h:outputText value="#{receiver.myBean.secondaryBean.hello}" />
+            -->
+
+            <h:inputText value="#{myBean.test}">
+                <f:ajax render="myText" event="keyup"/>
+            </h:inputText>
+            <h:panelGroup id="myText">
+                <h:inputText  value="#{myBean.test}" binding="#{myBean.bindingMyTest}"/>
+                <script type="text/javascript">
+                    alert("hello");
+                </script>
+            </h:panelGroup>
+
 
 
         </h:form>

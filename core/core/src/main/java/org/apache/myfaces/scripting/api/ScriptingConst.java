@@ -66,6 +66,7 @@ public class ScriptingConst {
     public static final int ARTIFACT_TYPE_RESPONSESTREAM = 19;
     public static final int ARTIFACT_TYPE_RESOURCEHANDLER = 19;
     public static final int ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
+    public static final int ARTIFACT_TYPE_SYSTEMEVENTLISTENER = 21;
 
     public static final String CTX_REQUEST_CNT = "RequestCnt";
     public static final String CTX_CONFIGURATION = "ExtScriptingConfig";
