@@ -21,7 +21,7 @@ package org.apache.myfaces.scripting.sandbox;
 import java.io.File;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
-import org.apache.myfaces.scripting.sandbox.compiler.*;
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
 import org.junit.Ignore;
 
@@ -86,7 +86,7 @@ public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTest
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
                 "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.scripting.api.CompilationResult;         ",
                 "                                                                                   ",
                 "public class DummyCompiler implements Compiler {                                   ",
                 "                                                                                   ",
@@ -118,7 +118,7 @@ public abstract class AbstractJavaCompilerTestCase extends AbstractGeneratorTest
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
                 "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.scripting.api.CompilationResult;         ",
                 "                                                                                   ",
                 "public class DummyCompiler implements Compiler {                                   ",
                 "                                                                                   ",

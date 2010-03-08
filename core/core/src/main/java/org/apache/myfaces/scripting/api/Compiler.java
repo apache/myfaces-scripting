@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.api;
 
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.api.CompilationResult;
 
 import java.io.File;
 

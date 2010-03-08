@@ -19,8 +19,12 @@
 package org.apache.myfaces.scripting.sandbox;
 
 import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
+import org.apache.myfaces.scripting.api.CompilationResult;
+import org.apache.myfaces.scripting.api.Configuration;
+import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.sandbox.compiler.*;
 import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
+import org.junit.Ignore;
 
 import java.io.File;
 
@@ -28,9 +32,16 @@ import java.io.File;
  * <p>Test class for
  * <code>org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler</code></p>
  */
+
 public class GroovyCompilerTest extends AbstractGeneratorTestCase {
 
     // ------------------------------------------ Test methods
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();  
+        WeavingContext.setConfiguration(new Configuration());
+    }
 
     /**
      * <p>Tests whether it is possible to compile a dynamically generated Groovy source file.</p>
@@ -100,7 +111,7 @@ public class GroovyCompilerTest extends AbstractGeneratorTestCase {
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
                 "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.scripting.api.CompilationResult;         ",
                 "                                                                                   ",
                 "def class DummyCompiler implements Compiler {                                      ",
                 "                                                                                   ",

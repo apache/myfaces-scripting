@@ -18,7 +18,9 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.util.ClassLoaderUtils;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
@@ -31,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -47,7 +51,6 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
         super(standardJavaFileManager);
         _delegate = standardJavaFileManager;
     }
-
 
     @Override
     public JavaFileObject getJavaFileForOutput(Location location, String s, JavaFileObject.Kind kind, FileObject fileObject) throws IOException {
@@ -79,27 +82,8 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
         if (_classPath != null) {
             return _classPath;
         }
-        ClassLoader cls = getClassLoader(null);
 
-        StringBuilder retVal = new StringBuilder(500);
-        while (cls != null) {
-            if (cls instanceof URLClassLoader) {
-                URL[] urls = ((URLClassLoader) cls).getURLs();
-                int len = urls.length;
-
-                for (int cnt = 0; cnt < len; cnt++) {
-
-                    retVal.append(urls[cnt].getFile());
-                    if (cnt < len - 1) {
-                        retVal.append(File.pathSeparator);
-                    }
-                }
-            }
-
-            cls = cls.getParent();
-        }
-
-        String retStr = retVal.toString();
+        String retStr = ClassLoaderUtils.buildClasspath(getClassLoader(null));
 
         return (_classPath = retStr);
     }

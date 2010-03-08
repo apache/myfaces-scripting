@@ -19,13 +19,13 @@
 package org.apache.myfaces.scripting.loaders.java.compiler;
 
 import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.util.ClassLoaderUtils;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
 
 import java.io.File;
 import java.io.PrintWriter;

@@ -23,7 +23,7 @@ import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.api.CompilationResult;
 
 import javax.tools.*;
 import java.io.File;

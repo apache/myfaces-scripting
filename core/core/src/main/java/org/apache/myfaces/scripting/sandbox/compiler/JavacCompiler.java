@@ -19,7 +19,8 @@
 package org.apache.myfaces.scripting.sandbox.compiler;
 
 import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
+import org.apache.myfaces.scripting.api.CompilationResult;
+import org.apache.myfaces.scripting.core.util.ClassLoaderUtils;
 
 import java.io.File;
 import java.io.PrintWriter;

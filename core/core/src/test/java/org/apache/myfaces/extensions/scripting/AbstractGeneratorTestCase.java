@@ -20,7 +20,7 @@ package org.apache.myfaces.extensions.scripting;
 
 import junit.framework.TestCase;
 import org.apache.myfaces.scripting.api.CompilationException;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
 import org.apache.myfaces.scripting.sandbox.compiler.CompilerFactory;
 

@@ -20,10 +20,10 @@ package org.apache.myfaces.scripting.loaders.groovy.compiler;
 
 import org.apache.myfaces.scripting.api.CompilationException;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.util.ClassLoaderUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
-import org.apache.myfaces.scripting.sandbox.loader.ClassLoaderUtils;
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;

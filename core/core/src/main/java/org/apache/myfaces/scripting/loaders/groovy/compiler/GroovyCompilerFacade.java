@@ -18,13 +18,13 @@
  */
 package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
 
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyRecompiledClassloader;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
 
 import java.io.File;

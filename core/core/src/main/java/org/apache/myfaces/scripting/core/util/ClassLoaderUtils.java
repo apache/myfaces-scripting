@@ -16,14 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.loader;
+package org.apache.myfaces.scripting.core.util;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -40,6 +44,7 @@ public class ClassLoaderUtils {
     // ------------------------------------------ Public methods
 
     /**
+     * CompilationResult
      * <p>Returns the default class loader to use.</p>
      *
      * @return the default class loader to use
@@ -76,6 +81,8 @@ public class ClassLoaderUtils {
      * classpath. This method, however, returns the classpath as a String, where each
      * classpath entry is separated by a ';', i.e. it returns the classpath in a format
      * that Java tools usually expect it to be.</p>
+     * <p/>
+     * it also adds the additional classpaths issued by our configuration to the list
      *
      * @param classLoader the class loader which you want to resolve the class path for
      * @return the final classpath
@@ -93,7 +100,11 @@ public class ClassLoaderUtils {
             classpath.append(File.pathSeparatorChar);
         }
 
-        return classpath.toString();
+        String retVal = classpath.toString();
+        if (retVal.endsWith(File.pathSeparator)) {
+            retVal = retVal.substring(0, retVal.length() - 1);
+        }
+        return retVal;
     }
 
     /**
@@ -109,6 +120,11 @@ public class ClassLoaderUtils {
 
         ClassLoader classLoader = parent;
         // Walk up the hierachy of class loaders in order to determine the current classpath.
+        File target = WeavingContext.getConfiguration().getCompileTarget();
+        if (target != null) {
+            addFile(classpath, target);
+        }
+
         while (classLoader != null) {
             if (classLoader instanceof URLClassLoader) {
                 URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
@@ -132,7 +148,26 @@ public class ClassLoaderUtils {
             classLoader = classLoader.getParent();
         }
 
+        List<String> additionalClassPaths = WeavingContext.getConfiguration().getAdditionalClassPath();
+        if (!(additionalClassPaths == null || additionalClassPaths.isEmpty())) {
+            for (String additionalClassPath : additionalClassPaths) {
+                File additionalPath = new File(additionalClassPath);
+                addFile(classpath, additionalPath);
+            }
+        }
+
         return classpath.toArray(new URL[classpath.size()]);
+    }
+
+    private static void addFile(List<URL> classpath, File additionalPath) {
+        if (additionalPath.exists()) {
+            try {
+                classpath.add(additionalPath.toURI().toURL());
+            } catch (MalformedURLException e) {
+                Logger log = Logger.getLogger(ClassLoaderUtils.class.getName());
+                log.log(Level.SEVERE, "Additionalclasspath wrong url", e);
+            }
+        }
     }
 
 }

@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.sandbox.compiler;
 
 import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.scripting.api.CompilationResult;
 
 import java.io.File;
 

@@ -19,9 +19,9 @@
 package org.apache.myfaces.scripting.components;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
 
 import javax.faces.component.UIComponent;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.sandbox.compiler;
+package org.apache.myfaces.scripting.api;
 
 import java.util.ArrayList;
 import java.util.List;

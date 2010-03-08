@@ -198,7 +198,7 @@ public class ReloadingClassLoaderTest extends AbstractGeneratorTestCase {
                 "                                                                                   ",
                 "import java.io.File;                                                               ",
                 "import org.apache.myfaces.scripting.sandbox.compiler.Compiler;                  ",
-                "import org.apache.myfaces.scripting.sandbox.compiler.CompilationResult;         ",
+                "import org.apache.myfaces.scripting.api.CompilationResult;         ",
                 "                                                                                   ",
                 "public class DummyCompiler implements Compiler {                                   ",
                 "                                                                                   ",
