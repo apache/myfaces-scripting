@@ -100,9 +100,6 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
         }
 
         String retStr = retVal.toString();
-        if (retStr.length() > 1) {
-            retStr = retStr.substring(0, retStr.length() - 1);
-        }
 
         return (_classPath = retStr);
     }
