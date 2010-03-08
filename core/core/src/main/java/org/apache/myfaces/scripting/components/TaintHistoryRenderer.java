@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.myfaces.javaloader.componentTest;
+package org.apache.myfaces.scripting.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.scripting.api.CompilationResult;
-import org.apache.myfaces.scripting.components.CompilerComponent;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
@@ -29,7 +28,6 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.FacesRenderer;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Collection;
@@ -42,7 +40,6 @@ import java.util.logging.Logger;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@FacesRenderer(componentFamily = "javax.faces.Output", rendererType = "org.apache.myfaces.scripting.components.TaintHistoryRenderer")
 public class TaintHistoryRenderer extends HtmlTextRendererBase  {
     static Logger _log = Logger.getLogger(TaintHistoryRenderer.class.getName());
 

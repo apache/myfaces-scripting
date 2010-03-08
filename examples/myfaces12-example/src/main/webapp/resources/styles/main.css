@@ -57,6 +57,68 @@ div#backGroundFloat {
     background-image: url("../img/gradient2.png");
 }
 
+
+/*==================================================
+    Basic CSS information for our
+    taint history component
+    we do not use the compound
+    css for error and history
+    for readability reasons
+    although we have  load
+    of duplication here
+====================================================*/
+
+div.historyBox {
+    width: 820px;
+    heigh: 200px;
+
+    display: block;
+    overflow: auto;
+    border: 1px solid white;
+    color: #dedddd;
+    opacity: 0.92;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 5px;
+
+    padding: 5px;
+    margin-left: 10px;
+
+    background-image: url("../img/gradient2.png");
+    background-repeat: repeat-x;
+}
+
+div.historyBox .line {
+    display: table;
+    width: 780px;
+
+    border: 1px dashed black;
+    background-color: #ccccff;
+    color: black;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+
+    border-radius: 5px;
+}
+
+div.historyBox .line .timestamp {
+    width: 120px;
+    float: left;
+    color: red;
+}
+
+div.historyBox .line .changedFile {
+    width: 650px;
+    overflow: hidden;
+    display: block;
+    float: left;
+}
+
 /*==================================================
     Basic CSS information for our compiler
     output component
