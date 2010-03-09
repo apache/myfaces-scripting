@@ -23,19 +23,7 @@
 
         <dependency>
             <groupId>org.apache.myfaces.extension-scripting</groupId>
-            <artifactId>extscript-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.myfaces.extension-scripting</groupId>
-            <artifactId>extscript-core-java6</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.myfaces.extension-scripting</groupId>
-            <artifactId>extscript-myfaces12-extensions</artifactId>
+            <artifactId>extscript-myfaces12-bundle</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -45,12 +33,14 @@
             <version>1.2.8</version>
             <scope>compile</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
             <version>1.2.8</version>
             <scope>compile</scope>
         </dependency>
+        
         <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
@@ -69,7 +59,6 @@
             <version>1.2</version>
             <scope>runtime</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>

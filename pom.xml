@@ -21,6 +21,7 @@
 
     <modules>
         <module>core</module>
+        <module>bundles</module>
         <module>examples</module>
     </modules>
 
