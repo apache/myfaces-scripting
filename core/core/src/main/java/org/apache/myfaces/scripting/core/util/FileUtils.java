@@ -44,6 +44,9 @@ public class FileUtils {
 
     /**
      * Get the file separator for this platform, properly escaped for usage in a regular expression.
+     * workaround for http://bugs.sun.com/view_bug.do?bug_id=4626653 another workaround would be
+     * to use the Matcher.quoteReplacement as of http://bugs.sun.com/view_bug.do?bug_id=5024613  instead
+     * of using String.replaceAll
      *
      * @return The file separator, escaped for in a regex.
      */
