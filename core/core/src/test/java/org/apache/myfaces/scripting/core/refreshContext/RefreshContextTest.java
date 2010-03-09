@@ -76,7 +76,7 @@ public class RefreshContextTest {
     @Test
     public void testTaingLog() {
         RefreshContext ctx = WeavingContext.getRefreshContext();
-        ctx.setTaintLogTimeout(3);
+        ctx.setTaintLogTimeout(0);
 
         ReloadingMetadata data = new ReloadingMetadata();
         data.setAClass(this.getClass());
@@ -89,7 +89,7 @@ public class RefreshContextTest {
 
         assertTrue("three new entries in the log", ctx.getTaintHistory(0l).size() == 3);
         try {
-            Thread.sleep(5);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             fail(e.toString());
         }
