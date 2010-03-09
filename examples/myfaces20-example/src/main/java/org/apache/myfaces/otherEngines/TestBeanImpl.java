@@ -1,5 +1,7 @@
 package org.apache.myfaces.otherEngines;
 
+import org.apache.myfaces.scripting.core.util.FileUtils;
+
 import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -17,7 +19,7 @@ public class TestBeanImpl implements TestBean {
         try {
             String resourceRoot = this.getClass().getClassLoader().getResource("./").getFile();
             //dirty and only works if you run it in maven jetty:run but for the demo this is ok
-            String resource = resourceRoot+"../../../../src/main/java/"+"org.apache.myfaces.otherEngines".replaceAll("\\.", File.separator)+File.separator+"TestBean.js";
+            String resource = resourceRoot+"../../../../src/main/java/"+"org.apache.myfaces.otherEngines".replaceAll("\\.", FileUtils.getFileSeparatorForRegex())+File.separator+"TestBean.js";
             _delegate = (TestBean) JavascriptProxyFactory.newInstance(TestBean.class, "TestBean", new File(resource));
         } catch (ScriptException e) {
             throw new FacesException(e);

@@ -89,7 +89,7 @@ public class Configuration {
         List<String> retVal = new ArrayList(_packageWhiteList.size() * origSourceDirs.size() + origSourceDirs.size());
 
         for (String whitelisted : _packageWhiteList) {
-            whitelisted = whitelisted.replaceAll("\\.", File.separator);
+            whitelisted = whitelisted.replaceAll("\\.", FileUtils.getFileSeparatorForRegex());
             for (String sourceDir : origSourceDirs) {
                 String newSourceDir = sourceDir + File.separator + whitelisted;
                 if ((new File(newSourceDir)).exists()) {

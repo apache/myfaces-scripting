@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.sandbox.loader;
 
+import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.sandbox.loader.support.ClassFileLoader;
 import org.apache.myfaces.scripting.sandbox.loader.support.OverridingClassLoader;
 import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
@@ -52,13 +53,8 @@ public class ReloadingClassLoader extends URLClassLoader {
      * The system-dependent default name-separator character. Note that it's safe to
      * use this version of the file separator in regex methods, like replaceAll().
      */
-    private static String FILE_SEPARATOR = File.separator;
-
-    static {
-        if ("\\".equals(FILE_SEPARATOR)) {
-            FILE_SEPARATOR = "\\\\";
-        }
-    }
+    private static String FILE_SEPARATOR = FileUtils.getFileSeparatorForRegex();
+   
 
     /**
      * The logger instance for this class.
