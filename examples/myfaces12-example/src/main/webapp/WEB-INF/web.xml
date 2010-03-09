@@ -100,7 +100,7 @@
         <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces12-example/src/main/webapp/WEB-INF/java</param-value>
     </context-param>
     -->
-
+    
     <context-param>
         <description>State saving method: "client" or "server" (= default)
             See JSF Specification 2.5.3
@@ -111,7 +111,7 @@
 
     <context-param>
         <param-name>facelets.LIBRARIES</param-name>
-        <param-value>/WEB-INF/facelets/groovy-taglib.xml;/WEB-INF/facelets/extscripting.taglib.xml</param-value>
+        <param-value>/WEB-INF/facelets/groovy-taglib.xml</param-value>
     </context-param>
 
     <context-param>

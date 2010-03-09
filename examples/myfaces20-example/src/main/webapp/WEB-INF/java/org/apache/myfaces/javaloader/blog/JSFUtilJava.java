@@ -59,7 +59,7 @@ public class JSFUtilJava {
         //we use the introspection calls here to achieve our goal that way
         //we can shift the dependency resolution from compile time to runtime
         return executeMethod(elResolver, "getValue", elContext, null, beanName);
-        // return FacesContext.getCurrentInstance().getELContext().getELResolver().getRendererType(FacesContext.getCurrentInstance().getELContext(), null, beanName);
+        //return FacesContext.getCurrentInstance().getELContext().getELResolver().getRendererType(FacesContext.getCurrentInstance().getELContext(), null, beanName);
 
     }
 

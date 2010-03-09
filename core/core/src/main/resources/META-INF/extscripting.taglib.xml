@@ -18,6 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
+<!--
+According to the spec we normally should divide between facelet 1.0 and facelet 2.0
+but since this seems to be a spec errata in the JSF 2.0 rev 0 spec and both implementations
+now pick up facelet 1.0 files as expected we centralize everything and keep everything on 1.2
+jsf level for now.
+Maybe in the long run we will divide both component classes into one for jsf 1.2 and
+one for jsf 2.0 but for now this approach is fine enough.
+-->
 
 <!DOCTYPE facelet-taglib PUBLIC "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN" "facelet-taglib_1_0.dtd">
 <facelet-taglib>
