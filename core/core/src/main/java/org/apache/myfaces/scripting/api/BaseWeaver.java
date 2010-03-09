@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.api;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
@@ -91,15 +92,16 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param scriptPath the new path which has to be added
      */
     public void appendCustomScriptPath(String scriptPath) {
-        if (scriptPath.endsWith("/") || scriptPath.endsWith("\\/")) {
-            scriptPath = scriptPath.substring(0, scriptPath.length() - 1);
+        String normalizedScriptPath = FilenameUtils.normalize(scriptPath);
+        if (normalizedScriptPath.endsWith(File.separator)) {
+            normalizedScriptPath = normalizedScriptPath.substring(0, scriptPath.length() - File.separator.length());
         }
 
-        WeavingContext.getConfiguration().addSourceDir(getScriptingEngine(), scriptPath);
+        WeavingContext.getConfiguration().addSourceDir(getScriptingEngine(), normalizedScriptPath);
         if (_annotationScanner != null) {
-            _annotationScanner.addScanPath(scriptPath);
+            _annotationScanner.addScanPath(normalizedScriptPath);
         }
-        _dependencyScanner.addScanPath(scriptPath);
+        _dependencyScanner.addScanPath(normalizedScriptPath);
     }
 
     /**
