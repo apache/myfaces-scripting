@@ -21,6 +21,9 @@ package org.apache.myfaces.scripting.core.reloading;
 import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.scripting.core.util.Cast;
+import org.apache.myfaces.scripting.core.util.ClassUtils;
+import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -29,6 +32,8 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
  *          A reloading strategy chain of responsibility which switches
  *          depending on the artifact type to the correct
  *          strategy
+ *          <p/>
+ *          TODO make the reloading strategy pluggable from outside!
  */
 
 public class GlobalReloadingStrategy implements ReloadingStrategy {
@@ -38,6 +43,12 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
     protected ReloadingStrategy _beanStrategy;
     protected ReloadingStrategy _noMappingStrategy;
     protected ReloadingStrategy _allOthers;
+
+    /*loaded dynamically for myfaces 2+*/
+    protected ReloadingStrategy _componentHandlerStrategy;
+    protected ReloadingStrategy _validatorHandlerStrategy;
+    protected ReloadingStrategy _converterHandlerStrategy;
+    protected ReloadingStrategy _behaviorHandlerStrategy;
 
     public GlobalReloadingStrategy(ScriptingWeaver weaver) {
         setWeaver(weaver);
@@ -71,6 +82,15 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
             case ScriptingConst.ARTIFACT_TYPE_VALIDATOR:
                 return _noMappingStrategy.reload(toReload, artifactType);
             //TODO Add other artifact loading strategies on demand here
+            case ScriptingConst.ARTIFACT_TYPE_COMPONENT_HANDLER:
+                return dynaReload(toReload, _componentHandlerStrategy, artifactType);
+            case ScriptingConst.ARTIFACT_TYPE_CONVERTER_HANDLER:
+                return dynaReload(toReload, _converterHandlerStrategy, artifactType);
+            case ScriptingConst.ARTIFACT_TYPE_VALIDATOR_HANDLER:
+                return dynaReload(toReload, _validatorHandlerStrategy, artifactType);
+            case ScriptingConst.ARTIFACT_TYPE_BEHAVIOR_HANDLER:
+                return dynaReload(toReload, _behaviorHandlerStrategy, artifactType);
+
             default:
                 return _allOthers.reload(toReload, artifactType);
         }
@@ -81,6 +101,40 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
         _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
         _noMappingStrategy = new NoMappingReloadingStrategy(weaver);
         _allOthers = new SimpleReloadingStrategy(weaver);
+
+        /*
+         * external handlers coming from various submodules
+         */
+        _componentHandlerStrategy = dynaload(weaver, "org.apache.myfaces.scripting.facelet.ComponentHandlerReloadingStrategy");
+        _validatorHandlerStrategy = dynaload(weaver, "org.apache.myfaces.scripting.facelet.ValidatorHandlerReloadingStrategy");
+        _converterHandlerStrategy = dynaload(weaver, "org.apache.myfaces.scripting.facelet.ConverterHandlerReloadingStrategy");
+        _behaviorHandlerStrategy = dynaload(weaver, "org.apache.myfaces.scripting.facelet.BehaviorHandlerReloadingStrategy");
+    }
+
+    public Object dynaReload(Object toReload, ReloadingStrategy strategy, int artifactType) {
+        if (strategy == null) {
+            //no strategy no reload
+            return toReload;
+        } else {
+            return strategy.reload(toReload, artifactType);
+        }
+    }
+
+    /**
+     * load dynamically the given strategy class
+     *
+     * @param weaver        the weaver which the new strateg class is applied to
+     * @param strategyClass the strategy class which has to be loaded and instantiated
+     * @return an instance of the strategy class if found otherwise null
+     */
+    private ReloadingStrategy dynaload(ScriptingWeaver weaver, String strategyClass) {
+        try {
+            Class componentStrategyClass = ClassUtils.forName(strategyClass);
+            return (ReloadingStrategy) ReflectUtil.instantiate(componentStrategyClass, new Cast(ScriptingWeaver.class, weaver));
+        } catch (RuntimeException ex) {
+            //in this case swallowing the exception is expected
+        }
+        return null;
     }
 
     public ScriptingWeaver getWeaver() {

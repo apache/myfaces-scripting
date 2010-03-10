@@ -1,5 +1,25 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.apache.myfaces.scripting.facelet;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.facelet.support.ComponentRule;
 import org.apache.myfaces.scripting.facelet.support.SwitchingMetarulesetImpl;
@@ -25,26 +45,29 @@ public class ReloadingComponentTagHandlerDelegate extends TagHandlerDelegate {
     TagHandlerDelegate _delegate;
 
     public ReloadingComponentTagHandlerDelegate(ComponentHandler owner) {
+        applyOwner(owner);
+    }
+
+    private void applyOwner(ComponentHandler owner) {
         _owner = owner;
-        _delegate = new ComponentTagHandlerDelegate(owner);
+        _delegate = new ComponentTagHandlerDelegate(_owner);
     }
 
     @Override
     public void apply(FaceletContext ctx, UIComponent comp) throws IOException {
-        if (WeavingContext.isDynamic(comp.getClass())) {
-            //TODO hook our own component code in here
+        if (WeavingContext.isDynamic(_owner.getClass())) {
+            ComponentHandler newOwner = (ComponentHandler) WeavingContext.getWeaver().reloadScriptingInstance(_owner, ScriptingConst.ARTIFACT_TYPE_COMPONENT_HANDLER);
+            if (!newOwner.getClass().equals(_owner.getClass())) {
+                applyOwner(newOwner);
+            }
         }
-        //if (comp.getClass().getName().contains("JavaTestComponent")) {
-        //    System.out.println("Debugpoint found");
-        //}
-
         _delegate.apply(ctx, comp);
     }
 
     public MetaRuleset createMetaRuleset(Class type) {
         //We have to create a different meta rule set for dynamic classes
         //which have weaver instantiation criteria, the original meta rule set
-        //first applies the attributes and then calls BeanPropertyTagRule on our
+        //first applies the attributes and then calls BeanPropertyTagRule
         //that one however caches the current method and does not take into consideration
         //that classes can be changed on the fly
 

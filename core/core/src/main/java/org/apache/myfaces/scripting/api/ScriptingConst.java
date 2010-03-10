@@ -68,6 +68,14 @@ public class ScriptingConst {
     public static final int ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
     public static final int ARTIFACT_TYPE_SYSTEMEVENTLISTENER = 21;
 
+   //faclets artifacts
+    public static final int ARTIFACT_TYPE_TAG_HANDLER=22;
+    public static final int ARTIFACT_TYPE_COMPONENT_HANDLER=23;
+    public static final int ARTIFACT_TYPE_VALIDATOR_HANDLER=24;
+    public static final int ARTIFACT_TYPE_CONVERTER_HANDLER=25;
+    public static final int ARTIFACT_TYPE_BEHAVIOR_HANDLER=26;
+
+
     public static final String CTX_REQUEST_CNT = "RequestCnt";
     public static final String CTX_CONFIGURATION = "ExtScriptingConfig";
     public static final String CTX_STARTUP = "ExtScriptingStartup";
