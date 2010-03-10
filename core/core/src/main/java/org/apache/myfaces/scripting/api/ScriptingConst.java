@@ -30,8 +30,8 @@ public class ScriptingConst {
     public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.SCRIPTING_GROOVYFACTORY";
     public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.SCRIPTING_REQUSINGLETON";
 
-    public static final String INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST = "org.apache.myfaces.SCRIPTING_PGK_WHITELIST";
-    public static final String INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH = "org.apache.myfaces.INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH";
+    public static final String INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST = "org.apache.myfaces.scripting.PGK_WHITELIST";
+    public static final String INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH = "org.apache.myfaces.scripting.ADDITIONAL_CLASSPATH";
 
     public static final String CONTEXT_VALUE_DIVIDER = ",";
 

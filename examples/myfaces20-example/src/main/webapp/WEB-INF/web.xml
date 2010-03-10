@@ -75,7 +75,7 @@
         <description>a comma separated whitelist of root packages which are compiled those and nothing else
             will be compiled during all compile stages, all other files stay permanently as they are
         </description>
-        <param-name>org.apache.myfaces.SCRIPTING_PGK_WHITELIST</param-name>
+        <param-name>org.apache.myfaces.scripting.PGK_WHITELIST</param-name>
         <param-value>org.apache.myfaces.groovyloader.blog</param-value>
     </context-param>
     -->
