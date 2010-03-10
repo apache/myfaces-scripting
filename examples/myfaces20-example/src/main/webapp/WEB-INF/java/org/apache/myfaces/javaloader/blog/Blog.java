@@ -66,6 +66,7 @@ public class Blog {
         entry.setFirstName(firstName);
         entry.setLastName(lastName);
         entry.setTopic(topic);
+        
         entry.setContent(content);
 
         if (service != null) {

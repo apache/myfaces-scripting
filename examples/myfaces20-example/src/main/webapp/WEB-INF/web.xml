@@ -32,7 +32,6 @@
     </context-param>
 
 
-    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -69,7 +68,7 @@
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
         <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
     </context-param>
-     -->
+
     <!--
     <context-param>
         <description>a comma separated whitelist of root packages which are compiled those and nothing else

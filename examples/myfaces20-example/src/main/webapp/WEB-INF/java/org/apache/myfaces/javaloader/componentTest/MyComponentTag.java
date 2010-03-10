@@ -34,11 +34,6 @@ public class MyComponentTag extends ComponentHandler {
 
     static Logger _log = Logger.getLogger(MyComponentTag.class.getName());
 
-    //note due to lio
-    public MyComponentTag() {
-        super(null);
-    }
-
     public MyComponentTag(ComponentConfig config) {
         super(config);
     }

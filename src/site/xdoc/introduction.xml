@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <properties>
+        <title>Introduction</title>
+    </properties>
+
+    <body>
+        <section name="Introduction">
+            <subsection name="General Introduction">
+
+                <p>Welcome and hello to MyFaces Extension-Scripting, short Ext-Scripting. Ext-Scripting is an extensions
+                    project for MyFaces. It tries to add scripting and rapid prototyping capabilities to JSF by adding
+                    scripting languages and JSP like recompilation mechanisms.
+
+                    Following link to the a video on YouTube shows you what Ext-Scripting can do for you:
+                 </p>
+                    <source>
+                    <![CDATA[ 
+                    <object width="480" height="385">
+                        <param name="movie" value="http://www.youtube.com/v/vUCCTCMjTPE&hl=de_DE&fs=1&"></param>
+                        <param name="allowFullScreen" value="true"></param>
+                        <param name="allowscriptaccess" value="always"></param>
+                        <embed src="http://www.youtube.com/v/vUCCTCMjTPE&hl=de_DE&fs=1&"
+                               type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
+                               width="480" height="385"></embed>
+                    </object>
+                    ]]>
+                    </source>
+                 <p>
+                     As the video shows you can make changes to JSF artifacts on the fly and at the next reload the
+                    changes are present. The result is a reduction in server restarts and better turn around times. The
+                    same rapid prototyping approach which is normally present in scripting languages and scripting
+                    language based frameworks.
+
+                    Additionally to that Ext-Scripting integrates various scripting languages to be used in conjunction
+                    with JSF so that a mixed language approach becomes feasible within the bounds of the framework.
+                </p>
+
+            </subsection>
+
+        </section>
+        <section name="Various Aspects of Ext-Scripting">
+            <subsection name="Supported for Scripting Languages">
+                <p>
+                    Ext-Scripting currently only supports Groovy as only scripting language.
+                    Additional scripting languages will be provided in subsequent releases.
+                </p>
+            </subsection>
+        </section>
+
+
+    </body>
+</document>
