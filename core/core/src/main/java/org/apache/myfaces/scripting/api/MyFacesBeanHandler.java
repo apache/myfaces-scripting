@@ -19,6 +19,8 @@
 package org.apache.myfaces.scripting.api;
 
 import org.apache.myfaces.config.RuntimeConfig;
+import org.apache.myfaces.config.annotation.LifecycleProvider;
+import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
 import org.apache.myfaces.config.element.ListEntries;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.config.element.MapEntries;
@@ -30,6 +32,7 @@ import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -220,6 +223,8 @@ public class MyFacesBeanHandler implements BeanHandler {
             //But for most cases this mutex should be enough
             Map<String, ManagedBean> mbeansSnapshotView = makeSnapshot(mbeans);
 
+
+
             for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
                 Class managedBeanClass = entry.getValue().getManagedBeanClass();
                 if (hasToBeRefreshed(taintedInTime, managedBeanClass)) {
@@ -274,7 +279,16 @@ public class MyFacesBeanHandler implements BeanHandler {
         //we now have to revert to introspection here because scopes are a pure jsf2 construct
         //so we use a messaging pattern here to cope with it
 
-        ReflectUtil.executeMethod(scopeImpl, "remove", bean.getManagedBeanName());
+        Object beanInstance = ReflectUtil.executeMethod(scopeImpl, "get", bean.getManagedBeanName());
+        LifecycleProvider lifecycleProvider =
+                LifecycleProviderFactory.getLifecycleProviderFactory().getLifecycleProvider(FacesContext.getCurrentInstance().getExternalContext());
+        try {
+            lifecycleProvider.destroyInstance(beanInstance);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     /**
