@@ -19,6 +19,7 @@
 
 -->
 <document>
+    
     <properties>
         <title>Introduction</title>
     </properties>
@@ -32,21 +33,25 @@
                     scripting languages and JSP like recompilation mechanisms.
 
                     Following link to the a video on YouTube shows you what Ext-Scripting can do for you:
-                 </p>
-                    <source>
-                    <![CDATA[ 
-                    <object width="480" height="385">
-                        <param name="movie" value="http://www.youtube.com/v/vUCCTCMjTPE&hl=de_DE&fs=1&"></param>
-                        <param name="allowFullScreen" value="true"></param>
-                        <param name="allowscriptaccess" value="always"></param>
-                        <embed src="http://www.youtube.com/v/vUCCTCMjTPE&hl=de_DE&fs=1&"
-                               type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
-                               width="480" height="385"></embed>
-                    </object>
-                    ]]>
-                    </source>
-                 <p>
-                     As the video shows you can make changes to JSF artifacts on the fly and at the next reload the
+                </p>
+
+                <p>
+                    <center>
+                        <object width="480" height="385">
+
+                            <embed src="http://www.youtube.com/v/vUCCTCMjTPE"
+                                   type="application/x-shockwave-flash" allowscriptaccess="always"
+                                   allowfullscreen="true"
+                                   width="480" height="385"></embed>
+                            <param name="movie" value="http://www.youtube.com/v/vUCCTCMjTPE"></param>
+                            <param name="allowFullScreen" value="true"></param>
+                            <param name="allowscriptaccess" value="always"></param>
+
+                        </object>
+                    </center>
+                </p>
+                <p>
+                    As the video shows you can make changes to JSF artifacts on the fly and at the next reload the
                     changes are present. The result is a reduction in server restarts and better turn around times. The
                     same rapid prototyping approach which is normally present in scripting languages and scripting
                     language based frameworks.
@@ -65,6 +70,33 @@
                     Additional scripting languages will be provided in subsequent releases.
                 </p>
             </subsection>
+            <subsection name="Support for JSF2 and JSF2 Artifacts and Annotations">
+                <p>
+                    One of the main goals of Ext-Scripting was to provide JSF2 support out of the box. Most new JSF2
+                    artifacts are supported. Ext-Scripting even adds scriptability to the new annotation syntax of JSF2
+                    by
+                    allowing annotations to be used in a dynamic manner!
+                </p>
+            </subsection>
+            <subsection name="Support for MyFace">
+                <p>
+                    Extensions scripting supports MyFaces only for now. Following versions are supported.
+                </p>
+                <ul>
+                    <li>1.2.8+</li>
+                    <li>2.0+</li>
+                </ul>
+                <p>
+                    Older versions are not supported due to missing plugin mechanisms which allow Ext-Scripting to work.
+                </p>
+                <p>
+                    The JSF RI and Mojarra as time of writing are not supported due to missing framework hooks needed,
+                    but Mojarra supports Groovy out of the box within the core engine. So for the time being only
+                    MyFaces can be used. Also Portlets for 1.0 are not supported, this limitation will be eliminated in
+                    future versions. Support for Mojarra will come post 1.0.
+                </p>
+            </subsection>
+
         </section>
 
 

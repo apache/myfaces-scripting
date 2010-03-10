@@ -19,5 +19,183 @@
 
 -->
 <document>
+    <properties>
+        <title>Installation</title>
+    </properties>
+
+    <body>
+        <section name="Checkout and Build">
+            <p>
+                Currently as time of writing, Ext-Scripting does not have a release yet, so the only means of
+                obtaining
+                a build is checking out the project via
+                <a href="http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk">The svn trunk under,
+                    http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk
+                </a>
+            </p>
+            <p>
+                Make sure you have following requirements fulfilled before checking out:
+            </p>
+            <ul>
+                <li>A valid Subversion client</li>
+                <li>Java 5 or higher</li>
+                <li>Maven 2.0.9 or higher</li>
+            </ul>
+            <p>
+                After checkout, a full build can be obtained from the root directory of your checkout via<b>mvn
+                clean install</b>.
+            </p>
+            <p>
+                Once finished, a valid build is installed, which can be used further on. Additionally you can find
+                two blueprint projects which you can use as starting points for your own projects under
+                <b>&lt;checkoutDir&gt;/examples</b>
+                , which can be kickstarted via<b>mvn jetty:run-exploded</b>.
+            </p>
+        </section>
+        <section name="Setup of Ext-Scripting">
+            <subsection name="Requirements">
+                <p>
+                    Before setting up Ext-Scripting make sure following requirements are met.
+                </p>
+                <ul>
+                    <li>JAVA_HOME points towards a valid Java SDK (JRE is not sufficient)</li>
+                    <li>You know how to create and deploy a web application within your preferred setup (command line,
+                        ide)
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Setup">
+                <p>
+                    While one of the aims of Ext-Scripting was to enable an easy setup, for now it was not entirely
+                    possible for now to get a plug and play configuration. Several configuration steps have to be
+                    performed.
+                </p>
+                <ul>
+                    <li>A valid
+                        <b>MyFaces</b>
+                        installation has to be present
+                    </li>
+                    <li>Ext-Scripting and its dependencies has to be added to the MyFaces installation</li>
+                    <li>The paths to the scripts have to be present (see also below)</li>
+                </ul>
+
+            </subsection>
+            <subsection name="Preparations via Apache Maven 2">
+                <p>The easiest way once Extension scripting is compiled is probably a setup via Apache Maven 2
+                </p>
+                <p>
+                    Depending on your configuration and preferred JDK version you can add following entries to your
+                    Maven pom.xml to enable Ext-Scripting
+                </p>
+                <p/>
+                <h4>MyFaces 1.2.8+</h4>
+                <source><![CDATA[
+     <dependency>
+        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <artifactId>extscript-myfaces12-bundle</artifactId>
+        <version>1.0-SNAPSHOT</version>
+     </dependency>]]></source>
+
+                <h4>MyFaces 2.+</h4>
+                <source><![CDATA[
+     <dependency>
+        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <artifactId>extscript-myfaces20-bundle</artifactId>
+        <version>1.0-SNAPSHOT</version>
+     </dependency>]]></source>
+            </subsection>
+
+            <!-- TODO add download information here -->
+
+            <subsection name="Preparing the Necessary web.xml Entries">
+                <h4>First Step</h4>
+                <p>To enable Ext-Scripting you also have to add several entries to your web.xml file.</p>
+
+                <p>First a context param has to be set which attaches the Ext-Scripting plugins to myfaces</p>
+                <source><![CDATA[
+     <context-param>
+        <description>
+            Enables our scripting engine support plugins
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>
+            org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader
+        </param-value>
+     </context-param>]]></source>
+                <h4>Second Step</h4>
+                <p>Add Ext-Scriptings servlet filter to your servlet configuration</p>
+                <source><![CDATA[
+     <context-param>
+        <description>
+            Enables our scripting engine support plugins
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+     </context-param>]]></source>
+                <p>The init parameter and the servlet filter
+                    <b>MUST</b>
+                    be set otherwise Ext-Scripting will not be enabled!
+                </p>
+                <h4>Additional Optional Steps</h4>
+                <p>Ext-Scripting exposes a number configuration parameters which can be set via context parameters in
+                    your web.xml
+                </p>
+
+                <h4>Adjust the web.xml Root Sourcepaths</h4>
+                <p>Since the goal of Ext-Scripting is to provide scriptability to a running web application it has to
+                    know where to find the sources it has to process. For this a default location has been chosen
+                    according to the standards set by the Mojarra Groovy extension the location looks like:
+                </p>
+                <source><![CDATA[
+     <webapp>/WEB-INF/groovy                    
+                ]]></source>
+                <p>
+                    as root location for Groovy files
+                </p>
+                <source><![CDATA[
+     <webapp>/WEB-INF/java
+                ]]></source>
+                <p>
+                    as root location for java files.
+                </p>
+                <p>
+                    Following image displays the default locations:
+                    <img src="images/ext_default_file.jpg"/>
+                </p>
+                <p>However in a normal development scenario, it is often undesirable to have the files located in a
+                    deployment location, and a pointer mechanism towards the actual source locations would be more
+                    desirable.
+
+                    To provide such a mechanism, Ext-Scripting allows two optional web.xml context parameters, which
+                    allow the rerouting of source locations of the supported languages!
+                </p>
+                <source><![CDATA[
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
+        <param-value>
+           <some project path>/src/main/webapp/WEB-INF/groovy
+        </param-value>
+    </context-param>
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
+        <param-value>
+            <some project path>/src/main/webapp/WEB-INF/java
+        </param-value>
+    </context-param>
+                ]]></source>
+             <ul>
+                 <li><b>org.apache.myfaces.scripting.groovy.LOADER_PATHS</b> can be a comma separated list of paths which point to the actual Groovy sources.</li>
+                 <li><b>org.apache.myfaces.scripting.java.LOADER_PATHS</b>  does the same for Java sources..</li>
+             </ul>
+
+            </subsection>
+        </section>
+    </body>
 </document>
         
