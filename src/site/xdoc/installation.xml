@@ -42,14 +42,14 @@
                 <li>Maven 2.0.9 or higher</li>
             </ul>
             <p>
-                After checkout, a full build can be obtained from the root directory of your checkout via<b>mvn
+                After checkout, a full build can be obtained from the root directory of your checkout via <b>mvn
                 clean install</b>.
             </p>
             <p>
                 Once finished, a valid build is installed, which can be used further on. Additionally you can find
                 two blueprint projects which you can use as starting points for your own projects under
                 <b>&lt;checkoutDir&gt;/examples</b>
-                , which can be kickstarted via<b>mvn jetty:run-exploded</b>.
+                , which can be kickstarted via <b>mvn jetty:run-exploded</b>.
             </p>
         </section>
         <section name="Setup of Ext-Scripting">
