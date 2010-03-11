@@ -19,7 +19,7 @@
 
 -->
 <document>
-    
+
     <properties>
         <title>Introduction</title>
     </properties>
@@ -37,16 +37,13 @@
 
                 <p>
                     <center>
-                        <object width="480" height="385">
-
-                            <embed src="http://www.youtube.com/v/vUCCTCMjTPE"
-                                   type="application/x-shockwave-flash" allowscriptaccess="always"
-                                   allowfullscreen="true"
-                                   width="480" height="385"></embed>
-                            <param name="movie" value="http://www.youtube.com/v/vUCCTCMjTPE"></param>
+                        <object width="640px" height="480px">
+                            <param name="movie" value="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"></param>
                             <param name="allowFullScreen" value="true"></param>
                             <param name="allowscriptaccess" value="always"></param>
-
+                            <embed src="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"
+                                   type="application/x-shockwave-flash" allowscriptaccess="always"
+                                   allowfullscreen="true" width="640px" height="480px"></embed>
                         </object>
                     </center>
                 </p>
@@ -63,7 +60,24 @@
             </subsection>
 
         </section>
-        <section name="Various Aspects of Ext-Scripting">
+         <section name="Documentation">
+            <p>
+                Ext-Scritpting provides extensive documentation. Feel free
+                to browse our
+                <a href="installation.html">Installation Guide</a>
+                or
+                <a href="usersguide.html">Users Guide</a>
+                for further information.
+            </p>
+            <p>
+                Also
+                <a href="download.html">download links</a>
+                are provided on the left hand side of this page,
+                as well as further information.
+            </p>
+        </section>
+
+        <section name="Short Overview over Ext-Scripting">
             <subsection name="Supported for Scripting Languages">
                 <p>
                     Ext-Scripting currently only supports Groovy as only scripting language.
@@ -98,6 +112,7 @@
             </subsection>
 
         </section>
+
 
 
     </body>

@@ -19,5 +19,326 @@
 
 -->
 <document>
+    <properties>
+        <title>Users Guide</title>
+    </properties>
+
+    <body>
+        <section name="Users Guide">
+            <p>
+                After having set up MyFaces Ext-Scripting (if you do not have done so please go to our<a
+                    href="installation.html">Installation Page</a>), you basically can start editing, and be done with
+                the users
+                guide.
+            </p>
+            <p>
+                Well theoretically anyway, there are some things every user of Extension-Scripting has to take into
+                consideration.
+            </p>
+            <p>
+                First of all Ext-Scripting in its current incarnation tries to help the programmers every day life. That
+                means, it tries to reduce the number of needed server restarts to the lowest possible minimum which is
+                achievable within the boundaries of Java and JSF.
+            </p>
+            <p>
+                You won't get a zero restart configuration, Extension-Scripting tries not to be perfect in this regard,
+                but
+                what you can achieve is a significant reduction on restarts by applying scripting languages and dynamic
+                compilation.
+            </p>
+            <p>
+                Secondly, we do not try to support every scripting language under the earth, the basic goal is first to
+                get
+                the basics right and then in subsequent releases to add additional scripting languages support.
+            </p>
+            <p>
+                As is, every scripting language which can compile against the JVM can be supported, currently there is
+                no
+                support for the scripting language API of Java 6. The reason simply is that the API is too limiting for
+                now
+                in what Ext-Scripting tries to achieve. But future extensions like JSR 292 once available might be used
+                to
+                reduce the number of restarts needed.
+            </p>
+            <p>
+                For now we cannot recommend to use Ext-Scripting in a production environment for live patches, although
+                it
+                theoretically would be possible, and we spent a lot of blood sweat and tears into making the system
+                stable
+                under multithreaded conditions. For now, however, we simply only can recommend to use Ext-Scripting for
+                development and development only scenarios if you need to hot patch code (deployment without any changes
+                however should be fine). So if you want to hot patch a running installations, we assume it should work
+                fine,
+                but you are on your own.
+            </p>
+        </section>
+        <section name="usage">
+            <p>
+                Using Ext-Scripting once properly setup is straight forward. Usually it comes down to editing, reloading
+                on
+                the browser editing, reloading the page, .... However if you edit within a running configurations keep
+                an
+                eye on the console/log output. All compile errors and messages go automatically into the log.
+            </p>
+            <center>
+                <img src="images/development-states.jpg" width="386px" height="337px"/>
+            </center>
+            <div class="objectAnnotation">Image: Development Lifecycle</div>
+
+            <p>
+                The development cycle also can seen in the following video (which is the same as on our
+                <a href="index.html">Introduction page</a>)
+                and in the following videos in the Users Guide.
+            </p>
+            <center>
+                <object width="640px" height="480px">
+                    <param name="movie"
+                           value="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"></param>
+                    <param name="allowFullScreen" value="true"></param>
+                    <param name="allowscriptaccess" value="always"></param>
+                    <embed src="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"
+                           type="application/x-shockwave-flash" allowscriptaccess="always"
+                           allowfullscreen="true" width="640px" height="480px"></embed>
+                </object>
+            </center>
+            <div class="objectAnnotation">Video: Development Lifecycle in Action</div>
+
+            <p>
+                As you can see, there is no need for any recompile anymore, no server restart
+                everything is done dynamically, and you get instant results.
+            </p>
+        </section>
+
+        <section name="Advanced Features">
+            <p>
+                Under normal circumstances you, should be set up by now and you can start coding happily.
+                However since this is a framework based reloading mechanism it is wise to dig a little bit deeper
+                and to know what is happening under the hood and why things behave like they do.
+                If you are interested then read on.
+            </p>
+        </section>
+
+        <section name="Helper Components">
+            <subsection name="Overview">
+                <p>Additionally to the standard reloading feature, Ext-Scripting provides two components
+                    which hopefully will make the life of every programmer easier.
+                </p>
+                <br/>
+                <ul>
+                    <li>The Compiler Output Component</li>
+                    <li>The Change History Component</li>
+                </ul>
+                <p>
+                    Note currently and for the foreseeable future only Facelets as page description language
+                    will be supported by the components.
+                </p>
+            </subsection>
+
+            <subsection name="Setup">
+                <p>To use the components following namespace has to be included </p>
+                <p><source><![CDATA[xmlns:exs="http://myfaces.apache.org/ext-scripting"]]></source></p>
+                <p>Example</p>
+                <p><source><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:exs="http://myfaces.apache.org/ext-scripting"
+      xmlns:h="http://java.sun.com/jsf/html">
+<h:head>]]></source></p>
+            </subsection>
+
+            <subsection name="The Compiler Output Component">
+                <p>One of the cornerstones of Ext-Scripting is the dynamic recompilation.
+                    Every file changed, is reloaded, while you hit refresh on the browser.
+                </p>
+                <p>
+                    Now, under normal circumstances, the compiler errors and warnings are written to the console log
+                    as following:
+                    <source><![CDATA[
+            Java Compiler, Error on line:
+            org/apache/myfaces/javaloader/blog/Blog.java:30:
+            class, interface, or enum expected30]]></source>
+                </p>
+                <p>
+                    Now, trying to catch those errors within the log is "mildly spoken" annoying
+                    and time consuming.
+                    Exactly for bypassing this problem a compiler output component
+                    can be used either in your page or preferably in a second page.
+
+                </p>
+                <p>The following Video shows the compiler output component in action</p>
+                <p>
+                    <center>
+                        <object width="640px" height="505px">
+                            <param name="movie"
+                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1"></param>
+                            <param name="allowFullScreen" value="true"></param>
+                            <param name="allowscriptaccess" value="always"></param>
+                            <embed src="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1"
+                                   type="application/x-shockwave-flash" allowscriptaccess="always"
+                                   allowfullscreen="true"
+                                   width="640px" height="505px"></embed>
+                        </object>
+                    </center>
+                    <div class="objectAnnotation">Video: Compiler Component in Action</div>
+
+                </p>
+                <p>
+                    <h4>Usage of the Compiler Output Component</h4>
+                </p>
+                <p>The compiler output component currently is presented as Facelets only component as follows</p>
+                <source><![CDATA[<exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>]]></source>
+
+                <p>Following attributes can be used</p>
+                <p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Attribute Name</td>
+                                <td>Possible Values</td>
+                                <td>Description</td>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>errorsLabel</td>
+                            <td>All values are allowed</td>
+                            <td>A Label which is displayed in above all errors to notify the user that the error section
+                                starts here
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>WarningsLabel</td>
+                            <td>All values are allowed</td>
+                            <td>A Label which is displayed in above all errors to notify the user that the warning
+                                section
+                                starts here
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>scriptingLanguage</td>
+                            <td>Java, Groovy or an empty String</td>
+                            <td>Scripting language filter, here you can set which scripting engines
+                                compile errors should be displayed, currently Java or Groovy are supported as values
+                                if you leave the attribute empty or set nothing then everything is displayed
+                            </td>
+                        </tr>
+
+                    </table>
+                </p>
+
+                <img src="images/compiler_output.png" width="600px" height="270px" alt="Image Compiler Output"
+                     title="Image Compiler Output"/>
+                <div class="objectAnnotation">Image: Compiler Output Component</div>
+            </subsection>
+            <subsection name="The Change History Component">
+                 <p>The second cornerstone of Ext-Scripting is change tracking and dependency detection.
+                     Now if you have changed a file, Ext-Scripting tracks the changes and also marks
+                     most classes which have a dependency to your class as changed.
+                </p>
+                <p>
+                    Again usually the output is pushed into the log as following:
+                </p>
+                <p>
+                    <source><![CDATA[INFO: [EXT-SCRIPTING] Tainting: org/apache/myfaces/javaloader/componentTest/MyComponentTag.java]]></source>
+                </p>
+                <p>
+                    Again, to get a quick overview within your running page, or preferably an extra page, you can use
+                    a specialized component which gives you a quick overview over the change history of the system.
+                </p>
+                <p>
+                    Here our change history component comes into play. With it you can track a certain number of changes
+                    done over time including their marked dependencies.
+                </p>
+                <p>
+                  <center>
+                    <img src="images/change_history.jpg" width="600px" height="45px" alt="change history component" title="change history component"/>
+                  </center>
+                  <div class="objectAnnotation">Image: Change History Component in Action</div>  
+                </p>
+            </subsection>
+
+            <p>
+                <h4>Usage</h4>
+            </p>
+            <p>The change history component can be currently used in Facelets only as follows</p>
+            <source><![CDATA[<exs:taintHistory noEntries="5" />]]></source>
+
+
+            <p>Following attributes can be used</p>
+            <p>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Attribute Name</td>
+                            <td>Possible Values</td>
+                            <td>Description</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>noEntries</td>
+                        <td>The &lt;Integer Value&gt; number of entries of the current history</td>
+                        <td>A positive Integer value which shows the last N entries of your history
+                            beginning with the latest change marker on top
+                        </td>
+                    </tr>
+
+                </table>
+            </p>
+
+        </section>
+
+        <section name="Debugging">
+            
+        </section>
+
+        <section name="Page and Resource Reloading">
+        </section>
+
+        <section name="Supported Artifacts">
+        </section>
+
+
+        <section name="Advanced Dependency Detection">
+            <p>
+                Ext-Scripting tries to avoid as many server restarts as possible. To enable this it needs to unload
+                recompile and load artifacts and the those which reference our changed ones. To enable this,
+                Ext-Scripting
+                does dependency detection on bytecode level as well as on artifact level. This functionality is enabled
+                automatically you wont have anything further to do. You can see it working by watching the output log,
+                if
+                you change a class, you automatically will see that the system marks the classes which reference your
+                changed class as tainted as well.
+            </p>
+            <p>
+                You have to have in mind that data currently in ram cannot be recovered by the unloading and reloading
+                happening, so everything stored for instance in application or session scope is lost that way.
+            </p>
+            <p>
+                Following video shows the mechanism working:
+            </p>
+            <p></p>
+            <center>
+                <object width="640px" height="480px">
+                    <param name="movie" value="http://www.youtube.com/v/65Hp0tjj6SQ&#38;hl=de_DE&#38;fs=1&#38;"></param>
+                    <param name="allowFullScreen" value="true"></param>
+                    <param name="allowscriptaccess" value="always"></param>
+                    <embed src="http://www.youtube.com/v/65Hp0tjj6SQ&#38;hl=de_DE&#38;fs=1&#38;"
+                           type="application/x-shockwave-flash"
+                           allowscriptaccess="always" allowfullscreen="true" width="640px" height="480px"></embed>
+                </object>
+            </center>
+            <p>
+                This dependency detection works over all dynamic classes, no matter being it classes, interfaces,
+                annotations, and it works over static and dynamic imports.
+            </p>
+            <p>
+                Javabean dependencies also are detected on artifact level so that if the JSF IOC mechanism is used those
+                bound over neutral Object classes also will reload the dependencies correctly.
+            </p>
+
+        </section>
+
+    </body>
 </document>
         

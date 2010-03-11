@@ -10,7 +10,8 @@
 
 
     <description>
-        This project provides the myfaces groovy bindings
+        MyFaces Extension Scripting, scripting support and dynamic recompilation
+        for JSF
     </description>
 
     <parent>
