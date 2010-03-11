@@ -50,7 +50,8 @@
       <item name="Introduction" href="index.html" />
       <item name="Installation" href="installation.html" />
       <item name="Users Guide" href="usersguide.html"/>
-      <item name="Configuration Entries" href="configentries.html" />
+      <item name="Appendix A: Configuration Entries" href="configentries.html" />
+      <item name="Appendix B: Example Configurations" href="exampleconfig.html" />
     </menu>
 
     <menu name="Foundation">

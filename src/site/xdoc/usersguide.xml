@@ -135,17 +135,21 @@
             </subsection>
 
             <subsection name="Setup">
-                <p>To use the components following namespace has to be included </p>
-                <p><source><![CDATA[xmlns:exs="http://myfaces.apache.org/ext-scripting"]]></source></p>
+                <p>To use the components following namespace has to be included</p>
+                <p>
+                    <source><![CDATA[xmlns:exs="http://myfaces.apache.org/ext-scripting"]]></source>
+                </p>
                 <p>Example</p>
-                <p><source><![CDATA[
+                <p>
+                    <source><![CDATA[
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:exs="http://myfaces.apache.org/ext-scripting"
       xmlns:h="http://java.sun.com/jsf/html">
-<h:head>]]></source></p>
+<h:head>]]></source>
+                </p>
             </subsection>
 
             <subsection name="The Compiler Output Component">
@@ -188,7 +192,8 @@
                     <h4>Usage of the Compiler Output Component</h4>
                 </p>
                 <p>The compiler output component currently is presented as Facelets only component as follows</p>
-                <source><![CDATA[<exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>]]></source>
+                <source>
+                    <![CDATA[<exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>]]></source>
 
                 <p>Following attributes can be used</p>
                 <p>
@@ -232,15 +237,16 @@
                 <div class="objectAnnotation">Image: Compiler Output Component</div>
             </subsection>
             <subsection name="The Change History Component">
-                 <p>The second cornerstone of Ext-Scripting is change tracking and dependency detection.
-                     Now if you have changed a file, Ext-Scripting tracks the changes and also marks
-                     most classes which have a dependency to your class as changed.
+                <p>The second cornerstone of Ext-Scripting is change tracking and dependency detection.
+                    Now if you have changed a file, Ext-Scripting tracks the changes and also marks
+                    most classes which have a dependency to your class as changed.
                 </p>
                 <p>
                     Again usually the output is pushed into the log as following:
                 </p>
                 <p>
-                    <source><![CDATA[INFO: [EXT-SCRIPTING] Tainting: org/apache/myfaces/javaloader/componentTest/MyComponentTag.java]]></source>
+                    <source>
+                        <![CDATA[INFO: [EXT-SCRIPTING] Tainting: org/apache/myfaces/javaloader/componentTest/MyComponentTag.java]]></source>
                 </p>
                 <p>
                     Again, to get a quick overview within your running page, or preferably an extra page, you can use
@@ -251,10 +257,11 @@
                     done over time including their marked dependencies.
                 </p>
                 <p>
-                  <center>
-                    <img src="images/change_history.jpg" width="600px" height="45px" alt="change history component" title="change history component"/>
-                  </center>
-                  <div class="objectAnnotation">Image: Change History Component in Action</div>  
+                    <center>
+                        <img src="images/change_history.jpg" width="550px" height="45px" alt="change history component"
+                                />
+                        <div class="objectAnnotation">Image: Change History Component in Action</div>
+                    </center>
                 </p>
             </subsection>
 
@@ -289,13 +296,40 @@
         </section>
 
         <section name="Debugging">
-            
+            <p>Ext-Scripting automatically compiles with the debug flags on. Debugging against a running configuration
+                should be no problem. If the debugger can be pointed towards the sources, debugging should work without
+                any sideeffects.
+            </p>
+            <p>
+                Due to the fact that the debugger can pick up the debug info from the newly compiled class
+                files. (Note - the class files are not altered in any way so in any case you just deal with normal Java
+                classes)
+            </p>
+            TODO add video here
         </section>
 
         <section name="Page and Resource Reloading">
-        </section>
-
-        <section name="Supported Artifacts">
+            <subsection name="Introduction">
+                <p>One of the goals of Ext-Scripting is to prevent unnecessary restarts and redeploys during
+                    development. To
+                    enable this it provides custom functionality outside of the scope of providing scripting
+                    capabilities.
+                    One of those features is the page and resource reloading from your source directories.
+                </p>
+            </subsection>
+            <subsection name="Basic Functionality">
+                <p>Pages and web-resources like CSS files or images are loaded from your resource directory without
+                    having to redeploy the web
+                    application,
+                    changes on them can be watched on the fly simple by a browser reload. There is no need to adjust
+                    your web application server or your IDE for auto deployment mechanisms. Unnecessary web application
+                    restarts for changed resources can be avoided that way.
+                </p>
+                <center>
+                    <img src="images/source-resource.jpg" width="557px" height="470px" alt="Page and Resource Reloading"
+                         title="Page and Resource Reloading"/>
+                </center>
+            </subsection>
         </section>
 
 
@@ -337,6 +371,80 @@
                 bound over neutral Object classes also will reload the dependencies correctly.
             </p>
 
+        </section>
+
+
+        <section name="Dynamic Annotations">
+
+            <p>One of the main features which Ext-Scripting provides over standard JSF is dynamic annotations.
+                Dynamic annotations basically introduces a mechanism so that your standard JSF annotations like
+                @ManagedBean or @FacesComponent or @ManagedProperty or even the scopes like @RequestScoped or
+                @SessionScoped
+                can be changed on the fly in a dynamic way.
+            </p>
+            <p>To enable this mechanism you don't have to do anything, it comes out of the box in a MyFaces 2.0
+                environment.
+                Following video demonstrates the mechanism
+            </p>
+
+            <center>
+                <object width="640" height="505">
+                    <param name="movie" value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1"></param>
+                    <param name="allowFullScreen" value="true"></param>
+                    <param name="allowscriptaccess" value="always"></param>
+                    <embed src="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1"
+                           type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
+                           width="640" height="505"></embed>
+                </object>
+            </center>
+        </section>
+
+        <section name="Supported Artifacts">
+            <subsection name="JSF 1.2">
+                <p>Ext-Scripting supports following JSF 1.2 artifact reloading:</p>
+                <ul>
+                    <li>ApplicationFactory reloading on method call level</li>
+                    <li>FacesContextFactory reloading on method call level</li>
+                    <li>LifecycleFactory reloading on method call level</li>
+                    <li>RenderkitFactory reloading on method call level</li>
+                    <li>ElResolver</li>
+                    <li>Converter (on JSF level alone)</li>
+                    <li>Validator (on JSF level alone)</li>
+                    <li>Component reloading on component tree creation level (on JSF level alone)</li>
+                    <li>ViewHandler</li>
+                    <li>Lifecycle</li>
+                    <li>Renderer</li>
+                    <li>PhaseListener</li>
+                    <li>ManagedBeans reloading for all managed beans even session and application scoped ones on request
+                        level
+                    </li>
+                    <li>Support for either JavaC or JSR 199 depending on your JDK Version</li>
+                    <li>Support for Groovy and Java</li>
+                </ul>
+            </subsection>
+            <subsection name="JSF 2.0">
+                <p>Ext-Scripting supports following JSF 2.0 artifact reloading: Additionally to what is present for JSF
+                    1.2
+                </p>
+                <ul>
+                    <li>Component limitations have been lifted for Facelets as rendering language</li>
+                    <li>All major JSF 2 annotations can be used in a dynamic way, annotations can be moved removed or
+                        added on the fly
+                    </li>
+                    <li>Support for Reloading on ComponentTagHandler, ConverterTagHandler, BehaviorTagHandler,
+                        ValidatorTagHandler
+                    </li>
+                    <li>ResourceHandler</li>
+                    <li>Behavior</li>
+                    <li>BehaviorRenderer</li>
+                    <li>ComponentSystemEvent Support via dynamic Annotations</li>
+                    <li>Application System Event Support</li>
+                </ul>
+            </subsection>
+
+            <subsection name="Visual Overview">
+                <img src="images/ext-scripting-structure-fine.jpg"/>
+            </subsection>
         </section>
 
     </body>

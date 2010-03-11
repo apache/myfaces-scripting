@@ -29,7 +29,7 @@
             <subsection name="General Introduction">
 
                 <p>Welcome and hello to MyFaces Extension-Scripting, short Ext-Scripting. Ext-Scripting is an extensions
-                    project for MyFaces. It tries to add scripting and rapid prototyping capabilities to JSF by adding
+                    project for MyFaces. It tries to add scripting and rapid prototyping (artifact level hot deployment) capabilities to JSF by adding
                     scripting languages and JSP like recompilation mechanisms.
 
                     Following link to the a video on YouTube shows you what Ext-Scripting can do for you:
@@ -48,7 +48,7 @@
                     </center>
                 </p>
                 <p>
-                    As the video shows you can make changes to JSF artifacts on the fly and at the next reload the
+                    As the video shows you can make changes to almost all JSF artifacts on the fly and at the next reload the
                     changes are present. The result is a reduction in server restarts and better turn around times. The
                     same rapid prototyping approach which is normally present in scripting languages and scripting
                     language based frameworks.

@@ -19,4 +19,84 @@
 
 -->
 <document>
+    <section name="Appendix: Configuration Entries">
+        <subsection name="General Information">
+            <p>
+                This page is a general quick overview over the possible configuration parameters, if you need further
+                details please visit the<a href="installation.html">setup guide</a>.
+            </p>
+        </subsection>
+        <table>
+            <thead>
+                <tr>
+                    <td>Param</td>
+                    <td>Required</td>
+                    <td>Possible values</td>
+                    <td>Short Description</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>org.apache.myfaces.FACES_INIT_PLUGINS</td>
+                    <td>YES</td>
+                    <td>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</td>
+                    <td>MyFaces Extenion Point Setup</td>
+                </tr>
+                <tr>
+                    <td>scriptingFilter</td>
+                    <td>YES</td>
+                    <td></td>
+                    <td>The scripting filter for further information look below</td>
+                </tr>
+
+
+                <tr>
+                    <td>org.apache.myfaces.scripting.groovy.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of groovy files on the sources
+                        directory instead of editing in the deployment dir /WEB-INF/groovy
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.scripting.java.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of java files on the sources
+                        directory instead of editing in the deployment dir /WEB-INF/java
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.scripting.resource.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of resources on the sources
+                        directory instead of editing in the deployment directory
+                    </td>
+                </tr>
+                <tr>
+                    <td>facelets.RESOURCE_RESOLVER</td>
+                    <td>NO</td>
+                    <td>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</td>
+                    <td>Enables the loading of xhtml facelet pages from your sourcedir if
+                        org.apache.myfaces.scripting.resource.LOADER_PATHS is set properly
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces. scripting.PGK_WHITELIST</td>
+                    <td>NO</td>
+                    <td>a comma separate list of whitelisted packages</td>
+                    <td>Enables package whitelisting, a mechanism which allows to compile and reload only from
+                        whitelisted packages
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.scripting.PGK_ADDITIONAL_CLASSPATH</td>
+                    <td>NO</td>
+                    <td>a comma separate list of additional classpaths</td>
+                    <td>enables additional classpaths for the compile time</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </document>
