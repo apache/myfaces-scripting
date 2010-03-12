@@ -28,7 +28,8 @@
 
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/</developerConnection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/
+        </developerConnection>
         <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/</url>
     </scm>
 
@@ -178,6 +179,16 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>surefire-report-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <targetJdk>1.5</targetJdk>
+                </configuration>
+            </plugin>
+
 
         </plugins>
     </reporting>
