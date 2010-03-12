@@ -22,7 +22,7 @@ Download Apache MyFaces Extension Scripting
  As of now the project is in alpha stage, so no stable release has happened.
  While we personally think the project already has beta quality, no official beta has been done yet.
 
- The best bet to try Ext-Scritping for now is a source build from maven (see link below)
+ The best bet to try Ext-Scripting for now is a source build from maven (see link below)
  For Binary Builds from maven you can use the Alpha Repository or the trunk
  (see  {{{installation.html} the Ext-Scripting Installation Page }} for further information)
 

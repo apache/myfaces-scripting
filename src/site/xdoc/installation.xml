@@ -113,7 +113,7 @@
                 <h4>First Step</h4>
                 <p>To enable Ext-Scripting you also have to add several entries to your web.xml file.</p>
 
-                <p>First a context param has to be set which attaches the Ext-Scripting plugins to myfaces</p>
+                <p>First a context param has to be set which attaches the Ext-Scripting plugins to MyFaces</p>
                 <source><![CDATA[
      <context-param>
         <description>
@@ -143,10 +143,13 @@
                     your web.xml
                 </p>
 
-                <h4>Adjust the web.xml Root Sourcepaths</h4>
-                <p>Since the goal of Ext-Scripting is to provide scriptability to a running web application it has to
-                    know where to find the sources it has to process. For this a default location has been chosen
-                    according to the standards set by the Mojarra Groovy extension the location looks like:
+                <h4>Adjust the web.xml Root source paths</h4>
+                <p>Since the goal of Ext-Scripting is to provide scriptability to a running web application, it has to
+                    know where to find the sources. For this, a default location has been chosen
+                    according to the standards set by the Mojarra Groovy Extension.
+                </p>
+                <p>
+                    The location looks like:
                 </p>
                 <source><![CDATA[
      <webapp>/WEB-INF/groovy                    

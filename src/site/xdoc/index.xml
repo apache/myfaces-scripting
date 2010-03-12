@@ -48,13 +48,13 @@
                     </center>
                 </p>
                 <p>
-                    As the video shows you can make changes to almost all JSF artifacts on the fly and at the next reload the
+                    As the video shows, you can make changes to almost all JSF artifacts on the fly, and at the next reload the
                     changes are present. The result is a reduction in server restarts and better turn around times. The
                     same rapid prototyping approach which is normally present in scripting languages and scripting
                     language based frameworks.
 
-                    Additionally to that Ext-Scripting integrates various scripting languages to be used in conjunction
-                    with JSF so that a mixed language approach becomes feasible within the bounds of the framework.
+                    Additionally to that, Ext-Scripting integrates various scripting languages to be used in conjunction
+                    with JSF, so that a mixed language approach becomes feasible within the bounds of the framework.
                 </p>
 
             </subsection>
@@ -88,8 +88,7 @@
                 <p>
                     One of the main goals of Ext-Scripting was to provide JSF2 support out of the box. Most new JSF2
                     artifacts are supported. Ext-Scripting even adds scriptability to the new annotation syntax of JSF2
-                    by
-                    allowing annotations to be used in a dynamic manner!
+                    by allowing annotations to be used in a dynamic manner!
                 </p>
             </subsection>
             <subsection name="Support for MyFace">

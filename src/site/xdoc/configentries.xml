@@ -40,7 +40,7 @@
                     <td>org.apache.myfaces.FACES_INIT_PLUGINS</td>
                     <td>YES</td>
                     <td>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</td>
-                    <td>MyFaces Extenion Point Setup</td>
+                    <td>MyFaces Extension Point Setup</td>
                 </tr>
                 <tr>
                     <td>scriptingFilter</td>

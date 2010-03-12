@@ -25,14 +25,14 @@
 
     <section name="General Information">
         <p>
-            Ext-Scripting is currently still in Alpha stage so no official release has been done.
-            Only a semi official 1.0-Alpha release. Since then a lot of simplification work on the
+            Ext-Scripting is currently still in Alpha stage, so no official release has been done,
+            only a semi official 1.0-Alpha release. Since then, a lot of simplification work on the
             dependency side has been done.
         </p>
         This page gives detailed instructions on how to use the Alpha-1.
         <p>
             However we would recommend to use the latest codebase or one of the upcoming beta releases
-            since lots of bugfixes have went into the codebase.
+            since lots of bug fixes have went into the codebase.
         </p>
     </section>
     <section name="Setup using Apache Maven2">
@@ -59,7 +59,7 @@
         <subsction name="Maven Dependencies">
             <p>
                 If you want to use Ext-Scripting Alpha 1 in your own project,
-                then you have to add several dependencies to your pom.xml
+                you will have to add several dependencies to your pom.xml
                 (note a lot of simplification has been done in this area post Alpha-1)
 
             </p>
@@ -68,7 +68,7 @@
             </p>
 
             <h4>Core</h4>
-            <p>All Configurations definitely need our core jar</p>
+            <p>All configurations definitely need our core jar</p>
             <source><![CDATA[
 <dependency>
     <groupId>org.apache.myfaces.extension-scripting</groupId>
@@ -79,7 +79,7 @@
 
 
             <h4>Java6</h4>
-            <p>If you are in a java6 environment you will definitely have to add following section to your pom.xml.</p>
+            <p>If you are in a Java-6 environment you will definitely have to add following section to your pom.xml.</p>
             <source><![CDATA[
 <dependency>
     <groupId>org.apache.myfaces.extension-scripting</groupId>
@@ -120,16 +120,16 @@
             <p>
                 <b>For Myfaces 2.0</b>
             </p>
-            <p>Following Image gives a quick overview over which modules you can use for your respective configuration
+            <p>Following image gives a quick overview over the modules you can use for your respective configuration:
             </p>
 
             <img src="images/alpha_1_depgraph.jpg"  width="511px" height="434px"   />
         </subsction>
         <section name="Setup by hand">
-            <p>As of writing there is no bundle for manual install available, but the installation itself
+            <p>As of writing there is no bundle for a manual install available, but the installation
             is almost identical to the maven installation</p>
             <p>Since Ext-Scripting uses almost the same dependencies as MyFaces you only just have to add
-            the ext-scripting jars + a valid groovy-all.jar (1.7.x or higher) + objectwebs ASM 3.2</p>
+            the Ext-Scripting jars + a valid Groovy-All.jar (1.7.x or higher) + Objectwebs ASM 3.2</p>
 
             <p>Following download Links are available to download all dependencies</p>
 
@@ -145,9 +145,9 @@
             <p>Note some of the dependencies will be included directly in your bundle jar in later builds</p>
 
         </section>
-        <section name="Kickstarting via an example Web Application">
-            <p>Ext-Scripting provides two sample web applications for testing and kickstarting an application</p>
-            <p>Both can be found under following links and can be dropped into a servlet container (note that the MyFaces 2.0 example requires a servlet 2.5+ container)</p>
+        <section name="Kickstarting via an Example Web Application">
+            <p>Ext-Scripting provides two sample web applications for testing and kickstarting an application.
+            Both can be found under following links and can be dropped into a servlet container (note that the MyFaces 2.0 example requires a servlet 2.5+ container)</p>
             <ul>
                 <li><a href="http://people.apache.org/~lu4242/extscript100alpha/org/apache/myfaces/extension-scripting/myfaces12-example/1.0-ALPHA-1/myfaces12-example-1.0-ALPHA-1.war">Ext Scripting Alpha 1 Example for MyFaces 1.2</a></li>
                 <li><a href="http://people.apache.org/~lu4242/extscript100alpha/org/apache/myfaces/extension-scripting/myfaces20-example/1.0-ALPHA-1/myfaces20-example-1.0-ALPHA-1.war">Ext Scripting Alpha 1 Example for MyFaces 2.0</a></li>
