@@ -26,6 +26,12 @@
         <module>examples</module>
     </modules>
 
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/</url>
+    </scm>
+
     <repositories>
         <repository>
             <id>maven2-repository.dev.java.net</id>
@@ -54,9 +60,7 @@
     </repositories>
 
     <dependencies>
-
         <!-- compile -->
-
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>el-api</artifactId>

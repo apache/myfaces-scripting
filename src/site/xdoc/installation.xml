@@ -80,6 +80,8 @@
                 </ul>
 
             </subsection>
+            TODO add the ALPHA 1 Installation here as separate link!
+
             <subsection name="Preparations via Apache Maven 2">
                 <p>The easiest way once Extension scripting is compiled is probably a setup via Apache Maven 2
                 </p>
