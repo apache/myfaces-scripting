@@ -24,6 +24,14 @@
     </properties>
 
     <body>
+        <section name="Navigation Top">
+            <a href="index.html">&lt;&lt;Back to the Start Page</a>
+            or
+
+            <a href="using_general.html">On to the General Users Guide&gt;&gt;</a>
+        </section>
+
+
         <section name="Checkout and Build">
             <p>
                 Currently as time of writing, Ext-Scripting does not have a release yet, so the only means of
@@ -42,14 +50,14 @@
                 <li>Maven 2.0.9 or higher</li>
             </ul>
             <p>
-                After checkout, a full build can be obtained from the root directory of your checkout via <b>mvn
+                After checkout, a full build can be obtained from the root directory of your checkout via<b>mvn
                 clean install</b>.
             </p>
             <p>
                 Once finished, a valid build is installed, which can be used further on. Additionally you can find
                 two blueprint projects which you can use as starting points for your own projects under
                 <b>&lt;checkoutDir&gt;/examples</b>
-                , which can be kickstarted via <b>mvn jetty:run-exploded</b>.
+                , which can be kickstarted via<b>mvn jetty:run-exploded</b>.
             </p>
         </section>
         <section name="Setup of Ext-Scripting">
@@ -194,13 +202,26 @@
         </param-value>
     </context-param>
                 ]]></source>
-             <ul>
-                 <li><b>org.apache.myfaces.scripting.groovy.LOADER_PATHS</b> can be a comma separated list of paths which point to the actual Groovy sources.</li>
-                 <li><b>org.apache.myfaces.scripting.java.LOADER_PATHS</b>  does the same for Java sources..</li>
-             </ul>
+                <ul>
+                    <li>
+                        <b>org.apache.myfaces.scripting.groovy.LOADER_PATHS</b>
+                        can be a comma separated list of paths which point to the actual Groovy sources.
+                    </li>
+                    <li>
+                        <b>org.apache.myfaces.scripting.java.LOADER_PATHS</b>
+                        does the same for Java sources..
+                    </li>
+                </ul>
 
             </subsection>
         </section>
+        <section name="Navigation Bottom">
+            <a href="index.html">&lt;&lt;Back to the Start Page</a>
+            or
+
+            <a href="using_general.html">On to the General Users Guide&gt;&gt;</a>
+        </section>
+
     </body>
 </document>
         

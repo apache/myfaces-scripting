@@ -20,6 +20,9 @@
 -->
 
 <document>
+    <section name="Navigation Top">
+        <a href="configentries.html">&lt;&lt;Appendix Configuration Entries</a>
+    </section>
     <section name="Appendix: Example Configuration">
         <subsection name="General Information">
             <p>
@@ -30,7 +33,7 @@
         </subsection>
         <subsection name="Simple Configuration">
 
-        <source><![CDATA[
+            <source><![CDATA[
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
@@ -89,7 +92,7 @@
         ]]></source>
         </subsection>
         <subsection name="Full Configuration">
-        <source><![CDATA[
+            <source><![CDATA[
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
@@ -228,5 +231,8 @@
 
         ]]></source>
         </subsection>
+    </section>
+    <section name="Navigation Bottom">
+        <a href="configentries.html">&lt;&lt;Appendix Configuration Entries</a>
     </section>
 </document>    

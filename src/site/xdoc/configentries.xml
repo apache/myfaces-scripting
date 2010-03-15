@@ -19,6 +19,12 @@
 
 -->
 <document>
+    <section name="Navigation Top">
+        <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+        or
+        <a href="exampleconfig.html">On to the Appendix: Example Configuration&gt;&gt;</a>
+    </section>
+    
     <section name="Appendix: Configuration Entries">
         <subsection name="General Information">
             <p>
@@ -98,5 +104,13 @@
                 </tr>
             </tbody>
         </table>
+
+        <section name="Navigation Bottom">
+            <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+            or
+            <a href="exampleconfig.html">On to the Appendix: Example Configuration&gt;&gt;</a>
+        </section>
+
+
     </section>
 </document>
