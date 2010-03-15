@@ -22,15 +22,15 @@
   <bannerLeft>
     <name>Apache MyFaces Extension-Scripting</name>
 
-     <!--
-    <src>images/extscript_logo.png</src>
-    -->
+
+    <src>images/extscriptlogo.png</src>
+
     <href>http://myfaces.apache.org/ext-scripting</href>
 
   </bannerLeft>
   <bannerRight>
     <name>Apache MyFaces</name>
-    <src>img/banners/MyFaces_logo.jpg</src>
+    <src>img/banners/MyFaces_logo.png</src>
     <href>http://myfaces.apache.org/</href>
   </bannerRight>
   <skin>
