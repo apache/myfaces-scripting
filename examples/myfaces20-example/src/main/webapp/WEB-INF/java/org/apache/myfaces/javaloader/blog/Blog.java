@@ -27,6 +27,7 @@ import static org.apache.myfaces.javaloader.blog.JSFUtilJava.resolveVariable;
  * @date: 01.09.2009
  */
 @DependencyTestAnnotation
+xxxx
 public class Blog {
 
     String title = "<h3>Hello to the MyFaces Dynamic Blogging Example</h3>";
