@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.myfaces.extension-scripting</groupId>
+    <artifactId>extscript-bundles</artifactId>
+    <packaging>pom</packaging>
+    <name>MyFaces Extension Scripting meta bundles</name>
+    <version>1.0-SNAPSHOT</version>
+
+    <description>
+        Meta bundles bundling the various ext-script
+        combinations into one coherent package per
+        jsf version
+    </description>
+
+    <parent>
+        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <artifactId>extscript-root</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>extscript-myfaces12-bundle</module>
+        <module>extscript-myfaces20-bundle</module>
+    </modules>
+
+
+     <profiles>
+        <!-- This profile is invoked by -DprepareRelease=true.  This allows mvn release:prepare to
+            run successfully on the assembly projects. -->
+        <profile>
+            <id>prepare-release</id>
+            <activation>
+                <property>
+                    <name>prepareRelease</name>
+                </property>
+            </activation>
+            <modules>
+                <module>extscript12-assembly</module>
+                <module>extscript20-assembly</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <arguments>-DprepareRelease</arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+   
+</project>

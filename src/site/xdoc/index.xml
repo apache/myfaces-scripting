@@ -42,16 +42,17 @@
 
                 <p>
                     <center>
-                        <object width="640px" height="480px">
+                        <object width="800" height="600">
                             <param name="movie"
-                                   value="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"></param>
+                                   value="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"></param>
                             <param name="allowFullScreen" value="true"></param>
                             <param name="allowscriptaccess" value="always"></param>
-                            <embed src="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"
+                            <embed src="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"
                                    type="application/x-shockwave-flash" allowscriptaccess="always"
-                                   allowfullscreen="true" width="640px" height="480px"></embed>
+                                   allowfullscreen="true" width="800" height="550"></embed>
                         </object>
                     </center>
+
                 </p>
                 <p>
                     As the video shows, you can make changes to almost all JSF artifacts on the fly, and at the next
@@ -69,7 +70,7 @@
         </section>
         <section name="Documentation">
             <p>
-                Ext-Scritpting provides extensive documentation. Feel free
+                Ext-Scripting provides extensive documentation. Feel free
                 to browse our
                 <a href="installation.html">Installation Guide</a>
                 or

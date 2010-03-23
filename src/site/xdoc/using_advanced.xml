@@ -102,10 +102,10 @@
                     <center>
                         <object width="640px" height="505px">
                             <param name="movie"
-                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1"></param>
+                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"></param>
                             <param name="allowFullScreen" value="true"></param>
                             <param name="allowscriptaccess" value="always"></param>
-                            <embed src="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1"
+                            <embed src="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
                                    type="application/x-shockwave-flash" allowscriptaccess="always"
                                    allowfullscreen="true"
                                    width="640px" height="505px"></embed>
@@ -279,14 +279,17 @@
             </p>
             <p></p>
             <center>
-                <object width="640px" height="480px">
-                    <param name="movie" value="http://www.youtube.com/v/65Hp0tjj6SQ&#38;hl=de_DE&#38;fs=1&#38;"></param>
+               
+                <object width="660" height="405">
+                    <param name="movie" value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1"></param>
                     <param name="allowFullScreen" value="true"></param>
                     <param name="allowscriptaccess" value="always"></param>
-                    <embed src="http://www.youtube.com/v/65Hp0tjj6SQ&#38;hl=de_DE&#38;fs=1&#38;"
-                           type="application/x-shockwave-flash"
-                           allowscriptaccess="always" allowfullscreen="true" width="640px" height="480px"></embed>
+                    <embed src="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1&#38;?&#38;border=1"
+                           type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
+                           width="660" height="405"></embed>
                 </object>
+
+
             </center>
             <p>
                 This dependency detection works over all dynamic classes, no matter being it classes, interfaces,
@@ -316,10 +319,10 @@
             <center>
                 <object width="640" height="505">
                     <param name="movie"
-                           value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1"></param>
+                           value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"></param>
                     <param name="allowFullScreen" value="true"></param>
                     <param name="allowscriptaccess" value="always"></param>
-                    <embed src="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1"
+                    <embed src="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
                            type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
                            width="640" height="505"></embed>
                 </object>
