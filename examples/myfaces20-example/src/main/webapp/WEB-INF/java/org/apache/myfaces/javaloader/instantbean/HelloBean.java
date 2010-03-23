@@ -27,7 +27,7 @@ import javax.faces.bean.RequestScoped;
  * @version $Revision$ $Date$
  */
 
-@ManagedBean(name="hello")
+@ManagedBean
 @RequestScoped
 public class HelloBean {
     private String hello = "Hello world from an instant bean";
@@ -37,7 +37,7 @@ public class HelloBean {
     }
 
     public String getHello() {
-        return hello + addedMethod();
+        return hello;
     }
 
     public void setHello(String hello) {

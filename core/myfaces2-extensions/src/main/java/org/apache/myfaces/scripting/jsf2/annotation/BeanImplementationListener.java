@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
@@ -54,7 +55,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         return annotation.equals(javax.faces.bean.ManagedBean.class);
     }
 
-
     public void register(Class clazz, java.lang.annotation.Annotation ann) {
         String annotationName = ann.getClass().getName();
 
@@ -63,6 +63,9 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         javax.faces.bean.ManagedBean annCasted = (javax.faces.bean.ManagedBean) ann;
 
         String beanName = annCasted.name();
+        if (StringUtils.isBlank(beanName)) {
+            beanName = normalizeName(clazz.getName());
+        }
 
         beanName = beanName.replaceAll("\"", "");
         //we need to reregister for every bean due to possible managed prop
@@ -105,13 +108,13 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
     private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
         for (Field field : fields) {
             if (log.isLoggable(Level.FINEST)) {
-                log.log(Level.FINEST,"  Scanning field '" + field.getName() + "'");
+                log.log(Level.FINEST, "  Scanning field '" + field.getName() + "'");
             }
             javax.faces.bean.ManagedProperty property = (javax.faces.bean.ManagedProperty) field
                     .getAnnotation(javax.faces.bean.ManagedProperty.class);
             if (property != null) {
                 if (log.isLoggable(Level.FINE)) {
-                    log.log(Level.FINE,"  Field '" + field.getName()
+                    log.log(Level.FINE, "  Field '" + field.getName()
                             + "' has a @ManagedProperty annotation");
                 }
 
@@ -154,6 +157,19 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
     protected boolean hasToReregister(String name, Class clazz) {
         ManagedBean mbean = (ManagedBean) _alreadyRegistered.get(name);
         return mbean == null || !mbean.getManagedBeanClassName().equals(clazz.getName());
+    }
+
+    /**
+     * name normalizer for automated name mapping
+     * (aka if no name attribute is given in the annotation)
+     *
+     * @param className the classname to be mapped (can be with package=
+     * @return the normalized jsf bean name
+     */
+    private String normalizeName(String className) {
+        String name = className.substring(className.lastIndexOf(".") + 1);
+
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
     @SuppressWarnings("unchecked")
