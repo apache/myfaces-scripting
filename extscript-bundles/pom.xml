@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <description>
-        Meta bundles bundeling the various ext-script
+        Meta bundles bundling the various ext-script
         combinations into one coherent package per
         jsf version
     </description>
