@@ -19,6 +19,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-bundles/extscript-myfaces20-bundle</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-bundles/extscript-myfaces20-bundle</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-bundles/extscript-myfaces20-bundle</url>
+    </scm>
 
     <dependencies>
         <dependency>
