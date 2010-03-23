@@ -22,8 +22,6 @@
                 <h:panelGrid id="grid" columns="1" styleClass="stdBox">
                     <h:outputFormat id="title1" escape="false" styleClass="title" value="#{javaBlogView.title}"/>
                     <h:outputFormat id="title11" escape="false"  styleClass="title1" value="#{javaBlogView.title1}"/>
-                    <h:outputFormat escape="false"  value="#{javaBlogView.title3}"/>
-                    <h:outputFormat escape="false"  value="#{javaBlogView.title4}"/>
 
                     <hr/>
 
@@ -40,7 +38,7 @@
                         <h:inputTextarea value="#{javaBlogView.content}"/>
                     </h:panelGrid>
                     <hr/>
-                    <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry2}" value="Add Blog Entry"/>
+                    <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry}" value="Add Blog Entry"/>
                 </h:panelGrid>
             </div>
 

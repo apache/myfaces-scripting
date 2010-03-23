@@ -23,8 +23,11 @@ import java.util.logging.Logger;
 import static org.apache.myfaces.javaloader.blog.JSFUtilJava.resolveVariable;
 
 /**
- * @author werpu2
- * @date: 01.09.2009
+ * Our Blog View controller
+ * (note we have a dummy annotation here for testing purposes)
+ *
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
 @DependencyTestAnnotation
 public class Blog {
@@ -33,10 +36,7 @@ public class Blog {
     String title1 = "You can alter the code for this small blogging application on the fly, " +
             "you even can add new classes on the fly and Java will pick it up";
 
-    String title3 = "bla";
-    String title4 = "bla2";
 
-    String title5 = "test from title5";
 
     String firstName = "";
     String lastName = "";
@@ -48,8 +48,8 @@ public class Blog {
         return Logger.getLogger(this.getClass().getName());
     }
 
-    public String addEntry2() {
-        getLog().info("adding entry2");
+    public String addEntry() {
+        getLog().info("adding entry");
         
         /*important we have an indirection over an interface here*/
         BlogServiceInterface service = (BlogServiceInterface) resolveVariable("javaBlogService");
@@ -57,7 +57,7 @@ public class Blog {
         if (service == null) {
             getLog().severe("service not found");
         } else {
-            getLog().info("service found");
+            getLog().fine("service found");
         }
 
         BlogEntry entry = new BlogEntry();
@@ -144,27 +144,6 @@ public class Blog {
         this.content = content;
     }
 
-    public String getTitle3() {
-        return "title 3 from java blog";
-    }
+  
 
-    public void setTitle3(String title3) {
-        this.title3 = title3;
-    }
-
-    public String getTitle4() {
-        return title4;
-    }
-
-    public void setTitle4(String title4) {
-        this.title4 = title4;
-    }
-
-    public String getTitle5() {
-        return title5;
-    }
-
-    public void setTitle5(String title5) {
-
-    }
 }

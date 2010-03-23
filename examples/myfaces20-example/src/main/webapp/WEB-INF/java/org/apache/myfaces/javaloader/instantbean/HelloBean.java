@@ -16,37 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.blog;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.faces.context.FacesContext;
+package org.apache.myfaces.javaloader.instantbean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 /**
- * @author werpu2
- * @date: 01.09.2009
- * <p/>
- * A helper for JSF and introspection related tasks
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class JSFUtilJava {
 
-    public JSFUtilJava() {
+@ManagedBean(name="hello")
+@RequestScoped
+public class HelloBean {
+    private String hello = "Hello world from an instant bean";
+
+    private String addedMethod() {
+        return "you can add change and remove methods on the fly without any server restart";
     }
 
-    /**
-     * resolves a variable in the current facesContext
-     *
-     * @param beanName
-     * @return
-     */
-    public static Object resolveVariable(String beanName) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-
-        ELContext elContext = facesContext.getELContext();
-        ELResolver elResolver =elContext.getELResolver();
-
-        return elResolver.getValue(elContext, null, beanName);
+    public String getHello() {
+        return hello + addedMethod();
     }
 
+    public void setHello(String hello) {
+        this.hello = hello;
+    }
 }

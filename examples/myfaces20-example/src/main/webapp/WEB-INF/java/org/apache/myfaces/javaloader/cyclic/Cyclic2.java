@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.blog;
+package org.apache.myfaces.javaloader.cyclic;
 
 /**
  * cyclic dependency class test for our class scanner

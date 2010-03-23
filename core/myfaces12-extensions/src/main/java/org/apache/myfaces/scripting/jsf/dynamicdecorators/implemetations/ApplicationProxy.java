@@ -38,21 +38,10 @@ import java.lang.reflect.Proxy;
 import java.util.*;
 
 /**
- * our decorating applicstion
+ * our decorating application
  * which should resolve our bean issues within a central
  * bean processing interceptor
  * <p/>
- * <p/>
- * component
- * <p/>
- * komponente A Šndert sich
- * Renderer Šndert sich nicht
- * <p/>
- * class Renderer {
- * public method (UIComponent myComp) {
- * ((MyComponent)myComp)
- * }
- * }
  *
  * @author Werner Punz
  */

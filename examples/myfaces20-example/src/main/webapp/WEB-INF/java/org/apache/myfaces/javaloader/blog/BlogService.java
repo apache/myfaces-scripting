@@ -23,43 +23,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author werpu2
- * @date: 01.09.2009
+ * Application scoped bean (defined in the faces-config for testing purposes)
+ * which stores the blog entries
  */
 public class BlogService implements BlogServiceInterface {
 
-    /**
-     * note we cannot cast on dynamically referenced
-     * and recompiled objects which are shared between beans
-     * because due to dynamic recompilation
-     * <p/>
-     * Object a->references b does not reference b of the same class
-     * as object c->references b, we have to use introspection in this case
-     * we can use our utils class to make it a tiny bit more comfortable
-     * <p/>
-     * Statically compiled types always stay the same however
-     * the same goes for interfaces which are present as compiled code only
-     */
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
 
+    /**
+     * Add an entry to our blogging list
+     * Note: we have a testing annotation,
+     * which does nothing, it is there for testing
+     * purposes only
+     *
+     * @param entry the entry to be added
+     */
     @DependencyTestAnnotation
     public void addEntry(BlogEntry entry) {
-  	  if (entry != null) {
-		  //entry.setTopic("MyTopic");
-          blogEntries.add(entry);
-      }
-
-  	  
-    	
-  	  addEntryInternal(entry);
-    }
-    
-   private void addEntryInternal(BlogEntry entry) {
-    	  System.out.println("hello world");
-    	  if (entry != null) {
-    		  entry.setTopic("MyTopic");
-              blogEntries.add(entry);
-          }
+        if (entry != null) {
+            blogEntries.add(entry);
+        }
     }
 
     public List<Object> getBlogEntries() {
@@ -71,7 +54,4 @@ public class BlogService implements BlogServiceInterface {
     }
 
 
-    public String getTest() {
-        return "ddd";
-    }
 }

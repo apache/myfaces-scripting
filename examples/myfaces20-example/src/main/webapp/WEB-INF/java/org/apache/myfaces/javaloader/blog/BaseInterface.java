@@ -20,6 +20,9 @@ package org.apache.myfaces.javaloader.blog;
 
 /**
  * Base interface to test inheritance detection
+ *
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
 
 public interface BaseInterface {
