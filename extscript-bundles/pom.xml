@@ -25,5 +25,32 @@
         <module>extscript-myfaces20-bundle</module>
     </modules>
 
+
+     <profiles>
+        <!-- This profile is invoked by -DprepareRelease=true.  This allows mvn release:prepare to
+            run successfully on the assembly projects. -->
+        <profile>
+            <id>prepare-release</id>
+            <activation>
+                <property>
+                    <name>prepareRelease</name>
+                </property>
+            </activation>
+            <modules>
+                <module>extscript12-assembly</module>
+                <module>extscript20-assembly</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <arguments>-DprepareRelease</arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
    
 </project>

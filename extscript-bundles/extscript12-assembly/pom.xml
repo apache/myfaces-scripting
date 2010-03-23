@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>extscript12-assembly</artifactId>
+    <packaging>pom</packaging>
+    <name>Apache MyFaces Extensions Scripting MyFaces 1.2 Assembly</name>
+    <description>MyFaces Extensions Scripting Assembly is used to generate
+        .zip and .tar.gz distributions
+    </description>
+
+    <parent>
+        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <artifactId>extscript-bundles</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dependency-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-javadoc</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.extension-scripting</groupId>
+                                    <artifactId>extscript-core</artifactId>
+                                    <version>${version}</version>
+                                    <classifier>javadoc</classifier>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.extension-scripting</groupId>
+                                    <artifactId>extscript-core-java6</artifactId>
+                                    <version>${version}</version>
+                                    <classifier>javadoc</classifier>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.extension-scripting</groupId>
+                                    <artifactId>extscript-myfaces12-extensions</artifactId>
+                                    <version>${version}</version>
+                                    <classifier>javadoc</classifier>
+                                </artifactItem>
+
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-source</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.extension-scripting</groupId>
+                                    <artifactId>extscript-core</artifactId>
+                                    <version>${version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.extension-scripting</groupId>
+                                    <artifactId>extscript-core-java6</artifactId>
+                                    <version>${version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.extension-scripting</groupId>
+                                    <artifactId>extscript-myfaces12-extensions</artifactId>
+                                    <version>${version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/src</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- EXECUTE mvn package to generate assembly files -->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make_assembly_src</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/coresrc.xml</descriptor>
+                            </descriptors>
+                            <finalName>myfaces-extscript12-${version}-src</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <outputDirectory>target/assembly/out</outputDirectory>
+                            <workDirectory>target/assembly/work</workDirectory>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>make_assembly_bin</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/src/main/assembly/corebin.xml</descriptor>
+                            </descriptors>
+                            <finalName>myfaces-extscript12-${version}-bin</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <outputDirectory>target/assembly/out</outputDirectory>
+                            <workDirectory>target/assembly/work</workDirectory>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+
+
+        <dependency>
+            <groupId>org.apache.myfaces.extension-scripting</groupId>
+            <artifactId>extscript-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.extension-scripting</groupId>
+            <artifactId>extscript-core-java6</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.extension-scripting</groupId>
+            <artifactId>extscript-myfaces12-extensions</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+        <version>1.0-SNAPSHOT</version>
+    </properties>
+</project>
