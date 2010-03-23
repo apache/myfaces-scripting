@@ -5,7 +5,7 @@
     <groupId>org.apache.myfaces.extension-scripting</groupId>
     <artifactId>extscript-myfaces12-bundle</artifactId>
     <packaging>jar</packaging>
-    <name>MyFaces Extension Scripting MyFaces 2.0 meta bundle</name>
+    <name>MyFaces Extension Scripting MyFaces 1.2 convenience meta bundle</name>
     <version>1.0-SNAPSHOT</version>
 
     <description>
