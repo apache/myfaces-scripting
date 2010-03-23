@@ -21,8 +21,8 @@
     </parent>
 
     <modules>
-        <module>myfaces12</module>
-        <module>myfaces20</module>
+        <module>extscript-myfaces12-bundle</module>
+        <module>extscript-myfaces20-bundle</module>
     </modules>
 
    

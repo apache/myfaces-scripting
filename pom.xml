@@ -21,9 +21,9 @@
     </parent>
 
     <modules>
-        <module>core</module>
-        <module>bundles</module>
-        <module>examples</module>
+        <module>extscript-core-root</module>
+        <module>extscript-bundles</module>
+        <module>extscript-examples</module>
     </modules>
 
     <scm>
