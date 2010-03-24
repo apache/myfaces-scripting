@@ -64,5 +64,45 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+        <!--
+          - Build and install into the repository some additional artifacts that we don't
+          - want to build during normal development because they take too long.
+          -->
+        <id>generate-assembly</id>
+        <activation>
+          <property>
+            <name>performRelease</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
+            <plugin>
+              <!-- Install in the repository a "-javadoc.jar" file -->
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.4</version>
+              <executions>
+                <execution>
+                  <id>attach-javadoc</id>
+                  <goals><goal>jar</goal></goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <!-- Install in the repository a "-sources.jar" file -->
+              <artifactId>maven-source-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>attach-source</id>
+                  <goals><goal>jar</goal></goals>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+    </profiles>
    
 </project>
