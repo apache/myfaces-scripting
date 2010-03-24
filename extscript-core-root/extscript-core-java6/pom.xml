@@ -11,12 +11,18 @@
         myfaces extension scripting java6 lib
     </description>
 
-
     <parent>
         <groupId>org.apache.myfaces.extension-scripting</groupId>
         <artifactId>extscript-core-root</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-core-java6</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-core-java6</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-core-java6</url>
+    </scm>
+
     <repositories>
         <repository>
             <id>maven2-repository.dev.java.net</id>
@@ -64,7 +70,45 @@
         </plugins>
     </build>
 
-
-    
+    <profiles>
+        <profile>
+        <!--
+          - Build and install into the repository some additional artifacts that we don't
+          - want to build during normal development because they take too long.
+          -->
+        <id>generate-assembly</id>
+        <activation>
+          <property>
+            <name>performRelease</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
+            <plugin>
+              <!-- Install in the repository a "-javadoc.jar" file -->
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.4</version>
+              <executions>
+                <execution>
+                  <id>attach-javadoc</id>
+                  <goals><goal>jar</goal></goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <!-- Install in the repository a "-sources.jar" file -->
+              <artifactId>maven-source-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>attach-source</id>
+                  <goals><goal>jar</goal></goals>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+    </profiles>
 
 </project>
