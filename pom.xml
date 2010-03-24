@@ -27,9 +27,10 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk</developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/
+        </developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/</url>
     </scm>
 
     <repositories>
