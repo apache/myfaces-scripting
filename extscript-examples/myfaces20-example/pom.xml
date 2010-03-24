@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <artifactId>extscript-examples</artifactId>
         <groupId>org.apache.myfaces.extension-scripting</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-beta-1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extension-scripting</groupId>
     <artifactId>myfaces20-example</artifactId>
     <packaging>war</packaging>
     <name>A custom project using myfaces 2.0</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-beta-1</version>
     <url>http://www.apache.org</url>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example</developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/1_0_beta_1/extscript-examples/myfaces20-example</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/branches/1_0_beta_1/extscript-examples/myfaces20-example</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/1_0_beta_1/extscript-examples/myfaces20-example</url>
     </scm>
 
     <repositories>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>org.apache.myfaces.extension-scripting</groupId>
             <artifactId>extscript-myfaces20-bundle</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-beta-1</version>
         </dependency>
 
         <dependency>
