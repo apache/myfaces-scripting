@@ -36,20 +36,20 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.extension-scripting</groupId>
                                     <artifactId>extscript-core</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>javadoc</classifier>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.extension-scripting</groupId>
                                     <artifactId>extscript-core-java6</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>javadoc</classifier>
                                 </artifactItem>
 
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.extension-scripting</groupId>
                                     <artifactId>extscript-myfaces12-extensions</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>javadoc</classifier>
                                 </artifactItem>
 
@@ -69,20 +69,20 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.extension-scripting</groupId>
                                     <artifactId>extscript-core</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>sources</classifier>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.extension-scripting</groupId>
                                     <artifactId>extscript-core-java6</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>sources</classifier>
                                 </artifactItem>
 
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.extension-scripting</groupId>
                                     <artifactId>extscript-myfaces12-extensions</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>sources</classifier>
                                 </artifactItem>
 
@@ -157,7 +157,4 @@
 
     </dependencies>
 
-    <properties>
-        <version>1.0-SNAPSHOT</version>
-    </properties>
 </project>
