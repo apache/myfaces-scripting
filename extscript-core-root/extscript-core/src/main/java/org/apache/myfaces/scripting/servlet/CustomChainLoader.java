@@ -73,15 +73,30 @@ public class CustomChainLoader extends ClassLoaderExtension {
         String additionalLoaderPaths;
 
         String contextRoot = servletContext.getRealPath(contextRootKey);
+        if(contextRoot == null) {
+            Logger logger = getLogger();
+            logger.warning("[EXT-SCRIPTING] one of the standard paths could not be resolved: "+ contextRootKey + " this is either due to the path is missing or due to a configuration error! You can bypass the problem by setting additional loader paths if they are not set already!");
+            contextRoot="";  
+        }
+
         contextRoot = contextRoot.trim();
         scriptingRoot = contextRoot;
 
         additionalLoaderPaths = servletContext.getInitParameter(initParams);
         appendAdditionalPaths(additionalLoaderPaths, weaver);
         if (additionalLoaderPaths == null || additionalLoaderPaths.trim().equals("")) {
+            if(contextRoot.equals("")) {
+                Logger logger = getLogger();
+                logger.warning("[EXT-SCRIPTING] Standard paths (WEB-INF/groovy and WEB-INF/java could not be determined, also no additional loader paths are set, I cannot start properly, please set additional loader paths for Ext-Scripting to work correctly!");
+            }
             weaver.appendCustomScriptPath(scriptingRoot);
             weaver.appendCustomScriptPath(classRoot);
         }
+    }
+
+    private Logger getLogger() {
+        Logger logger = Logger.getLogger(this.getClass().getName());
+        return logger;
     }
 
     private void appendAdditionalPaths(String additionalLoaderPaths, ScriptingWeaver workWeaver) {

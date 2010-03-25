@@ -73,6 +73,10 @@ public class FileChangedDaemon extends Thread {
         this.externalContext = new WeakReference(externalContext);
     }
 
+    public static synchronized void clear() {
+        instance = null;
+    }
+
     public static synchronized FileChangedDaemon getInstance() {
         if (instance == null) {
             instance = new FileChangedDaemon();
