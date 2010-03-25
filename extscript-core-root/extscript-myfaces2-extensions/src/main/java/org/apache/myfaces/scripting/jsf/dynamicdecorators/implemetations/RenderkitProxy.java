@@ -56,9 +56,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-        if (rendererType.equals("at.irian.JavaTestRenderer")) {
-            System.out.println("debugpoint found");
-        }
+        
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_RENDERER);
 
         _delegate.addRenderer(componentFamily, rendererType, renderer);
