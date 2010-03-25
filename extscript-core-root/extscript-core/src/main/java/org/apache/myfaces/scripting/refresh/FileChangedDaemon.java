@@ -33,14 +33,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Reimplementation of the file changed daemon thread
+ * in java. The original one was done in groovy
+ * this threads purpose is to watch the files
+ * loaded by the various engine loaders for
+ * for file changes and then if one has changed we have to mark
+ * it for further processing
+ *
  * @author werpu
- *         Reimplementation of the file changed daemon thread
- *         in java. The original one was done in groovy
- *         this threads purpose is to watch the files
- *         loaded by the various engine loaders for
- *         for file changes and then if one has changed we have to mark
- *         it for further processing
- *         <p/>
  */
 public class FileChangedDaemon extends Thread {
 
@@ -48,7 +48,6 @@ public class FileChangedDaemon extends Thread {
 
     Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
     ClassDependencies dependencyMap = new ClassDependencies();
-
 
     /**
      * this map is a shortcut for the various scripting engines
@@ -78,8 +77,14 @@ public class FileChangedDaemon extends Thread {
     }
 
     public static synchronized FileChangedDaemon getInstance() {
+        //we currently keep it as singleton but in the long run we will move it into the context
+        //like everything else singleton-wise
         if (instance == null) {
             instance = new FileChangedDaemon();
+            /**
+             * daemon thread to allow forced
+             * shutdowns for web context restarts
+             */
             instance.setDaemon(true);
             instance.setRunning(true);
             instance.start();
@@ -89,6 +94,10 @@ public class FileChangedDaemon extends Thread {
         return instance;
     }
 
+    /**
+     * Central run method
+     * which performs the entire scanning process
+     */
     public void run() {
         while (running) {
             if (externalContext != null && !contextInitialized) {
@@ -125,7 +134,7 @@ public class FileChangedDaemon extends Thread {
      */
     private final void checkForChanges() {
         ScriptingWeaver weaver = WeavingContext.getWeaver();
-        if(weaver == null) return;
+        if (weaver == null) return;
         weaver.scanForAddedClasses();
 
         //TODO move this code also into the weaver so that
@@ -143,7 +152,7 @@ public class FileChangedDaemon extends Thread {
                 printInfo(it, proxyFile);
                 meta.setTimestamp(proxyFile.lastModified());
                 dependencyTainted(meta.getAClass().getName());
-                
+
                 //we add our log entry for further reference
                 WeavingContext.getRefreshContext().addTaintLogEntry(meta);
             }
@@ -157,7 +166,7 @@ public class FileChangedDaemon extends Thread {
      * recursive walk over our meta data to taint also the classes
      * which refer to our refreshing class so that those
      * are reloaded as well, this helps to avoid classcast
-     * exceptions caused by imports and casts on long running artefacts
+     * exceptions caused by imports and casts on long running artifacts
      *
      * @param className the origin classname which needs to be walked recursively
      */
