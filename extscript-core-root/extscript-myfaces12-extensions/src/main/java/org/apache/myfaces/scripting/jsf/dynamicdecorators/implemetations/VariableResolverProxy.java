@@ -41,7 +41,7 @@ public class VariableResolverProxy extends VariableResolver implements Decorated
 
     public Object resolveVariable(FacesContext facesContext, String s) throws EvaluationException {
         Object variable = _delegate.resolveVariable(facesContext, s);
-        if (WeavingContext.isDynamic(variable.getClass()))
+        if (variable != null && WeavingContext.isDynamic(variable.getClass()))
             variable = WeavingContext.getWeaver().reloadScriptingInstance(variable, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
         return variable;
     }

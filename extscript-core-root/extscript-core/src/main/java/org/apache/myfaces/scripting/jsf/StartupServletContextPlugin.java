@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.scripting.jsf;
 
+import org.apache.myfaces.scripting.core.util.WeavingContext;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -41,6 +43,7 @@ public class StartupServletContextPlugin implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        WeavingContext.getFileChangedDaemon().clear();
     }
 
 }
