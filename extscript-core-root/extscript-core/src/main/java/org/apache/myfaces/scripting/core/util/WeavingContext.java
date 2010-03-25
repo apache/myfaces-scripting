@@ -165,6 +165,10 @@ public class WeavingContext {
      * @return a ScriptingWeaver chain for all weavers currently supported
      */
     public static ScriptingWeaver getWeaver() {
+        //shutting down condition _weaverHolder == null due to separate thread
+        if(_weaverHolder == null) {
+            return null;
+        }
         ScriptingWeaver weaver = (ScriptingWeaver) _weaverHolder.get();
         if (weaver == null) {
             Logger log = Logger.getLogger(WeavingContext.class.getName());

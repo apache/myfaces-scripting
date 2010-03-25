@@ -124,8 +124,9 @@ public class FileChangedDaemon extends Thread {
      * as marks the engine as having to do a full recompile
      */
     private final void checkForChanges() {
-
-        WeavingContext.getWeaver().scanForAddedClasses();
+        ScriptingWeaver weaver = WeavingContext.getWeaver();
+        if(weaver == null) return;
+        weaver.scanForAddedClasses();
 
         //TODO move this code also into the weaver so that
         //we have it centralized
