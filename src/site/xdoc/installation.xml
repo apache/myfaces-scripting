@@ -135,13 +135,18 @@
                 <h4>Second Step</h4>
                 <p>Add Ext-Scriptings servlet filter to your servlet configuration</p>
                 <source><![CDATA[
-     <context-param>
-        <description>
-            Enables our scripting engine support plugins
-        </description>
-        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
-     </context-param>]]></source>
+    <filter>
+        <filter-name>scriptingFilter</filter-name>
+        <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>scriptingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>]]></source>
                 <p>The init parameter and the servlet filter
                     <b>MUST</b>
                     be set otherwise Ext-Scripting will not be enabled!
