@@ -19,35 +19,29 @@
 
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.commons.digester.Digester;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.CoreWeaver;
+import org.apache.myfaces.scripting.core.util.stax.FilterClassDigester;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.servlet.ScriptingServletFilter;
 
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import javax.servlet.ServletContext;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Logger;
 
 /**
+ * Central initializer class for our
+ * WeavingContext which does some semantic checking of the web.xml
+ * and initializes everything in proper order
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Moved over from Weblets...
- *          a fully functional web.xml parser
- *          to allow early access to the configuration
  */
 
 class WeavingContextInitializer {
@@ -112,29 +106,7 @@ class WeavingContextInitializer {
             URL webXml = context.getResource("/WEB-INF/web.xml");
 
             if (webXml != null) {
-                InputStream in = webXml.openStream();
-                try {
-                    WebXmlParserImpl parser = new WebXmlParserImpl();
-                    Digester digester = new Digester();
-                    digester.setValidating(false);
-                    digester.setEntityResolver(DisconnectedEntityResolver.sharedInstance());
-                    digester.push(parser);
-                    //We only check for the servlet filter
-                    //the rest is already delivered by our context
-                    digester.addCallMethod("web-app/filter", "addFilter", 2);
-                    digester.addCallParam("web-app/filter/filter-name", 0);
-                    digester.addCallParam("web-app/filter/filter-class", 1);
-
-                    //digester.addCallMethod("web-app/filter-mapping/filter-name", "addFilterName", 2);
-                    digester.parse(in);
-                    //we can handle the rest of the configuration in a more secure manner
-                } catch (SAXException e) {
-                    _logger.severe("[EXT-SCRIPTING] Web.xml could not be parsed disabling scripting");
-                    WeavingContext.setScriptingEnabled(false);
-
-                } finally {
-                    in.close();
-                }
+                WeavingContext.setScriptingEnabled(FilterClassDigester.findFilter(webXml, ScriptingServletFilter.class));
             }
 
         } catch (IOException e) {
@@ -240,37 +212,6 @@ class WeavingContextInitializer {
             String[] additionalPaths = additionalLoaderPaths.split(",");
             for (String path : additionalPaths) {
                 workWeaver.appendCustomScriptPath(path);
-            }
-        }
-    }
-
-    /**
-     * DisconnectedEntityResolver prevents external network access during parsing in case the remote host cannot be reached.
-     */
-    private static class DisconnectedEntityResolver implements EntityResolver {
-        public InputSource resolveEntity(String publicId, String systemId) {
-            // use an empty input source
-            return new InputSource(new ByteArrayInputStream(new byte[0]));
-        }
-
-        // no instances
-
-        private DisconnectedEntityResolver() {
-        }
-
-        static public DisconnectedEntityResolver sharedInstance() {
-            return _INSTANCE;
-        }
-
-        static private DisconnectedEntityResolver _INSTANCE = new DisconnectedEntityResolver();
-    }
-
-    public static class WebXmlParserImpl {
-
-        public void addFilter(String filterName, String filterClass) {
-            _logger.info("adding filter");
-            if (filterClass.equals(ScriptingServletFilter.class.getName())) {
-                WeavingContext.setScriptingEnabled(true);
             }
         }
     }
