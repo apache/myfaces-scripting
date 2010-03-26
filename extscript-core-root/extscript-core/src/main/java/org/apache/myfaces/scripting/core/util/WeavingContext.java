@@ -30,6 +30,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**
@@ -77,6 +78,11 @@ public class WeavingContext {
     private static final String WARN_WEAVER_NOT_SET = "Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
     private static final Map<Integer, CompilationResult> _compilationResults = new ConcurrentHashMap<Integer, CompilationResult>();
+
+    /**
+     * per default the weaver is not set up
+     */
+    private static AtomicBoolean _enabled = new AtomicBoolean(false);
 
     public static void init() {
 
@@ -155,7 +161,11 @@ public class WeavingContext {
      * @return true in case of being scriptable
      */
     public static boolean isScriptingEnabled() {
-        return _weaverHolder.get() != null;
+        return _enabled.get();
+    }
+
+    public static void setScriptingEnabled(boolean enabled) {
+        _enabled = new AtomicBoolean(enabled);
     }
 
     /**
@@ -166,7 +176,7 @@ public class WeavingContext {
      */
     public static ScriptingWeaver getWeaver() {
         //shutting down condition _weaverHolder == null due to separate thread
-        if(_weaverHolder == null) {
+        if (_weaverHolder == null) {
             return null;
         }
         ScriptingWeaver weaver = (ScriptingWeaver) _weaverHolder.get();
@@ -192,6 +202,9 @@ public class WeavingContext {
      * @return a proxied reloading object of type theInterface
      */
     public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
+        if (!isScriptingEnabled()) {
+            return o;
+        }
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                 new Class[]{theInterface},
                 new MethodLevelReloadingHandler(o, artefactType));
@@ -207,6 +220,9 @@ public class WeavingContext {
      * @return
      */
     public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
+        if (!isScriptingEnabled()) {
+            return o;
+        }
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                 new Class[]{theInterface},
                 new MethodLevelReloadingHandler(o, artefactType));
@@ -241,8 +257,15 @@ public class WeavingContext {
         return o;
     }
 
+    /**
+     * checks if a class is dynamic
+     *
+     * @param clazz the class to be checked
+     * @return true if the class is of
+     *         dynamic nature and our scripting system is enabled
+     */
     public static boolean isDynamic(Class clazz) {
-        return getWeaver().isDynamic(clazz);
+        return isScriptingEnabled() && getWeaver().isDynamic(clazz);
     }
 
     /**

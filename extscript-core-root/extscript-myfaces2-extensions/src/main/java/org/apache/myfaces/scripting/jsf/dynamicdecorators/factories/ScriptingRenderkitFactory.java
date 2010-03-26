@@ -34,15 +34,13 @@ import java.util.Iterator;
  */
 public class ScriptingRenderkitFactory extends RenderKitFactory implements Decorated {
 
-    boolean scriptingEnabled = false;
 
     public ScriptingRenderkitFactory(RenderKitFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void addRenderKit(String s, RenderKit renderKit) {
-        if (renderKit != null && !(renderKit instanceof RenderkitProxy))
+        if (WeavingContext.isScriptingEnabled() && renderKit != null && !(renderKit instanceof RenderkitProxy))
             renderKit = new RenderkitProxy(renderKit);
 
         _delegate.addRenderKit(s, renderKit);
@@ -50,7 +48,7 @@ public class ScriptingRenderkitFactory extends RenderKitFactory implements Decor
 
     public RenderKit getRenderKit(FacesContext facesContext, String s) {
         RenderKit retVal = _delegate.getRenderKit(facesContext, s);
-        if (retVal != null && !(retVal instanceof RenderkitProxy))
+        if (WeavingContext.isScriptingEnabled() && retVal != null && !(retVal instanceof RenderkitProxy))
             retVal = new RenderkitProxy(retVal);
         return retVal;
     }

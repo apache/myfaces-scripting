@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 /**
  * Scripting servlet filter
  * 
- * TODO we have a concurrency problem here, what if a request
  * hits the filter while the
  * init system is not entirely finished yet
  *
@@ -66,6 +65,10 @@ public class ScriptingServletFilter implements Filter {
 
     /**
      * Checks for an initialized system and if not the filter will be deactivated
+     *
+     * the idea is to check the context in regular intervals
+     * whether the startup process has been finished and then
+     * allow the requests to pass through
      */
     private void assertInitialized() {
         if(active) return;

@@ -37,7 +37,7 @@ public class HelloBean {
     }
 
     public String getHello() {
-        return hello + addedMethod();
+        return hello ;
     }
 
     public void setHello(String hello) {

@@ -35,22 +35,21 @@ import java.util.Iterator;
 public class ScriptingLifecycleFactory extends LifecycleFactory implements Decorated {
 
     LifecycleFactory _delegate;
-    boolean scriptingEnabled = false;
+
 
     public ScriptingLifecycleFactory(LifecycleFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void addLifecycle(String s, Lifecycle lifecycle) {
-        if (scriptingEnabled && !(lifecycle instanceof LifefcycleProxy))
+        if (WeavingContext.isScriptingEnabled()  && !(lifecycle instanceof LifefcycleProxy))
             lifecycle = new LifefcycleProxy(lifecycle);
         _delegate.addLifecycle(s, lifecycle);
     }
 
     public Lifecycle getLifecycle(String s) {
         Lifecycle retVal = _delegate.getLifecycle(s);
-        if (scriptingEnabled && !(retVal instanceof LifefcycleProxy))
+        if (WeavingContext.isScriptingEnabled()  && !(retVal instanceof LifefcycleProxy))
             retVal = new LifefcycleProxy(retVal);
 
         return retVal;

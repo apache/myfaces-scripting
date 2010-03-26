@@ -43,24 +43,24 @@ import javax.faces.application.Application;
 public class ScriptingApplicationFactory extends ApplicationFactory implements Decorated {
 
     ApplicationFactory _delegate;
-    boolean scriptingEnabled = false;
+
 
     public ScriptingApplicationFactory(ApplicationFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = WeavingContext.isScriptingEnabled();
+
     }
 
     public Application getApplication() {
         Application retVal = _delegate.getApplication();  //To change body of implemented methods use File | Settings | File Templates.
 
-        if (scriptingEnabled && !(retVal instanceof ApplicationProxy))
+        if (WeavingContext.isScriptingEnabled()  && !(retVal instanceof ApplicationProxy))
             retVal = new ApplicationProxy(retVal);
 
         return retVal;
     }
 
     public void setApplication(Application application) {
-        if (scriptingEnabled && !(application instanceof ApplicationProxy))
+        if (WeavingContext.isScriptingEnabled() && !(application instanceof ApplicationProxy))
             application = new ApplicationProxy(application);
 
         _delegate.setApplication(application);

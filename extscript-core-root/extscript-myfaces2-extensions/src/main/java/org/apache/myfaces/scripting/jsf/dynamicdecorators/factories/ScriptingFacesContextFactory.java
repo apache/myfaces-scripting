@@ -36,11 +36,9 @@ import javax.faces.FacesException;
 public class ScriptingFacesContextFactory extends javax.faces.context.FacesContextFactory implements Decorated {
 
     public FacesContextFactory _delegate;
-    boolean scriptingEnabled = false;
 
     public ScriptingFacesContextFactory(FacesContextFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void setDelegate(FacesContextFactory delegate) {
@@ -49,12 +47,8 @@ public class ScriptingFacesContextFactory extends javax.faces.context.FacesConte
 
     public FacesContext getFacesContext(Object o, Object o1, Object o2, Lifecycle lifecycle) throws FacesException {
         FacesContext retVal = _delegate.getFacesContext(o, o1, o2, lifecycle);  //To change body of implemented methods use File | Settings | File Templates.
-        //TODO check if we weave thise around our original
-        //faces context to bypass our groovy dynamic reflection problems
-        //TODO this is not fully done yet, the faces context is not
-        //Woven around our method reloading weaver or our instantiation
-        //mechanism
-        if (scriptingEnabled && !(retVal instanceof FacesContextProxy))
+
+        if (WeavingContext.isScriptingEnabled()  && !(retVal instanceof FacesContextProxy))
             return new FacesContextProxy(retVal);
         return retVal;
     }

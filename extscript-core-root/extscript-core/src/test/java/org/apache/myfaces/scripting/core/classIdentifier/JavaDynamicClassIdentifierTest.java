@@ -57,6 +57,7 @@ public class JavaDynamicClassIdentifierTest {
         }
 
         weaver = new CoreWeaver(new JavaScriptingWeaver());
+        TWeavingContext.setScriptingEnabled(true);
         TWeavingContext.setWeaverForTesting(weaver);
     }
 

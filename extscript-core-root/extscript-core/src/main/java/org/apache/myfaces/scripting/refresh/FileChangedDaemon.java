@@ -79,7 +79,7 @@ public class FileChangedDaemon extends Thread {
     public static synchronized FileChangedDaemon getInstance() {
         //we currently keep it as singleton but in the long run we will move it into the context
         //like everything else singleton-wise
-        if (instance == null) {
+        if (WeavingContext.isScriptingEnabled() && instance == null) {
             instance = new FileChangedDaemon();
             /**
              * daemon thread to allow forced
@@ -99,7 +99,7 @@ public class FileChangedDaemon extends Thread {
      * which performs the entire scanning process
      */
     public void run() {
-        while (running) {
+        while (WeavingContext.isScriptingEnabled() && running) {
             if (externalContext != null && !contextInitialized) {
                 WeavingContext.initThread((ServletContext) externalContext.get());
                 contextInitialized = true;

@@ -39,7 +39,6 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
 
     public ScriptingLifecycleFactory(LifecycleFactory delegate) {
         _delegate = delegate;
-        scriptingEnabled = WeavingContext.isScriptingEnabled();
     }
 
     public void addLifecycle(String s, Lifecycle lifecycle) {
@@ -50,7 +49,7 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
 
     public Lifecycle getLifecycle(String s) {
         Lifecycle retVal = _delegate.getLifecycle(s);
-        if (scriptingEnabled && !(retVal instanceof LifefcycleProxy))
+        if (WeavingContext.isScriptingEnabled() && !(retVal instanceof LifefcycleProxy))
             retVal = new LifefcycleProxy(retVal);
 
         return retVal;

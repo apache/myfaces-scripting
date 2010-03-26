@@ -24,10 +24,10 @@ import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
+import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 
 import javax.servlet.ServletContext;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -53,30 +53,67 @@ public class CustomChainLoader extends ClassLoaderExtension {
 
     Logger log = Logger.getLogger(CustomChainLoader.class.getName());
 
-    //TODO move the entire init code into the weavers
-    //every weaver should know itself how to initialize itself
-
     public CustomChainLoader(ServletContext servletContext) {
+        initWeavingContext();
+        initWeavers(servletContext);
+        initRefreshContext(servletContext);
+    }
+
+    private void initWeavingContext() {
+        log.fine("[EXT-SCRIPTING] initializing the base weaver");
+        WeavingContext.setScriptingEnabled(true);
+    }
+
+    private boolean initWeavers(ServletContext servletContext) {
+        log.fine("[EXT-SCRIPTING] initializing the weaving contexts");
+
         ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
         setupScriptingPaths(servletContext, groovyWeaver, GROOVY_SOURCE_ROOT, CUSTOM_LOADER_PATHS);
         setupScriptingPaths(servletContext, javaWeaver, JAVA_SOURCE_ROOT, CUSTOM_JAVA_LOADER_PATHS);
-
+        if (!WeavingContext.isScriptingEnabled()) {
+            return true;
+        }
         this.scriptingWeaver = new CoreWeaver(groovyWeaver, javaWeaver);
         //we have to store it because our filter
         //does not trigger upon initialisation
         WeavingContext.setWeaver(this.scriptingWeaver);
+        return false;
+    }
+
+    /**
+     * initialisation of the refresh context object
+     * the refresh context, is a context object which keeps
+     * the refresh information (refresh time, needs refresh) etc...
+     *
+     * @param servletContext the servlet context singleton which keeps
+     *                       the context for distribution
+     */
+    private void initRefreshContext(ServletContext servletContext) {
+        log.fine("[EXT-SCRIPTING] initializing the refresh context");
+
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
+        RefreshContext rContext = new RefreshContext();
+        servletContext.setAttribute("RefreshContext", rContext);
+        rContext.getDaemon().initWeavingContext(servletContext);
+        WeavingContext.setRefreshContext(rContext);
     }
 
     private void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) {
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
         String additionalLoaderPaths;
 
         String contextRoot = servletContext.getRealPath(contextRootKey);
-        if(contextRoot == null) {
+        if (contextRoot == null) {
             Logger logger = getLogger();
-            logger.warning("[EXT-SCRIPTING] one of the standard paths could not be resolved: "+ contextRootKey + " this is either due to the path is missing or due to a configuration error! You can bypass the problem by setting additional loader paths if they are not set already!");
-            contextRoot="";  
+            logger.warning("[EXT-SCRIPTING] one of the standard paths could not be resolved: " + contextRootKey + " this is either due to the path is missing or due to a configuration error! You can bypass the problem by setting additional loader paths if they are not set already!");
+            contextRoot = "";
+
         }
 
         contextRoot = contextRoot.trim();
@@ -85,9 +122,13 @@ public class CustomChainLoader extends ClassLoaderExtension {
         additionalLoaderPaths = servletContext.getInitParameter(initParams);
         appendAdditionalPaths(additionalLoaderPaths, weaver);
         if (additionalLoaderPaths == null || additionalLoaderPaths.trim().equals("")) {
-            if(contextRoot.equals("")) {
+            if (contextRoot.equals("")) {
                 Logger logger = getLogger();
                 logger.warning("[EXT-SCRIPTING] Standard paths (WEB-INF/groovy and WEB-INF/java could not be determined, also no additional loader paths are set, I cannot start properly, please set additional loader paths for Ext-Scripting to work correctly!");
+                logger.warning("[EXT-SCRIPTING] I am disabling Ext-Scripting!");
+
+                WeavingContext.setScriptingEnabled(false);
+                return;
             }
             weaver.appendCustomScriptPath(scriptingRoot);
             weaver.appendCustomScriptPath(classRoot);
@@ -126,7 +167,6 @@ public class CustomChainLoader extends ClassLoaderExtension {
         else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
             return null;
         }
-        
 
         return scriptingWeaver.loadScriptingClassFromName(name);
     }

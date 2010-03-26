@@ -34,13 +34,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-
 /**
  * @author werpu
  *         <p/>
  *         <p/>
  *         Startup context plugin chainloader
- *         for MyFaces 1.2.x,
+ *         for MyFaces
  *         we hook ourselves into the startup event
  *         system we have for MyFaces 1.2.x+ to do the initial
  *         configuration before the MyFaces init itself starts!
@@ -58,53 +57,16 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         servletContext.setAttribute(ScriptingConst.CTX_REQUEST_CNT, new AtomicInteger(0));
         servletContext.setAttribute(ScriptingConst.CTX_STARTUP, new AtomicBoolean(Boolean.TRUE));
 
-
         initConfig(servletContext);
-        CustomChainLoader loader = initChainLoader(servletContext);
-        ScriptingWeaver weaver = initScriptingWeaver(servletContext, loader);
-        initRefreshContext(servletContext);
-
-        initInitialCompileAndScan(weaver);
+        initChainLoader(servletContext);
+        initStartup();
     }
 
-    /**
-     * initiates the first compile and scan in the subsystem
-     *
-     * @param weaver our weaver which receives the trigger calls
-     */
-    private void initInitialCompileAndScan(ScriptingWeaver weaver) {
-        log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
-        weaver.initiateStartup();
-    }
-
-    /**
-     * initialisation of the refresh context object
-     * the refresh context, is a context object which keeps
-     * the refresh information (refresh time, needs refresh) etc...
-     *
-     * @param servletContext the servlet context singleton which keeps
-     *                       the context for distribution
-     */
-    private void initRefreshContext(ServletContext servletContext) {
-        RefreshContext rContext = new RefreshContext();
-        servletContext.setAttribute("RefreshContext", rContext);
-        rContext.getDaemon().initWeavingContext(servletContext);
-        WeavingContext.setRefreshContext(rContext);
-    }
-
-    /**
-     * The initialisation of our global weaver chain
-     * which triggers the various subweavers depending
-     * on the scripting engine plugged in.
-     *
-     * @param servletContext the application scoped holder for our weaver
-     * @param loader         the chain loader which serves the weavers
-     * @return the weaver instance which is generated and stored
-     */
-    private ScriptingWeaver initScriptingWeaver(ServletContext servletContext, CustomChainLoader loader) {
-        ScriptingWeaver weaver = loader.getScriptingWeaver();
-        servletContext.setAttribute("ScriptingWeaver", weaver);
-        return weaver;
+    private void initStartup() {
+        if (WeavingContext.isScriptingEnabled()) {
+            log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
+            WeavingContext.getWeaver().initiateStartup();
+        }
     }
 
     /**
@@ -172,10 +134,10 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
     public void postInit(ServletContextEvent evt) {
         evt.getServletContext().setAttribute(ScriptingConst.CTX_STARTUP, new AtomicBoolean(Boolean.FALSE));
-
     }
 
     public void preDestroy(ServletContextEvent evt) {
+
     }
 
     public void postDestroy(ServletContextEvent evt) {
