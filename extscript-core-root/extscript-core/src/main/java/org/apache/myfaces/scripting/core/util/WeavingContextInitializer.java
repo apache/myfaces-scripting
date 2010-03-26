@@ -29,6 +29,7 @@ import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.servlet.ScriptingServletFilter;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -53,10 +54,8 @@ class WeavingContextInitializer {
 
     static final Logger _logger = Logger.getLogger(WeavingContextInitializer.class.getName());
 
-
-
     public static void initWeavingContext(ServletContext servletContext) {
-       
+
         validateWebXml(servletContext);
         initConfiguration(servletContext);
         initWeavers(servletContext);
@@ -108,7 +107,6 @@ class WeavingContextInitializer {
         }
     }
 
-
     private static void validateWebXml(ServletContext context) {
         try {
             URL webXml = context.getResource("/WEB-INF/web.xml");
@@ -123,7 +121,10 @@ class WeavingContextInitializer {
                     digester.push(parser);
                     //We only check for the servlet filter
                     //the rest is already delivered by our context
-                    digester.addCallMethod("web-app/servlet-filter", "addServletFilter", 2);
+                    digester.addCallMethod("web-app/filter", "addFilter", 2);
+                    digester.addCallParam("web-app/filter/filter-name", 0);
+                    digester.addCallParam("web-app/filter/filter-class", 1);
+
                     //digester.addCallMethod("web-app/filter-mapping/filter-name", "addFilterName", 2);
                     digester.parse(in);
                     //we can handle the rest of the configuration in a more secure manner
@@ -139,11 +140,25 @@ class WeavingContextInitializer {
         } catch (IOException e) {
             _logger.severe("[EXT-SCRIPTING] Web.xml could not be parsed disabling scripting");
             WeavingContext.setScriptingEnabled(false);
+        }
 
+        if (!WeavingContext.isScriptingEnabled()) {
+            String warnMsg = "[EXT-SCRIPTING] The servlet filter has not been set, please check your web.xml for following entries:" +
+                    "\n    <filter>\n" +
+                    "        <filter-name>scriptingFilter</filter-name>\n" +
+                    "        <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>\n" +
+                    "    </filter>\n" +
+                    "    <filter-mapping>\n" +
+                    "        <filter-name>scriptingFilter</filter-name>\n" +
+                    "        <url-pattern>/*</url-pattern>\n" +
+                    "        <dispatcher>REQUEST</dispatcher>\n" +
+                    "        <dispatcher>FORWARD</dispatcher>\n" +
+                    "        <dispatcher>INCLUDE</dispatcher>\n" +
+                    "        <dispatcher>ERROR</dispatcher>\n" +
+                    "    </filter-mapping>";
+            _logger.severe(warnMsg);
         }
     }
-
-  
 
     private static boolean initWeavers(ServletContext servletContext) {
         _logger.fine("[EXT-SCRIPTING] initializing the weaving contexts");
@@ -250,14 +265,14 @@ class WeavingContextInitializer {
         static private DisconnectedEntityResolver _INSTANCE = new DisconnectedEntityResolver();
     }
 
-    private static  class WebXmlParserImpl {
+    public static class WebXmlParserImpl {
 
-        private void addServletFilter(String filterName, String filterClass) {
-            if (filterName.equals("scriptingFilter") && filterClass.equals(ScriptingServletFilter.class.getName())) {
+        public void addFilter(String filterName, String filterClass) {
+            _logger.info("adding filter");
+            if (filterClass.equals(ScriptingServletFilter.class.getName())) {
                 WeavingContext.setScriptingEnabled(true);
             }
         }
-
     }
 
 }

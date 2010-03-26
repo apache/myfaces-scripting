@@ -28,7 +28,8 @@
 
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk</developerConnection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk
+        </developerConnection>
         <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk</url>
     </scm>
 
@@ -39,6 +40,7 @@
             <url>http://download.java.net/maven/2/</url>
             <layout>default</layout>
         </repository>
+
         <repository>
             <releases>
                 <enabled>false</enabled>
@@ -132,6 +134,7 @@
 
         </plugins>
 
+
     </build>
 
 
@@ -197,7 +200,7 @@
     </reporting>
 
 
-   <profiles>
+    <profiles>
         <!-- This profile is invoked by -DprepareRelease=true.  This allows mvn release:prepare to
             run successfully on the assembly projects. -->
         <profile>
@@ -223,6 +226,6 @@
                 </plugins>
             </build>
         </profile>
-    </profiles> 
+    </profiles>
 
 </project>
