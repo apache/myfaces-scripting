@@ -59,6 +59,17 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>myfaces2beta3</id>
+            <url>http://people.apache.org/~lu4242/myfaces200beta3/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
     </repositories>
 
     <dependencies>
