@@ -75,7 +75,7 @@ public class WeavingContext {
     static protected ThreadLocal _configuration = new ThreadLocal();
     static protected ThreadLocal _externalContext = new ThreadLocal();
 
-    private static final String WARN_WEAVER_NOT_SET = "Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
+    private static final String WARN_WEAVER_NOT_SET = "[EXT-SCRIPTING] Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
     private static final Map<Integer, CompilationResult> _compilationResults = new ConcurrentHashMap<Integer, CompilationResult>();
 
@@ -84,15 +84,26 @@ public class WeavingContext {
      */
     private static AtomicBoolean _enabled = new AtomicBoolean(false);
 
-    public static void init() {
+    /**
+     * per default the weaver is not set up
+     */
+    private static AtomicBoolean _filterEnabled = new AtomicBoolean(false);
 
+    /**
+     * external helper which helps to initialize
+     * the scripting engine runtime system
+     * and to discover configuration mistakes early on
+     *
+     * @param servletContext the servlet context which holds the config data
+     */
+    public static void startup(ServletContext servletContext) {
+        WeavingContextInitializer.initWeavingContext(servletContext);
     }
 
     public static void initThread(ServletContext context) {
-        WeavingContext.setWeaver(context.getAttribute("ScriptingWeaver"));
-        WeavingContext.setRefreshContext((RefreshContext) context.getAttribute("RefreshContext"));
-        WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_CONFIGURATION));
-        //WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
+        WeavingContext.setWeaver(context.getAttribute(ScriptingConst.CTX_ATTR_SCRIPTING_WEAVER));
+        WeavingContext.setRefreshContext((RefreshContext) context.getAttribute(ScriptingConst.CTX_ATTR_REFRESH_CONTEXT));
+        WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION));
         WeavingContext.setExternalContext(context);
     }
 
@@ -151,7 +162,8 @@ public class WeavingContext {
      * some artefacts need a full request refresh
      */
     public static void doRequestRefreshes() {
-        getWeaver().requestRefresh();
+        if(isScriptingEnabled())
+            getWeaver().requestRefresh();
     }
 
     /**
@@ -166,6 +178,28 @@ public class WeavingContext {
 
     public static void setScriptingEnabled(boolean enabled) {
         _enabled = new AtomicBoolean(enabled);
+    }
+
+    /**
+     * the filter has to be treated differently
+     * if the filter is not enabled we do not have
+     * a chance to access our singletons properly
+     * <p/>
+     * The servlet api in 2.5 seems to lack a filter
+     * accessor, so we have to set this from our filter and then
+     * do periodic checks within our system
+     *
+     * @param enabled true set from out filter init
+     */
+    public static void setFilterEnabled(boolean enabled) {
+        _filterEnabled = new AtomicBoolean(enabled);
+    }
+
+    /**
+     * @return true if our filter is enabled
+     */
+    public static boolean isFilterEnabled() {
+        return _filterEnabled.get();
     }
 
     /**
@@ -185,7 +219,7 @@ public class WeavingContext {
             log.warning(WARN_WEAVER_NOT_SET);
             _weaverHolder.set(new DummyWeaver());
         }
-        return (ScriptingWeaver) _weaverHolder.get();
+        return weaver;
     }
 
     /**

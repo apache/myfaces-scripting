@@ -72,7 +72,7 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
 
     }
 
-    public void initiateStartup() {
+    public void postStartupActions() {
     }
 
     public void requestRefresh() {

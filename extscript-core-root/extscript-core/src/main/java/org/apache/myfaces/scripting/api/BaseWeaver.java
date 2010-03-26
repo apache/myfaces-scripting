@@ -266,7 +266,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     }
 
-    public void initiateStartup() {
+    public void postStartupActions() {
         if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
             // we set a lock over the compile and bean refresh
             //and an inner check again to avoid unneeded compile triggers

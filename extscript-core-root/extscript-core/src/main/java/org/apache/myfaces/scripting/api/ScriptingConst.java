@@ -32,6 +32,9 @@ public class ScriptingConst {
 
     public static final String INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST = "org.apache.myfaces.scripting.PGK_WHITELIST";
     public static final String INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH = "org.apache.myfaces.scripting.ADDITIONAL_CLASSPATH";
+    public static final String INIT_PARAM_RESOURCE_PATH = "org.apache.myfaces.scripting.resources.LOADER_PATHS";
+    public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.scripting.groovy.LOADER_PATHS";
+    public static final String INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.scripting.java.LOADER_PATHS";
 
     public static final String CONTEXT_VALUE_DIVIDER = ",";
 
@@ -68,20 +71,19 @@ public class ScriptingConst {
     public static final int ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER = 20;
     public static final int ARTIFACT_TYPE_SYSTEMEVENTLISTENER = 21;
 
-   //faclets artifacts
-    public static final int ARTIFACT_TYPE_TAG_HANDLER=22;
-    public static final int ARTIFACT_TYPE_COMPONENT_HANDLER=23;
-    public static final int ARTIFACT_TYPE_VALIDATOR_HANDLER=24;
-    public static final int ARTIFACT_TYPE_CONVERTER_HANDLER=25;
-    public static final int ARTIFACT_TYPE_BEHAVIOR_HANDLER=26;
+    //faclets artifacts
+    public static final int ARTIFACT_TYPE_TAG_HANDLER = 22;
+    public static final int ARTIFACT_TYPE_COMPONENT_HANDLER = 23;
+    public static final int ARTIFACT_TYPE_VALIDATOR_HANDLER = 24;
+    public static final int ARTIFACT_TYPE_CONVERTER_HANDLER = 25;
+    public static final int ARTIFACT_TYPE_BEHAVIOR_HANDLER = 26;
 
+    public static final String CTX_ATTR_REQUEST_CNT = "RequestCnt";
+    public static final String CTX_ATTR_CONFIGURATION = "ExtScriptingConfig";
+    public static final String CTX_ATTR_STARTUP = "ExtScriptingStartup";
+    public static final String CTX_ATTR_SCRIPTING_WEAVER = "ScriptingWeaver";
+    public static final String CTX_ATTR_REFRESH_CONTEXT = "RefreshContext";
 
-    public static final String CTX_REQUEST_CNT = "RequestCnt";
-    public static final String CTX_CONFIGURATION = "ExtScriptingConfig";
-    public static final String CTX_STARTUP = "ExtScriptingStartup";
-    
-
-    public static final String INIT_PARAM_RESOURCE_PATH = "org.apache.myfaces.scripting.resources.LOADER_PATHS";
     public static final String FILE_EXTENSION_GROOVY = ".groovy";
     public static final String GROOVY_FILE_ENDING = ".groovy";
     public static final String JAVA_FILE_ENDING = ".java";
@@ -90,4 +92,6 @@ public class ScriptingConst {
     public static final String SCOPE_SESSION = "session";
     public static final String SCOPE_APPLICATION = "application";
     public static final String SCOPE_REQUEST = "request";
+    public static final String GROOVY_SOURCE_ROOT = "/WEB-INF/groovy/";
+    public static final String JAVA_SOURCE_ROOT = "/WEB-INF/java/";
 }

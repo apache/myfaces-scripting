@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  * Scripting servlet filter
- * 
+ * <p/>
  * hits the filter while the
  * init system is not entirely finished yet
  *
@@ -43,6 +43,9 @@ public class ScriptingServletFilter implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
         context = filterConfig.getServletContext();
+        /*we cannot use the context listener here
+        * because we have the problem that we do not want to parse the web.xml*/
+        WeavingContext.setFilterEnabled(true);
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -65,17 +68,17 @@ public class ScriptingServletFilter implements Filter {
 
     /**
      * Checks for an initialized system and if not the filter will be deactivated
-     *
+     * <p/>
      * the idea is to check the context in regular intervals
      * whether the startup process has been finished and then
      * allow the requests to pass through
      */
     private void assertInitialized() {
-        if(active) return;
+        if (active) return;
 
-        AtomicBoolean startup = (AtomicBoolean) context.getAttribute(ScriptingConst.CTX_STARTUP);
+        AtomicBoolean startup = (AtomicBoolean) context.getAttribute(ScriptingConst.CTX_ATTR_STARTUP);
         if (startup == null) {
-            if(!warned) {
+            if (!warned) {
                 Logger log = Logger.getLogger(ScriptingServletFilter.class.getName());
                 log.warning("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
                         "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
@@ -93,7 +96,7 @@ public class ScriptingServletFilter implements Filter {
     //we mark the request beginning and end for further synchronisation issues
 
     private final AtomicInteger getRequestCnt() {
-        AtomicInteger retVal = (AtomicInteger) context.getAttribute(ScriptingConst.CTX_REQUEST_CNT);
+        AtomicInteger retVal = (AtomicInteger) context.getAttribute(ScriptingConst.CTX_ATTR_REQUEST_CNT);
 
         return retVal;
     }

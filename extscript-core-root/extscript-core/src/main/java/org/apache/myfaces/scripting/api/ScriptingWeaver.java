@@ -112,10 +112,12 @@ public interface ScriptingWeaver {
     public void fullRecompile();
 
     /**
-     * initiates all startup actions which have to be performed
-     * on the scripting subsystems during startup
+     * initiates all post startup actions which have to be performed
+     * on the scripting subsystems after the entire scripting engine
+     * configuration has been activated (in most cases
+     * it comes down to an annotation parsing and compilation)
      */
-    public void initiateStartup();
+    public void postStartupActions();
 
     /**
      * callback for artifact request refreshes

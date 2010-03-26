@@ -118,9 +118,9 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
         }
     }
 
-    public void initiateStartup() {
+    public void postStartupActions() {
         for (ScriptingWeaver weaver : _weavers) {
-            weaver.initiateStartup();
+            weaver.postStartupActions();
         }
     }
 

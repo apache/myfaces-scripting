@@ -18,12 +18,8 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
-import org.apache.myfaces.scripting.core.util.Strategy;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.webapp.StartupListener;
@@ -54,10 +50,10 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         ServletContext servletContext = servletContextEvent.getServletContext();
         if (servletContext == null) return;
 
-        servletContext.setAttribute(ScriptingConst.CTX_REQUEST_CNT, new AtomicInteger(0));
-        servletContext.setAttribute(ScriptingConst.CTX_STARTUP, new AtomicBoolean(Boolean.TRUE));
+        servletContext.setAttribute(ScriptingConst.CTX_ATTR_REQUEST_CNT, new AtomicInteger(0));
+        servletContext.setAttribute(ScriptingConst.CTX_ATTR_STARTUP, new AtomicBoolean(Boolean.TRUE));
 
-        initConfig(servletContext);
+        initContext(servletContext);
         initChainLoader(servletContext);
         initStartup();
     }
@@ -65,7 +61,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     private void initStartup() {
         if (WeavingContext.isScriptingEnabled()) {
             log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
-            WeavingContext.getWeaver().initiateStartup();
+            WeavingContext.getWeaver().postStartupActions();
         }
     }
 
@@ -87,53 +83,13 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
      *
      * @param servletContext the applications servlet context
      */
-    private void initConfig(ServletContext servletContext) {
-        final Configuration conf = new Configuration();
-        servletContext.setAttribute(ScriptingConst.CTX_CONFIGURATION, conf);
-        WeavingContext.setConfiguration(conf);
-        //we now add the resource loader path here
-
-        /*
-         * we define a set of closures (inner classes) which make
-         * our code more reusable we define a strategy
-         * for each comma delimited set of values
-         */
-        Strategy addResourceDirStrategy = new Strategy() {
-            public void apply(Object element) {
-                conf.addResourceDir((String) element);
-            }
-        };
-        Strategy addAdditionalClassPathStrategy = new Strategy() {
-            public void apply(Object element) {
-                conf.addAdditionalClassPath((String) element);
-            }
-        };
-        Strategy addWhiteListPackageStrategy = new Strategy() {
-            public void apply(Object element) {
-                conf.addWhitelistPackage((String) element);
-            }
-        };
-
-        /**
-         * We now apply the values into our own lists
-         */
-        applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_RESOURCE_PATH), addResourceDirStrategy);
-        applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH), addAdditionalClassPathStrategy);
-        applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST), addWhiteListPackageStrategy);
-
-    }
-
-    private void applyEntries(String val, Strategy strategy) {
-        if (!StringUtils.isBlank(val)) {
-            String[] splittedVal = val.split(ScriptingConst.CONTEXT_VALUE_DIVIDER);
-            for (String singleVal : splittedVal) {
-                strategy.apply(singleVal);
-            }
-        }
+    private void initContext(ServletContext servletContext) {
+        WeavingContext.startup(servletContext);
     }
 
     public void postInit(ServletContextEvent evt) {
-        evt.getServletContext().setAttribute(ScriptingConst.CTX_STARTUP, new AtomicBoolean(Boolean.FALSE));
+        //tell the system that the startup phase is done
+        evt.getServletContext().setAttribute(ScriptingConst.CTX_ATTR_STARTUP, new AtomicBoolean(Boolean.FALSE));
     }
 
     public void preDestroy(ServletContextEvent evt) {
