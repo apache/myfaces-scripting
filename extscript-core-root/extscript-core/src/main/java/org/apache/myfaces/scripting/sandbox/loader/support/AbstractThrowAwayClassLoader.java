@@ -41,12 +41,12 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
     /**
      * Indicates when this ClassLoader has been created.
      */
-    private final long timestamp;
+    private final long _timestamp;
 
     /**
      * The name of the class that this class loader is going to load.
      */
-    private final String className;
+    private final String _className;
 
     // ------------------------------------------ Constructors
 
@@ -59,8 +59,8 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
 
         // Save a timestamp of the time this class loader has been created. In doing
         // so, we're able to tell if this class loader is already outdated or not.
-        this.timestamp = System.currentTimeMillis();
-        this.className = className;
+        this._timestamp = System.currentTimeMillis();
+        this._className = className;
     }
 
     // ------------------------------------------ ThrowAwayClassLoader methods
@@ -120,7 +120,7 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
      *         more recent than the time stamp of this ClassLoader
      */
     public boolean isOutdated(long lastModified) {
-        return timestamp < lastModified;
+        return _timestamp < lastModified;
     }
 
     // ------------------------------------------ Utility methods
@@ -190,7 +190,7 @@ public abstract class AbstractThrowAwayClassLoader extends URLClassLoader
      * @return the name of the class that this class loader is going to load
      */
     protected String getClassName() {
-        return className;
+        return _className;
     }
 
     /**

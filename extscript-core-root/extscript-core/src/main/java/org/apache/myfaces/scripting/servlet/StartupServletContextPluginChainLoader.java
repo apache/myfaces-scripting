@@ -41,11 +41,11 @@ import java.util.logging.Logger;
  * @author Werner Punz
  */
 public class StartupServletContextPluginChainLoader implements StartupListener {
-    final Logger log = Logger.getLogger(this.getClass().getName());
+    final Logger _log = Logger.getLogger(this.getClass().getName());
 
     public void preInit(ServletContextEvent servletContextEvent) {
 
-        log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
+        _log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
 
         ServletContext servletContext = servletContextEvent.getServletContext();
         if (servletContext == null) return;
@@ -55,12 +55,12 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         initContext(servletContext);
         initChainLoader(servletContext);
-        initStartup();
+        initCompileAndScan();
     }
 
-    private void initStartup() {
+    private void initCompileAndScan() {
         if (WeavingContext.isScriptingEnabled()) {
-            log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
+            _log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
             WeavingContext.getWeaver().postStartupActions();
         }
     }

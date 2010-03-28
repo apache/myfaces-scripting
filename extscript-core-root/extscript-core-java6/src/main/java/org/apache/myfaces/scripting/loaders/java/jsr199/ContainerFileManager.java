@@ -30,6 +30,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * File manager, enforced by the Java Compiler API
+ * which handles the source files
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

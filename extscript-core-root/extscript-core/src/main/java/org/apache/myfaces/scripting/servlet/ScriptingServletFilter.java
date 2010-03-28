@@ -37,12 +37,12 @@ import java.util.logging.Logger;
  */
 public class ScriptingServletFilter implements Filter {
 
-    ServletContext context = null;
-    static volatile boolean active = false;
-    static volatile boolean warned = false;
+    ServletContext _context = null;
+    static volatile boolean _active = false;
+    static volatile boolean _warned = false;
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        context = filterConfig.getServletContext();
+        _context = filterConfig.getServletContext();
         /*we cannot use the context listener here
         * because we have the problem that we do not want to parse the web.xml*/
         WeavingContext.setFilterEnabled(true);
@@ -50,12 +50,12 @@ public class ScriptingServletFilter implements Filter {
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         assertInitialized();
-        if (!active) {
+        if (!_active) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
         markRequestStart();
-        WeavingContext.initThread(context);
+        WeavingContext.initThread(_context);
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
 
         try {
@@ -73,18 +73,18 @@ public class ScriptingServletFilter implements Filter {
      * allow the requests to pass through
      */
     private void assertInitialized() {
-        if (active) return;
+        if (_active) return;
 
-        AtomicBoolean startup = (AtomicBoolean) context.getAttribute(ScriptingConst.CTX_ATTR_STARTUP);
+        AtomicBoolean startup = (AtomicBoolean) _context.getAttribute(ScriptingConst.CTX_ATTR_STARTUP);
         if (startup == null) {
-            if (!warned) {
+            if (!_warned) {
                 Logger log = Logger.getLogger(ScriptingServletFilter.class.getName());
                 log.warning("[EXT-SCRIPTING] the Startup plugin chainloader has not been set, ext scripting is not working" +
                         "please refer to the documentation for the org.apache.myfaces.FACES_INIT_PLUGINS parameter, deactivating servlet filter");
-                active = false;
+                _active = false;
             }
         }
-        active = !startup.get();
+        _active = !startup.get();
     }
 
     public void destroy() {
@@ -95,7 +95,7 @@ public class ScriptingServletFilter implements Filter {
     //we mark the request beginning and end for further synchronisation issues
 
     private final AtomicInteger getRequestCnt() {
-        AtomicInteger retVal = (AtomicInteger) context.getAttribute(ScriptingConst.CTX_ATTR_REQUEST_CNT);
+        AtomicInteger retVal = (AtomicInteger) _context.getAttribute(ScriptingConst.CTX_ATTR_REQUEST_CNT);
 
         return retVal;
     }

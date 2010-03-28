@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.File;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -37,13 +35,13 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
  */
 
 public class FileStrategy implements Strategy {
-    Pattern rePattern;
+    Pattern _rePattern;
 
     public FileStrategy(String pattern) {
         pattern = pattern.trim().replaceAll("\\.", "\\\\.");
         pattern = "." + pattern;
 
-        rePattern = Pattern.compile(pattern);
+        _rePattern = Pattern.compile(pattern);
 
     }
 
@@ -52,7 +50,7 @@ public class FileStrategy implements Strategy {
     public void apply(Object element) {
         File foundFile = (File) element;
         String fileName = foundFile.getName().toLowerCase();
-        Matcher matcher = rePattern.matcher(fileName);
+        Matcher matcher = _rePattern.matcher(fileName);
 
         if (!matcher.matches()) return;
         _foundFiles.add(foundFile);

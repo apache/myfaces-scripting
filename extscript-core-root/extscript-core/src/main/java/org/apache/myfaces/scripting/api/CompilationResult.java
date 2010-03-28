@@ -31,18 +31,18 @@ public class CompilationResult {
      * print to the console, if you executed the same process on the command line
      * instead.
      */
-    private String compilerOutput;
+    private String _compilerOutput;
 
     /**
      * A list of error messages that the compiler has produced. Note that if there
      * are no error messages, it's safe to assume that compilation succeeded.
      */
-    private List<CompilationMessage> errors;
+    private List<CompilationMessage> _errors;
 
     /**
      * A list of warnings that the compiler has produced.
      */
-    private List<CompilationMessage> warnings;
+    private List<CompilationMessage> _warnings;
 
     // ------------------------------------------ Constructors
 
@@ -57,10 +57,10 @@ public class CompilationResult {
      *                       the command line instead
      */
     public CompilationResult(String compilerOutput) {
-        this.compilerOutput = compilerOutput;
+        this._compilerOutput = compilerOutput;
 
-        this.errors = new ArrayList<CompilationMessage>();
-        this.warnings = new ArrayList<CompilationMessage>();
+        this._errors = new ArrayList<CompilationMessage>();
+        this._warnings = new ArrayList<CompilationMessage>();
     }
 
     // ------------------------------------------ Public methods
@@ -73,7 +73,7 @@ public class CompilationResult {
      * @return the compiler output
      */
     public String getCompilerOutput() {
-        return compilerOutput;
+        return _compilerOutput;
     }
 
     /**
@@ -84,7 +84,7 @@ public class CompilationResult {
      *         was sucessful; <code>false</code> otherwise
      */
     public boolean hasErrors() {
-        return !errors.isEmpty();
+        return !_errors.isEmpty();
     }
 
     /**
@@ -94,7 +94,7 @@ public class CompilationResult {
      */
     public void registerError(CompilationMessage message) {
         if (message != null) {
-            errors.add(message);
+            _errors.add(message);
         }
     }
 
@@ -105,7 +105,7 @@ public class CompilationResult {
      * @return a list of error messages
      */
     public List<CompilationMessage> getErrors() {
-        return errors;
+        return _errors;
     }
 
     /**
@@ -116,7 +116,7 @@ public class CompilationResult {
      */
     public void registerWarning(CompilationMessage message) {
         if (message != null) {
-            warnings.add(message);
+            _warnings.add(message);
         }
     }
 
@@ -127,7 +127,7 @@ public class CompilationResult {
      * @return a list of warnings
      */
     public List<CompilationMessage> getWarnings() {
-        return warnings;
+        return _warnings;
     }
 
     // ------------------------------------------ Public static classes

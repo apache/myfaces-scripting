@@ -40,20 +40,20 @@ import java.util.logging.Logger;
  */
 
 public class CompilerFacade implements DynamicCompiler {
-    protected org.apache.myfaces.scripting.api.Compiler compiler = null;
+    protected org.apache.myfaces.scripting.api.Compiler _compiler = null;
 
-    Logger log = Logger.getLogger(this.getClass().getName());
+    Logger _log = Logger.getLogger(this.getClass().getName());
 
     public CompilerFacade() {
         super();
 
-        compiler = JavaCompilerFactory.getInstance().getCompilerInstance();
+        _compiler = JavaCompilerFactory.getInstance().getCompilerInstance();
     }
 
     public CompilerFacade(boolean allowJSR) {
         super();
 
-        compiler = JavaCompilerFactory.getInstance().getCompilerInstance(allowJSR);
+        _compiler = JavaCompilerFactory.getInstance().getCompilerInstance(allowJSR);
     }
 
     /**
@@ -70,14 +70,14 @@ public class CompilerFacade implements DynamicCompiler {
             //so that we do not run into endless compile cycles
             RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
             classLoader.setSourceRoot(sourceRoot);
-            CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
+            CompilationResult result = _compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
             displayMessages(result);
             if (result.hasErrors()) {
-                log.log(Level.WARNING, "Compiler output:{0}", result.getCompilerOutput());
+                _log.log(Level.WARNING, "Compiler output:{0}", result.getCompilerOutput());
             }
 
         } catch (org.apache.myfaces.scripting.api.CompilationException e) {
-            log.log(Level.SEVERE, "CompilationException : ", e);
+            _log.log(Level.SEVERE, "CompilationException : ", e);
         }
     }
 
@@ -112,24 +112,24 @@ public class CompilerFacade implements DynamicCompiler {
         try {
             RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
 
-            CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
+            CompilationResult result = _compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 
             classLoader.setSourceRoot(sourceRoot);
             displayMessages(result);
             return WeavingContext.getConfiguration().getCompileTarget();
         } catch (CompilationException e) {
-            log.log(Level.SEVERE, "CompilationException :", e);
+            _log.log(Level.SEVERE, "CompilationException :", e);
         }
         return null;
     }
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.log(Level.WARNING, "[EXT-SCRIPTING] Compile Error: {0} - {1}", new String[]{Long.toString(error.getLineNumber()), error.getMessage()});
+            _log.log(Level.WARNING, "[EXT-SCRIPTING] Compile Error: {0} - {1}", new String[]{Long.toString(error.getLineNumber()), error.getMessage()});
 
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
-            log.warning(error.getMessage());
+            _log.warning(error.getMessage());
         }
     }
 

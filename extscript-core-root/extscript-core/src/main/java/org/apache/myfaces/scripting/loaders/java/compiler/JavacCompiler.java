@@ -56,7 +56,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
     /**
      * The logger instance for this class.
      */
-    private static final Logger logger = Logger.getLogger(JavacCompiler.class.getName());
+    private static final Logger _logger = Logger.getLogger(JavacCompiler.class.getName());
 
     /**
      * The class name of the javac compiler. Note that this class
@@ -67,7 +67,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
     /**
      * The class reference to the internal Javac compiler.
      */
-    private Class compilerClass;
+    private Class _compilerClass;
 
     // ------------------------------------------ Constructors
 
@@ -95,7 +95,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
         }
 
         try {
-            this.compilerClass = classLoader.loadClass(JAVAC_MAIN);
+            this._compilerClass = classLoader.loadClass(JAVAC_MAIN);
         } catch (ClassNotFoundException ex) {
             throw new IllegalStateException("The Javac compiler class '" + JAVAC_MAIN + "' couldn't be found even though" +
                     "the required JAR file '$JAVA_HOME$/lib/tools.jar' has been put on the classpath. Are you sure that " +
@@ -118,7 +118,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
         try {
             StringWriter compilerOutput = new StringWriter();
             // Invoke the Javac compiler
-            Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
+            Method compile = _compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
             Object[] compilerArguments = new Object[]{buildCompilerArgumentsWhitelisted(sourcePath, targetPath, loader), new PrintWriter(compilerOutput)};
             logCommandLine(compilerArguments);
 
@@ -132,14 +132,14 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
             WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
             return result;
         } catch (NoSuchMethodException ex) {
-            throw new CompilationException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
+            throw new CompilationException("The Javac compiler class '" + _compilerClass + "' doesn't provide the method " +
                     "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
         } catch (InvocationTargetException ex) {
             throw new CompilationException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + _compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         } catch (IllegalAccessException ex) {
             throw new CompilationException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + _compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         }
 
     }
@@ -160,7 +160,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
             StringWriter compilerOutput = new StringWriter();
 
             // Invoke the Javac compiler
-            Method compile = compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
+            Method compile = _compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
             if (!targetPath.exists()) {
                 targetPath.mkdirs();
             }
@@ -180,29 +180,29 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
             WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
             return result;
         } catch (NoSuchMethodException ex) {
-            throw new IllegalStateException("The Javac compiler class '" + compilerClass + "' doesn't provide the method " +
+            throw new IllegalStateException("The Javac compiler class '" + _compilerClass + "' doesn't provide the method " +
                     "compile(String, PrintWriter). Are you sure that you're using a valid Sun JDK?", ex);
         } catch (InvocationTargetException ex) {
             throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + _compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("An error occured while invoking the compile(String, PrintWriter) method of the " +
-                    "Javac compiler class '" + compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
+                    "Javac compiler class '" + _compilerClass + "'. Are you sure that you're using a valid Sun JDK?", ex);
         }
     }
 
     private void logCommandLine(Object[] compilerArguments) {
-        if (logger.isLoggable(Level.FINE)) {
+        if (_logger.isLoggable(Level.FINE)) {
             StringBuilder commandLine = new StringBuilder();
             commandLine.append("javac ");
             for (String compilerArgument : (String[]) compilerArguments[0]) {
                 commandLine.append(compilerArgument);
                 commandLine.append(" ");
             }
-            logger.log(Level.FINE,commandLine.toString());
+            _logger.log(Level.FINE,commandLine.toString());
         }
-        if (logger.isLoggable(Level.INFO)) {
-            logger.info("[EXT-SCRIPTING] compiling java");
+        if (_logger.isLoggable(Level.INFO)) {
+            _logger.info("[EXT-SCRIPTING] compiling java");
         }
 
     }
@@ -321,8 +321,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
         // If the user has already included the tools.jar in the classpath we don't have
         // to create a custom class loader as the class is already available.
         if (ClassUtils.isPresent(JAVAC_MAIN)) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.FINE, "Seemingly the required JAR file '$JAVA_HOME$/lib/tools.jar' has already been "
+            if (_logger.isLoggable(Level.FINE)) {
+                _logger.log(Level.FINE, "Seemingly the required JAR file '$JAVA_HOME$/lib/tools.jar' has already been "
                         + "put on the classpath as the class '" + JAVAC_MAIN + "' is present. So there's no "
                         + "need to create a custom classloader for the Javac compiler.");
             }
@@ -342,8 +342,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                 // If the user hasn't specified the URL to the tools.jar file, we'll try to find it on our own.
                 File toolsJarFile = new File(javaHome, "lib" + File.separatorChar + "tools.jar");
                 if (toolsJarFile.exists()) {
-                    if (logger.isLoggable(Level.FINE)) {
-                        logger.log(Level.FINE,
+                    if (_logger.isLoggable(Level.FINE)) {
+                        _logger.log(Level.FINE,
                                 "The required JAR file '$JAVA_HOME$/lib/tools.jar' has been found ['" + toolsJarFile.getAbsolutePath()
                                         + "']. A custom URL classloader will be created for the Javac compiler.");
                     }
@@ -356,8 +356,8 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                             "[$JAVA_HOME$: '" + System.getProperty("java.home") + "']");
                 }
             } else {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, "The user has specified the required JAR file '$JAVA_HOME$/lib/tools.jar' ['"
+                if (_logger.isLoggable(Level.FINE)) {
+                    _logger.log(Level.FINE, "The user has specified the required JAR file '$JAVA_HOME$/lib/tools.jar' ['"
                             + toolsJar.toExternalForm() + "']. A custom URL classloader will be created for the Javac compiler.");
                 }
 

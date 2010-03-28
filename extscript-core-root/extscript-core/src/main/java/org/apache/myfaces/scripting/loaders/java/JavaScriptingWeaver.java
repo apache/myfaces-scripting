@@ -45,7 +45,7 @@ import java.io.Serializable;
  */
 public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, Serializable {
 
-    DynamicClassIdentifier identifier = new DynamicClassIdentifier();
+    DynamicClassIdentifier _identifier = new DynamicClassIdentifier();
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -95,7 +95,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
     }
 
     public boolean isDynamic(Class clazz) {
-        return identifier.isDynamic(clazz);  //To change body of implemented methods use File | Settings | File Templates.
+        return _identifier.isDynamic(clazz);  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**

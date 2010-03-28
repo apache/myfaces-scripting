@@ -23,9 +23,7 @@ import org.apache.myfaces.scripting.core.dependencyScan.registry.MasterDependenc
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -50,7 +48,7 @@ public class RefreshContext {
      * application scoped beans are refreshed at the first refresh cycle
      * by the calling request issuing the compile
      */
-    private volatile long personalScopedBeanRefresh = -1l;
+    private volatile long _personalScopedBeanRefresh = -1l;
 
 
     /**
@@ -99,10 +97,7 @@ public class RefreshContext {
      * depending on the state, changed => tainted == true, not changed
      * tainted == false!
      */
-    volatile FileChangedDaemon daemon = null;
-
-
-
+    volatile FileChangedDaemon _daemon = null;
 
     /**
      * internal class used by our own history log
@@ -218,7 +213,7 @@ public class RefreshContext {
      * @return a long value showing which personal bean refresh  was the last in time
      */
     public long getPersonalScopedBeanRefresh() {
-        return personalScopedBeanRefresh;
+        return _personalScopedBeanRefresh;
     }
 
     /**
@@ -227,7 +222,7 @@ public class RefreshContext {
      * @param personalScopedBeanRefresh
      */
     public void setPersonalScopedBeanRefresh(long personalScopedBeanRefresh) {
-        this.personalScopedBeanRefresh = personalScopedBeanRefresh;
+        this._personalScopedBeanRefresh = personalScopedBeanRefresh;
     }
 
     /**
@@ -238,12 +233,12 @@ public class RefreshContext {
      * @return
      */
     public boolean isRecompileRecommended(int scriptingEngine) {
-        Boolean recommended = daemon.getSystemRecompileMap().get(scriptingEngine);
+        Boolean recommended = _daemon.getSystemRecompileMap().get(scriptingEngine);
         return recommended == null || recommended.booleanValue();
     }
 
     public void setRecompileRecommended(int scriptingEngine, boolean recompileRecommended) {
-        daemon.getSystemRecompileMap().put(scriptingEngine, recompileRecommended);
+        _daemon.getSystemRecompileMap().put(scriptingEngine, recompileRecommended);
     }
 
     public DependencyRegistry getDependencyRegistry(int scriptingEngine) {
@@ -274,11 +269,11 @@ public class RefreshContext {
     }
 
     public FileChangedDaemon getDaemon() {
-        return daemon;
+        return _daemon;
     }
 
     public void setDaemon(FileChangedDaemon daemon) {
-        this.daemon = daemon;
+        this._daemon = daemon;
     }
 
     /**

@@ -17,19 +17,19 @@ import java.util.Map;
  */
 public class ScannerClassloader extends ClassLoader {
 
-    File tempDir = null;
+    File _tempDir = null;
 
     Map<String, Class> _alreadyScanned = new HashMap<String, Class>();
 
     public ScannerClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, File tempDir) {
         super(classLoader);
 
-        this.tempDir = tempDir;
+        this._tempDir = tempDir;
     }
 
     @Override
     public InputStream getResourceAsStream(String name) {
-        File resource = new File(tempDir.getAbsolutePath() + File.separator + name);
+        File resource = new File(_tempDir.getAbsolutePath() + File.separator + name);
         if (resource.exists()) {
             try {
                 return new FileInputStream(resource);
@@ -41,7 +41,7 @@ public class ScannerClassloader extends ClassLoader {
     }
 
     public File getClassFile(String className) {
-        return ClassUtils.classNameToFile(tempDir.getAbsolutePath(), className);
+        return ClassUtils.classNameToFile(_tempDir.getAbsolutePath(), className);
     }
 
     @Override

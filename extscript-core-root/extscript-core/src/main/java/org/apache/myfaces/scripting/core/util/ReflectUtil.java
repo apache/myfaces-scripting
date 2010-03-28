@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 public class ReflectUtil {
 
-    static Logger log = Logger.getLogger(ReflectUtil.class.getName());
+    static Logger _log = Logger.getLogger(ReflectUtil.class.getName());
 
     public static Object instantiate(String clazz, Object... varargs) {
         return instantiate(ClassUtils.forName(clazz), varargs);

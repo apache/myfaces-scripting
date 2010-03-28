@@ -59,7 +59,7 @@ public class ReloadingClassLoader extends URLClassLoader {
     /**
      * The logger instance for this class.
      */
-    private static final Logger logger = Logger.getLogger(ReloadingClassLoader.class.getName());
+    private static final Logger _logger = Logger.getLogger(ReloadingClassLoader.class.getName());
 
     /**
      * A table of class names and the according class loaders. It's basically like
@@ -68,14 +68,14 @@ public class ReloadingClassLoader extends URLClassLoader {
      * would loose the possibility to override them then, which is the reason why
      * each class has got its own class loader.
      */
-    private Map<String, ThrowAwayClassLoader> classLoaders =
+    private Map<String, ThrowAwayClassLoader> _classLoaders =
             new HashMap<String, ThrowAwayClassLoader>();
 
     /**
      * The target directory for the compiler, i.e. the directory that contains the
      * dynamically compiled .class files.
      */
-    private File compilationDirectory;
+    private File _compilationDirectory;
 
     // ------------------------------------------ Constructors
 
@@ -89,7 +89,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      */
     public ReloadingClassLoader(File compilationDirectory) {
         super(new URL[0]);
-        this.compilationDirectory = compilationDirectory;
+        this._compilationDirectory = compilationDirectory;
     }
 
     /**
@@ -103,7 +103,7 @@ public class ReloadingClassLoader extends URLClassLoader {
      */
     public ReloadingClassLoader(ClassLoader parentClassLoader, File compilationDirectory) {
         super(new URL[0], parentClassLoader);
-        this.compilationDirectory = compilationDirectory;
+        this._compilationDirectory = compilationDirectory;
     }
 
     // ------------------------------------------ URLClassLoader methods
@@ -128,11 +128,11 @@ public class ReloadingClassLoader extends URLClassLoader {
         // timestamps, etc.
         File classFile = resolveClassFile(className);
         if (classFile != null && classFile.exists()) {
-            if (classLoaders.containsKey(className)) {
+            if (_classLoaders.containsKey(className)) {
                 // Check if the class loader is already outdated, i.e. there is a newer class file available
                 // for the class we want to load than the class file we've already loaded. If that's the case
                 // we're going to throw away this ClassLoader and create a new one for linkage reasons.
-                ThrowAwayClassLoader classLoader = classLoaders.get(className);
+                ThrowAwayClassLoader classLoader = _classLoaders.get(className);
                 if (classLoader.isOutdated(classFile.lastModified())) {
                     // If the class loader is outdated, create a new one. Otherwise the same class loader
                     // would have to load the same class twice or more often which would cause severe
@@ -141,8 +141,8 @@ public class ReloadingClassLoader extends URLClassLoader {
                     reloadClass(className);
                 }
             } else {
-                if (logger.isLoggable(Level.FINEST)) {
-                    logger.log(Level.FINEST, "A new dynamic class '"
+                if (_logger.isLoggable(Level.FINEST)) {
+                    _logger.log(Level.FINEST, "A new dynamic class '"
                             + className + "' has been found by this class loader '" + this + "'.");
                 }
 
@@ -151,13 +151,13 @@ public class ReloadingClassLoader extends URLClassLoader {
                 reloadClass(className);
             }
 
-            ThrowAwayClassLoader classLoader = classLoaders.get(className);
+            ThrowAwayClassLoader classLoader = _classLoaders.get(className);
             return classLoader.loadClass(className, resolve);
         } else {
             // Even though there is no class file available, there's still a chance that this
             // class loader has forcefully reloaded a statically compiled class.
-            if (classLoaders.containsKey(className)) {
-                ThrowAwayClassLoader classLoader = classLoaders.get(className);
+            if (_classLoaders.containsKey(className)) {
+                ThrowAwayClassLoader classLoader = _classLoaders.get(className);
                 return classLoader.loadClass(className, resolve);
             } else {
                 // However, if there's neither a .class file nor a reloadable class loader
@@ -176,9 +176,9 @@ public class ReloadingClassLoader extends URLClassLoader {
      */
     public URL[] getURLs() {
         try {
-            return new URL[]{compilationDirectory.toURI().toURL()};
+            return new URL[]{_compilationDirectory.toURI().toURL()};
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Couldn't resolve the URL to the compilation directory {0} {1} {2} ", new String[]{compilationDirectory.getAbsolutePath(), ex.getMessage(), ex.toString()});
+            _logger.log(Level.SEVERE, "Couldn't resolve the URL to the compilation directory {0} {1} {2} ", new String[]{_compilationDirectory.getAbsolutePath(), ex.getMessage(), ex.toString()});
             return new URL[0];
         }
     }
@@ -233,13 +233,13 @@ public class ReloadingClassLoader extends URLClassLoader {
             classLoader = new OverridingClassLoader(className, this);
         }
 
-        ThrowAwayClassLoader oldClassLoader = classLoaders.put(className, classLoader);
-        if (logger.isLoggable(Level.INFO)) {
+        ThrowAwayClassLoader oldClassLoader = _classLoaders.put(className, classLoader);
+        if (_logger.isLoggable(Level.INFO)) {
             if (oldClassLoader != null) {
-                logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
+                _logger.info("Replaced the class loader '" + oldClassLoader + "' with the class loader '"
                         + classLoader + "' as this class loader is supposed to reload the class '" + className + "'.");
             } else {
-                logger.info("Installed a new class loader '" + classLoader + "' for the class '"
+                _logger.info("Installed a new class loader '" + classLoader + "' for the class '"
                         + className + "' as this class loader is supposed to reload it.");
             }
         }
@@ -257,13 +257,13 @@ public class ReloadingClassLoader extends URLClassLoader {
     @SuppressWarnings("unused")
     public ReloadingClassLoader cloneWithParentClassLoader(ClassLoader parentClassLoader) {
         ReloadingClassLoader classLoader =
-                new ReloadingClassLoader(parentClassLoader, compilationDirectory);
+                new ReloadingClassLoader(parentClassLoader, _compilationDirectory);
 
         // Note that we don't have to create "deep copies" as the class loaders in the map
         // are immutable anyway (they are only supposed to load a single class) and additionally
         // this map doesn't contain any classes that have been loaded using the current parent
         // class loader!
-        classLoader.classLoaders = new HashMap<String, ThrowAwayClassLoader>(classLoaders);
+        classLoader._classLoaders = new HashMap<String, ThrowAwayClassLoader>(_classLoaders);
 
         return classLoader;
     }
@@ -286,7 +286,7 @@ public class ReloadingClassLoader extends URLClassLoader {
     protected File resolveClassFile(String className) {
         // This method just has to look in the specified compilation directory. The
         // relative class file path can be computed from the class name.
-        return new File(compilationDirectory,
+        return new File(_compilationDirectory,
                 className.replaceAll("\\.", FILE_SEPARATOR).concat(".class"));
     }
 

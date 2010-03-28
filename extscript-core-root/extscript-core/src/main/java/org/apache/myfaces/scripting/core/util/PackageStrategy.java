@@ -22,7 +22,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.core.util.Strategy;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,9 +38,9 @@ public class PackageStrategy
         implements Strategy
 
 {
-    String rootDir = "";
+    String _rootDir = "";
     Set<String> _foundFiles;
-    Pattern rePattern;
+    Pattern _rePattern;
 
     public PackageStrategy(Set<String> target, String pattern) {
         pattern = pattern.trim().replaceAll("\\.", "\\\\.");
@@ -49,7 +48,7 @@ public class PackageStrategy
 
         _foundFiles = target;
 
-        rePattern = Pattern.compile(pattern);
+        _rePattern = Pattern.compile(pattern);
 
     }
 
@@ -59,12 +58,12 @@ public class PackageStrategy
     public void apply(Object element) {
         File foundFile = (File) element;
         String fileName = foundFile.getName().toLowerCase();
-        Matcher matcher = rePattern.matcher(fileName);
+        Matcher matcher = _rePattern.matcher(fileName);
 
         if (!matcher.matches()) return;
 
         if (!foundFile.isDirectory()) {
-            String relativePath = foundFile.getPath().substring(rootDir.length() + 1);
+            String relativePath = foundFile.getPath().substring(_rootDir.length() + 1);
             relativePath = FilenameUtils.separatorsToUnix(relativePath);
             _foundFiles.add(relativePath.replaceAll("\\/", "."));
         }

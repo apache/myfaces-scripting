@@ -166,7 +166,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             return null;
         }
         if (!metadata.isTainted()) {
-            //if not tained then we can recycle the last class loaded
+            //if not tainted then we can recycle the last class loaded
             return metadata.getAClass();
         }
         synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
@@ -216,10 +216,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             return reloadScriptingClass(metadata.getAClass());
         }
         return null;
-    }
-
-    protected Logger getLog() {
-        return _log;
     }
 
     protected boolean assertScriptingEngine(ReloadingMetadata reloadMeta) {
@@ -351,20 +347,15 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     protected boolean isFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (context != null) {
-            return context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
-        }
-        return false;
+        return context != null && context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
     }
 
     protected void markAsFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context != null) {
             //mark the request as tainted with recompile
-            if (context != null) {
-                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-                requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
-            }
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
         }
         WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
     }
@@ -391,7 +382,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             _log.info(getLoadingInfo(file));
         }
 
-        Iterator<String> it = WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine()).iterator();
         Class retVal = null;
 
         try {

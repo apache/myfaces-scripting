@@ -43,7 +43,7 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
     //ContainerFileManager fileManager = null;
 
-    Logger log = Logger.getLogger(this.getClass().getName());
+    Logger _log = Logger.getLogger(this.getClass().getName());
     GroovyCompiler compiler;
 
     public GroovyCompilerFacade() {
@@ -118,10 +118,10 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
     private void displayMessages(CompilationResult result) {
         for (CompilationResult.CompilationMessage error : result.getErrors()) {
-            log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler error: {0} - {1}", new String[]{Long.toString(error.getLineNumber()), error.getMessage()});
+            _log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler error: {0} - {1}", new String[]{Long.toString(error.getLineNumber()), error.getMessage()});
         }
         for (CompilationResult.CompilationMessage error : result.getWarnings()) {
-            log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler warning: {0}", error.getMessage());
+            _log.log(Level.WARNING, "[EXT-SCRIPTING] Groovy compiler warning: {0}", error.getMessage());
         }
         WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY, result);
     }

@@ -18,14 +18,8 @@
  */
 package org.apache.myfaces.scripting.servlet;
 
-import org.apache.myfaces.scripting.core.util.StringUtils;
-import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
-import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
-import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 
 import javax.servlet.ServletContext;
@@ -44,17 +38,15 @@ public class CustomChainLoader extends ClassLoaderExtension {
        * higher priority than the default ones 
        */
 
-    ScriptingWeaver scriptingWeaver = null;
-
-    Logger log = Logger.getLogger(CustomChainLoader.class.getName());
+    ScriptingWeaver _scriptingWeaver = null;
 
     public CustomChainLoader(ServletContext servletContext) {
-        scriptingWeaver = WeavingContext.getWeaver();
+        _scriptingWeaver = WeavingContext.getWeaver();
     }
   
 
     public Class forName(String name) {
-        if(scriptingWeaver == null) {
+        if(_scriptingWeaver == null) {
             return null;
         }
         if (name.endsWith(";")) {
@@ -75,7 +67,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
             return null;
         }
 
-        return scriptingWeaver.loadScriptingClassFromName(name);
+        return _scriptingWeaver.loadScriptingClassFromName(name);
     }
 
    

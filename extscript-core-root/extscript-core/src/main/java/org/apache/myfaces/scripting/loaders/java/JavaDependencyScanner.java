@@ -48,7 +48,7 @@ public class JavaDependencyScanner implements ClassScanner {
     DependencyScanner _depencyScanner = new StandardDependencyScanner();
 
     ScriptingWeaver _weaver;
-    Logger log = Logger.getLogger(JavaDependencyScanner.class.getName());
+    Logger _log = Logger.getLogger(JavaDependencyScanner.class.getName());
 
     public JavaDependencyScanner(ScriptingWeaver weaver) {
         this._weaver = weaver;
@@ -63,8 +63,8 @@ public class JavaDependencyScanner implements ClassScanner {
             WeavingContext.getRefreshContext().setDependencyScanned(getEngineType(), true);
         }
 
-        if (log.isLoggable(Level.INFO)) {
-            log.info("[EXT-SCRITPING] starting class dependency scan");
+        if (_log.isLoggable(Level.INFO)) {
+            _log.info("[EXT-SCRITPING] starting class dependency scan");
         }
         long start = System.currentTimeMillis();
         final Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
@@ -75,8 +75,8 @@ public class JavaDependencyScanner implements ClassScanner {
         }
 
         long end = System.currentTimeMillis();
-        if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "[EXT-SCRITPING] class dependency scan finished, duration: {0} ms", Long.toString(end - start));
+        if (_log.isLoggable(Level.FINE)) {
+            _log.log(Level.FINE, "[EXT-SCRITPING] class dependency scan finished, duration: {0} ms", Long.toString(end - start));
         }
 
     }

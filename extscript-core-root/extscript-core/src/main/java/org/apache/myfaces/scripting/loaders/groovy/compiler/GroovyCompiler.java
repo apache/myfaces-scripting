@@ -47,7 +47,7 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
     /**
      * The logger instance for this class.
      */
-    private static final Logger logger = Logger.getLogger(GroovyCompiler.class.getName());
+    private static final Logger _logger = Logger.getLogger(GroovyCompiler.class.getName());
 
     // ------------------------------------------ Compiler methods
 
@@ -169,8 +169,8 @@ public class GroovyCompiler implements org.apache.myfaces.scripting.sandbox.comp
             return new CompilationResult.CompilationMessage(
                     syntaxErrorMessage.getCause().getLine(), syntaxErrorMessage.getCause().getMessage());
         } else {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.FINE,
+            if (_logger.isLoggable(Level.FINE)) {
+                _logger.log(Level.FINE,
                         "This compiler came across an unknown message kind ['{0}']. It will be ignored.", message);
             }
 

@@ -49,7 +49,7 @@ public class FileChangedDaemon extends Thread {
 
     private static final String CONTEXT_KEY = "extscriptDaemon";
 
-    static FileChangedDaemon instance = null;
+    static FileChangedDaemon _instance = null;
 
     Map<String, ReloadingMetadata> _classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
     ClassDependencies _dependencyMap = new ClassDependencies();
@@ -78,16 +78,16 @@ public class FileChangedDaemon extends Thread {
 
         //we currently keep it as singleton but in the long run we will move it into the context
         //like everything else singleton-wise
-        if (WeavingContext.isScriptingEnabled() && instance == null) {
-            instance = new FileChangedDaemon();
-            externalContext.setAttribute(CONTEXT_KEY, instance);
+        if (WeavingContext.isScriptingEnabled() && _instance == null) {
+            _instance = new FileChangedDaemon();
+            externalContext.setAttribute(CONTEXT_KEY, _instance);
             /**
              * daemon thread to allow forced
              * shutdowns for web context restarts
              */
-            instance.setDaemon(true);
-            instance.setRunning(true);
-            instance.start();
+            _instance.setDaemon(true);
+            _instance.setRunning(true);
+            _instance.start();
 
         }
 

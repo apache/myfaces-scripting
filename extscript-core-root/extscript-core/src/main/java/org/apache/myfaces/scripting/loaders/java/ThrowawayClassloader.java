@@ -20,23 +20,23 @@ import java.util.logging.Logger;
 @JavaThrowAwayClassloader
 public class ThrowawayClassloader extends ClassLoader {
 
-    public static File tempDir = null;
+    public static File _tempDir = null;
     static double _tempMarker = Math.random();
     int _scriptingEngine;
     String _engineExtension;
     boolean _unTaintClasses = true;
 
-    String sourceRoot;
+    String _sourceRoot;
 
     public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
         super(classLoader);
-        if (tempDir == null) {
+        if (_tempDir == null) {
             synchronized (this.getClass()) {
-                if (tempDir != null) {
+                if (_tempDir != null) {
                     return;
                 }
 
-                tempDir = WeavingContext.getConfiguration().getCompileTarget();
+                _tempDir = WeavingContext.getConfiguration().getCompileTarget();
             }
         }
         _scriptingEngine = scriptingEngine;
@@ -64,7 +64,7 @@ public class ThrowawayClassloader extends ClassLoader {
 
     @Override
     public InputStream getResourceAsStream(String name) {
-        File resource = new File(tempDir.getAbsolutePath() + File.separator + name);
+        File resource = new File(_tempDir.getAbsolutePath() + File.separator + name);
         if (resource.exists()) {
             try {
                 return new FileInputStream(resource);
@@ -188,22 +188,22 @@ public class ThrowawayClassloader extends ClassLoader {
     }
 
     public File getClassFile(String className) {
-        return ClassUtils.classNameToFile(tempDir.getAbsolutePath(), className);
+        return ClassUtils.classNameToFile(_tempDir.getAbsolutePath(), className);
     }
 
     public File getTempDir() {
-        return tempDir;
+        return _tempDir;
     }
 
     public void setTempDir(File tempDir) {
-        this.tempDir = tempDir;
+        this._tempDir = tempDir;
     }
 
     public String getSourceRoot() {
-        return sourceRoot;
+        return _sourceRoot;
     }
 
     public void setSourceRoot(String sourceRoot) {
-        this.sourceRoot = sourceRoot;
+        this._sourceRoot = sourceRoot;
     }
 }

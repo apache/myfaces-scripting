@@ -58,7 +58,7 @@ public class WeavingContext {
 
     /**
      * <p>
-     * we push our _weaver into the thread local
+     * we push our weaver into the thread local
      * to avoid too many calls into the
      * context class loading hierarchy
      * this should speed things up a little bit.
