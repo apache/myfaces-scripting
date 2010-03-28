@@ -27,7 +27,7 @@ public class BlogEntry {
     String firstName = "";
     String lastName = "";
     String topic = "";
-    String content = "";  
+    String content = "";
     
     public String getFirstName() {
         return firstName;
