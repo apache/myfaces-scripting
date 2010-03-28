@@ -55,15 +55,29 @@ public class WeavingContextInitializer {
         initWeavers(servletContext);
         initRefreshContext(servletContext);
         initFileChangeDaemon(servletContext);
+        initExternalContext(servletContext);
+    }
+
+    private static void initExternalContext(ServletContext servletContext) {
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
         WeavingContext.setExternalContext(servletContext);
     }
 
     private static void initFileChangeDaemon(ServletContext servletContext) {
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
+
         FileChangedDaemon.startup(servletContext);
         WeavingContext.getRefreshContext().setDaemon(FileChangedDaemon.getInstance());
     }
 
     private static void initConfiguration(ServletContext servletContext) {
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
         final Configuration configuration = new Configuration();
         servletContext.setAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION, configuration);
         WeavingContext.setConfiguration(configuration);
@@ -142,6 +156,10 @@ public class WeavingContextInitializer {
     private static boolean initWeavers(ServletContext servletContext) {
         _logger.fine("[EXT-SCRIPTING] initializing the weaving contexts");
 
+        if (!WeavingContext.isScriptingEnabled()) {
+            return false;
+        }
+
         ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
@@ -208,8 +226,12 @@ public class WeavingContextInitializer {
                 WeavingContext.setScriptingEnabled(false);
                 return;
             }
-            weaver.appendCustomScriptPath(scriptingRoot);
-            weaver.appendCustomScriptPath(classRoot);
+            if (!StringUtils.isBlank(scriptingRoot)) {
+                weaver.appendCustomScriptPath(scriptingRoot);
+            }
+            if (!StringUtils.isBlank(classRoot)) {
+                weaver.appendCustomScriptPath(classRoot);
+            }
         }
     }
 

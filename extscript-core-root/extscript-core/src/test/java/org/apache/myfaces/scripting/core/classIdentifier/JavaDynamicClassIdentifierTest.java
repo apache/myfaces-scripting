@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.core.classIdentifier;
 
 import org.apache.myfaces.scripting.core.CoreWeaver;
+import org.apache.myfaces.scripting.core.support.TWeavingContext;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.junit.Before;
 import org.junit.Test;

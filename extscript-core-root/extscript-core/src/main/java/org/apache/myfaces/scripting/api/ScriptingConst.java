@@ -26,6 +26,9 @@ package org.apache.myfaces.scripting.api;
  */
 @SuppressWarnings("unused")
 public class ScriptingConst {
+
+
+
     public static final String SCRIPTING_CLASSLOADER = "org.apache.myfaces.SCRIPTING_CLASSLOADER";
     public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.SCRIPTING_GROOVYFACTORY";
     public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.SCRIPTING_REQUSINGLETON";
@@ -35,6 +38,8 @@ public class ScriptingConst {
     public static final String INIT_PARAM_RESOURCE_PATH = "org.apache.myfaces.scripting.resources.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.scripting.groovy.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.scripting.java.LOADER_PATHS";
+    public static final String INIT_PARAM_MYFACES_PLUGIN = "org.apache.myfaces.FACES_INIT_PLUGINS";
+        
 
     public static final String CONTEXT_VALUE_DIVIDER = ",";
 

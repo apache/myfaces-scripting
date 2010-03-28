@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.lifecycle;
+package org.apache.myfaces.scripting.core.lifecycle;
 
-import org.apache.myfaces.extensions.scripting.support.MockServletContext;
+import org.apache.myfaces.scripting.core.support.MockServletContext;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.util.WeavingContextInitializer;
 import org.junit.Before;
@@ -30,33 +30,25 @@ import javax.servlet.ServletContext;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests which should secure the startup cycle
+ * A Testcase simulating failed startup conditions
+ * (first a missing servlet filter)
  *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class StartupTestCase {
+public class FailedStartupTestCase {
     ServletContext context;
 
     @Before
     public void init() {
-        context = new MockServletContext();
-        WeavingContextInitializer.initWeavingContext(context);
+        context = new MockServletContext("../../src/test/resources/brokenwebapp");
+
     }
 
     @Test
     public void testStartup() {
-        assertTrue("Configuration must be reachable", WeavingContext.getConfiguration() != null);
-        assertTrue("RefreshContext must be set", WeavingContext.getRefreshContext() != null);
-        assertTrue("Daemon must be running", WeavingContext.getRefreshContext().getDaemon().isRunning());
-        assertTrue("External context must be reachable", WeavingContext.getExternalContext() == context);
+        WeavingContextInitializer.initWeavingContext(context);
+        assertFalse("Scripting must be disabled", WeavingContext.isScriptingEnabled());
     }
-
-    @Test
-    public void testConfiguration() {
-         assertTrue("Compile target dir must be set",WeavingContext.getConfiguration().getCompileTarget() != null);
-         assertTrue("Initial compile flag must be set to allow the initial compile",WeavingContext.getConfiguration().isInitialCompile());
-    }
-
 }

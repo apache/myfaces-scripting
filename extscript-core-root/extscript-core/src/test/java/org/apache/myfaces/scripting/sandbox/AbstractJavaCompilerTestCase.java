@@ -20,7 +20,7 @@ package org.apache.myfaces.scripting.sandbox;
 
 import java.io.File;
 
-import org.apache.myfaces.extensions.scripting.support.AbstractGeneratorTestCase;
+import org.apache.myfaces.scripting.core.support.AbstractGeneratorTestCase;
 import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.sandbox.compiler.Compiler;
 import org.junit.Ignore;

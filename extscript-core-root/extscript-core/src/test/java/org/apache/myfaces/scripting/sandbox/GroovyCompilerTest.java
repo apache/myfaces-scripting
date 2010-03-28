@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.sandbox;
 
-import org.apache.myfaces.extensions.scripting.support.AbstractGeneratorTestCase;
+import org.apache.myfaces.scripting.core.support.AbstractGeneratorTestCase;
 import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
