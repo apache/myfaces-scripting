@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting;
+package org.apache.myfaces.extensions.scripting.support;
 
 import junit.framework.TestCase;
 import org.apache.myfaces.scripting.api.CompilationException;

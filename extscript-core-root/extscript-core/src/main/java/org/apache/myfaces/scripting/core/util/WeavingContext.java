@@ -50,7 +50,7 @@ public class WeavingContext {
     static class ThreadLocalData {
         public Object _weaverHolder;
         public Object _refreshContextHolder;
-        public Object _configurtion;
+        public Object _configuration;
         public Object _externalContext;
     }
 
@@ -310,7 +310,7 @@ public class WeavingContext {
      */
     public static void pushThreadingData() {
         ThreadLocalData data = new ThreadLocalData();
-        data._configurtion = getConfiguration();
+        data._configuration = getConfiguration();
         data._refreshContextHolder = getRefreshContext();
         data._weaverHolder = getWeaver();
         data._externalContext = getExternalContext();
@@ -319,7 +319,7 @@ public class WeavingContext {
 
     public static void popThreadingData() {
         ThreadLocalData data = _referenceThreadHolder;
-        setConfiguration((Configuration) data._configurtion);
+        setConfiguration((Configuration) data._configuration);
         setRefreshContext((RefreshContext) data._refreshContextHolder);
         setWeaver(data._weaverHolder);
         setExternalContext(data._externalContext);

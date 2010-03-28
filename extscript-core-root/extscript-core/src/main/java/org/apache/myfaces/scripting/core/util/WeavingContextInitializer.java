@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 
-class WeavingContextInitializer {
+public class WeavingContextInitializer {
 
     static final Logger _logger = Logger.getLogger(WeavingContextInitializer.class.getName());
 
@@ -55,6 +55,7 @@ class WeavingContextInitializer {
         initWeavers(servletContext);
         initRefreshContext(servletContext);
         initFileChangeDaemon(servletContext);
+        WeavingContext.setExternalContext(servletContext);
     }
 
     private static void initFileChangeDaemon(ServletContext servletContext) {

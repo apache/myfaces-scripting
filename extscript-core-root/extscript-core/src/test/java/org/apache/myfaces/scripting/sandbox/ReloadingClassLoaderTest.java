@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.sandbox;
 
-import org.apache.myfaces.extensions.scripting.AbstractGeneratorTestCase;
+import org.apache.myfaces.extensions.scripting.support.AbstractGeneratorTestCase;
 import org.apache.myfaces.scripting.sandbox.loader.ReloadingClassLoader;
 import org.junit.Ignore;
 

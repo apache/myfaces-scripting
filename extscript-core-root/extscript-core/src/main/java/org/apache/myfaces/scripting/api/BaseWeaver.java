@@ -93,7 +93,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     public void appendCustomScriptPath(String scriptPath) {
         String normalizedScriptPath = FilenameUtils.normalize(scriptPath);
         if (normalizedScriptPath.endsWith(File.separator)) {
-            normalizedScriptPath = normalizedScriptPath.substring(0, scriptPath.length() - File.separator.length());
+            normalizedScriptPath = normalizedScriptPath.substring(0, normalizedScriptPath.length() - File.separator.length());
         }
 
         WeavingContext.getConfiguration().addSourceDir(getScriptingEngine(), normalizedScriptPath);

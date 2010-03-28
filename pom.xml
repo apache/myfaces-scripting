@@ -59,6 +59,16 @@
             </snapshots>
         </repository>
         <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>apache-maven-snapshots</id>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+        </repository>
+        <repository>
             <id>myfaces2beta3</id>
             <url>http://people.apache.org/~lu4242/myfaces200beta3/</url>
             <releases>
@@ -80,7 +90,7 @@
             <scope>provided</scope>
         </dependency>
 
-  
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -102,6 +112,25 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.myfaces.test</groupId>
+            <artifactId>myfaces-test20</artifactId>
+            <version>1.0.0-beta</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymockclassextension</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

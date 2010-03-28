@@ -18,18 +18,14 @@
  */
 package org.apache.myfaces.scripting.core.classIdentifier;
 
-import org.junit.Test;
+import org.apache.myfaces.scripting.core.CoreWeaver;
+import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Test;
+
+import java.net.URL;
 
 import static org.junit.Assert.*;
-
-import org.apache.myfaces.scripting.core.CoreWeaver;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
-import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
-
-import java.io.File;
-import java.net.URL;
 
 /**
  * @author werpu
@@ -44,8 +40,10 @@ public class JavaDynamicClassIdentifierTest {
 
     @Before
     public void setUp() {
+
+
+
         probe1 = new Probe1();
-        //ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         URL rootPath = this.getClass().getClassLoader().getResource(".");
 
         DynamicClassloader throwAwayClassloader = new DynamicClassloader(this.getClass().getClassLoader(), rootPath.getPath());
@@ -62,8 +60,12 @@ public class JavaDynamicClassIdentifierTest {
     }
 
     @Test
-    public void isDynamic() {
+    public void isStatic() {
         assertFalse("Class should be static", TWeavingContext.isDynamic(probe1.getClass()));
+    }
+
+    @Test
+    public void isDynamic() {
         assertTrue("Class should be dynamic", TWeavingContext.isDynamic(probe2.getClass()));
     }
 
