@@ -19,7 +19,6 @@
 
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
@@ -27,6 +26,7 @@ import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.core.util.stax.FilterClassDigester;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
+import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.servlet.ScriptingServletFilter;
 
@@ -54,12 +54,18 @@ class WeavingContextInitializer {
         initConfiguration(servletContext);
         initWeavers(servletContext);
         initRefreshContext(servletContext);
+        initFileChangeDaemon(servletContext);
+    }
+
+    private static void initFileChangeDaemon(ServletContext servletContext) {
+        FileChangedDaemon.startup(servletContext);
+        WeavingContext.getRefreshContext().setDaemon(FileChangedDaemon.getInstance());
     }
 
     private static void initConfiguration(ServletContext servletContext) {
-        final Configuration conf = new Configuration();
-        servletContext.setAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION, conf);
-        WeavingContext.setConfiguration(conf);
+        final Configuration configuration = new Configuration();
+        servletContext.setAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION, configuration);
+        WeavingContext.setConfiguration(configuration);
         //we now add the resource loader path here
 
         /*
@@ -69,17 +75,17 @@ class WeavingContextInitializer {
          */
         Strategy addResourceDirStrategy = new Strategy() {
             public void apply(Object element) {
-                conf.addResourceDir((String) element);
+                configuration.addResourceDir((String) element);
             }
         };
         Strategy addAdditionalClassPathStrategy = new Strategy() {
             public void apply(Object element) {
-                conf.addAdditionalClassPath((String) element);
+                configuration.addAdditionalClassPath((String) element);
             }
         };
         Strategy addWhiteListPackageStrategy = new Strategy() {
             public void apply(Object element) {
-                conf.addWhitelistPackage((String) element);
+                configuration.addWhitelistPackage((String) element);
             }
         };
 
@@ -94,8 +100,8 @@ class WeavingContextInitializer {
 
     private static void applyEntries(String val, Strategy strategy) {
         if (!StringUtils.isBlank(val)) {
-            String[] splittedVal = val.split(ScriptingConst.CONTEXT_VALUE_DIVIDER);
-            for (String singleVal : splittedVal) {
+            String[] splitVal = val.split(ScriptingConst.CONTEXT_VALUE_DIVIDER);
+            for (String singleVal : splitVal) {
                 strategy.apply(singleVal);
             }
         }
@@ -167,7 +173,6 @@ class WeavingContextInitializer {
         }
         RefreshContext rContext = new RefreshContext();
         servletContext.setAttribute(ScriptingConst.CTX_ATTR_REFRESH_CONTEXT, rContext);
-        rContext.getDaemon().initWeavingContext(servletContext);
         WeavingContext.setRefreshContext(rContext);
     }
 
@@ -177,7 +182,7 @@ class WeavingContextInitializer {
         }
 
         String classRoot = "";
-        String scriptingRoot = "";
+        String scriptingRoot;
 
         String additionalLoaderPaths;
 

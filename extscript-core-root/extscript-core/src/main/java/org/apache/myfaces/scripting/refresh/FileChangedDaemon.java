@@ -33,25 +33,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Reimplementation of the file changed daemon thread
- * in java. The original one was done in groovy
- * this threads purpose is to watch the files
- * loaded by the various engine loaders for
- * for file changes and then if one has changed we have to mark
- * it for further processing
+ * Central daemon thread which watches the resources
+ * for changes and marks them as changed.
+ * This watchdog daemon is the central core
+ * of the entire scripting engine it runs asynchronously
+ * to your program and keeps an eye on the resources
+ * and their dependencies, once a file has changed
+ * all the referring dependencies are also marked
+ * as being to reloaded.
  *
- * @author werpu
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
 public class FileChangedDaemon extends Thread {
 
+    private static final String CONTEXT_KEY = "extscriptDaemon";
+
     static FileChangedDaemon instance = null;
 
-    Map<String, ReloadingMetadata> classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
-    ClassDependencies dependencyMap = new ClassDependencies();
+    Map<String, ReloadingMetadata> _classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
+    ClassDependencies _dependencyMap = new ClassDependencies();
 
     /**
-     * this map is a shortcut for the various scripting engines
-     * it keeps track whether the engines source paths
+     * This map is a shortcut for the various scripting engines.
+     * It keeps track whether the engines source paths
      * have dirty files or not and if true we enforce a recompile at the
      * next refresh!
      * <p/>
@@ -59,28 +64,23 @@ public class FileChangedDaemon extends Thread {
      * the classMap still is needed for various identification tasks which are reload
      * related
      */
-    Map<Integer, Boolean> systemRecompileMap = new ConcurrentHashMap<Integer, Boolean>(8, 0.75f, 1);
+    Map<Integer, Boolean> _systemRecompileMap = new ConcurrentHashMap<Integer, Boolean>(8, 0.75f, 1);
 
-    boolean running = false;
-    boolean contextInitialized = false;
-    Logger log = Logger.getLogger(FileChangedDaemon.class.getName());
+    boolean _running = false;
+    boolean _contextInitialized = false;
+    Logger _log = Logger.getLogger(FileChangedDaemon.class.getName());
     ScriptingWeaver _weavers = null;
-    WeakReference externalContext;
+    static WeakReference _externalContext;
 
-    public void initWeavingContext(Object externalContext) {
-        if (this.externalContext != null) return;
-        this.externalContext = new WeakReference(externalContext);
-    }
+    public static synchronized void startup(ServletContext externalContext) {
+        if (_externalContext != null) return;
+        _externalContext = new WeakReference(externalContext);
 
-    public static synchronized void clear() {
-        instance = null;
-    }
-
-    public static synchronized FileChangedDaemon getInstance() {
         //we currently keep it as singleton but in the long run we will move it into the context
         //like everything else singleton-wise
         if (WeavingContext.isScriptingEnabled() && instance == null) {
             instance = new FileChangedDaemon();
+            externalContext.setAttribute(CONTEXT_KEY, instance);
             /**
              * daemon thread to allow forced
              * shutdowns for web context restarts
@@ -91,7 +91,14 @@ public class FileChangedDaemon extends Thread {
 
         }
 
-        return instance;
+    }
+
+    public static synchronized void clear() {
+
+    }
+
+    public static synchronized FileChangedDaemon getInstance() {
+        return (FileChangedDaemon) ((ServletContext) _externalContext.get()).getAttribute(CONTEXT_KEY);
     }
 
     /**
@@ -99,10 +106,10 @@ public class FileChangedDaemon extends Thread {
      * which performs the entire scanning process
      */
     public void run() {
-        while (WeavingContext.isScriptingEnabled() && running) {
-            if (externalContext != null && !contextInitialized) {
-                WeavingContext.initThread((ServletContext) externalContext.get());
-                contextInitialized = true;
+        while (WeavingContext.isScriptingEnabled() && _running) {
+            if (_externalContext != null && !_contextInitialized) {
+                WeavingContext.initThread((ServletContext) _externalContext.get());
+                _contextInitialized = true;
             }
             try {
                 try {
@@ -112,17 +119,17 @@ public class FileChangedDaemon extends Thread {
                     //which we better should swallow
                 }
 
-                if (classMap == null || classMap.size() == 0)
+                if (_classMap == null || _classMap.size() == 0)
                     continue;
-                if (contextInitialized)
+                if (_contextInitialized)
                     checkForChanges();
             } catch (Throwable e) {
-                log.log(Level.SEVERE, "[EXT-SCRIPTING]", e);
+                _log.log(Level.SEVERE, "[EXT-SCRIPTING]", e);
 
             }
         }
-        if (log.isLoggable(Level.INFO)) {
-            log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
+        if (_log.isLoggable(Level.INFO)) {
+            _log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
         }
     }
 
@@ -137,13 +144,12 @@ public class FileChangedDaemon extends Thread {
         if (weaver == null) return;
         weaver.scanForAddedClasses();
 
-        for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
-            //if (!it.getValue().isTainted()) {
+        for (Map.Entry<String, ReloadingMetadata> it : this._classMap.entrySet()) {
 
             File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
-            if (/*!it.getValue().isTainted() &&*/ isModified(it, proxyFile)) {
+            if (isModified(it, proxyFile)) {
 
-                systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
+                _systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
                 ReloadingMetadata meta = it.getValue();
                 meta.setTainted(true);
                 meta.setTaintedOnce(true);
@@ -169,10 +175,10 @@ public class FileChangedDaemon extends Thread {
      * @param className the origin classname which needs to be walked recursively
      */
     private void dependencyTainted(String className) {
-        Set<String> referrers = dependencyMap.getReferringClasses(className);
+        Set<String> referrers = _dependencyMap.getReferringClasses(className);
         if (referrers == null) return;
         for (String referrer : referrers) {
-            ReloadingMetadata metaData = classMap.get(referrer);
+            ReloadingMetadata metaData = _classMap.get(referrer);
             if (metaData == null) continue;
             if (metaData.isTainted()) continue;
             printInfo(metaData);
@@ -189,40 +195,40 @@ public class FileChangedDaemon extends Thread {
     }
 
     private void printInfo(ReloadingMetadata it) {
-        if (log.isLoggable(Level.INFO)) {
-            log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFileName());
+        if (_log.isLoggable(Level.INFO)) {
+            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFileName());
         }
     }
 
     private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
-        if (log.isLoggable(Level.INFO)) {
-            log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getTimestamp())});
-            log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
+        if (_log.isLoggable(Level.INFO)) {
+            _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getTimestamp())});
+            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
         }
     }
 
     public boolean isRunning() {
-        return running;
+        return _running;
     }
 
     public void setRunning(boolean running) {
-        this.running = running;
+        this._running = running;
     }
 
     public Map<Integer, Boolean> getSystemRecompileMap() {
-        return systemRecompileMap;
+        return _systemRecompileMap;
     }
 
     public void setSystemRecompileMap(Map<Integer, Boolean> systemRecompileMap) {
-        this.systemRecompileMap = systemRecompileMap;
+        this._systemRecompileMap = systemRecompileMap;
     }
 
     public Map<String, ReloadingMetadata> getClassMap() {
-        return classMap;
+        return _classMap;
     }
 
     public void setClassMap(Map<String, ReloadingMetadata> classMap) {
-        this.classMap = classMap;
+        this._classMap = classMap;
     }
 
     public ScriptingWeaver getWeavers() {
@@ -234,7 +240,7 @@ public class FileChangedDaemon extends Thread {
     }
 
     public ClassDependencies getDependencyMap() {
-        return dependencyMap;
+        return _dependencyMap;
     }
 }
 

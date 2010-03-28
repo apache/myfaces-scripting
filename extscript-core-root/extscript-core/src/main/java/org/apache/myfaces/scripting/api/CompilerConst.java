@@ -19,11 +19,11 @@
 package org.apache.myfaces.scripting.api;
 
 /**
+ * Various constants shared over the various compiler implementations
+ * JSR or non JSR!
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Various constants shared over the various compiler implementations
- *          JSR or non JSR!
  */
 
 public class CompilerConst {

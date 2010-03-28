@@ -25,6 +25,9 @@ import javax.faces.context.FacesContext;
 import java.util.logging.Logger;
 
 /**
+ * Component which allows to check which files
+ * have been marked as possibly modified in the recent history
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

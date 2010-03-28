@@ -7,7 +7,12 @@ import org.apache.myfaces.scripting.loaders.java.JavaDependencyScanner;
 import org.apache.myfaces.scripting.loaders.java.ScannerClassloader;
 
 /**
- *
+ * Dependency scanner for groovy
+ * basically the same as the java dependency scanner
+ * but we use a different class here to fulfill
+ * our contractual obligations with the chain
+ * pattern we use for chaining different scanners
+ * depending on the scripting implementation
  */
 public class GroovyDependencyScanner extends JavaDependencyScanner {
 
@@ -28,7 +33,7 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
 
     @Override
     public void scanPaths() {
-        super.scanPaths();    
+        super.scanPaths();
     }
 
     protected String getScanIdentifier() {

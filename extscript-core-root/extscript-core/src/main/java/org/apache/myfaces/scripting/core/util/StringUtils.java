@@ -23,6 +23,7 @@ package org.apache.myfaces.scripting.core.util;
  * Replacement for commons lang
  * because we want to get the dependency out
  * after all we only used StringUtils
+ * 
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

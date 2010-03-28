@@ -70,10 +70,10 @@ public class WeavingContext {
      * a reference in the context and a threadLocal variable
      * </p>
      */
-    static protected ThreadLocal _weaverHolder = new ThreadLocal();
-    static protected ThreadLocal _refreshContextHolder = new ThreadLocal();
-    static protected ThreadLocal _configuration = new ThreadLocal();
-    static protected ThreadLocal _externalContext = new ThreadLocal();
+    static protected ThreadLocal<Object> _weaverHolder = new ThreadLocal<Object>();
+    static protected ThreadLocal<Object> _refreshContextHolder = new ThreadLocal<Object>();
+    static protected ThreadLocal<Object> _configuration = new ThreadLocal<Object>();
+    static protected ThreadLocal<Object> _externalContext = new ThreadLocal<Object>();
 
     private static final String WARN_WEAVER_NOT_SET = "[EXT-SCRIPTING] Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
@@ -151,7 +151,7 @@ public class WeavingContext {
      * we have to provide the weaver facade
      * for very thread accessing this system
      *
-     * @param weaver
+     * @param weaver the weaver object to be set from outside
      */
     public static void setWeaver(Object weaver) {
         _weaverHolder.set(weaver);
@@ -162,7 +162,7 @@ public class WeavingContext {
      * some artefacts need a full request refresh
      */
     public static void doRequestRefreshes() {
-        if(isScriptingEnabled())
+        if (isScriptingEnabled())
             getWeaver().requestRefresh();
     }
 
@@ -233,15 +233,16 @@ public class WeavingContext {
      *
      * @param o            the source object to be proxied
      * @param theInterface the proxying interface
+     * @param artifactType the artifact type to be reloaded
      * @return a proxied reloading object of type theInterface
      */
-    public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
+    public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artifactType) {
         if (!isScriptingEnabled()) {
             return o;
         }
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                 new Class[]{theInterface},
-                new MethodLevelReloadingHandler(o, artefactType));
+                new MethodLevelReloadingHandler(o, artifactType));
     }
 
     /**
@@ -249,32 +250,33 @@ public class WeavingContext {
      * which does reloading of the internal class
      * on newInstance level
      *
-     * @param o
-     * @param theInterface
-     * @return
+     * @param o            the original object
+     * @param theInterface the proxy interface
+     * @param artifactType the artifact type to be handled
+     * @return the proxy of the object if scripting is enabled, the original one otherwise
      */
-    public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface, int artefactType) {
+    public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface, int artifactType) {
         if (!isScriptingEnabled()) {
             return o;
         }
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                 new Class[]{theInterface},
-                new MethodLevelReloadingHandler(o, artefactType));
+                new MethodLevelReloadingHandler(o, artifactType));
     }
 
     public static FileChangedDaemon getFileChangedDaemon() {
         FileChangedDaemon daemon = getRefreshContext().getDaemon();
         if (daemon.getWeavers() == null) {
-            daemon.setWeavers((ScriptingWeaver) getWeaver());
+            daemon.setWeavers(getWeaver());
         }
         return daemon;
     }
 
     /**
-     * unmapping of a proxied object
+     * un-mapping of a proxied object
      *
      * @param o the proxied object
-     * @return the unproxied object
+     * @return the un-proxied object
      */
     public static Object getDelegateFromProxy(Object o) {
         if (o == null) {
@@ -319,7 +321,7 @@ public class WeavingContext {
         ThreadLocalData data = _referenceThreadHolder;
         setConfiguration((Configuration) data._configurtion);
         setRefreshContext((RefreshContext) data._refreshContextHolder);
-        setWeaver((ScriptingWeaver) data._weaverHolder);
+        setWeaver(data._weaverHolder);
         setExternalContext(data._externalContext);
     }
 

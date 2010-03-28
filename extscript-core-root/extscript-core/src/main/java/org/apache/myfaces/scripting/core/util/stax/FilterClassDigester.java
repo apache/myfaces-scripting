@@ -31,6 +31,11 @@ import java.util.Set;
 
 /**
  * A web.xml filter class digester based on StaX
+ * We use stax here for speed reasons, this is a highly
+ * specialized stax based scanner which does only one thing,
+ * it scans for the existence of a filter with a specified filter
+ * class.
+ * We use it currently only for error checking.
  *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -39,6 +44,14 @@ import java.util.Set;
 public class FilterClassDigester {
     private static final String ATTR_FILTER_CLASS = "filter-class";
 
+    /**
+     * checks if the filter with the specified filter class exists
+     * in the current web.xml
+     *
+     * @param webxml      the web.xml to be searched
+     * @param filterClass the filter class to be searched for
+     * @return true in case it is found false otherwise
+     */
     public static boolean findFilter(URL webxml, Class filterClass) {
         StringBuilder filterClassFound = new StringBuilder();
         Set<String> filterClasses = new HashSet<String>();
@@ -83,7 +96,7 @@ public class FilterClassDigester {
             try {
                 parser.close();
             } catch (XMLStreamException e) {
-               return false;
+                return false;
             }
         }
 

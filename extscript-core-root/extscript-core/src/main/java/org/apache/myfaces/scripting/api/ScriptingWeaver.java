@@ -38,7 +38,6 @@ public interface ScriptingWeaver {
      * appends a custom script search path to the original one
      *
      * @param scriptPath a script path to be appended
-     * @deprecated
      */
     public void appendCustomScriptPath(String scriptPath);
 

@@ -19,9 +19,10 @@
 package org.apache.myfaces.scripting.api;
 
 /**
+ * Generic  class identifier interface
+ * has to be implemented by all identifiers
+ *
  * @author Werner Punz
- *         Generic  class identifier interface
- *         has to be implemented by all identifiers
  */
 public interface DynamicClassIdentifier {
     /**
@@ -33,7 +34,8 @@ public interface DynamicClassIdentifier {
     public boolean isDynamic(Class clazz);
 
     /**
-     * gets the engine
+     * gets the engine type for the corresponding class
+     * (note every scripting engine is identified over a unique integer value)
      *
      * @param clazz the class which the engine type has to be determined for
      * @return the engine type as integer value

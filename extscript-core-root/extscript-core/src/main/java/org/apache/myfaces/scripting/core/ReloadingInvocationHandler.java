@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationHandler;
  * @version $Revision$ $Date$
  *          <p/>
  *          We set our own invocation handler
- *          here to allow reflection utils directly targetting our
+ *          here to allow reflection utils directly targeting our
  *          _delegate.
  */
 @SuppressWarnings("unused")

@@ -43,7 +43,7 @@ public class StartupServletContextPlugin implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        WeavingContext.getFileChangedDaemon().clear();
+
     }
 
 }

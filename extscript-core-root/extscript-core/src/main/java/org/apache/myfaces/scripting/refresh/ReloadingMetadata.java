@@ -35,78 +35,78 @@ public class ReloadingMetadata implements Cloneable {
      * volatile due to the ram concurrency behavior
      * of the instance vars jdk 5+
      */
-    volatile boolean tainted = false;
-    volatile boolean annotated = false;
-    volatile boolean taintedOnce = false;
-    volatile String fileName = "";
-    volatile String sourcePath = "";
-    volatile Class aClass = null;
-    volatile long timestamp = 0l;
-    volatile int scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
+    volatile boolean _tainted = false;
+    volatile boolean _annotated = false;
+    volatile boolean _taintedOnce = false;
+    volatile String _fileName = "";
+    volatile String _sourcePath = "";
+    volatile Class _aClass = null;
+    volatile long _timestamp = 0l;
+    volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
     public boolean isTainted() {
-        return tainted;
+        return _tainted;
     }
 
     public void setTainted(boolean tainted) {
-        this.tainted = tainted;
+        this._tainted = tainted;
     }
 
     public boolean isTaintedOnce() {
-        return taintedOnce;
+        return _taintedOnce;
     }
 
     public void setTaintedOnce(boolean taintedOnce) {
-        this.taintedOnce = taintedOnce;
+        this._taintedOnce = taintedOnce;
     }
 
     public String getFileName() {
-        return fileName;
+        return _fileName;
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName;
+        this._fileName = fileName;
     }
 
     public Class getAClass() {
-        return aClass;
+        return _aClass;
     }
 
     public void setAClass(Class aClass) {
-        this.aClass = aClass;
+        this._aClass = aClass;
     }
 
     public long getTimestamp() {
-        return timestamp;
+        return _timestamp;
     }
 
     public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+        this._timestamp = timestamp;
     }
 
     public int getScriptingEngine() {
-        return scriptingEngine;
+        return _scriptingEngine;
     }
 
     public void setScriptingEngine(int scriptingEngine) {
-        this.scriptingEngine = scriptingEngine;
+        this._scriptingEngine = scriptingEngine;
     }
 
     public String getSourcePath() {
-        return sourcePath;
+        return _sourcePath;
     }
 
     public void setSourcePath(String sourcePath) {
 
-        this.sourcePath = sourcePath;
+        this._sourcePath = sourcePath;
     }
 
     public boolean isAnnotated() {
-        return annotated;
+        return _annotated;
     }
 
     public void setAnnotated(boolean annotated) {
-        this.annotated = annotated;
+        this._annotated = annotated;
     }
 
     public ReloadingMetadata getClone() {

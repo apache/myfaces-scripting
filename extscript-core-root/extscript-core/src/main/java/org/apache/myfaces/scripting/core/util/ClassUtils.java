@@ -23,10 +23,11 @@ import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
 import java.io.File;
 
 /**
+ * A generic utils class dealing with different aspects
+ * (naming and reflection) of java classes
+ *
  * @author werpu
  *         <p/>
- *         A generic utils class dealing with different aspects
- *         (naming and reflection) of java classes
  */
 public class ClassUtils {
 

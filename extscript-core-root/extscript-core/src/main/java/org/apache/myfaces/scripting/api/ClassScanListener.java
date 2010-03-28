@@ -19,11 +19,12 @@
 package org.apache.myfaces.scripting.api;
 
 /**
+ * Observer interface which will be the base
+ * of a future event system
+ * (note currently unused)
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          We use a  code artefact observer here to register the
- *          meta data in the correct registry entries
  */
 public interface ClassScanListener {
 }

@@ -27,14 +27,15 @@ import javax.faces.context.FacesContext;
 import java.util.Map;
 
 /**
+ * We use a phase listener here for all parts of the refresh
+ * which have to rely on jsf access
+ * <p/>
+ * Which means all parts which need some kind of FacesConfig have
+ * to rely on this one, we trigger before the first phase
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          We use a phase listener here for all parts of the refresh
- *          which have to rely on jsf access
- *          <p/>
- *          Which means all parts which need some kind of FacesConfig have
- *          to rely on this one, we trigger before the first phase
+ *          
  */
 
 public class RefreshPhaseListener implements PhaseListener {

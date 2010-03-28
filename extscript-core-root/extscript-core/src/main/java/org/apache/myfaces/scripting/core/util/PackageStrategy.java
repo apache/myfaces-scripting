@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.loaders.java.util;
+package org.apache.myfaces.scripting.core.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.core.util.Strategy;

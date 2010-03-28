@@ -21,7 +21,7 @@ package org.apache.myfaces.scripting.loaders.groovy;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
 /**
- * The reloading throw away classloder
+ * The reloading throw away classloader
  * for groovy artifacts
  */
 public class GroovyRecompiledClassloader extends RecompiledClassLoader {

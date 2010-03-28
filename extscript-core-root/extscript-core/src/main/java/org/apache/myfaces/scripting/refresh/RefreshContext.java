@@ -23,6 +23,7 @@ import org.apache.myfaces.scripting.core.dependencyScan.registry.MasterDependenc
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -51,12 +52,6 @@ public class RefreshContext {
      */
     private volatile long personalScopedBeanRefresh = -1l;
 
-    /**
-     * the daemon thread which marks the scripting classes
-     * depending on the state, changed => tainted == true, not changed
-     * tainted == false!
-     */
-    volatile FileChangedDaemon daemon = FileChangedDaemon.getInstance();
 
     /**
      * the bean synchronisation has to be dealt with
@@ -98,6 +93,17 @@ public class RefreshContext {
      */
     private List<TaintingHistoryEntry> _taintLog = Collections.synchronizedList(new LinkedList<TaintingHistoryEntry>());
 
+
+    /**
+     * the daemon thread which marks the scripting classes
+     * depending on the state, changed => tainted == true, not changed
+     * tainted == false!
+     */
+    volatile FileChangedDaemon daemon = null;
+
+
+
+
     /**
      * internal class used by our own history log
      */
@@ -118,6 +124,8 @@ public class RefreshContext {
             return _data;
         }
     }
+
+    
 
     /**
      * adds a new entry into our taint log

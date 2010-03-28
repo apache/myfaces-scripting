@@ -31,14 +31,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
- * @author werpu
- *         <p/>
- *         <p/>
- *         Startup context plugin chainloader
- *         for MyFaces
- *         we hook ourselves into the startup event
- *         system we have for MyFaces 1.2.x+ to do the initial
- *         configuration before the MyFaces init itself starts!
+ * Note, since MyFaces 1.2.8 we have a startup and shutdown event system
+ * which allows us to to hook event listener on servlet level before JSF is initialized
+ * and after it is destroyed (and of course in the phases in between)
+ * <p/>
+ * We use this to start our scripting engine and to hook in our class loading
+ * facilities before MyFaces performs its startup routines.
+ *
+ * @author Werner Punz
  */
 public class StartupServletContextPluginChainLoader implements StartupListener {
     final Logger log = Logger.getLogger(this.getClass().getName());
@@ -99,6 +99,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     public void postDestroy(ServletContextEvent evt) {
         //context is destroyed we have to shut down our daemon as well, by giving it
         //a hint to shutdown
+
+        //TODO this is probably not needed because we run in a daemon thread anyway
+        //so the servlet should not have a problem to shut it down externally
         RefreshContext rContext = (RefreshContext) evt.getServletContext().getAttribute("RefreshContext");
         rContext.getDaemon().setRunning(false);
     }

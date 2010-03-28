@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.loaders.java.util;
+package org.apache.myfaces.scripting.core.util;
 
 /**
  * helper class which allows to deal with loops which have to keep track
  * of two running loop variables one being the total counter
- * oune being a counter which is modulated
+ * the other one being a counter which is modulated
  */
 public class ExtendedLoopCnt {
     int _cnt = 0;

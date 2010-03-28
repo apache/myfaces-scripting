@@ -18,8 +18,8 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.myfaces.scripting.loaders.java.util.DirStrategy;
-import org.apache.myfaces.scripting.loaders.java.util.FileStrategy;
+import org.apache.myfaces.scripting.core.util.DirStrategy;
+import org.apache.myfaces.scripting.core.util.FileStrategy;
 
 import java.io.File;
 import java.util.Collection;

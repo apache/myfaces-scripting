@@ -57,7 +57,6 @@ public class ScriptingServletFilter implements Filter {
         markRequestStart();
         WeavingContext.initThread(context);
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
-        WeavingContext.getFileChangedDaemon().initWeavingContext(context);
 
         try {
             filterChain.doFilter(servletRequest, servletResponse);

@@ -16,19 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.loaders.java;
+package org.apache.myfaces.scripting.core.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import org.apache.myfaces.scripting.core.util.Strategy;
+
+import java.io.File;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
- * @author werpu
- *         this annotation adds scripting behavior
- *         only classes using this annotation will be reloaded
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ScriptingClass {
+
+public class DirStrategy implements Strategy {
+    List<File> _foundFiles = new LinkedList<File>();
+
+    public void apply(Object element) {
+        File foundFile = (File) element;
+        if (foundFile.isDirectory()) {
+            _foundFiles.add(foundFile);
+        }
+    }
+
+    public List<File> getFoundFiles() {
+        return _foundFiles;
+    }
+
+    public void setFoundFiles(List<File> foundFiles) {
+        _foundFiles = foundFiles;
+    }
 }
+

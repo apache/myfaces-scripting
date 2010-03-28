@@ -48,7 +48,7 @@ public interface AnnotationScanListener extends ClassScanListener {
 
 
     /**
-     * class file registration of the supported annotation
+     * Class file registration of the supported annotation
      *
      * @param clazz          the class to be registered
      * @param annotationName the annotation for the class
@@ -56,7 +56,7 @@ public interface AnnotationScanListener extends ClassScanListener {
     public void register(Class clazz, Annotation annotationName);
 
     /**
-     * purges the class from the correct places of the myfaces registry
+     * Purges the class from the correct places of the myfaces registry
      * so that the artifact is not reachable anymore
      *
      * @param className the class name for the class which needs to be purged

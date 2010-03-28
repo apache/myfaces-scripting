@@ -19,20 +19,40 @@
 package org.apache.myfaces.scripting.api;
 
 /**
+ * <p/>
+ * Generic strategy for reloading
+ * this should encapsulate various
+ * reloading strategies
+ * which have to be applied depending
+ * on the artifact
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Generic strategy for reloading
- *          this should encapsulate various
- *          reloading strategies
- *          which have to be applied depending
- *          on the artifact
  */
 public interface ReloadingStrategy {
+    /**
+     * Reload method which is the central point for this
+     * strategy pattern
+     *
+     * @param toReload     the object to be reloaded
+     * @param artifactType the artifact type to be reloaded (so that the pattern either can ignore it or use it)
+     * @return either the original or the reloaded artifact depending on its type and state
+     */
     public Object reload(Object toReload, int artifactType);
 
-    public ScriptingWeaver getWeaver();
-
+    /**
+     * Now this looks weird, but some scripting languages
+     * have problems in a mixed environment so we allow
+     * the calling weaver to be set lazily
+     *
+     * @param weaver the calling weaver to be set
+     */
     public void setWeaver(ScriptingWeaver weaver);
 
+    /**
+     * getter for completeness
+     *
+     * @return the calling weaver
+     */
+    public ScriptingWeaver getWeaver();
 }

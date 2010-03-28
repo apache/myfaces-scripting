@@ -26,14 +26,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Generic artefact invocation handler
+ * Generic artifact invocation handler
  * which should be able to cover
- * all interfacable artefacts which
+ * all interfaceable artifacts which
  * only have reloading logic
  * and can cope with reloading on method level
  * <p/>
- * Note this works only for a minority of the artefacts
- * the reason, most artefacts do not rely on interfaces but
+ * Note this works only for a minority of the artifacts
+ * the reason, most artifacts do not rely on interfaces but
  * on base classes
  *
  * @author Werner Punz
@@ -58,7 +58,7 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
      * @param method       the method
      * @param paramHolders the param holders
      * @return the return value of the operation
-     * @throws Throwable
+     * @throws Throwable in case of an error
      */
     public Object invoke(Object object, Method method, Object[] paramHolders) throws Throwable {
         return reloadInvoke(method, paramHolders);

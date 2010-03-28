@@ -19,12 +19,12 @@
 package org.apache.myfaces.scripting.core.util;
 
 /**
+ * Applied strategy class for iteration walkers
+ * to make the handling of iterated objects
+ * more scripting language like (aka a pattern similar to closures)
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Applied strategy class for iteration walkers
- *          to make the handling of iterated objects
- *          more scripty al
  */
 public interface Strategy {
 

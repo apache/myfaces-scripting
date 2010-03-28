@@ -26,13 +26,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Configuration class keeping all the core elements of the configuration
- * this class has to be thread save in its internal data structures!
+ * Configuration class for our ext-scripting system.
+ * It keeps all internal configuration data needed
+ * by the various part of the system.
  * <p/>
- * since the end goal is that a single thread has to preinit the config
- * we don«t have to synchronize its access!
- * <p/>
+ * It is pre initialized in our init stages
+ * and later accessed only readonly.
  */
+
 public class Configuration {
 
     /**
@@ -40,12 +41,28 @@ public class Configuration {
      */
     volatile Map<Integer, CopyOnWriteArrayList<String>> _sourceDirs = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<String>>();
 
+    /**
+     * the target compile path
+     */
     volatile File _compileTarget = FileUtils.getTempDir();
 
+    /**
+     * if set to true we do an initial compile step upon loading
+     */
     boolean _initialCompile = true;
 
+    /**
+     * the package whitelist used by our system
+     * to determine which packages are under control.
+     * <p/>
+     * Note an empty whitelist means, all packages with sourcedirs attached to.
+     */
     Set<String> _packageWhiteList = new HashSet<String>();
 
+    /**
+     * Optional additional classpath for the compilers
+     * to be able to pick up additional compile jars
+     */
     List<String> _additionalClassPath = new LinkedList<String>();
 
     /**
@@ -57,6 +74,7 @@ public class Configuration {
      */
     volatile List<String> _resourceDirs = new CopyOnWriteArrayList<String>();
 
+    @SuppressWarnings("unchecked")
     public Collection<String> getSourceDirs(int scriptingEngine) {
         Collection<String> retVal = _sourceDirs.get(scriptingEngine);
         if (retVal == null) return Collections.EMPTY_SET;
@@ -66,8 +84,9 @@ public class Configuration {
     /**
      * returns a set of whitelisted subdirs hosting the source
      *
-     * @param scriptingEngine
-     * @return
+     * @param scriptingEngine the scripting engine for which the dirs have to be determined
+     *                        (note every scripting engine has a unique integer value)
+     * @return the current whitelisted dirs hosting the sources
      */
     public Collection<String> getWhitelistedSourceDirs(int scriptingEngine) {
         List<String> origSourceDirs = _sourceDirs.get(scriptingEngine);
@@ -86,7 +105,7 @@ public class Configuration {
      * @return the joined existing subset of all directories which exist
      */
     private Collection<String> mergeWhitelisted(List<String> origSourceDirs) {
-        List<String> retVal = new ArrayList(_packageWhiteList.size() * origSourceDirs.size() + origSourceDirs.size());
+        List<String> retVal = new ArrayList<String>(_packageWhiteList.size() * origSourceDirs.size() + origSourceDirs.size());
 
         for (String whitelisted : _packageWhiteList) {
             whitelisted = whitelisted.replaceAll("\\.", FileUtils.getFileSeparatorForRegex());
@@ -100,6 +119,12 @@ public class Configuration {
         return retVal;
     }
 
+    /**
+     * Add a new source dir for the corresponding scripting engine
+     *
+     * @param scriptingEngine integer value marking the corresponding engine
+     * @param sourceDir       the source directory added to the existing source dir list
+     */
     public void addSourceDir(int scriptingEngine, String sourceDir) {
         CopyOnWriteArrayList<String> dirs = _sourceDirs.get(scriptingEngine);
         if (dirs == null) {

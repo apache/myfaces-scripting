@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.core.classIdentifier;
 
-import org.apache.myfaces.scripting.loaders.java.ScriptingClass;
-
 /**
  * @author werpu
  */

@@ -62,7 +62,7 @@ public class ScanningGroovyClassloader extends GroovyClassLoader {
      * creates a ClassCollector for a new compilation.
      *
      * @param unit the compilationUnit
-     * @param su   the SoruceUnit
+     * @param su   the source unit
      * @return the ClassCollector
      */
     protected ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {

@@ -33,25 +33,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Refactored the common weaver code into a base class
+ * <p/>
+ * Note we added a bean dropping code, the bean dropping works that way
+ * if we are the first request after a compile issued
+ * we drop all beans
+ * <p/>
+ * every other request has to drop only the session
+ * and custom scoped beans
+ * <p/>
+ * we set small mutexes to avoid at least in our code synchronisation issues
+ * the mutexes are as atomic as possible to avoid speed problems.
+ * <p/>
+ * Unfortunately if someone alters the bean map from outside while we reload
+ * we for now cannot do anything until we have covered that in the myfaces core!
+ * <p/>
+ * Since all weavers are application scoped we can handle the mutexes properly *
+ *
  * @author Werner Punz
- *         <p/>
- *         Refactored the common weaver code into a base class
- *         <p/>
- *         <p/>
- *         note we added a bean dropping code, the bean dropping works that way
- *         if we are the first request after a compile issued
- *         we drop all beans
- *         <p/>
- *         every other request has to drop only the session
- *         and custom scoped beans
- *         <p/>
- *         we set small mutexes to avoid at least in our code synchronisation issues
- *         the mutexes are as atomic as possible to avoid speed problems.
- *         <p/>
- *         Unfortunately if someone alters the beanmap from outside while we reload
- *         we for now cannot do anything until we have covered that in the myfaces core!
- *         <p/>
- *         Since all weavers are applicatin scoped we can handle the mutexes properly
  */
 public abstract class BaseWeaver implements ScriptingWeaver {
 
@@ -338,7 +337,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 if (!scriptPath.trim().equals(""))
                     _compiler.compileAllFiles(scriptPath, _classPath);
             } catch (ClassNotFoundException e) {
-                _log.logp(Level.SEVERE, "BaseWeaver","fullyRecompile", e.getMessage(), e);
+                _log.logp(Level.SEVERE, "BaseWeaver", "fullyRecompile", e.getMessage(), e);
             }
 
         }
