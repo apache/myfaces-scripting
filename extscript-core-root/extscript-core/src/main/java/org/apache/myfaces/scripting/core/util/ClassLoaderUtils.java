@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;

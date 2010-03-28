@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.components;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 
 import javax.el.ValueExpression;
@@ -38,10 +38,11 @@ public class CompilerComponent extends UIOutput {
     String _scriptingLanguage = null;
     String _errorsLabel = null;
     String _warningsLabel = null;
+    private static final String RENDERER_TYPE = "org.apache.myfaces.scripting.components.CompilerComponentRenderer";
 
     public CompilerComponent() {
         super();
-        setRendererType("org.apache.myfaces.scripting.components.CompilerComponentRenderer");
+        setRendererType(RENDERER_TYPE);
     }
 
     @Override

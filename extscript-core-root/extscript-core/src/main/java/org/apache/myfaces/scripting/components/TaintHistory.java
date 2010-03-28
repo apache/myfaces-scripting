@@ -36,9 +36,10 @@ public class TaintHistory extends UIOutput {
 
     Integer _noEntries;
     String _filter;
+    private static final String RENDERER_TYPE = "org.apache.myfaces.scripting.components.TaintHistoryRenderer";
 
     public TaintHistory() {
-        setRendererType("org.apache.myfaces.scripting.components.TaintHistoryRenderer");
+        setRendererType(RENDERER_TYPE);
     }
 
     public void setNoEntries(Integer entries) {

@@ -41,6 +41,7 @@ public interface ClassScanner {
 
     public void addScanPath(String scanPath);
 
+    @SuppressWarnings("unchecked")
     public void scanClass(Class clazz);
 
     public void scanAndMarkChange();

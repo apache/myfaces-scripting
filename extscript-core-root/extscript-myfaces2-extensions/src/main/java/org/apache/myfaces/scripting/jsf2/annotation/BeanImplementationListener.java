@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;

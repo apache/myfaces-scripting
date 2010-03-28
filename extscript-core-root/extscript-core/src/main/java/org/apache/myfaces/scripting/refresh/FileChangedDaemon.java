@@ -137,8 +137,6 @@ public class FileChangedDaemon extends Thread {
         if (weaver == null) return;
         weaver.scanForAddedClasses();
 
-        //TODO move this code also into the weaver so that
-        //we have it centralized
         for (Map.Entry<String, ReloadingMetadata> it : this.classMap.entrySet()) {
             //if (!it.getValue().isTainted()) {
 

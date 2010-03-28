@@ -18,10 +18,7 @@
  */
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.ClassLoaderUtils;
-import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
@@ -31,10 +28,6 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

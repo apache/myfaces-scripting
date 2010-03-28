@@ -18,15 +18,15 @@
  */
 package org.apache.myfaces.scripting.components;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -36,7 +36,8 @@ import java.util.logging.Logger;
  * This renderer is responsible for rendering the last compiler output
  * hosted in our weavingContext
  */
-public class CompilerComponentRenderer extends HtmlTextRendererBase {
+public class CompilerComponentRenderer extends Renderer {
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
@@ -68,14 +69,14 @@ public class CompilerComponentRenderer extends HtmlTextRendererBase {
                 break;
             case ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE:
                 Logger log = Logger.getLogger(this.getClass().getName());
-                log.warning("Warning engine not found");
+                log.warning(RendererConst.WARNING_ENGINE_NOT_FOUND);
                 break;
 
         }
 
-        startDiv(component, wrtr, "errorBox");
+        startDiv(component, wrtr, RendererConst.ERROR_BOX);
         if (result == null || (!result.hasErrors() && result.getWarnings().isEmpty())) {
-            wrtr.write("No compile errors");
+            wrtr.write(RendererConst.NO_COMPILE_ERRORS);
         } else {
             writeErrorsLabel(component, wrtr, compilerComp);
             writeErrors(component, wrtr, result);
@@ -89,11 +90,11 @@ public class CompilerComponentRenderer extends HtmlTextRendererBase {
     }
 
     private void writeWarnings(UIComponent component, ResponseWriter wrtr, CompilationResult result) throws IOException {
-        startDiv(component, wrtr, "warnings");
+        startDiv(component, wrtr, RendererConst.WARNINGS);
         for (CompilationResult.CompilationMessage msg : result.getWarnings()) {
-            startDiv(component, wrtr, "line");
-            writeDiv(component, wrtr, "lineNo", String.valueOf(msg.getLineNumber()));
-            writeDiv(component, wrtr, "message", msg.getMessage());
+            startDiv(component, wrtr, RendererConst.LINE);
+            writeDiv(component, wrtr, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
+            writeDiv(component, wrtr, RendererConst.MESSAGE, msg.getMessage());
             endDiv(wrtr);
         }
         endDiv(wrtr);
@@ -101,18 +102,18 @@ public class CompilerComponentRenderer extends HtmlTextRendererBase {
 
     private void writeWarningsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
         if (!StringUtils.isBlank(compilerComp.getWarningsLabel())) {
-            startDiv(component, wrtr, "warningsLabel");
+            startDiv(component, wrtr, RendererConst.WARNINGS_LABEL);
             wrtr.write(compilerComp.getWarningsLabel());
             endDiv(wrtr);
         }
     }
 
     private void writeErrors(UIComponent component, ResponseWriter wrtr, CompilationResult result) throws IOException {
-        startDiv(component, wrtr, "errors");
+        startDiv(component, wrtr, RendererConst.ERRORS);
         for (CompilationResult.CompilationMessage msg : result.getErrors()) {
-            startDiv(component, wrtr, "line");
-            writeDiv(component, wrtr, "lineNo", String.valueOf(msg.getLineNumber()));
-            writeDiv(component, wrtr, "message", msg.getMessage());
+            startDiv(component, wrtr, RendererConst.LINE);
+            writeDiv(component, wrtr, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
+            writeDiv(component, wrtr, RendererConst.MESSAGE, msg.getMessage());
             endDiv(wrtr);
         }
         endDiv(wrtr);
@@ -126,17 +127,17 @@ public class CompilerComponentRenderer extends HtmlTextRendererBase {
     }
 
     private void endDiv(ResponseWriter wrtr) throws IOException {
-        wrtr.endElement("div");
+        wrtr.endElement(RendererConst.HTML_DIV);
     }
 
     private void startDiv(UIComponent component, ResponseWriter wrtr, String styleClass) throws IOException {
-        wrtr.startElement("div", component);
-        wrtr.writeAttribute("class", styleClass, null);
+        wrtr.startElement(RendererConst.HTML_DIV, component);
+        wrtr.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
     }
 
     private void writeErrorsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
         if (!StringUtils.isBlank(compilerComp.getErrorsLabel())) {
-            startDiv(component, wrtr, "errorsLabel");
+            startDiv(component, wrtr, RendererConst.ERRORS_LABEL);
             wrtr.write(compilerComp.getErrorsLabel());
             endDiv(wrtr);
         }

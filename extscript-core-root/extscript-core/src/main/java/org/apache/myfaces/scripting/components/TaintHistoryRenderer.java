@@ -19,15 +19,15 @@
 
 package org.apache.myfaces.scripting.components;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
-import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Collection;
@@ -40,9 +40,8 @@ import java.util.logging.Logger;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class TaintHistoryRenderer extends HtmlTextRendererBase  {
+public class TaintHistoryRenderer extends Renderer {
     static Logger _log = Logger.getLogger(TaintHistoryRenderer.class.getName());
-
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -55,7 +54,7 @@ public class TaintHistoryRenderer extends HtmlTextRendererBase  {
 
         Collection<ReloadingMetadata> result = WeavingContext.getRefreshContext().getLastTainted(lastTainted);
         if (result == null || result.isEmpty()) {
-            wrtr.write("No taint history found");
+            wrtr.write(RendererConst.NO_TAINT_HISTORY_FOUND);
         } else {
             writeHistory(component, wrtr, result);
         }
@@ -68,9 +67,9 @@ public class TaintHistoryRenderer extends HtmlTextRendererBase  {
     private void writeHistory(UIComponent component, ResponseWriter wrtr, Collection<ReloadingMetadata> result) throws IOException {
         startDiv(component, wrtr, "history");
         for (ReloadingMetadata entry : result) {
-            startDiv(component, wrtr, "line");
-            writeDiv(component, wrtr, "timestamp", DateFormat.getInstance().format(new Date(entry.getTimestamp())));
-            writeDiv(component, wrtr, "changedFile", entry.getFileName());
+            startDiv(component, wrtr, RendererConst.LINE);
+            writeDiv(component, wrtr, RendererConst.TIMESTAMP, DateFormat.getInstance().format(new Date(entry.getTimestamp())));
+            writeDiv(component, wrtr, RendererConst.CHANGED_FILE, entry.getFileName());
             endDiv(wrtr);
         }
 
@@ -85,17 +84,17 @@ public class TaintHistoryRenderer extends HtmlTextRendererBase  {
     }
 
     private void endDiv(ResponseWriter wrtr) throws IOException {
-        wrtr.endElement("div");
+        wrtr.endElement(RendererConst.HTML_DIV);
     }
 
     private void startDiv(UIComponent component, ResponseWriter wrtr, String styleClass) throws IOException {
-        wrtr.startElement("div", component);
-        wrtr.writeAttribute("class", styleClass, null);
+        wrtr.startElement(RendererConst.HTML_DIV, component);
+        wrtr.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
     }
 
     private void writeErrorsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
         if (!StringUtils.isBlank(compilerComp.getErrorsLabel())) {
-            startDiv(component, wrtr, "errorsLabel");
+            startDiv(component, wrtr, RendererConst.ERRORS_LABEL);
             wrtr.write(compilerComp.getErrorsLabel());
             endDiv(wrtr);
         }

@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.6.4</version>
+            <version>1.6.7</version>
         </dependency>
 
         <dependency>
@@ -70,7 +70,6 @@
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
             <version>3.2</version>
-
         </dependency>
 
         <dependency>
@@ -91,7 +90,6 @@
             <artifactId>stax</artifactId>
             <version>1.2.0</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -106,7 +104,6 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
-
                 </configuration>
             </plugin>
             <plugin>
@@ -121,13 +118,12 @@
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
-
-                </executions>
+               </executions>
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-all</artifactId>
-                        <version>1.6.4</version>
+                        <version>1.6.7</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -163,8 +159,7 @@
                             <shadedPattern>org.apache.myfaces.scripting.org.objectweb.asm</shadedPattern>
                         </relocation>
                     </relocations>
-
-                </configuration>
+               </configuration>
             </plugin>
         </plugins>
     </build>
