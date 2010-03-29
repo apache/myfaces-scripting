@@ -29,7 +29,7 @@ import java.util.logging.LogRecord;
  * @version $Revision$ $Date$
  */
 
-public class TestcaseLoggingHandler extends Handler {
+public class LoggingHandler extends Handler {
     StringBuilder _output = new StringBuilder();
 
     @Override

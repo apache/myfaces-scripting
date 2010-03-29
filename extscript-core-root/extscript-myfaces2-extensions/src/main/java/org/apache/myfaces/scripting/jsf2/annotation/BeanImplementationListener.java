@@ -18,12 +18,11 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation;
 
-import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.scripting.core.util.WeavingContext;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 
 import javax.faces.bean.*;
 import java.lang.reflect.Field;
@@ -41,12 +40,6 @@ import java.util.logging.Level;
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
 
-    private static final String SCOPE_SESSION = "session";
-    private static final String SCOPE_APPLICATION = "application";
-    private static final String SCOPE_VIEW = "view";
-    private static final String SCOPE_NONE = "none";
-    private static final String SCOPE_CUSTOM = "custom";
-
     public boolean supportsAnnotation(String annotation) {
         return annotation.equals(javax.faces.bean.ManagedBean.class.getName());
     }
@@ -56,7 +49,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
     }
 
     public void register(Class clazz, java.lang.annotation.Annotation ann) {
-        String annotationName = ann.getClass().getName();
 
         RuntimeConfig config = getRuntimeConfig();
 
@@ -70,7 +62,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         beanName = beanName.replaceAll("\"", "");
         //we need to reregister for every bean due to possible managed prop
         //and scope changes
-        ManagedBean mbean = null;
+        ManagedBean mbean;
         if (!hasToReregister(beanName, clazz)) {
             mbean = (ManagedBean) _alreadyRegistered.get(beanName);
             //return;
@@ -110,8 +102,8 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             if (log.isLoggable(Level.FINEST)) {
                 log.log(Level.FINEST, "  Scanning field '" + field.getName() + "'");
             }
-            javax.faces.bean.ManagedProperty property = (javax.faces.bean.ManagedProperty) field
-                    .getAnnotation(javax.faces.bean.ManagedProperty.class);
+            javax.faces.bean.ManagedProperty property = field
+                    .getAnnotation(ManagedProperty.class);
             if (property != null) {
                 if (log.isLoggable(Level.FINE)) {
                     log.log(Level.FINE, "  Field '" + field.getName()
@@ -128,8 +120,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
                 mpc.setValue(property.value());
                 mbean.addProperty(mpc);
-
-                continue;
             }
         }
     }
@@ -140,6 +130,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
      * <code>java.lang.Object</code>.</p>
      *
      * @param clazz Class to be analyzed
+     * @return the array of fields
      */
     private Field[] fields(Class clazz) {
 
@@ -151,7 +142,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 }
             }
         } while ((clazz = clazz.getSuperclass()) != Object.class);
-        return (Field[]) fields.values().toArray(new Field[fields.size()]);
+        return fields.values().toArray(new Field[fields.size()]);
     }
 
     protected boolean hasToReregister(String name, Class clazz) {
@@ -209,6 +200,5 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 _alreadyRegistered.remove(toRemove);
             }
         }
-
     }
 }

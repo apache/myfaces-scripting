@@ -20,8 +20,8 @@
 package org.apache.myfaces.scripting.core.lifecycle;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.support.LoggingHandler;
 import org.apache.myfaces.scripting.core.support.MockServletContext;
-import org.apache.myfaces.scripting.core.support.TestcaseLoggingHandler;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.util.WeavingContextInitializer;
 import org.junit.Before;
@@ -44,16 +44,16 @@ import static org.junit.Assert.*;
 
 public class FailedStartupTestCase {
     ServletContext context;
-    TestcaseLoggingHandler handler;
+    LoggingHandler handler;
     Logger logger;
     private static final String MSG_DISABLED = "Scripting must be disabled";
     private static final String VALID_PATH = "../../src/test/resources/brokenwebapp";
-    private static final String INVALID_PATH = "../../src/test/resources/brokenwebapp2";
+    private static final String INVALID_PATH = "../../src/test/resources/nonexisting";
 
     @Before
     public void init() {
         logger = Logger.getLogger(WeavingContextInitializer.class.getName());
-        handler = new TestcaseLoggingHandler();
+        handler = new LoggingHandler();
         /*
         * we suppress the original handlers because we do not
         * want unwanted messages in our console
