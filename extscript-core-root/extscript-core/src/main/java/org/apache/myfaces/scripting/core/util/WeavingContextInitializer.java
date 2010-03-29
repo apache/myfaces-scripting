@@ -136,19 +136,7 @@ public class WeavingContextInitializer {
         }
 
         if (!WeavingContext.isScriptingEnabled()) {
-            String warnMsg = "[EXT-SCRIPTING] The servlet filter has not been set, please check your web.xml for following entries:" +
-                    "\n    <filter>\n" +
-                    "        <filter-name>scriptingFilter</filter-name>\n" +
-                    "        <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>\n" +
-                    "    </filter>\n" +
-                    "    <filter-mapping>\n" +
-                    "        <filter-name>scriptingFilter</filter-name>\n" +
-                    "        <url-pattern>/*</url-pattern>\n" +
-                    "        <dispatcher>REQUEST</dispatcher>\n" +
-                    "        <dispatcher>FORWARD</dispatcher>\n" +
-                    "        <dispatcher>INCLUDE</dispatcher>\n" +
-                    "        <dispatcher>ERROR</dispatcher>\n" +
-                    "    </filter-mapping>";
+            String warnMsg = ScriptingConst.ERR_SERVLET_FILTER;
             _logger.severe(warnMsg);
         }
     }

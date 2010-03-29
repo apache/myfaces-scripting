@@ -19,13 +19,18 @@
 
 package org.apache.myfaces.scripting.core.lifecycle;
 
+import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.support.MockServletContext;
+import org.apache.myfaces.scripting.core.support.TestcaseLoggingHandler;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.util.WeavingContextInitializer;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.servlet.ServletContext;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
@@ -39,16 +44,35 @@ import static org.junit.Assert.*;
 
 public class FailedStartupTestCase {
     ServletContext context;
+    TestcaseLoggingHandler handler;
+    Logger logger;
 
     @Before
     public void init() {
-        context = new MockServletContext("../../src/test/resources/brokenwebapp");
-
+        logger = Logger.getLogger(WeavingContextInitializer.class.getName());
+        handler = new TestcaseLoggingHandler();
+       /*
+        * we suppress the original handlers because we do not
+        * want unwanted messages in our console
+        */
+        logger.setUseParentHandlers(false);
+        logger.addHandler(handler);
+        logger.setLevel(Level.INFO);
     }
 
     @Test
     public void testStartup() {
+        context = new MockServletContext("../../src/test/resources/brokenwebapp");
         WeavingContextInitializer.initWeavingContext(context);
         assertFalse("Scripting must be disabled", WeavingContext.isScriptingEnabled());
+        assertTrue(handler.getOutput().toString().contains(ScriptingConst.ERR_SERVLET_FILTER));
+    }
+
+    @Test
+    public void testWebxmlMissing() {
+        context = new MockServletContext("../../src/test/resources/brokenwebapp2");
+        WeavingContextInitializer.initWeavingContext(context);
+        assertFalse("Scripting must be disabled", WeavingContext.isScriptingEnabled());
+        assertTrue(handler.getOutput().toString().contains(ScriptingConst.ERR_SERVLET_FILTER));
     }
 }
