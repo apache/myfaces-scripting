@@ -46,12 +46,15 @@ public class FailedStartupTestCase {
     ServletContext context;
     TestcaseLoggingHandler handler;
     Logger logger;
+    private static final String MSG_DISABLED = "Scripting must be disabled";
+    private static final String VALID_PATH = "../../src/test/resources/brokenwebapp";
+    private static final String INVALID_PATH = "../../src/test/resources/brokenwebapp2";
 
     @Before
     public void init() {
         logger = Logger.getLogger(WeavingContextInitializer.class.getName());
         handler = new TestcaseLoggingHandler();
-       /*
+        /*
         * we suppress the original handlers because we do not
         * want unwanted messages in our console
         */
@@ -62,17 +65,17 @@ public class FailedStartupTestCase {
 
     @Test
     public void testStartup() {
-        context = new MockServletContext("../../src/test/resources/brokenwebapp");
+        context = new MockServletContext(VALID_PATH);
         WeavingContextInitializer.initWeavingContext(context);
-        assertFalse("Scripting must be disabled", WeavingContext.isScriptingEnabled());
+        assertFalse(MSG_DISABLED, WeavingContext.isScriptingEnabled());
         assertTrue(handler.getOutput().toString().contains(ScriptingConst.ERR_SERVLET_FILTER));
     }
 
     @Test
     public void testWebxmlMissing() {
-        context = new MockServletContext("../../src/test/resources/brokenwebapp2");
+        context = new MockServletContext(INVALID_PATH);
         WeavingContextInitializer.initWeavingContext(context);
-        assertFalse("Scripting must be disabled", WeavingContext.isScriptingEnabled());
+        assertFalse(MSG_DISABLED, WeavingContext.isScriptingEnabled());
         assertTrue(handler.getOutput().toString().contains(ScriptingConst.ERR_SERVLET_FILTER));
     }
 }
