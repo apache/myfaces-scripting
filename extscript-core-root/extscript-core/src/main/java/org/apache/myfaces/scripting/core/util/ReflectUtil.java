@@ -112,7 +112,7 @@ public class ReflectUtil {
 
     public static Collection<Method> getAllMethods(Class clazz, String methodName, int varargLength) {
         ArrayList<Method> retVal = new ArrayList<Method>(30);
-        while (clazz.equals(java.lang.Object.class)) {
+        while (clazz != null) {
             for (Method m : clazz.getDeclaredMethods()) {
                 if (m.getParameterTypes().length == varargLength && m.getName().equals(methodName)) {
                     retVal.add(m);

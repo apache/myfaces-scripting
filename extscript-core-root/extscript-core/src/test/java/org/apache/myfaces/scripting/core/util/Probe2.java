@@ -26,7 +26,11 @@ package org.apache.myfaces.scripting.core.util;
 
 public class Probe2 {
 
-    public Probe2(String [] test) {
-        
+    public Probe2(String[] test) {
+
+    }
+
+    public static Boolean myHello(String xxx) {
+        return Boolean.TRUE;
     }
 }
