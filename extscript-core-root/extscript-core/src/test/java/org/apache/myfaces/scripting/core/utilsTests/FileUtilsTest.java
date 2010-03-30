@@ -19,12 +19,15 @@
 
 package org.apache.myfaces.scripting.core.utilsTests;
 
+import org.apache.myfaces.scripting.core.support.PathUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.List;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -35,8 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class FileUtilsTest {
-
-    String _currentPath = "";
+    PathUtils pathUtils = new PathUtils();
 
     @Before
     public void init() {
@@ -62,10 +64,21 @@ public class FileUtilsTest {
         assertTrue(tempDir.exists());
     }
 
-    //@Test
-
+    @Test
     public void testFileStrategy() {
+        List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(pathUtils.getResource("compiler/")), ".java");
+         assertTrue("wildcarding is needed", sourceFiles.size() == 0);
 
+
+        sourceFiles = FileUtils.fetchSourceFiles(new File(pathUtils.getResource("compiler/")), "*.java");
+        assertTrue("source files must have been found", sourceFiles.size() > 0);
+        //check also for subdirs
+        for(File sourceFile: sourceFiles) {
+            if(sourceFile.getAbsolutePath().contains("myPackage")) {
+                return;
+            }
+        }
+        fail("source file must also be in myPackage");
     }
 
 }
