@@ -30,6 +30,8 @@ import java.util.logging.Logger;
  * than the standard servlet context
  *
  * @author Werner Punz
+ * @deprecated the plugin chain loader takes care
+ * of it
  */
 public class StartupServletContextPlugin implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
