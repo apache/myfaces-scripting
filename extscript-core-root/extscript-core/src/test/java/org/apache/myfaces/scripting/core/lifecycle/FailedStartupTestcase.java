@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 import static org.junit.Assert.*;
 
 /**
- * A Testcase simulating failed startup conditions
+ * A Test case simulating failed startup conditions
  * (first a missing servlet filter)
  *
  * @author Werner Punz (latest modification by $Author$)

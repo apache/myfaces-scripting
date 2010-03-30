@@ -14,6 +14,7 @@ public interface DependencyRegistry {
      * A dependency is only allowed to pass if it is able
      * to pass the internal filter list
      *
+     * @param engineType            the engine type for this dependency
      * @param rootClass             the root class of this scan which all dependencies are referenced from
      * @param currentlyVisitedClass the source which includes or casts the dependencies
      * @param dependency            the dependency to be added

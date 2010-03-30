@@ -16,21 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.myfaces.scripting.core.probes;
 
-package org.apache.myfaces.scripting.core.util;
+import org.junit.Ignore;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *          <p/>
+ *          testprobe for our reflectutils
  */
 
-public class Probe2 {
+@Ignore
+public class Probe {
 
-    public Probe2(String[] test) {
+    public Probe() {
+    }
+
+    public Probe(String hello, String world) {
+        
+    }
+
+    public void testMethod1() {
 
     }
 
-    public static Boolean myHello(String xxx) {
-        return Boolean.TRUE;
+    public void testMethod2() {
+        throw new NullPointerException("for test");
     }
+
+    public boolean testMethod3(String param1) {
+        return true;
+    }
+
+    public static boolean testMethod4(String param1, String param2) {
+        return true;
+    }
+
 }

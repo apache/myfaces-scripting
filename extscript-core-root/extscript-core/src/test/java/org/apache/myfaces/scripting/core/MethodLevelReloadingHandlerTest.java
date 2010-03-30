@@ -16,39 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.scripting.core.util;
+
+package org.apache.myfaces.scripting.core;
+
+import org.junit.Test;
 
 /**
- * helper class which allows to deal with loops which have to keep track
- * of two running loop variables one being the total counter
- * the other one being a counter which is modulated
+ * TestCase for our method level reloading handler
+ * 
+ *
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class ExtendedLoopCnt {
-    int _cnt = 0;
-    int _totalCnt = 0;
-    int _delimiter = 0;
 
-    public ExtendedLoopCnt(int cnt, int totalCnt, int cntDelimiter) {
-        _cnt = cnt;
-        _totalCnt = totalCnt;
-        _delimiter = cntDelimiter;
+public class MethodLevelReloadingHandlerTest {
+
+    /**
+     * Before
+     */
+    public void init() {
+        
     }
 
-    public final int getCnt() {
-        return _cnt;
+    @Test
+    public void testInvoke() throws Exception {
     }
 
-    public final int getTotalCnt() {
-        return _totalCnt;
+    @Test
+    public void testGetArtifactType() throws Exception {
     }
 
-    public final int incCnt() {
-        _cnt = (_cnt + 1) % _delimiter;
-        return _cnt;
-    }
-
-    public final int incTotalCnt() {
-        _totalCnt++;
-        return _totalCnt;
+    @Test
+    public void testSetArtifactType() throws Exception {
     }
 }

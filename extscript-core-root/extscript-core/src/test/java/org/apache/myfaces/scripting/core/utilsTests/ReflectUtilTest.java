@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.scripting.core.utilsTests;
 
+import org.apache.myfaces.scripting.core.probes.Probe;
 import org.apache.myfaces.scripting.core.util.*;
 import org.junit.After;
 import org.junit.Before;
