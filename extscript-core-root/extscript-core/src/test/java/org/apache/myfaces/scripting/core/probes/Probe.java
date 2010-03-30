@@ -28,7 +28,7 @@ import org.junit.Ignore;
  */
 
 @Ignore
-public class Probe {
+public class Probe implements MethodReloadingProbe {
 
     public Probe() {
     }
