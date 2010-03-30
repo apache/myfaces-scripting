@@ -23,6 +23,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.support.PathUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 import org.junit.Test;
@@ -42,23 +43,19 @@ public class TestCompilerAPI {
 
     private static final String JAVA_FILE_ENDING = ".java";
 
-    private static final String PROBE1 = "../../src/test/resources/compiler/TestProbe1.java";
-    private static final String PROBE2 = "../../src/test/resources/compiler/TestProbe2.java";
-    private static final String RESOURCES = "../../src/test/resources/";
+    private static final PathUtils _pathUtils = new PathUtils();
+    private static final String PROBE1 = _pathUtils.getResource("compiler/TestProbe1.java");
+    private static final String PROBE2 = _pathUtils.getResource("compiler/TestProbe2.java");
+    private static final String RESOURCES = _pathUtils.getResource(".");
 
     File probe1;
     File probe2;
     File root;
 
     public TestCompilerAPI() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        //we use a location relative to our current root one to reach the sources
-        //because the test also has to be performed outside of maven
-        //and the ide cannot cope with resource paths for now
-        String currentPath = loader.getResource("./").getPath();
-        String sourcePath1 = currentPath + PROBE1;
-        String sourcePath2 = currentPath + PROBE2;
-        String rootPath = currentPath + RESOURCES;
+        String sourcePath1 =  PROBE1;
+        String sourcePath2 = PROBE2;
+        String rootPath =  RESOURCES;
 
         sourcePath1 = FilenameUtils.normalize(sourcePath1);
         sourcePath2 = FilenameUtils.normalize(sourcePath2);

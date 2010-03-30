@@ -155,19 +155,9 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
-
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <configuration>
-                    <instrumentation>
-                      
-                        <excludes>
-                            <exclude>**/*Test.class</exclude>
-                        </excludes>
-                    </instrumentation>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -176,7 +166,6 @@
                     </execution>
                 </executions>
             </plugin>
-
 
         </plugins>
 
@@ -253,6 +242,13 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                    
+                </configuration>
             </plugin>
 
         </plugins>
