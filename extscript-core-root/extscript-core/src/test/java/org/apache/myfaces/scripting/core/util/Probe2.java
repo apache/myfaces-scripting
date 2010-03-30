@@ -16,16 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.myfaces.scripting.core.util;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@SuppressWarnings("unused")
-public class Array extends Cast {
-    public Array(Class clazz, Object... value) {
 
-        super(java.lang.reflect.Array.newInstance(clazz, 0).getClass(), value);
+public class Probe2 {
+
+    public Probe2(String [] test) {
+        
     }
 }

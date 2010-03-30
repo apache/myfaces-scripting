@@ -67,11 +67,14 @@ public class FileUtilsTest {
     @Test
     public void testFileStrategy() {
         List<File> sourceFiles = FileUtils.fetchSourceFiles(new File(pathUtils.getResource("compiler/")), ".java");
+        assertTrue("wildcarding is needed", sourceFiles.size() == 0);
+
+        sourceFiles = FileUtils.fetchSourceFiles(new File(pathUtils.getResource("compiler/")), "java");
          assertTrue("wildcarding is needed", sourceFiles.size() == 0);
 
 
         sourceFiles = FileUtils.fetchSourceFiles(new File(pathUtils.getResource("compiler/")), "*.java");
-        assertTrue("source files must have been found", sourceFiles.size() > 0);
+        assertTrue("source files must have been found", sourceFiles.size() > 2);
         //check also for subdirs
         for(File sourceFile: sourceFiles) {
             if(sourceFile.getAbsolutePath().contains("myPackage")) {
@@ -79,6 +82,17 @@ public class FileUtilsTest {
             }
         }
         fail("source file must also be in myPackage");
+    }
+
+    @Test
+    public void testDirStrategy() {
+        StringBuilder result = FileUtils.fetchSourcePaths(new File(pathUtils.getResource("compilerx/")), "");
+        assertTrue("invalid dir should result in empty results", result.toString().trim().length() == 0); 
+
+        result = FileUtils.fetchSourcePaths(new File(pathUtils.getResource("compiler/")), "");
+        assertTrue("myPackage should be found", result.toString().trim().contains("myPackage"));
+
+
     }
 
 }

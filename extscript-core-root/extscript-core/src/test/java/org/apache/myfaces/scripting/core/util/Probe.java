@@ -33,6 +33,10 @@ public class Probe {
     public Probe() {
     }
 
+    public Probe(String hello, String world) {
+        
+    }
+
     public void testMethod1() {
 
     }
