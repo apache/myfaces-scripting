@@ -397,6 +397,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             }
         } catch (ClassNotFoundException e) {
             //can be safely ignored
+            if (_log.isLoggable(Level.FINEST)) {
+                _log.log(Level.FINEST, "loadScriptingClassFromFile(), can be ignored", e);
+            }
         }
 
         //no refresh needed because this is done in the case of java already by
@@ -409,13 +412,14 @@ public abstract class BaseWeaver implements ScriptingWeaver {
          * we now scan the return value and update its configuration parameters if needed
          * this can help to deal with method level changes of class files like managed properties
          * or scope changes from shorter running scopes to longer running ones
-         * if the annotation has been moved the class will be deregistered but still delivered for now
+         * if the annotation has been moved the class will be de-registered but still delivered for now
          *
          * at the next refresh the second step of the registration cycle should pick the new class up
-         * //TODO we have to mark the artefacting class as deregistered and then enforce
-         * //a reload this is however not the scope of the commit of this subtask
-         * //we only deal with class level reloading here
-         * //the deregistration notification should happen on artefact level (which will be the next subtask)
+         *
+         * TODO we have to mark the artifacting class as de-registered and then enforce
+         * a reload this is however not the scope of the commit of this subtask
+         * we only deal with class level reloading here
+         * the de-registration notification should happen on artifact level (which will be the next subtask)
          */
         if (_annotationScanner != null && retVal != null) {
             _annotationScanner.scanClass(retVal);

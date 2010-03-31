@@ -31,6 +31,7 @@ import java.util.logging.Logger;
  *
  * @author Werner Punz
  */
+@SuppressWarnings("unused")
 public class CustomChainLoader extends ClassLoaderExtension {
 
     /*
@@ -46,15 +47,14 @@ public class CustomChainLoader extends ClassLoaderExtension {
   
 
     public Class forName(String name) {
-        if(_scriptingWeaver == null) {
+        if(_scriptingWeaver == null || name == null) {
             return null;
         }
+        
         if (name.endsWith(";")) {
             name = name.substring(1, name.length() - 1);
         }
-        if (name == null) {
-            return null;
-        }
+
         if (name.startsWith("java.")) /*the entire java namespace is reserved so no use to do a specific classloading check here*/
             return null;
         if (name.startsWith("javax.")) /*the entire java namespace is reserved so no use to do a specific classloading check here*/

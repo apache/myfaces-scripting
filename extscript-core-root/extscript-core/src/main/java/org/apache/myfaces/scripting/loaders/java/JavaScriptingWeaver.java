@@ -25,6 +25,8 @@ import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 
 import javax.servlet.ServletContext;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author werpu
@@ -43,15 +45,20 @@ import java.io.Serializable;
  *         and (if not done differently) also the proper compiler bindings
  *         and property handling strategies.
  */
-public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, Serializable {
+public class JavaScriptingWeaver extends BaseWeaver implements Serializable {
 
-    DynamicClassIdentifier _identifier = new DynamicClassIdentifier();
+    private static final long serialVersionUID = -3024995032644947216L;
+
+    transient DynamicClassIdentifier _identifier = new DynamicClassIdentifier();
+
+    final Logger _logger = Logger.getLogger(JavaScriptingWeaver.class.getName());
 
     /**
      * helper to allow initial compiler classpath scanning
      *
-     * @param servletContext
+     * @param servletContext the servlet context
      */
+    @SuppressWarnings("unused")
     public JavaScriptingWeaver(ServletContext servletContext) {
         super(ScriptingConst.JAVA_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         init();
@@ -67,6 +74,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
         } catch (ClassNotFoundException e) {
             //we do nothing here
+            _logger.log(Level.WARNING, "", e);
         }
 
         this._dependencyScanner = new JavaDependencyScanner(this);
@@ -78,20 +86,6 @@ public class JavaScriptingWeaver extends BaseWeaver implements ScriptingWeaver, 
 
     protected String getLoadingInfo(String file) {
         return "[EXT-SCRIPTING] Loading Java file:" + file;
-    }
-
-    private String getScriptingFacadeClass() {
-        String javaVer = System.getProperty("java.version");
-        String[] versionArr = javaVer.split("\\.");
-
-        int major = Integer.parseInt(versionArr[Math.min(versionArr.length, 1)]);
-
-        if (major > 5) {
-            //jsr199 compliant jdk
-            return ScriptingConst.JSR199_COMPILER;
-        }
-        //otherwise
-        return ScriptingConst.JAVA5_COMPILER;
     }
 
     public boolean isDynamic(Class clazz) {

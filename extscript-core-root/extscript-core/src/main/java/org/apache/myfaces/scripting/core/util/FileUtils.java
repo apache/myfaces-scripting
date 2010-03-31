@@ -18,9 +18,6 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.myfaces.scripting.core.util.DirStrategy;
-import org.apache.myfaces.scripting.core.util.FileStrategy;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -176,12 +173,9 @@ public class FileUtils {
     @SuppressWarnings("unused")
     public static StringBuilder fetchSourcePaths(File sourcePath, String appendix) {
         DirStrategy dirStrategy = new DirStrategy();
-        listFiles(sourcePath, dirStrategy);
-
         StringBuilder sourcesList = new StringBuilder(512);
 
-        String root = sourcePath.getAbsolutePath();
-        int rootLen = root.length() + 1;
+        listFiles(sourcePath, dirStrategy);
         for (File foundDir : dirStrategy.getFoundFiles()) {
             String dirName = foundDir.getAbsolutePath();
             sourcesList.append(dirName);

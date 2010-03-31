@@ -30,6 +30,8 @@ import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterD
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,7 +104,11 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     protected ClassLoader getClassLoader() {
-        return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", WeavingContext.getConfiguration().getCompileTarget());
+        return AccessController.doPrivileged(new PrivilegedAction<ScannerClassloader>() {
+            public ScannerClassloader run() {
+                return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", WeavingContext.getConfiguration().getCompileTarget());
+            }
+        });
     }
 
     public void clearListeners() {

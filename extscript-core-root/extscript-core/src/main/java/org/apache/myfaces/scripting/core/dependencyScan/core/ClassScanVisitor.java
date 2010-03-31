@@ -56,12 +56,12 @@ public class ClassScanVisitor implements ClassVisitor {
     public void visit(int version, int access, String name,
                       String signature, String superName, String[] interfaces) {
         _currentlyVistedClass = Type.getObjectType(name).getClassName();
-        registerDependency(Type.getObjectType(superName), "Super name[" + superName + "]");
+        registerDependency(Type.getObjectType(superName));
         handleGenerics(signature, true);
 
         if (interfaces != null && interfaces.length > 0) {
             for (String currInterface : interfaces) {
-                registerDependency(Type.getObjectType(currInterface), "interface [" + superName + "]");
+                registerDependency(Type.getObjectType(currInterface));
             }
         }
     }
@@ -79,7 +79,7 @@ public class ClassScanVisitor implements ClassVisitor {
 
     public AnnotationVisitor visitAnnotation(String description,
                                              boolean visible) {
-        registerDependency(Type.getType(description), "registering annotation [" + description + "]");
+        registerDependency(Type.getType(description));
 
         return null;
     }
@@ -99,12 +99,12 @@ public class ClassScanVisitor implements ClassVisitor {
                                    String signature, Object value) {
         //_log._log(Level.INFO, "Field:{0} {1} ", new Object[]{description, name});
         handleGenerics(signature, false);
-        registerDependency(Type.getType(description), "field type  [" + description + "]");
+        registerDependency(Type.getType(description));
 
         return null;
     }
 
-    private void registerDependency(Type dependency, String description) {
+    private void registerDependency(Type dependency) {
         String className = dependency.getClassName();
         if (className.endsWith("[]")) {
             className = className.substring(0, className.indexOf("["));
@@ -119,12 +119,12 @@ public class ClassScanVisitor implements ClassVisitor {
     public MethodVisitor visitMethod(int access, String name,
                                      String description, String signature, String[] exceptions) {
 
-        registerDependency(Type.getReturnType(description), "Return type of the method [" + name + "]");
+        registerDependency(Type.getReturnType(description));
 
         handleGenerics(signature, true);
 
         for (Type argumentType : Type.getArgumentTypes(description)) {
-            registerDependency(argumentType, "Argument type of the method [" + name + "]");
+            registerDependency(argumentType);
         }
         return new MethodScanVisitor(_engineType, _rootClass, _currentlyVistedClass, _dependencyRegistry);
     }

@@ -5,21 +5,24 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A specialized non tainting classloader for our scanners
  */
+@SuppressWarnings("unused")
 public class ScannerClassloader extends ClassLoader {
 
     File _tempDir = null;
 
     Map<String, Class> _alreadyScanned = new HashMap<String, Class>();
+
+    final Logger _logger = Logger.getLogger(ScannerClassloader.class.getName());
+
 
     public ScannerClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, File tempDir) {
         super(classLoader);
@@ -64,8 +67,8 @@ public class ScannerClassloader extends ClassLoader {
 
         FileInputStream iStream = null;
 
-        int fileLength = -1;
-        byte[] fileContent = null;
+        int fileLength;
+        byte[] fileContent;
         try {
             //we cannot load while a compile is in progress
             //we have to wait until it is one
@@ -73,25 +76,28 @@ public class ScannerClassloader extends ClassLoader {
                 fileLength = (int) target.length();
                 fileContent = new byte[fileLength];
                 iStream = new FileInputStream(target);
-                iStream.read(fileContent);
+                int len = iStream.read(fileContent);
+                if (_logger.isLoggable(Level.FINER)) {
+                    _logger.log(Level.FINER, "class read {0}Ê bytes read", String.valueOf(len));
+                }
             }
-            // Erzeugt aus dem byte Feld ein Class Object.
-            Class retVal = null;
 
             //we have to do it here because just in case
-            //a dependend class is loaded as well we run into classcast exceptions
-
-            //storeReloadableDefinitions(className, target, fileLength, fileContent)
-            retVal = super.defineClass(className, fileContent, 0, fileLength);
+            //a dependent class is loaded as well we run into classcast exceptions
+            Class retVal = super.defineClass(className, fileContent, 0, fileLength);
             _alreadyScanned.put(className, retVal);
             return retVal;
-        } catch (Exception e) {
+
+        } catch (FileNotFoundException e) {
+            throw new ClassNotFoundException(e.toString());
+        } catch (IOException e) {
             throw new ClassNotFoundException(e.toString());
         } finally {
             if (iStream != null) {
                 try {
                     iStream.close();
                 } catch (Exception e) {
+                    _logger.log(Level.SEVERE, "", e);
                 }
             }
         }

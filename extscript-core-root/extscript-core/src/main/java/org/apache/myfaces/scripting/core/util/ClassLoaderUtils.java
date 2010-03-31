@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.myfaces.scripting.core.util.StringUtils;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,10 +34,6 @@ import java.util.logging.Logger;
  */
 public class ClassLoaderUtils {
 
-    /**
-     * The logger instance for this class.
-     */
-    private static final Logger logger = Logger.getLogger(ClassLoaderUtils.class.getName());
 
     // ------------------------------------------ Public methods
 

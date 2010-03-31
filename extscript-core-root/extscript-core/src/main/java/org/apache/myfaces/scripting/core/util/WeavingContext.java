@@ -70,10 +70,10 @@ public class WeavingContext {
      * a reference in the context and a threadLocal variable
      * </p>
      */
-    static protected ThreadLocal<Object> _weaverHolder = new ThreadLocal<Object>();
-    static protected ThreadLocal<Object> _refreshContextHolder = new ThreadLocal<Object>();
-    static protected ThreadLocal<Object> _configuration = new ThreadLocal<Object>();
-    static protected ThreadLocal<Object> _externalContext = new ThreadLocal<Object>();
+    static final protected ThreadLocal<Object> _weaverHolder = new ThreadLocal<Object>();
+    static final protected ThreadLocal<Object> _refreshContextHolder = new ThreadLocal<Object>();
+    static final protected ThreadLocal<Object> _configuration = new ThreadLocal<Object>();
+    static final protected ThreadLocal<Object> _externalContext = new ThreadLocal<Object>();
 
     private static final String WARN_WEAVER_NOT_SET = "[EXT-SCRIPTING] Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 

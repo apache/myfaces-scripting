@@ -59,7 +59,7 @@ public class RefreshContext {
      * and also a global refresh has to be atomic and no other
      * refreshes should happen
      */
-    public final static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
+    public final static Boolean BEAN_SYNC_MONITOR = Boolean.TRUE;
 
     /**
      * second synchronisation monitor
@@ -67,7 +67,7 @@ public class RefreshContext {
      * compile cycle otherwise the classloader would get
      * half finished compile states to load
      */
-    public final static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
+    public final static Boolean COMPILE_SYNC_MONITOR = Boolean.TRUE;
 
     private volatile AtomicInteger _currentlyRunningRequests = null;
 
@@ -299,8 +299,7 @@ public class RefreshContext {
      * @return
      */
     public boolean isComileAllowed(int engineType) {
-
-        return getCurrentlyRunningRequests().equals(1);
+        return getCurrentlyRunningRequests().get() == 1;
     }
 
     /**

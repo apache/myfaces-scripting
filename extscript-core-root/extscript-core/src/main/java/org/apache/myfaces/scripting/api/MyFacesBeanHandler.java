@@ -21,11 +21,7 @@ package org.apache.myfaces.scripting.api;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.annotation.LifecycleProvider;
 import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
-import org.apache.myfaces.config.element.ListEntries;
 import org.apache.myfaces.config.element.ManagedBean;
-import org.apache.myfaces.config.element.MapEntries;
-import org.apache.myfaces.config.impl.digester.elements.ManagedProperty;
-import org.apache.myfaces.scripting.core.dependencyScan.filter.StandardNamespaceFilter;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
@@ -33,7 +29,10 @@ import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,16 +43,12 @@ import java.util.logging.Logger;
  */
 public class MyFacesBeanHandler implements BeanHandler {
 
+    final Logger _logger = Logger.getLogger(MyFacesBeanHandler.class.getName());
+
     /**
      * scripting engine for this bean handler
      */
     int _scriptingEngine;
-
-    /**
-     * standard filter used internally
-     * by various methods
-     */
-    private static StandardNamespaceFilter STD_NAMESPACE_FILTER = new StandardNamespaceFilter();
 
     /**
      * constructor
@@ -76,7 +71,6 @@ public class MyFacesBeanHandler implements BeanHandler {
      * types, this is a corner case but it still can happen)
      */
     public void scanDependencies() {
-
 
     }
 
@@ -223,8 +217,6 @@ public class MyFacesBeanHandler implements BeanHandler {
             //But for most cases this mutex should be enough
             Map<String, ManagedBean> mbeansSnapshotView = makeSnapshot(mbeans);
 
-
-
             for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
                 Class managedBeanClass = entry.getValue().getManagedBeanClass();
                 if (hasToBeRefreshed(taintedInTime, managedBeanClass)) {
@@ -248,17 +240,9 @@ public class MyFacesBeanHandler implements BeanHandler {
         if (getLog().isLoggable(Level.FINE)) {
             getLog().log(Level.FINE, "[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences({0})", bean.getManagedBeanName());
         }
-
-        String scope = bean.getManagedBeanScope();
-
-        //if (scope != null && scope.equalsIgnoreCase(ScriptingConst.SCOPE_SESSION)) {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
-        //} else if (scope != null && scope.equalsIgnoreCase(ScriptingConst.SCOPE_APPLICATION)) {
         FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
-        //other scope
-        //} else if (scope != null && !scope.equals(ScriptingConst.SCOPE_REQUEST)) {
         removeCustomScopedBean(bean);
-        //}
     }
 
     /**
@@ -285,9 +269,9 @@ public class MyFacesBeanHandler implements BeanHandler {
         try {
             lifecycleProvider.destroyInstance(beanInstance);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            _logger.log(Level.WARNING, "removeCustomScopedBean():", e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            _logger.log(Level.WARNING, "removeCustomScopedBean():", e);
         }
     }
 
@@ -336,6 +320,7 @@ public class MyFacesBeanHandler implements BeanHandler {
      * important, this method determines whether a managed bean class
      * has to be refreshed or not
      *
+     * @param tainted          set of tainted classes
      * @param managedBeanClass the class to be checked for refresh criteria
      * @return true if the current bean class fulfills our refresh criteria
      */

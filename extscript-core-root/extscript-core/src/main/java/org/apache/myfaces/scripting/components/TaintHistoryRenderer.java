@@ -19,8 +19,6 @@
 
 package org.apache.myfaces.scripting.components;
 
-import org.apache.myfaces.scripting.core.util.StringUtils;
-import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
@@ -32,7 +30,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * A renderer which displays our taint history
@@ -41,26 +38,25 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 public class TaintHistoryRenderer extends Renderer {
-    static Logger _log = Logger.getLogger(TaintHistoryRenderer.class.getName());
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 
-        ResponseWriter wrtr = FacesContext.getCurrentInstance().getResponseWriter();
+        ResponseWriter responseWriter = FacesContext.getCurrentInstance().getResponseWriter();
 
-        startDiv(component, wrtr, "historyBox");
+        startDiv(component, responseWriter, "historyBox");
         int lastTainted = ((TaintHistory) component).getNoEntries();
 
         Collection<ReloadingMetadata> result = WeavingContext.getRefreshContext().getLastTainted(lastTainted);
         if (result == null || result.isEmpty()) {
-            wrtr.write(RendererConst.NO_TAINT_HISTORY_FOUND);
+            responseWriter.write(RendererConst.NO_TAINT_HISTORY_FOUND);
         } else {
-            writeHistory(component, wrtr, result);
+            writeHistory(component, responseWriter, result);
         }
-        endDiv(wrtr);
+        endDiv(responseWriter);
 
-        wrtr.flush();
+        responseWriter.flush();
 
     }
 
@@ -92,16 +88,4 @@ public class TaintHistoryRenderer extends Renderer {
         wrtr.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
     }
 
-    private void writeErrorsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
-        if (!StringUtils.isBlank(compilerComp.getErrorsLabel())) {
-            startDiv(component, wrtr, RendererConst.ERRORS_LABEL);
-            wrtr.write(compilerComp.getErrorsLabel());
-            endDiv(wrtr);
-        }
-    }
-
-    private void copyCompilationResult(CompilationResult result, CompilationResult tempResult) {
-        result.getErrors().addAll(tempResult.getErrors());
-        result.getWarnings().addAll(tempResult.getWarnings());
-    }
 }

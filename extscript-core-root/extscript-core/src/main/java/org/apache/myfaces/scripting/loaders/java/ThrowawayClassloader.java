@@ -6,46 +6,42 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.*;
 
 /**
  * we move the throw away mechanism into our classloader for cleaner code coverage
  */
 @JavaThrowAwayClassloader
+@SuppressWarnings("unused")
 public class ThrowawayClassloader extends ClassLoader {
 
-    public static File _tempDir = null;
-    static double _tempMarker = Math.random();
+    static final Logger _logger = Logger.getLogger(ThrowawayClassloader.class.getName());
+
+    private static File _tempDir = null;
     int _scriptingEngine;
     String _engineExtension;
-    boolean _unTaintClasses = true;
 
     String _sourceRoot;
 
     public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
-        super(classLoader);
-        if (_tempDir == null) {
-            synchronized (this.getClass()) {
-                if (_tempDir != null) {
-                    return;
-                }
-
-                _tempDir = WeavingContext.getConfiguration().getCompileTarget();
+        synchronized (this.getClass()) {
+            if (_tempDir != null) {
+                return;
             }
+            _tempDir = WeavingContext.getConfiguration().getCompileTarget();
+            _scriptingEngine = scriptingEngine;
+            _engineExtension = engineExtension;
         }
-        _scriptingEngine = scriptingEngine;
-        _engineExtension = engineExtension;
     }
 
     public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
         this(classLoader, scriptingEngine, engineExtension);
-        _unTaintClasses = untaint;
+
     }
 
     ThrowawayClassloader() {
@@ -88,8 +84,8 @@ public class ThrowawayClassloader extends ClassLoader {
 
             FileInputStream iStream = null;
 
-            int fileLength = -1;
-            byte[] fileContent = null;
+            int fileLength;
+            byte[] fileContent;
             try {
                 //we cannot load while a compile is in progress
                 //we have to wait until it is one
@@ -97,10 +93,13 @@ public class ThrowawayClassloader extends ClassLoader {
                     fileLength = (int) target.length();
                     fileContent = new byte[fileLength];
                     iStream = new FileInputStream(target);
-                    iStream.read(fileContent);
+                    int result = iStream.read(fileContent);
+                    if (_logger.isLoggable(Level.FINER)) {
+                        _logger.log(Level.FINER, "read {0} bytes", String.valueOf(result));
+                    }
                 }
                 // Erzeugt aus dem byte Feld ein Class Object.
-                Class retVal = null;
+                Class retVal;
 
                 //we have to do it here because just in case
                 //a dependend class is loaded as well we run into classcast exceptions
@@ -122,16 +121,20 @@ public class ThrowawayClassloader extends ClassLoader {
                 } else {
                     //we store the initial reloading meta data information so that it is refreshed
                     //later on, this we we cover dependend classes on the initial load
-                    return storeReloadableDefinitions(className, target, fileLength, fileContent);
+                    return storeReloadableDefinitions(className, fileLength, fileContent);
                 }
 
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
+                throw new ClassNotFoundException(e.toString());
+            } catch (IOException e) {
                 throw new ClassNotFoundException(e.toString());
             } finally {
                 if (iStream != null) {
                     try {
                         iStream.close();
                     } catch (Exception e) {
+                        Logger log = Logger.getLogger(this.getClass().getName());
+                        log.log(SEVERE, "", e);
                     }
                 }
             }
@@ -140,7 +143,7 @@ public class ThrowawayClassloader extends ClassLoader {
         return super.loadClass(className);
     }
 
-    private Class<?> storeReloadableDefinitions(String className, File target, int fileLength, byte[] fileContent) {
+    private Class<?> storeReloadableDefinitions(String className, int fileLength, byte[] fileContent) {
         Class retVal;
         retVal = super.defineClass(className, fileContent, 0, fileLength);
         ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
@@ -163,7 +166,7 @@ public class ThrowawayClassloader extends ClassLoader {
 
         if (rootDir == null) {
             Logger log = Logger.getLogger(this.getClass().getName());
-            log.log(Level.WARNING, "Warning source for class: {0} could not be found", className);
+            log.log(WARNING, "Warning source for class: {0} could not be found", className);
             return retVal;
         }
 
@@ -182,25 +185,8 @@ public class ThrowawayClassloader extends ClassLoader {
         return _engineExtension;
     }
 
-    @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
-        return super.findClass(name);
-    }
-
     public File getClassFile(String className) {
-        return ClassUtils.classNameToFile(_tempDir.getAbsolutePath(), className);
-    }
-
-    public File getTempDir() {
-        return _tempDir;
-    }
-
-    public void setTempDir(File tempDir) {
-        this._tempDir = tempDir;
-    }
-
-    public String getSourceRoot() {
-        return _sourceRoot;
+        return ClassUtils.classNameToFile(ThrowawayClassloader._tempDir.getAbsolutePath(), className);
     }
 
     public void setSourceRoot(String sourceRoot) {

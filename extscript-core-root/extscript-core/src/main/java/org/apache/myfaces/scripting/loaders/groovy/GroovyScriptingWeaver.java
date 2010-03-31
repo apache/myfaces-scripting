@@ -8,6 +8,8 @@ import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.loaders.groovy.compiler.GroovyCompilerFacade;
 
 import javax.servlet.ServletContext;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A standard groovy weaver which isolates the weaving behavior
@@ -16,11 +18,14 @@ public class GroovyScriptingWeaver extends BaseWeaver {
 
     org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier _identifier = new org.apache.myfaces.scripting.loaders.groovy.DynamicClassIdentifier();
 
+    final Logger _logger = Logger.getLogger(GroovyScriptingWeaver.class.getName());
+
     /**
      * helper to allow initial compiler classpath scanning
      *
-     * @param servletContext
+     * @param servletContext servlet context to be passed down
      */
+    @SuppressWarnings("unused")
     public GroovyScriptingWeaver(ServletContext servletContext) {
         super(ScriptingConst.GROOVY_FILE_ENDING, ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
         init();
@@ -41,11 +46,12 @@ public class GroovyScriptingWeaver extends BaseWeaver {
 
         } catch (ClassNotFoundException e) {
             //we do nothing here
+            _logger.log(Level.WARNING, "", e);
         }
 
         this._dependencyScanner = new GroovyDependencyScanner(this);
         this._reloadingStrategy = new StandardGroovyReloadingStrategy();
-        ((StandardGroovyReloadingStrategy) this._reloadingStrategy).setWeaver(this);
+        this._reloadingStrategy.setWeaver(this);
     }
 
     protected String getLoadingInfo(String file) {

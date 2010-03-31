@@ -28,6 +28,8 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 
 import java.io.File;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +40,7 @@ import java.util.logging.Logger;
  *          Custom compiler call for jdk5
  *          we can call javac directly
  */
-
+@SuppressWarnings("unused")
 public class CompilerFacade implements DynamicCompiler {
     protected org.apache.myfaces.scripting.api.Compiler _compiler = null;
 
@@ -61,14 +63,22 @@ public class CompilerFacade implements DynamicCompiler {
      * is allowed for performance reasons, the request blocking will be done
      * probably on the caller side of things
      *
-     * @param sourceRoot
-     * @param classPath
+     * @param sourceRoot the source root of our files to be compiled
+     * @param classPath  the corresponding classpath
      */
+
     public void compileAll(String sourceRoot, String classPath) {
         try {
             //TODO do a full compile and block the compile for the rest of the request
             //so that we do not run into endless compile cycles
-            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+
+            /*
+            * privilege block to allow custom classloading only
+            * in case of having the privileges,
+            * this was proposed by the checkstyle plugin
+            */
+            RecompiledClassLoader classLoader = getRecompiledClassLoader();
+
             classLoader.setSourceRoot(sourceRoot);
             CompilationResult result = _compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
             displayMessages(result);
@@ -81,19 +91,35 @@ public class CompilerFacade implements DynamicCompiler {
         }
     }
 
+    private RecompiledClassLoader getRecompiledClassLoader() {
+        return AccessController.doPrivileged(new PrivilegedAction<RecompiledClassLoader>() {
+            public RecompiledClassLoader run() {
+                return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+
+            }
+        });
+    }
+
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
 
         String separator = FileUtils.getFileSeparatorForRegex();
         String className = filePath.replaceAll(separator, ".");
         className = ClassUtils.relativeFileToClassName(className);
-        RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+        RecompiledClassLoader classLoader = getRecompiledClassLoader();
+
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        try {
+        try
+
+        {
             classLoader.setSourceRoot(sourceRoot);
             Thread.currentThread().setContextClassLoader(classLoader);
 
             return classLoader.loadClass(className);
-        } finally {
+        }
+
+        finally
+
+        {
             Thread.currentThread().setContextClassLoader(oldClassLoader);
         }
 
@@ -108,9 +134,10 @@ public class CompilerFacade implements DynamicCompiler {
      *         so that they later can be picked up by the classloader
      * @throws ClassNotFoundException
      */
+
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
         try {
-            RecompiledClassLoader classLoader = new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+            RecompiledClassLoader classLoader = getRecompiledClassLoader();
 
             CompilationResult result = _compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 

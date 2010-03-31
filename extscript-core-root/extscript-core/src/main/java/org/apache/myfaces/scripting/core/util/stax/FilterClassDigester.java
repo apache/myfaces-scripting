@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A web.xml filter class digester based on StaX
@@ -43,6 +45,8 @@ import java.util.Set;
 
 public class FilterClassDigester {
     private static final String ATTR_FILTER_CLASS = "filter-class";
+
+    static final Logger _logger = Logger.getLogger(FilterClassDigester.class.getName());
 
     /**
      * checks if the filter with the specified filter class exists
@@ -88,15 +92,18 @@ public class FilterClassDigester {
 
         }
         catch (XMLStreamException ex) {
-            return false;
+            _logger.log(Level.WARNING, "", ex);
         }
         catch (IOException ex) {
-            return false;
+            _logger.log(Level.WARNING, "", ex);
         } finally {
             try {
-                parser.close();
+                if (parser != null) {
+                    parser.close();
+                }
             } catch (XMLStreamException e) {
-                return false;
+                _logger.log(Level.WARNING, "", e);
+
             }
         }
 

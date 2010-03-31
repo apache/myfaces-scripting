@@ -25,6 +25,9 @@ import org.apache.myfaces.scripting.core.util.Cast;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -37,6 +40,8 @@ import org.apache.myfaces.scripting.core.util.ReflectUtil;
  */
 
 public class GlobalReloadingStrategy implements ReloadingStrategy {
+
+    final Logger _logger = Logger.getLogger(GlobalReloadingStrategy.class.getName());
 
     protected ScriptingWeaver _weaver = null;
 
@@ -71,6 +76,7 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
         switch (artifactType) {
             case ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN:
                 return _beanStrategy.reload(toReload, artifactType);
+
             case ScriptingConst.ARTIFACT_TYPE_RENDERER:
                 return _noMappingStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_BEHAVIOR:
@@ -81,7 +87,7 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
                 return _noMappingStrategy.reload(toReload, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_VALIDATOR:
                 return _noMappingStrategy.reload(toReload, artifactType);
-            //TODO Add other artifact loading strategies on demand here
+
             case ScriptingConst.ARTIFACT_TYPE_COMPONENT_HANDLER:
                 return dynaReload(toReload, _componentHandlerStrategy, artifactType);
             case ScriptingConst.ARTIFACT_TYPE_CONVERTER_HANDLER:
@@ -133,6 +139,9 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
             return (ReloadingStrategy) ReflectUtil.instantiate(componentStrategyClass, new Cast(ScriptingWeaver.class, weaver));
         } catch (RuntimeException ex) {
             //in this case swallowing the exception is expected
+            if (_logger.isLoggable(Level.FINEST)) {
+                _logger.log(Level.FINEST, "Expected Exception: ", ex);
+            }
         }
         return null;
     }

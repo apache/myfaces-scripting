@@ -58,13 +58,13 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     public AnnotationVisitor visitAnnotation(String description, boolean b) {
-        registerDependency(Type.getType(description), "registering annotation [" + description + "]");
+        registerDependency(Type.getType(description));
 
         return null;
     }
 
     public AnnotationVisitor visitParameterAnnotation(int opCode, String description, boolean b) {
-        registerDependency(Type.getType(description), "registering annotation [" + description + "]");
+        registerDependency(Type.getType(description));
 
         return null;
     }
@@ -96,13 +96,13 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTypeInsn(int opCode, String castType) {
         //cast
         // log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
-        registerDependency(Type.getObjectType(castType), "cast registered type[" + castType + "]");
+        registerDependency(Type.getObjectType(castType));
         if (_log.isLoggable(Level.FINEST))
             _log.log(Level.FINEST, "visitTypeInsn {0}", castType);
 
     }
 
-    private void registerDependency(Type dependency, String description) {
+    private void registerDependency(Type dependency) {
 
         String className = dependency.getClassName();
         if (className.endsWith("[]")) {
@@ -126,10 +126,10 @@ class MethodScanVisitor implements MethodVisitor {
         if (name != null && name.length() > 6 && name.startsWith("class$")) {
             //special fallback for groovy static imports which are added as fields
             name = "L" + name.substring(6).replaceAll("\\$", ".") + ";";
-            registerDependency(Type.getType(name), "field insn name [" + name + "]");
+            registerDependency(Type.getType(name));
         }
         if (descriptor != null) {
-            registerDependency(Type.getType(descriptor), "field insn descriptor [" + descriptor + "]");
+            registerDependency(Type.getType(descriptor));
         }
 
         if (_log.isLoggable(Level.FINEST))
@@ -148,17 +148,17 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitMethodInsn(int opc, String owner, String name, String desc) {
         //s2 arguments list
         if (desc != null) {
-            registerDependency(Type.getReturnType(desc), "Registering return type [" + desc + "]");
+            registerDependency(Type.getReturnType(desc));
             Type[] argumentTypes = Type.getArgumentTypes(desc);
             if (argumentTypes != null) {
                 for (Type argumentType : argumentTypes) {
-                    registerDependency(argumentType, "Registering argument type [" + desc + "]");
+                    registerDependency(argumentType);
                 }
             }
         }
 
         if (owner != null)
-            registerDependency(Type.getObjectType(owner), "registering callee type [" + owner + "]");
+            registerDependency(Type.getObjectType(owner));
 
     }
 
@@ -194,13 +194,13 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTryCatchBlock(Label label, Label label1, Label label2, String catchType) {
         //try catch block type information in the last string
         //log.log(Level.INFO, "visitTryCatchBlock: {0} {1} {2} {3}", new Object[]{label.toString(), label1.toString(), label2.toString(), catchType});
-        registerDependency(Type.getObjectType(catchType), "catch registered type[" + catchType + "]");
+        registerDependency(Type.getObjectType(catchType));
 
     }
 
     public void visitLocalVariable(String name, String description, String signature, Label label, Label label1, int i) {
         //local variable on method level
-        registerDependency(Type.getType(description), "local variable registered type[" + description + "]");
+        registerDependency(Type.getType(description));
         handleGenerics(signature);
     }
 

@@ -18,13 +18,12 @@
  */
 package org.apache.myfaces.scripting.core.util;
 
-import org.apache.myfaces.scripting.core.util.Strategy;
-
-import java.util.List;
-import java.util.LinkedList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -49,7 +48,7 @@ public class FileStrategy implements Strategy {
 
     public void apply(Object element) {
         File foundFile = (File) element;
-        String fileName = foundFile.getName().toLowerCase();
+        String fileName = foundFile.getName().toLowerCase(Locale.getDefault());
         Matcher matcher = _rePattern.matcher(fileName);
 
         if (!matcher.matches()) return;
@@ -60,7 +59,4 @@ public class FileStrategy implements Strategy {
         return _foundFiles;
     }
 
-    public void setFoundFiles(List<File> foundFiles) {
-        _foundFiles = foundFiles;
-    }
 }

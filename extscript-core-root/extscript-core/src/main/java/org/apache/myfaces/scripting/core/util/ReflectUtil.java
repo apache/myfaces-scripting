@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -31,10 +32,9 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 
-
 public class ReflectUtil {
 
-    static Logger _log = Logger.getLogger(ReflectUtil.class.getName());
+    static final Logger _logger = Logger.getLogger(ReflectUtil.class.getName());
 
     public static Object instantiate(String clazz, Object... varargs) {
         return instantiate(ClassUtils.forName(clazz), varargs);
@@ -59,10 +59,9 @@ public class ReflectUtil {
             }
         }
 
-        Constructor constr = null;
         try {
-            constr = clazz.getConstructor(classes);
-            return (Object) constr.newInstance(varargs);
+            Constructor constr = clazz.getConstructor(classes);
+            return constr.newInstance(varargs);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -150,7 +149,7 @@ public class ReflectUtil {
      */
     public static Object executeMethod(Object obj, String methodName, Object... varargs) {
 
-        Collection<Method> methods = null;
+        Collection<Method> methods;
         //if we have an invocationHandler here we
         //can work over the generic invoke interface
         //That way we can cover more dynamic stuff
@@ -206,24 +205,25 @@ public class ReflectUtil {
     }
 
     /**
-     * check if the return vaue is a method not found return val which
+     * check if the return value is a method not found return val which
      * indicates we have to follow the next workflow step
      *
-     * @param retVal
-     * @return
+     * @param retVal the retVal which has to be investigated
+     * @return true if the retVal is instance of _MethodNotFound false otherwise
      */
     private static boolean methodNotFound(Object retVal) {
         return retVal instanceof _MethodNotFound;
     }
 
     /**
-     * executes a method in an invocation handler
+     * executes a method in an invocation handler with a set of
+     * methods which are canidates for execution
      *
-     * @param objToInvoke
-     * @param methodName
-     * @param methods
-     * @param varargs
-     * @return
+     * @param objToInvoke the invokee object
+     * @param methodName  the method name
+     * @param methods     the methods which are under investigation for invoking
+     * @param varargs     the list of varargs to be passed to the method
+     * @return the result of the invocation, or an object of type _MethodNotFound otherwise
      */
     static private Object handleInvHandlerMethod(InvocationHandler objToInvoke, String methodName, Collection<Method> methods, Object... varargs) {
         for (Method m : methods) {
@@ -242,11 +242,11 @@ public class ReflectUtil {
     /**
      * executes a method on an object
      *
-     * @param objToInvoke
-     * @param methodName
-     * @param methods
-     * @param varargs
-     * @return
+     * @param objToInvoke the invokee object
+     * @param methodName  the method name
+     * @param methods     the methods which are under investigation for invoking
+     * @param varargs     the list of varargs to be passed to the method
+     * @return the result of the invocation, or an object of type _MethodNotFound otherwise
      */
     static private Object handleObjMethod(Object objToInvoke, String methodName, Collection<Method> methods, Object... varargs) {
         for (Method m : methods) {
@@ -265,11 +265,11 @@ public class ReflectUtil {
     /**
      * executes a static method on a class
      *
-     * @param objToInvoke
-     * @param methodName
-     * @param methods
-     * @param varargs
-     * @return
+     * @param objToInvoke the invokee object
+     * @param methodName  the method name
+     * @param methods     the methods which are under investigation for invoking
+     * @param varargs     the list of varargs to be passed to the method
+     * @return the result of the invocation, or an object of type _MethodNotFound otherwise
      */
     static private Object handleStaticMethod(Class objToInvoke, String methodName, Collection<Method> methods, Object... varargs) {
         for (Method m : methods) {
@@ -287,9 +287,13 @@ public class ReflectUtil {
 
     private static void handleException(Throwable e) {
         if (e instanceof IllegalAccessException) {
-            //do nothing
+            if (_logger.isLoggable(Level.FINEST)) {
+                _logger.log(Level.FINEST, "", e);
+            }
         } else if (e instanceof IllegalArgumentException) {
-            //do nothing
+            if (_logger.isLoggable(Level.FINEST)) {
+                _logger.log(Level.FINEST, "", e);
+            }
         } else {
             throw new RuntimeException(e);
         }
@@ -333,18 +337,19 @@ public class ReflectUtil {
 
     /**
      * faster reflection call
-     * if we know the data types excactly we can
+     * if we know the data types exactly we can
      * trigger a direct call instead of walking through all methods
+     * note this method only allows to trigger against directly declared methods
+     * it ignores the inheritance hierarchy for faster access
      *
-     * @param obj
-     * @param methodName
-     * @param classes
-     * @return
-     * @throws NoSuchMethodException
+     * @param obj        the invokee object
+     * @param methodName the metod name
+     * @param classes    the parameter type classes
+     * @return the method if found
+     * @throws NoSuchMethodException in case it could not be found
      */
     public static Method fastGetMethod(Object obj, String methodName, Class[] classes) throws NoSuchMethodException {
-        Method m = null;
-        //TODO add inheritance handling here
+        Method m;
         try {
             m = obj.getClass().getDeclaredMethod(methodName, classes);
         } catch (NoSuchMethodException e) {
@@ -376,8 +381,6 @@ public class ReflectUtil {
             }
         }
 
-        //TODO add autocasting instead of manual casting
-
         try {
             Method m = fastGetStaticMethod(obj, methodName, classes);
             return m.invoke(obj, varargs);
@@ -392,7 +395,7 @@ public class ReflectUtil {
     }
 
     public static Method fastGetStaticMethod(Class obj, String methodName, Class[] classes) throws NoSuchMethodException {
-        Method m = null;
+        Method m;
         try {
             m = obj.getDeclaredMethod(methodName, classes);
         } catch (NoSuchMethodException e) {

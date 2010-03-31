@@ -19,12 +19,15 @@
 package org.apache.myfaces.scripting.loaders.java;
 
 import java.io.InputStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
+ * <p/>
+ * Classloader which loads the compiled files of the corresponding scripting engine
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Classloader which loads the compilates for the scripting engine
  */
 @JavaThrowAwayClassloader
 public class RecompiledClassLoader extends ClassLoader {
@@ -34,17 +37,25 @@ public class RecompiledClassLoader extends ClassLoader {
     String _sourceRoot;
     ThrowawayClassloader _throwAwayLoader = null;
 
-    public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
+    public RecompiledClassLoader(final ClassLoader classLoader, final int scriptingEngine, final String engineExtension) {
         super(classLoader);
         _scriptingEngine = scriptingEngine;
         _engineExtension = engineExtension;
-        _throwAwayLoader = new ThrowawayClassloader(classLoader, scriptingEngine, engineExtension);
+        _throwAwayLoader = AccessController.doPrivileged(new PrivilegedAction<ThrowawayClassloader>() {
+            public ThrowawayClassloader run() {
+                return new ThrowawayClassloader(classLoader, scriptingEngine, engineExtension);
+            }
+        });
     }
 
-    public RecompiledClassLoader(ClassLoader classLoader, int scriptingEngine, String engineExtension, boolean untaint) {
+    public RecompiledClassLoader(ClassLoader classLoader, final int scriptingEngine, final String engineExtension, final boolean untaint) {
         this(classLoader, scriptingEngine, engineExtension);
         _unTaintClasses = untaint;
-        _throwAwayLoader = new ThrowawayClassloader(getParent(), scriptingEngine, engineExtension, untaint);
+        _throwAwayLoader = AccessController.doPrivileged(new PrivilegedAction<ThrowawayClassloader>() {
+            public ThrowawayClassloader run() {
+                return new ThrowawayClassloader(getParent(), scriptingEngine, engineExtension, untaint);
+            }
+        });
     }
 
     RecompiledClassLoader() {
@@ -57,19 +68,18 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
-        _throwAwayLoader = new ThrowawayClassloader(getParent(), _scriptingEngine, _engineExtension, _unTaintClasses);
+        _throwAwayLoader = AccessController.doPrivileged(new PrivilegedAction<ThrowawayClassloader>() {
+            public ThrowawayClassloader run() {
+                return new ThrowawayClassloader(getParent(), _scriptingEngine, _engineExtension, _unTaintClasses);
+            }
+        });
         _throwAwayLoader.setSourceRoot(getSourceRoot());
         return _throwAwayLoader.loadClass(className);
     }
 
-
-
-
-
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         return _throwAwayLoader.findClass(name);
     }
-
 
     public String getSourceRoot() {
         return _sourceRoot;

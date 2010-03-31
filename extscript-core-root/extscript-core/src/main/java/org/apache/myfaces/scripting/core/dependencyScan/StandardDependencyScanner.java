@@ -26,8 +26,6 @@ import org.apache.myfaces.scripting.core.dependencyScan.core.ExtendedClassReader
 import org.objectweb.asm.ClassReader;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,18 +40,17 @@ import java.util.logging.Logger;
  */
 public class StandardDependencyScanner implements DependencyScanner {
     final ClassScanVisitor _cp = new ClassScanVisitor();
-    Logger _log = Logger.getLogger(this.getClass().getName());
+    Logger _logger = Logger.getLogger(this.getClass().getName());
 
     public StandardDependencyScanner() {
 
     }
 
     public synchronized final void fetchDependencies(ClassLoader loader, Integer engineType, String className, DependencyRegistry registry) {
-        Set<String> retVal = new HashSet<String>();
         _cp.setEngineType(engineType);
         _cp.setRootClass(className);
         _cp.setDependencyRegistry(registry);
-        investigateInheritanceHierarchy(loader, className, registry);
+        investigateInheritanceHierarchy(loader, className);
         registry.flush(engineType);
     }
 
@@ -66,9 +63,8 @@ public class StandardDependencyScanner implements DependencyScanner {
      *
      * @param loader    the classLoader which should be used for the hierarchy scanning
      * @param className the className which has to be investigated
-     * @param registry  the dependency registry
      */
-    private void investigateInheritanceHierarchy(ClassLoader loader, String className, DependencyRegistry registry) {
+    private void investigateInheritanceHierarchy(ClassLoader loader, String className) {
         //we now have to fetch the parent hierarchy
 
         try {
@@ -80,15 +76,15 @@ public class StandardDependencyScanner implements DependencyScanner {
 
             //we scan the hierarchy because we might have compiled-uncompiled-compiled connections, the same goes for the interfaces
             //the basic stuff can be covered by our class scanning but for more advanced usecase we have to walk the entire hierarchy per class!
-            scanHierarchy(loader, toCheck, registry, true);
+            scanHierarchy(loader, toCheck);
             //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
-            scanInterfaces(loader, toCheck, registry);
+            scanInterfaces(loader, toCheck);
         } catch (ClassNotFoundException e) {
-            _log.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
+            _logger.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
         }
     }
 
-    private void scanInterfaces(ClassLoader loader, Class toCheck, DependencyRegistry registry) {
+    private void scanInterfaces(ClassLoader loader, Class toCheck) {
         Class[] interfaces = toCheck.getInterfaces();
         if (interfaces == null || interfaces.length == 0) {
             return;
@@ -103,33 +99,7 @@ public class StandardDependencyScanner implements DependencyScanner {
             //We scan also our parent interfaces to get a full coverage
             //but since interfaces do not implement anything we can cover
             //the parents
-            scanHierarchy(loader, currentInterface, registry, false);
-        }
-    }
-
-    /**
-     * Scans the interface hierarchy of our class
-     * the normal interface scan is processed already on class level
-     * this method is needed to process our parent interface relationships
-     * before triggering the ASM bytecode processing
-     *
-     * @param loader         the infrastructural classloader
-     * @param toCheck        the class which needs to be checked
-     * @param registry       the dependency registry
-     * @param interfaceCheck if true also interfaces within the hierarchy will be processed, false if not
-     */
-    private void scanInterfaces(ClassLoader loader, Class toCheck, DependencyRegistry registry, boolean interfaceCheck) {
-        Class parent = toCheck.getSuperclass();
-
-        while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
-            if (interfaceCheck) {
-                //we recursively descend into our interfaces
-                scanInterfaces(loader, parent, registry);
-            }
-
-            scanCurrentClass(loader, parent.getName());
-            parent = parent.getSuperclass();
-
+            scanHierarchy(loader, currentInterface);
         }
     }
 
@@ -146,24 +116,13 @@ public class StandardDependencyScanner implements DependencyScanner {
      *
      * @param loader         the infrastructural classloader
      * @param toCheck        the class which needs to be checked
-     * @param registry       the dependency registry
-     * @param interfaceCheck if true also interfaces within the hierarchy will be processed, false if not
      */
-    private void scanHierarchy(ClassLoader loader, Class toCheck, DependencyRegistry registry, boolean interfaceCheck) {
+    private void scanHierarchy(ClassLoader loader, Class toCheck) {
         Class parent = toCheck.getSuperclass();
 
         while (parent != null && !ClassScanUtils.isStandardNamespace(parent.getName())) {
-            if (interfaceCheck) {
-                //we recursively descend into our interfaces, it should not
-                //get any cyclic calls the tainting mechanism should prevent that
-                //and also the descension into parents, determinism should be
-                //enabled by both measures
-                //scanInterfaces(loader, retVal, whiteList, parent);
-            }
-
             scanCurrentClass(loader, parent.getName());
             parent = parent.getSuperclass();
-
         }
     }
 
@@ -179,7 +138,7 @@ public class StandardDependencyScanner implements DependencyScanner {
             cr = new ExtendedClassReader(loader, currentClassName);
             cr.accept(_cp, 0);
         } catch (IOException e) {
-            _log.log(Level.SEVERE, "scanCurrentClass() ", e);
+            _logger.log(Level.SEVERE, "scanCurrentClass() ", e);
         }
     }
 
