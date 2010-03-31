@@ -41,6 +41,7 @@ import static junit.framework.Assert.assertTrue;
 public class MethodLevelReloadingHandlerTest {
 
     MethodReloadingProbe _probe;
+    private static final String MSG_REPLACED = "objects must be replaced";
 
     /**
      * This weaver does nothing except instantiating
@@ -49,11 +50,11 @@ public class MethodLevelReloadingHandlerTest {
      * we need it to simulate the object level reloading
      * at every method call
      */
-    class ObjectReladingWeaver extends BaseWeaver {
+    class ObjectReloadingWeaver extends BaseWeaver {
 
         Class _clazz;
 
-        public ObjectReladingWeaver(Class clazz) {
+        public ObjectReloadingWeaver(Class clazz) {
             super();
             _clazz = clazz;
         }
@@ -92,7 +93,7 @@ public class MethodLevelReloadingHandlerTest {
      */
     @Before
     public void init() {
-        WeavingContext.setWeaver(new ObjectReladingWeaver(Probe.class));
+        WeavingContext.setWeaver(new ObjectReloadingWeaver(Probe.class));
         _probe = new Probe();
     }
 
@@ -101,11 +102,11 @@ public class MethodLevelReloadingHandlerTest {
         MethodLevelReloadingHandler handler = new MethodLevelReloadingHandler(_probe, ScriptingConst.ARTIFACT_TYPE_PHASELISTENER);
 
         ReflectUtil.executeMethod(handler, "testMethod1");
-        assertTrue("objects must be replaced", handler.getDelegate() != _probe && handler.getDelegate() != null);
+        assertTrue(MSG_REPLACED, handler.getDelegate() != _probe && handler.getDelegate() != null);
         Object secondObject = handler.getDelegate();
         Boolean retVal = (Boolean) ReflectUtil.executeMethod(handler, "testMethod3", "true");
         assertTrue(retVal); 
-        assertTrue("objects must be replaced", handler.getDelegate() != secondObject && handler.getDelegate() != null);
+        assertTrue(MSG_REPLACED, handler.getDelegate() != secondObject && handler.getDelegate() != null);
 
     }
 }
