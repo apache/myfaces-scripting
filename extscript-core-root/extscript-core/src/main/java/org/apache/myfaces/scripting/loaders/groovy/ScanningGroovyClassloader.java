@@ -27,6 +27,10 @@ import org.codehaus.groovy.control.SourceUnit;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Scanning Groovy class loader
@@ -66,12 +70,19 @@ public class ScanningGroovyClassloader extends GroovyClassLoader {
      * @return the ClassCollector
      */
     protected ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {
-        InnerLoader loader = (InnerLoader) AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                return new InnerLoader(ScanningGroovyClassloader.this);
-            }
-        });
-        return new MyClassCollector(loader, unit, su);
+        InnerLoader loader = null;
+        try {
+            loader = AccessController.doPrivileged(new PrivilegedExceptionAction<InnerLoader>() {
+                public InnerLoader run() {
+                    return new InnerLoader(ScanningGroovyClassloader.this);
+                }
+            });
+            return new MyClassCollector(loader, unit, su);
+        } catch (PrivilegedActionException e) {
+             Logger _logger = Logger.getLogger(this.getClass().getName());
+            _logger.log(Level.SEVERE,"", e);
+        }
+        return null;
     }
 
     public static class MyClassCollector extends ClassCollector {

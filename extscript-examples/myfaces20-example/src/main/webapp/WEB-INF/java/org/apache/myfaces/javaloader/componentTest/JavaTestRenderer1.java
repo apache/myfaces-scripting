@@ -41,6 +41,7 @@ import java.util.logging.Logger;
  * class to the other
  */
 
+    
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());

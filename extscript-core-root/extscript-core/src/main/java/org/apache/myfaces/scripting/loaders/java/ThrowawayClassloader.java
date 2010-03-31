@@ -29,13 +29,16 @@ public class ThrowawayClassloader extends ClassLoader {
     String _sourceRoot;
 
     public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
+        super(classLoader);
+
         synchronized (this.getClass()) {
+            _scriptingEngine = scriptingEngine;
+            _engineExtension = engineExtension;
+            
             if (_tempDir != null) {
                 return;
             }
             _tempDir = WeavingContext.getConfiguration().getCompileTarget();
-            _scriptingEngine = scriptingEngine;
-            _engineExtension = engineExtension;
         }
     }
 
@@ -183,6 +186,10 @@ public class ThrowawayClassloader extends ClassLoader {
 
     protected String getStandardFileExtension() {
         return _engineExtension;
+    }
+
+    protected Class<?> findClassExposed(String name) throws ClassNotFoundException {
+        return super.findClass(name);
     }
 
     public File getClassFile(String className) {

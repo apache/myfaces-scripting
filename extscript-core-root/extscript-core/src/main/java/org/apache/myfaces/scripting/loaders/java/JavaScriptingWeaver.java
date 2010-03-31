@@ -74,7 +74,8 @@ public class JavaScriptingWeaver extends BaseWeaver implements Serializable {
 
         } catch (ClassNotFoundException e) {
             //we do nothing here
-            _logger.log(Level.WARNING, "", e);
+            //generic annotation scanner can be missing in jsf 1.2 environments
+            _logger.log(Level.FINER, "", e);
         }
 
         this._dependencyScanner = new JavaDependencyScanner(this);

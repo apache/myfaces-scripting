@@ -5,7 +5,7 @@ import org.apache.myfaces.scripting.api.*;
 import org.apache.myfaces.scripting.core.util.Cast;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.extensions.scripting.loaders.groovy.compiler.GroovyCompilerFacade;
+import org.apache.myfaces.scripting.loaders.groovy.compiler.GroovyCompilerFacade;
 
 import javax.servlet.ServletContext;
 import java.util.logging.Level;
@@ -46,7 +46,8 @@ public class GroovyScriptingWeaver extends BaseWeaver {
 
         } catch (ClassNotFoundException e) {
             //we do nothing here
-            _logger.log(Level.WARNING, "", e);
+            //generic annotation scanner can be missing in jsf1 environments
+            _logger.log(Level.FINER, "", e);
         }
 
         this._dependencyScanner = new GroovyDependencyScanner(this);

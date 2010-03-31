@@ -22,8 +22,8 @@ import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.StandardDependencyScanner;
+import org.apache.myfaces.scripting.core.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.WhitelistFilter;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
 import org.apache.myfaces.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
@@ -31,7 +31,8 @@ import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,11 +105,16 @@ public class JavaDependencyScanner implements ClassScanner {
     }
 
     protected ClassLoader getClassLoader() {
-        return AccessController.doPrivileged(new PrivilegedAction<ScannerClassloader>() {
-            public ScannerClassloader run() {
-                return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", WeavingContext.getConfiguration().getCompileTarget());
-            }
-        });
+        try {
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<ScannerClassloader>() {
+                public ScannerClassloader run() {
+                    return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(), ".java", WeavingContext.getConfiguration().getCompileTarget());
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            _log.log(Level.SEVERE,"", e);
+        }
+        return null;
     }
 
     public void clearListeners() {

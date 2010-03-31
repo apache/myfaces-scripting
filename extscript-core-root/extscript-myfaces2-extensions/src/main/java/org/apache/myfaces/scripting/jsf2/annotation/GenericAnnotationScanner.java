@@ -41,6 +41,7 @@ import java.util.*;
  *          wherever possible
  */
 
+
 public class GenericAnnotationScanner extends BaseAnnotationScanListener implements ClassScanner {
 
     List<ClassScanListener> _listeners = new LinkedList<ClassScanListener>();

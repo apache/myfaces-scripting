@@ -21,7 +21,7 @@ package org.apache.myfaces.groovyloader.blog;
 /**
  * The entry class 
  */
-public class BlogEntry {
+public class BlogEntry { 
 
   String firstName = ""
   String lastName = ""

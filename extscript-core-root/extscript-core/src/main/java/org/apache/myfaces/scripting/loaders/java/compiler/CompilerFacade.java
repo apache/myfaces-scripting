@@ -30,6 +30,8 @@ import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import java.io.File;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,12 +94,17 @@ public class CompilerFacade implements DynamicCompiler {
     }
 
     private RecompiledClassLoader getRecompiledClassLoader() {
-        return AccessController.doPrivileged(new PrivilegedAction<RecompiledClassLoader>() {
-            public RecompiledClassLoader run() {
-                return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+        try {
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<RecompiledClassLoader>() {
+                public RecompiledClassLoader run() {
+                    return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
 
-            }
-        });
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            _log.log(Level.SEVERE,"", e);
+        }
+        return null;
     }
 
     public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {

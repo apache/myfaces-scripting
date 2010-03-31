@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.loaders.groovy.compiler;
+package org.apache.myfaces.scripting.loaders.groovy.compiler;
 
 import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
@@ -72,7 +72,6 @@ public class GroovyCompilerFacade implements DynamicCompiler {
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         //we now quickly check for the groovy classloader being, set we cannot deal with instances here
 
-        //TODO change the check as well for java
         //if (!(oldClassLoader.equals(fileManager.getClassLoader()))) {
         try {
             //RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader();
@@ -81,6 +80,9 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
             //Not needed anymore due to change in the dynamic class detection system
             //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
+            if(className.startsWith("groovy.")) {
+                _log.finer("debugpoint found");
+            }
 
             return classLoader.loadClass(className);
         } finally {

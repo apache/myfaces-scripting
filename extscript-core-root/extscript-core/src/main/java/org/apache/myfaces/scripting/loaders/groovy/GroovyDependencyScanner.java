@@ -7,7 +7,10 @@ import org.apache.myfaces.scripting.loaders.java.JavaDependencyScanner;
 import org.apache.myfaces.scripting.loaders.java.ScannerClassloader;
 
 import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Dependency scanner for groovy
@@ -26,11 +29,17 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
     @Override
     protected ClassLoader getClassLoader() {
         //TODO move the temp dir handling into the configuration
-        return AccessController.doPrivileged(new PrivilegedAction<ScannerClassloader>() {
-            public ScannerClassloader run() {
-                return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, WeavingContext.getConfiguration().getCompileTarget());
-            }
-        });
+        try {
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<ScannerClassloader>() {
+                public ScannerClassloader run() {
+                    return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, WeavingContext.getConfiguration().getCompileTarget());
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            Logger _logger = Logger.getLogger(this.getClass().getName());
+            _logger.log(Level.SEVERE,"", e);
+        }
+        return null;
     }
 
     @Override

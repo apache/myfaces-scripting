@@ -20,7 +20,10 @@ package org.apache.myfaces.scripting.loaders.java;
 
 import java.io.InputStream;
 import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p/>
@@ -41,21 +44,32 @@ public class RecompiledClassLoader extends ClassLoader {
         super(classLoader);
         _scriptingEngine = scriptingEngine;
         _engineExtension = engineExtension;
-        _throwAwayLoader = AccessController.doPrivileged(new PrivilegedAction<ThrowawayClassloader>() {
-            public ThrowawayClassloader run() {
-                return new ThrowawayClassloader(classLoader, scriptingEngine, engineExtension);
-            }
-        });
+        try {
+            _throwAwayLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<ThrowawayClassloader>() {
+                public ThrowawayClassloader run() {
+                    return new ThrowawayClassloader(classLoader, scriptingEngine, engineExtension);
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            Logger _logger = Logger.getLogger(this.getClass().getName());
+            _logger.log(Level.SEVERE, "", e);
+        }
     }
 
     public RecompiledClassLoader(ClassLoader classLoader, final int scriptingEngine, final String engineExtension, final boolean untaint) {
         this(classLoader, scriptingEngine, engineExtension);
         _unTaintClasses = untaint;
-        _throwAwayLoader = AccessController.doPrivileged(new PrivilegedAction<ThrowawayClassloader>() {
-            public ThrowawayClassloader run() {
-                return new ThrowawayClassloader(getParent(), scriptingEngine, engineExtension, untaint);
-            }
-        });
+        final ClassLoader _parent = getParent();
+        try {
+            _throwAwayLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<ThrowawayClassloader>() {
+                public ThrowawayClassloader run() {
+                    return new ThrowawayClassloader(_parent, scriptingEngine, engineExtension, untaint);
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            Logger _logger = Logger.getLogger(this.getClass().getName());
+            _logger.log(Level.SEVERE, "", e);
+        }
     }
 
     RecompiledClassLoader() {
@@ -68,17 +82,24 @@ public class RecompiledClassLoader extends ClassLoader {
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
-        _throwAwayLoader = AccessController.doPrivileged(new PrivilegedAction<ThrowawayClassloader>() {
-            public ThrowawayClassloader run() {
-                return new ThrowawayClassloader(getParent(), _scriptingEngine, _engineExtension, _unTaintClasses);
-            }
-        });
-        _throwAwayLoader.setSourceRoot(getSourceRoot());
-        return _throwAwayLoader.loadClass(className);
+        final ClassLoader _parent = getParent();
+        try {
+            _throwAwayLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<ThrowawayClassloader>() {
+                public ThrowawayClassloader run() {
+                    return new ThrowawayClassloader(_parent, _scriptingEngine, _engineExtension, _unTaintClasses);
+                }
+            });
+            _throwAwayLoader.setSourceRoot(getSourceRoot());
+            return _throwAwayLoader.loadClass(className);
+        } catch (PrivilegedActionException e) {
+            Logger _logger = Logger.getLogger(this.getClass().getName());
+            _logger.log(Level.SEVERE, "", e);
+        }
+        return null;
     }
 
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        return _throwAwayLoader.findClass(name);
+        return _throwAwayLoader.findClassExposed(name);
     }
 
     public String getSourceRoot() {
