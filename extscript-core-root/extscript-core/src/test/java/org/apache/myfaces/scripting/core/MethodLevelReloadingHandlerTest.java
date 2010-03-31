@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.probes.MethodReloadingProbe;
 import org.apache.myfaces.scripting.core.probes.Probe;
+import org.apache.myfaces.scripting.core.support.ObjectReloadingWeaver;
 import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.junit.Before;
@@ -42,51 +43,7 @@ public class MethodLevelReloadingHandlerTest {
 
     MethodReloadingProbe _probe;
     private static final String MSG_REPLACED = "objects must be replaced";
-
-    /**
-     * This weaver does nothing except instantiating
-     * the object anew at every reload instance request
-     * <p/>
-     * we need it to simulate the object level reloading
-     * at every method call
-     */
-    class ObjectReloadingWeaver extends BaseWeaver {
-
-        Class _clazz;
-
-        public ObjectReloadingWeaver(Class clazz) {
-            super();
-            _clazz = clazz;
-        }
-
-        @Override
-        public boolean isDynamic(Class clazz) {
-            return true;
-        }
-
-        public void scanForAddedClasses() {
-        }
-
-        @Override
-        protected DynamicCompiler instantiateCompiler() {
-            return null;
-        }
-
-        @Override
-        protected String getLoadingInfo(String file) {
-            return null;
-        }
-
-        @Override
-        public Class reloadScriptingClass(Class aclass) {
-            return aclass;
-        }
-
-        @Override
-        public Object reloadScriptingInstance(Object scriptingInstance, int artifactType) {
-            return ReflectUtil.instantiate(_clazz);
-        }
-    }
+    
 
     /**
      * Before
