@@ -1,4 +1,4 @@
-package org.apache.myfaces.extensions.scripting.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.dependencyScan.filter.StandardNamespaceFilter;

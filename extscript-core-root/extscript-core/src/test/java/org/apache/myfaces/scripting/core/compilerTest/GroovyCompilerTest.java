@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.groovyCompiler;
+package org.apache.myfaces.scripting.core.compilerTest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.api.CompilationException;

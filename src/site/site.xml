@@ -49,7 +49,7 @@
     <menu name="Documentation">
       <item name="Introduction" href="index.html" />
       <item name="Latest Version Installation" href="installation.html" />
-      <item name="Installation Alpha 1" href="install_alpha_1.html" />
+      <item name="Installation Beta 1" href="install_beta_1.html" />
 
       <item name="Users Guide" href="usersguide.html"/>
       <item name="Appendix A: Configuration Entries" href="configentries.html" />

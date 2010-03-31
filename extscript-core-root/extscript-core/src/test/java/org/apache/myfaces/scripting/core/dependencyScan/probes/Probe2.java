@@ -16,22 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.dependencyScan.probes;
+package org.apache.myfaces.scripting.core.dependencyScan.probes;
 
 import org.junit.Ignore;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Probe for class scanning
  */
 @Ignore
-public class Probe extends ProbeParent {
-    String prop1;
-
-    public static int myTest(StringBuilder myBuilder, Object val2) {
-        return (Integer) 1;
-    }
-
+public interface Probe2 {
 }

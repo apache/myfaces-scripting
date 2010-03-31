@@ -16,14 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.dependencyScan.probes;
 
-import org.junit.Ignore;
+package org.apache.myfaces.scripting.core.dependencyScan.probes;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@Ignore
-public interface Probe3 {
+public class GenericsProbe {
+    Set<Probe> _testProbe = new HashSet<Probe>();
+
+    public Set<Probe> getTestProbe() {
+        return _testProbe;
+    }
+
+    public void setTestProbe(Set<Probe> testProbe) {
+        //TODO generic case with generic only right hand side not handled
+        Collection<Probe2> mySet = new HashSet<Probe2>();
+        System.out.println(mySet.size());
+        _testProbe = testProbe;
+    }
+
+
+    public void setTestProbe3() {
+        System.out.println("boogaloo");
+    }
 }

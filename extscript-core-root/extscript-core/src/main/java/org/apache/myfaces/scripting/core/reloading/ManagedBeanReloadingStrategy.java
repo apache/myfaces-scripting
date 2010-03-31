@@ -22,15 +22,18 @@ import org.apache.myfaces.scripting.api.ReloadingStrategy;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 
 /**
+ * The managed beans have a different reloading
+ * strategy. The dependencies of a managed bean
+ * are managed by the IOC container and
+ * not transferred over the reloading strategy
+ * like for all other artifacts.
+ * Hence the bean handler removes the bean and its
+ * referring backward dependencies, and the runtime system
+ * rebuilds the tree anew.
+ *
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          The managed beans have a different reloading
- *          strategy. We follow the route of dropping
- *          all dynamic beans for now which seems to be a middle ground
- *          between simple (do nothing at all except simple bean reloading)
- *          and graph dependency check (drop only the dependend objects and the
- *          referencing objects)
  */
 
 public class ManagedBeanReloadingStrategy implements ReloadingStrategy {

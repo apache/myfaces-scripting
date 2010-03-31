@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.dependencyScan;
+package org.apache.myfaces.scripting.core.dependencyScan;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.dependencyScan.StandardDependencyScanner;
@@ -39,15 +39,15 @@ public class DependencyScannerTest {
 
     Logger log = Logger.getLogger(DependencyScannerTest.class.getName());
 
-    private static final String PROBE1 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe";
-    private static final String PROBE2 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe2";
-    private static final String PROBE3 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe3";
-    private static final String PROBE4 = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.Probe4";
-    private static final String GENERICS_PROBE = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.GenericsProbe";
+    private static final String PROBE1 = "org.apache.myfaces.scripting.core.dependencyScan.probes.Probe";
+    private static final String PROBE2 = "org.apache.myfaces.scripting.core.dependencyScan.probes.Probe2";
+    private static final String PROBE3 = "org.apache.myfaces.scripting.core.dependencyScan.probes.Probe3";
+    private static final String PROBE4 = "org.apache.myfaces.scripting.core.dependencyScan.probes.Probe4";
+    private static final String GENERICS_PROBE = "org.apache.myfaces.scripting.core.dependencyScan.probes.GenericsProbe";
 
-    private static final String PROBE_PAR = "org.apache.myfaces.extensions.scripting.dependencyScan.probes.ProbeParent";
+    private static final String PROBE_PAR = "org.apache.myfaces.scripting.core.dependencyScan.probes.ProbeParent";
     private static final String DUMMY = "org.apache.xxx";
-    private static final String PROBE_NAMESPACE = "org.apache.myfaces.extensions.scripting";
+    private static final String PROBE_NAMESPACE = "org.apache.myfaces.scripting.core.dependencyScan";
 
     /**
      * Basic dependency scanning test, which tests

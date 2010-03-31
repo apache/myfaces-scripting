@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.dependencyScan.probes;
+package org.apache.myfaces.scripting.core.dependencyScan.probes;
 
 import org.junit.Ignore;
 
@@ -25,5 +25,5 @@ import org.junit.Ignore;
  * @version $Revision$ $Date$
  */
 @Ignore
-public interface Probe2 {
+public interface Probe3 {
 }
