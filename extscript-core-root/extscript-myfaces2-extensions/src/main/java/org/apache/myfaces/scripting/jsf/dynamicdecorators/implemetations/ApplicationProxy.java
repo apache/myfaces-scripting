@@ -46,10 +46,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ApplicationProxy extends Application implements Decorated {
 
     Application _delegate = null;
-    private static final String ERR_CONV_ANN_MOVED = "Converter annotation moved but target was not found";
-    private static final String ERR_ANN_VAL_MOVED = "Annotation on validator removed but no replacement found";
-    private static final String ERR_ANN_COMP_MOVED = "Annotation on component removed but no replacement found";
-    private static final String ERR_BEH_NOTFOUND = "Behavior annotation was moved but could not be found";
 
     /*
     * separate map needed for the behavior ids, because
@@ -72,10 +68,12 @@ public class ApplicationProxy extends Application implements Decorated {
             this.proxy = proxy;
         }
 
+        @SuppressWarnings("unused")
         public Class getEvent() {
             return event;
         }
 
+        @SuppressWarnings("unused")
         public void setEvent(Class event) {
             this.event = event;
         }
@@ -84,6 +82,7 @@ public class ApplicationProxy extends Application implements Decorated {
             return proxy;
         }
 
+        @SuppressWarnings("unused")
         public void setProxy(Decorated proxy) {
             this.proxy = proxy;
         }
@@ -95,11 +94,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
             EventHandlerProxyEntry that = (EventHandlerProxyEntry) o;
 
-            if (event != null ? !event.equals(that.event) : that.event != null) return false;
-            if (proxy != null ? !proxy.getDelegate().getClass().getName().equals(that.proxy.getDelegate().getClass().getName()) : that.proxy != null)
-                return false;
+            return !(event != null ? !event.equals(that.event) : that.event != null) && !(proxy != null ? !proxy.getDelegate().getClass().getName().equals(that.proxy.getDelegate().getClass().getName()) : that.proxy != null);
 
-            return true;
         }
 
         @Override
@@ -119,10 +115,10 @@ public class ApplicationProxy extends Application implements Decorated {
      * we can fetch our proxy which might already contain
      * the same object in a refreshed state from the value
      * part of the set, in our case
-     * using hashmaps should speed things up
+     * using hash maps should speed things up
      * <p/>
      * since we only have few write operations but access
-     * the map multithready we use concurrentHashMap here
+     * the map multithreaded we use concurrentHashMap here
      */
     Map<EventHandlerProxyEntry, EventHandlerProxyEntry> _eventHandlerIdx = new ConcurrentHashMap<EventHandlerProxyEntry, EventHandlerProxyEntry>();
 
@@ -197,39 +193,6 @@ public class ApplicationProxy extends Application implements Decorated {
 
     }
 
-    /**
-     * De-registers a single object entity from
-     * our listener event, the entity can implement either @ListenersFor or @ListenerFor
-     * The idea is that the annotation currently is mostly used on components and renderers to keep
-     * track of changes. The components and renderers are dynamically refreshed but to keep track of
-     * the listeners in our system we have to deregister the old instances upon refresh
-     * the new ones should be registered automatically by our code
-     *
-     * @param listener the listener object implementing our annotation
-     */
-    private void deregisterEventHandlers(Object listener) {
-        if (listener instanceof SystemEventListener && listener.getClass().isAnnotationPresent(ListenersFor.class)) {
-            ListenersFor listenerData = listener.getClass().getAnnotation(ListenersFor.class);
-            for (ListenerFor singleEntry : listenerData.value()) {
-                unsubscribeFromAnnotatedEvent(listener, singleEntry);
-            }
-        } else if (listener instanceof SystemEventListener && listener.getClass().isAnnotationPresent(ListenerFor.class)) {
-            ListenerFor listenerData = listener.getClass().getAnnotation(ListenerFor.class);
-            unsubscribeFromAnnotatedEvent(listener, listenerData);
-        }
-    }
-
-    /**
-     * De-registers a single listener entity which implements @ListenerFor
-     *
-     * @param listener     the listener object implementing the annotation
-     * @param listenerData the annotation data (we have it outside to cover both possible listener cases
-     */
-    private void unsubscribeFromAnnotatedEvent(Object listener, ListenerFor listenerData) {
-        Class systemEventClass = listenerData.systemEventClass();
-        unsubscribeFromEvent(systemEventClass, (SystemEventListener) listener);
-    }
-
     public ExpressionFactory getExpressionFactory() {
         weaveDelegate();
         return _delegate.getExpressionFactory();
@@ -243,8 +206,6 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
     public void removeELContextListener(ELContextListener elContextListener) {
-        //TODO which el context listener is coming in our normal one
-        //or the reloaded one?
         weaveDelegate();
         _delegate.removeELContextListener(elContextListener);
     }
@@ -303,7 +264,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         //defined in the setter to speed things up a little
         NavigationHandler retVal = _delegate.getNavigationHandler();
-        //TODO add annotatiom support for the navigation handler as well
+
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass()))
             retVal = new NavigationHandlerProxy(retVal);
         return retVal;
@@ -311,22 +272,25 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void setNavigationHandler(NavigationHandler navigationHandler) {
         weaveDelegate();
-        //TODO add annotatiom support for the navigation handler as well
+
         if (navigationHandler != null && WeavingContext.isDynamic(navigationHandler.getClass()))
             navigationHandler = new NavigationHandlerProxy(navigationHandler);
         _delegate.setNavigationHandler(navigationHandler);
     }
 
+    @SuppressWarnings("deprecation")
     public PropertyResolver getPropertyResolver() {
         weaveDelegate();
         return _delegate.getPropertyResolver();
     }
 
+    @SuppressWarnings("deprecation")
     public void setPropertyResolver(PropertyResolver propertyResolver) {
         weaveDelegate();
         _delegate.setPropertyResolver(propertyResolver);
     }
 
+    @SuppressWarnings("deprecation")
     public VariableResolver getVariableResolver() {
         weaveDelegate();
         VariableResolver variableResolver = _delegate.getVariableResolver();
@@ -335,6 +299,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return variableResolver;
     }
 
+    @SuppressWarnings("deprecation")
     public void setVariableResolver(VariableResolver variableResolver) {
         weaveDelegate();
         if (!(variableResolver instanceof VariableResolverProxy))
@@ -354,7 +319,7 @@ public class ApplicationProxy extends Application implements Decorated {
         hence we have to work with proxies here
         */
         if (WeavingContext.isDynamic(handler.getClass()))
-            handler = (ViewHandlerProxy) new ViewHandlerProxy(handler);
+            handler = new ViewHandlerProxy(handler);
         return handler;
     }
 
@@ -362,7 +327,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         /*make sure you have the delegates as well in properties*/
         if (WeavingContext.isDynamic(viewHandler.getClass()))
-            viewHandler = (ViewHandlerProxy) new ViewHandlerProxy(viewHandler);
+            viewHandler = new ViewHandlerProxy(viewHandler);
 
         _delegate.setViewHandler(viewHandler);
     }
@@ -404,6 +369,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     }
 
+    @SuppressWarnings("deprecation")
     public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String componentType) throws FacesException {
         weaveDelegate();
         UIComponent oldComponent = _delegate.createComponent(valueBinding, facesContext, componentType);
@@ -491,6 +457,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getConverterTypes();
     }
 
+    @SuppressWarnings("deprecation")
     public MethodBinding createMethodBinding(String s, Class[] classes) throws ReferenceSyntaxException {
         weaveDelegate();
         return _delegate.createMethodBinding(s, classes);
@@ -528,8 +495,6 @@ public class ApplicationProxy extends Application implements Decorated {
 
         Validator retVal = _delegate.createValidator(validatorId);
 
-        //TODO purge error assert here
-
         //the validators are recreated every request we do not have to deal with them on method level
         Validator newRetVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_VALIDATOR);
         if (newRetVal != retVal) {
@@ -543,6 +508,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getValidatorIds();
     }
 
+    @SuppressWarnings("deprecation")
     public ValueBinding createValueBinding(String s) throws ReferenceSyntaxException {
         weaveDelegate();
         return _delegate.createValueBinding(s);
@@ -555,10 +521,10 @@ public class ApplicationProxy extends Application implements Decorated {
         if (behaviorClass.equals(PurgedValidator.class.getName())) {
             //purged case we do a full rescan
             WeavingContext.getWeaver().fullClassScan();
-            Behavior behavior = (Behavior) _delegate.createBehavior(behaviorId);
+            Behavior behavior = _delegate.createBehavior(behaviorId);
             _behaviors.put(behaviorId, behaviorClass);
             if (behavior instanceof PurgedBehavior) {
-                //Null not allowed here, but we set a purted validator to make
+                //Null not allowed here, but we set a purged validator to make
                 //sure that we get errors on the proper level
                 _delegate.addBehavior(behaviorId, PurgedBehavior.class.getName());
                 _behaviors.remove(behaviorId);
@@ -654,6 +620,7 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T evaluateExpressionGet(FacesContext facesContext, String s, Class<? extends T> aClass) throws ELException {
         weaveDelegate();
         //good place for a dynamic reloading check as well
@@ -768,18 +735,18 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private final Object reloadInstance(Object instance, int artefactType) {
+    private Object reloadInstance(Object instance, int artifactType) {
         if (instance == null) {
             return null;
         }
         if (WeavingContext.isDynamic(instance.getClass()) && !alreadyWovenInRequest(instance.getClass().getName())) {
-            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artefactType);
+            instance = WeavingContext.getWeaver().reloadScriptingInstance(instance, artifactType);
             alreadyWovenInRequest(instance.getClass().getName());
         }
         return instance;
     }
 
-    private final boolean alreadyWovenInRequest(String clazz) {
+    private boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
         Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
@@ -815,6 +782,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return oldComponent;
     }
 
+    @SuppressWarnings("deprecation")
     private UIComponent handleAnnotationChange(UIComponent oldComponent, ValueBinding valueBinding, FacesContext context, String componentType) {
         UIComponent componentToChange = _delegate.createComponent(valueBinding, context, componentType);
         if (componentToChange instanceof PurgedComponent) {
@@ -856,7 +824,6 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private UIComponent handleAnnotationChange(UIComponent oldComponent, ValueExpression valueExpression, FacesContext facesContext, String s, String s1) {
         UIComponent componentToChange = _delegate.createComponent(valueExpression, facesContext, s, s1);
-        String family = oldComponent.getFamily();
         if (componentToChange instanceof PurgedComponent) {
             WeavingContext.getWeaver().fullClassScan();
 

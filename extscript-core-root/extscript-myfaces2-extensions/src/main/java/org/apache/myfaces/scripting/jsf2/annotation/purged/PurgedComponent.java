@@ -18,18 +18,7 @@
  */
 package org.apache.myfaces.scripting.jsf2.annotation.purged;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
-import javax.faces.el.ValueBinding;
-import javax.faces.context.FacesContext;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesListener;
-import javax.faces.render.Renderer;
-import java.util.Map;
-import java.util.List;
-import java.util.Iterator;
-import java.io.IOException;
 
 /**
  * We override the component from a real family so that

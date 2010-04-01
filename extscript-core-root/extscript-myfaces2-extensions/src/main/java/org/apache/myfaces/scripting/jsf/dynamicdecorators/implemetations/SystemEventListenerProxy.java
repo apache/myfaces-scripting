@@ -60,7 +60,7 @@ public class SystemEventListenerProxy implements Decorated, SystemEventListener 
     }
 
     private void weaveDelegate() {
-        //TODO add a speed optimization here by pushing something in the request map
+        //TODO (1.1) add a speed optimization here by pushing something in the request map
         if (_delegate != null) {
             _delegate = (SystemEventListener) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_SYSTEMEVENTLISTENER);
         }

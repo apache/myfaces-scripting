@@ -22,6 +22,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.core.util.StringUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
@@ -329,8 +330,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //compile via javac dynamically, also after this block dynamic compilation
             //for the entire length of the request,
             try {
-                //TODO fix this
-                if (!scriptPath.trim().equals(""))
+                if (!StringUtils.isBlank(scriptPath))
                     _compiler.compileAllFiles(scriptPath, _classPath);
             } catch (ClassNotFoundException e) {
                 _log.logp(Level.SEVERE, "BaseWeaver", "fullyRecompile", e.getMessage(), e);
@@ -416,10 +416,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
          *
          * at the next refresh the second step of the registration cycle should pick the new class up
          *
-         * TODO we have to mark the artifacting class as de-registered and then enforce
-         * a reload this is however not the scope of the commit of this subtask
-         * we only deal with class level reloading here
-         * the de-registration notification should happen on artifact level (which will be the next subtask)
          */
         if (_annotationScanner != null && retVal != null) {
             _annotationScanner.scanClass(retVal);

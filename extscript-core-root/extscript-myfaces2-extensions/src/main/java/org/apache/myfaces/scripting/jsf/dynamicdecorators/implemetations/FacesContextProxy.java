@@ -140,8 +140,6 @@ public class FacesContextProxy extends FacesContext implements Decorated {
         weaveDelegate();
     }
 
-    //TODO add support for myfaces 2.0 fully here
-
     @Override
     public Map<Object, Object> getAttributes() {
         return _delegate.getAttributes();

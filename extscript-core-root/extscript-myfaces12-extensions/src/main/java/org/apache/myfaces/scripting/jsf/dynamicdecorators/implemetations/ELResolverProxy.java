@@ -22,14 +22,10 @@ import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
-import javax.el.*;
-import java.beans.FeatureDescriptor;
-import java.util.HashSet;
+import javax.el.ELContext;
+import javax.el.ELException;
+import javax.el.ELResolver;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.logging.Logger;
-
-
 
 /**
  * EL Resolver which is scripting enabled
@@ -37,9 +33,10 @@ import java.util.logging.Logger;
  * @author Werner Punz
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
-    Logger log = Logger.getLogger(ELResolverProxy.class.getName());
 
-    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
+    ELResolver _delegate = null;
+
+    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, ELException {
         //request, class is loaded anew hence we already have picked up the new code
 
         Object retVal = _delegate.getValue(elContext, base, property);
@@ -54,9 +51,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
             //the problem starts with session application or custom scoped beans
             //There nothing is compiled and we have to do the further bean processing
 
-            //TODO move the bean dropping into the beginning of the lifecycle instead of on demand
-            //That way we have a cleaner control over the refresh per request
-
             Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
                  our classloader we have to recreate all the time to avoid classloader issues*/
             if (newRetVal != retVal) {
@@ -69,27 +63,27 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     }
 
-    public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
+    public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
-        if (retVal != null && WeavingContext.isDynamic((Class) retVal)) {
-            return WeavingContext.getWeaver().reloadScriptingClass((Class) retVal);
+        if (retVal != null && WeavingContext.isDynamic(retVal)) {
+            return WeavingContext.getWeaver().reloadScriptingClass(retVal);
         }
         return retVal;
     }
 
-    public void setValue(ELContext elContext, Object base, Object property, Object newRetVal) throws NullPointerException, PropertyNotFoundException, PropertyNotWritableException, ELException {
-         //now to more complex relations...
-        if(base != null) {
-             WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), newRetVal.getClass().getName());
+    public void setValue(ELContext elContext, Object base, Object property, Object newRetVal) throws NullPointerException, ELException {
+        //now to more complex relations...
+        if (base != null) {
+            WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), newRetVal.getClass().getName());
         }
         _delegate.setValue(elContext, base, property, newRetVal);
     }
 
-    public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
+    public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
         return _delegate.isReadOnly(elContext, o, o1);
     }
 
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext elContext, Object o) {
+    public Iterator getFeatureDescriptors(ELContext elContext, Object o) {
         return _delegate.getFeatureDescriptors(elContext, o);
     }
 
@@ -101,17 +95,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         _delegate = delegate;
     }
 
-    ELResolver _delegate = null;
-
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Set<Integer> supportsEvents() {
-        Set<Integer> supports = new HashSet<Integer>();
-        supports.add(ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
-
-        return supports;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

@@ -23,9 +23,10 @@ import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
-import javax.el.*;
+import javax.el.ELContext;
+import javax.el.ELException;
+import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
-import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
@@ -43,27 +44,19 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
 
-    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, PropertyNotFoundException, ELException {
+    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, ELException {
 
         Object retVal = _delegate.getValue(elContext, base, property);
 
-        Object newRetVal = null;
-        //TODO simplify this, we do not need it anymore since we do our base scan at the beginning
+        Object newRetVal;
 
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
-            //special case late el expression resolution, not catachable on class level
 
-            if (retVal.getClass().getName().equals("BlogEntry")) {
-                System.out.println(Thread.currentThread().getContextClassLoader().getClass().toString());
-            }
             newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
 
             if (newRetVal != retVal) {
                 setValue(elContext, base, property, newRetVal);
             }
-
-            //in case we have an annotation change we have to deal with it differently
-            //newRetVal = reloadAnnotatedBean(elContext, base, property, newRetVal);
 
             return newRetVal;
 
@@ -104,15 +97,15 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return newRetVal;
     }
 
-    public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
+    public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
-        if (retVal != null && WeavingContext.isDynamic((Class) retVal)) {
-            return WeavingContext.getWeaver().reloadScriptingClass((Class) retVal);
+        if (retVal != null && WeavingContext.isDynamic(retVal)) {
+            return WeavingContext.getWeaver().reloadScriptingClass(retVal);
         }
         return retVal;
     }
 
-    public void setValue(ELContext elContext, Object base, Object property, Object value) throws NullPointerException, PropertyNotFoundException, PropertyNotWritableException, ELException {
+    public void setValue(ELContext elContext, Object base, Object property, Object value) throws NullPointerException, ELException {
         //now to more complex relations...
         if (base != null) {
             WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), value.getClass().getName());
@@ -120,11 +113,11 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         _delegate.setValue(elContext, base, property, value);
     }
 
-    public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, PropertyNotFoundException, ELException {
+    public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
         return _delegate.isReadOnly(elContext, o, o1);
     }
 
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext elContext, Object o) {
+    public Iterator getFeatureDescriptors(ELContext elContext, Object o) {
         return _delegate.getFeatureDescriptors(elContext, o);
     }
 

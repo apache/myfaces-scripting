@@ -27,6 +27,7 @@ import java.util.Set;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@SuppressWarnings("unused")//used by dynamic instantiation
 public class GenericsProbe {
     Set<Probe> _testProbe = new HashSet<Probe>();
 
@@ -35,7 +36,6 @@ public class GenericsProbe {
     }
 
     public void setTestProbe(Set<Probe> testProbe) {
-        //TODO generic case with generic only right hand side not handled
         Collection<Probe2> mySet = new HashSet<Probe2>();
         System.out.println(mySet.size());
         _testProbe = testProbe;

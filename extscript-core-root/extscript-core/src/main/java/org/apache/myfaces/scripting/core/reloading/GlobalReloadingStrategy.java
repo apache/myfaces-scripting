@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  *          depending on the artifact type to the correct
  *          strategy
  *          <p/>
- *          TODO make the reloading strategy pluggable from outside!
+ *          TODO make the reloading strategy pluggable from outside (1.1)!
  */
 
 public class GlobalReloadingStrategy implements ReloadingStrategy {

@@ -101,7 +101,6 @@ public class ViewHandlerProxy extends ViewHandler implements Decorated {
         _delegate.writeState(facesContext);
     }
 
-    //TODO add myfaces 2.0 stuff here
 
     @Override
     public String deriveViewId(FacesContext facesContext, String s) {

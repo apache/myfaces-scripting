@@ -78,11 +78,9 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return rendr;
     }
 
-    //TODO probably not needed anymore
 
     private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
         ClientBehaviorRenderer rendr2;
-        //WeavingContext.getWeaver().fullClassScan();
 
         rendr2 = _delegate.getClientBehaviorRenderer(s);
         if (rendr2 instanceof PurgedClientBehaviorRenderer) {
@@ -91,8 +89,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         rendr2 = _delegate.getClientBehaviorRenderer(s);
         return rendr2;
     }
-
-    //TODO probably not needed anymore
 
     private Renderer handleAnnotationChange(String s, String s1) {
         Renderer rendr2;
@@ -121,7 +117,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream), ScriptingConst.ARTIFACT_TYPE_RESPONSESTREAM);
     }
 
-    //TODO add full support for myfaces 2.0 here
 
     @Override
     public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer renderer) {
@@ -137,7 +132,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         ClientBehaviorRenderer rendr = _delegate.getClientBehaviorRenderer(s);
         ClientBehaviorRenderer rendr2 = (ClientBehaviorRenderer) reloadInstance(rendr, ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER);
         if (rendr != rendr2) {
-            //TODO simplyfy this
+
             rendr2 = _delegate.getClientBehaviorRenderer(s);
             if (rendr2 instanceof PurgedClientBehaviorRenderer) {
                 return handleAnnotationChangeBehaviorRenderer(s);
@@ -169,11 +164,11 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return _delegate;
     }
 
-    private final void weaveDelegate() {
+    private void weaveDelegate() {
         _delegate = (RenderKit) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_RENDERKIT);
     }
 
-    private final Object reloadInstance(Object instance, int artefactType) {
+    private Object reloadInstance(Object instance, int artefactType) {
         if (instance == null) {
             return null;
         }
@@ -186,7 +181,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         return instance;
     }
 
-    private final boolean alreadyWovenInRequest(String clazz) {
+    private boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
         Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {

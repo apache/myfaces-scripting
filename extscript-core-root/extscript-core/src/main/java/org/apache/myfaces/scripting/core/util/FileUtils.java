@@ -95,7 +95,6 @@ public class FileUtils {
             return;
         }
 
-        //TODO apply a filter here instead of doing the check directly
         File[] files = rootDir.listFiles();
         for (File file : files) {
             boolean isDirectory = file.isDirectory();

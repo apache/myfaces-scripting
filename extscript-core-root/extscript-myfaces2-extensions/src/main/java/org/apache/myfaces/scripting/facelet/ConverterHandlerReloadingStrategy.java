@@ -35,7 +35,7 @@ import javax.faces.view.facelets.*;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
+@SuppressWarnings("unused")//used dynamically
 public class ConverterHandlerReloadingStrategy extends SimpleReloadingStrategy {
 
     public ConverterHandlerReloadingStrategy(ScriptingWeaver weaver) {
@@ -57,8 +57,6 @@ public class ConverterHandlerReloadingStrategy extends SimpleReloadingStrategy {
          */
         ConverterConfig config = (ConverterConfig) ReflectUtil.executeMethod(oldHandler, "getConverterConfig");
         ConverterHandler newHandler = (ConverterHandler) ReflectUtil.instantiate(aclass, new Cast(ConverterConfig.class, config));
-
-        //TODO check if the component is attached correctly after reloading
 
         //save all pending non config related properties wherever possible
         super.mapProperties(newHandler, oldHandler);

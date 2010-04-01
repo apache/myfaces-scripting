@@ -37,24 +37,12 @@ import java.util.logging.Logger;
  * A set of weaving context class called
  * by the various subsystems
  * <p/>
- * TODO move this away from static methods into a singleton which is kept
+ * TODO (1.1) move this away from static methods into a singleton which is kept
  * in the application context, to keep the context pattern.
  *
  * @author Werner Punz
  */
 public class WeavingContext {
-
-    /**
-     * data we can pass for other threads
-     */
-    static class ThreadLocalData {
-        public Object _weaverHolder;
-        public Object _refreshContextHolder;
-        public Object _configuration;
-        public Object _externalContext;
-    }
-
-    static ThreadLocalData _referenceThreadHolder = null;
 
     /**
      * <p>
@@ -198,6 +186,7 @@ public class WeavingContext {
     /**
      * @return true if our filter is enabled
      */
+    @SuppressWarnings("unused")
     public static boolean isFilterEnabled() {
         return _filterEnabled.get();
     }
@@ -255,6 +244,7 @@ public class WeavingContext {
      * @param artifactType the artifact type to be handled
      * @return the proxy of the object if scripting is enabled, the original one otherwise
      */
+    @SuppressWarnings("unused")
     public static Object createConstructorReloadingProxyFromObject(Object o, Class theInterface, int artifactType) {
         if (!isScriptingEnabled()) {
             return o;
@@ -302,32 +292,6 @@ public class WeavingContext {
      */
     public static boolean isDynamic(Class clazz) {
         return isScriptingEnabled() && getWeaver().isDynamic(clazz);
-    }
-
-    /**
-     * we push the threading data into
-     * a shared queue
-     */
-    public static void pushThreadingData() {
-        ThreadLocalData data = new ThreadLocalData();
-        data._configuration = getConfiguration();
-        data._refreshContextHolder = getRefreshContext();
-        data._weaverHolder = getWeaver();
-        data._externalContext = getExternalContext();
-        _referenceThreadHolder = data;
-    }
-
-    public static void popThreadingData() {
-        ThreadLocalData data = _referenceThreadHolder;
-        setConfiguration((Configuration) data._configuration);
-        setRefreshContext((RefreshContext) data._refreshContextHolder);
-        setWeaver(data._weaverHolder);
-        setExternalContext(data._externalContext);
-    }
-
-    public static void cleanThreadingData() {
-        //we can enforce a prematurely cleanup that way
-        _referenceThreadHolder = null;
     }
 
 }

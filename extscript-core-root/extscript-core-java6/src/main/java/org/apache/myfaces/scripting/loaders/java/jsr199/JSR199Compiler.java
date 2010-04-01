@@ -19,11 +19,11 @@
 package org.apache.myfaces.scripting.loaders.java.jsr199;
 
 import org.apache.myfaces.scripting.api.CompilationException;
+import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.CompilerConst;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.api.CompilationResult;
 
 import javax.tools.*;
 import java.io.File;
@@ -55,9 +55,8 @@ import java.util.logging.Logger;
  * @author Werner Punz (latest modification by $Author: werpu $)
  * @version $Revision: 812255 $ $Date: 2009-09-07 20:51:39 +0200 (Mo, 07 Sep 2009) $
  */
+@SuppressWarnings("unused")
 public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler {
-
-    private static final String FILE_SEPARATOR = File.separator;
 
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     ContainerFileManager fileManager = null;
@@ -70,8 +69,8 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
      * Compile a single file
      *
      * @param sourceRoot the source search path (root of our source)
-     * @return
-     * @throws ClassNotFoundException
+     * @return the compilation result of the  compilation
+     * @throws CompilationException in case of a compilation error
      * @deprecated note we will move over to a single
      *             compile step in the beginning in the long run
      *             we will deprecate it as soon as the full
@@ -82,15 +81,15 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
      *             we do not do a single compile step anymore
      */
     public CompilationResult compile(File sourceRoot, File targetPath, File toCompile, ClassLoader classPathHolder) throws CompilationException {
-        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector(), null, null));
+        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null));
 
-        DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
+        DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector<JavaFileObject>();
 
         //TODO add whitelist check here
 
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
-        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(new File[]{toCompile});
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(toCompile);
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
         try {
@@ -112,12 +111,12 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
      *
      * @param sourceRoot the root for all java sources to be compiled
      * @param loader     the classpath holder for the compilation
-     * @throws ClassNotFoundException in case of a compilation error
+     * @throws CompilationException in case of a compilation error
      */
     public CompilationResult compile(File sourceRoot, File destination, ClassLoader loader) throws CompilationException {
-        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector(), null, null));
+        fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null));
 
-        DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector();
+        DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector<JavaFileObject>();
 
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
@@ -191,7 +190,7 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         return retVal.toString();
     }
 
-    private final Logger getLog() {
+    private Logger getLog() {
         return Logger.getLogger(this.getClass().getName());
     }
 

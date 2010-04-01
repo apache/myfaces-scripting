@@ -23,13 +23,13 @@ import org.apache.myfaces.scripting.api.ClassScanListener;
 import org.apache.myfaces.scripting.api.ClassScanner;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
-import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.scripting.loaders.java.ScannerClassloader;
 import org.apache.myfaces.scripting.refresh.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -40,8 +40,7 @@ import java.util.*;
  *          and then adds the id/name -> class binding information to the correct factory locations,
  *          wherever possible
  */
-
-
+@SuppressWarnings("unused")
 public class GenericAnnotationScanner extends BaseAnnotationScanListener implements ClassScanner {
 
     List<ClassScanListener> _listeners = new LinkedList<ClassScanListener>();
@@ -65,14 +64,12 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         _sourcePaths.addFirst(sourcePath);
     }
 
-    Collection<java.lang.annotation.Annotation> filterAnnotations(java.lang.annotation.Annotation[] anns) {
-        List<java.lang.annotation.Annotation> retVal = new ArrayList<java.lang.annotation.Annotation>(anns.length);
-        if (anns == null) {
-            return retVal;
-        }
-        for (java.lang.annotation.Annotation ann : anns) {
-            if (ann.annotationType().getName().startsWith(JAVAX_FACES)) {
-                retVal.add(ann);
+    Collection<java.lang.annotation.Annotation> filterAnnotations(java.lang.annotation.Annotation[] annotations) {
+        List<java.lang.annotation.Annotation> retVal = new ArrayList<java.lang.annotation.Annotation>(annotations.length);
+        
+        for (java.lang.annotation.Annotation annotation : annotations) {
+            if (annotation.annotationType().getName().startsWith(JAVAX_FACES)) {
+                retVal.add(annotation);
             }
 
         }
@@ -80,9 +77,9 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
     }
 
     public void scanClass(Class clazz) {
-        java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
+        java.lang.annotation.Annotation[] annotations = clazz.getAnnotations();
 
-        Collection<java.lang.annotation.Annotation> annCol = filterAnnotations(anns);
+        Collection<java.lang.annotation.Annotation> annCol = filterAnnotations(annotations);
         if (!annCol.isEmpty()) {
             addOrMoveAnnotations(clazz);
         } else {
@@ -109,23 +106,19 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         //check if the faces config is already available otherwise we cannot scan yet
         final FacesContext facesContext = FacesContext.getCurrentInstance();
         //runtime config not started
-        //for now we only can reache the runtime config in the referenced BaseAnnotatonScanListener
+        //for now we only can reach the runtime config in the referenced BaseAnnotatonScanListener
         //if we have a facesContext reachable.
         if (facesContext == null) {
-            //TODO decouple the scan in the BaseAnnotationScanListener from the facesConfig
+            //TODO (1.1) decouple the scan in the BaseAnnotationScanListener from the facesConfig
             //to get the runtime config
             return;
         }
 
         for (String className : _weaver.loadPossibleDynamicClasses()) {
-            //TODO replace the standard scanner with our Scanning one here
-
-            //TODO we need another loader here which adds the meta information if not present to our
-            //managed beans
             try {
                 ScannerClassloader loader = new ScannerClassloader(Thread.currentThread().getContextClassLoader(), -1, null, WeavingContext.getConfiguration().getCompileTarget());
 
-                Class clazz = null;
+                Class clazz;
                 //in case the class does not exist we have to load it from our weavingcontext
                 //otherwise we do just a scan on the class to avoid side behavior
                 if (WeavingContext.getFileChangedDaemon().getClassMap().get(className) == null) {
@@ -134,16 +127,6 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
                     clazz = loader.loadClass(className);
                 }
 
-                //TODO we have the problem here that this code
-                //in the worst case resets the class
-                //that causes a problem with our bean refreshes afterwards
-                //which have to take care of the problem
-
-                //TODO unify this, problem is due to the initial class dependency scan
-                //we already have the classes but unlike in groovy they are not tainted
-                //hence we do not have the annotations yet scanned
-                //in groovy we have the initial scan not done hence
-                //the annotations are scanned on the fly!
                 if (clazz != null) {
                     java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
                     if (anns != null && anns.length > 0) {
@@ -153,7 +136,8 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
                     }
                 }
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                Logger _logger = Logger.getLogger(this.getClass().getName());
+                _logger.log(Level.WARNING, "", e);
             }
         }
 
@@ -163,7 +147,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
      * add or moves a class level annotation
      * to a new place
      *
-     * @param clazz
+     * @param clazz the class to have the annotation moved or added
      */
     private void addOrMoveAnnotations(Class clazz) {
         java.lang.annotation.Annotation[] anns = clazz.getAnnotations();
@@ -189,7 +173,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
      * we have to entirely remove the annotation
      * from our internal registry and the myfaces registry
      *
-     * @param clazz
+     * @param clazz the class to have the annotation removed
      */
     private void removeAnnotations(Class clazz) {
         String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
@@ -202,14 +186,6 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
                     WeavingContext.getFileChangedDaemon().getClassMap().remove(clazz.getName());
                 }
             }
-        }
-    }
-
-    private void annotationMoved(Class clazz, java.lang.annotation.Annotation ann, AnnotationScanListener listener) {
-        //case class exists but it has been moved to anoter annotation
-        String registeredAnnotation = _registeredAnnotations.get(clazz.getName());
-        if (registeredAnnotation != null && registeredAnnotation.equals(ann.getClass().getName())) {
-            removeAnnotations(clazz);
         }
     }
 

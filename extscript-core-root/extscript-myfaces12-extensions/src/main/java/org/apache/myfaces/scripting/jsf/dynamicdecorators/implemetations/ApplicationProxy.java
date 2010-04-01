@@ -45,6 +45,7 @@ import java.util.*;
  *
  * @author Werner Punz
  */
+@SuppressWarnings({"deprecation", "deprecation"})
 public class ApplicationProxy extends Application implements Decorated {
 
     volatile Application _delegate;
@@ -53,16 +54,9 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate = delegate;
     }
 
-    //TODO add a proxy for the el resolvers as well
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
-        //TODO this can be problematic if several libraries add their own proxies
-        // that way then might get get a cyclic stack
-        //under normal circumstances this should not happen
-        //because addElResolver is called once and getElResolver
-        //does not change the stack afterwards in the worst case
-        //we might get 2 of our proxies in the delegate stack
 
         //the same goes for the rest of the factory stuff
         if (!(elResolver instanceof ELResolverProxy))
@@ -130,8 +124,6 @@ public class ApplicationProxy extends Application implements Decorated {
     }
 
     public void removeELContextListener(ELContextListener elContextListener) {
-        //TODO which el context listener is coming in our normal one
-        //or the reloaded one?
         weaveDelegate();
         _delegate.removeELContextListener(elContextListener);
     }
@@ -211,16 +203,19 @@ public class ApplicationProxy extends Application implements Decorated {
         _delegate.setNavigationHandler(navigationHandler);
     }
 
+    @SuppressWarnings("deprecation")
     public PropertyResolver getPropertyResolver() {
         weaveDelegate();
         return _delegate.getPropertyResolver();
     }
 
+    @SuppressWarnings("deprecation")
     public void setPropertyResolver(PropertyResolver propertyResolver) {
         weaveDelegate();
         _delegate.setPropertyResolver(propertyResolver);
     }
 
+    @SuppressWarnings("deprecation")
     public VariableResolver getVariableResolver() {
         weaveDelegate();
         VariableResolver variableResolver = _delegate.getVariableResolver();
@@ -229,6 +224,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return variableResolver;
     }
 
+    @SuppressWarnings("deprecation")
     public void setVariableResolver(VariableResolver variableResolver) {
         weaveDelegate();
         if (!(variableResolver instanceof VariableResolverProxy))
@@ -248,7 +244,7 @@ public class ApplicationProxy extends Application implements Decorated {
         hence we have to work with proxies here
         */
         if (WeavingContext.isDynamic(handler.getClass()))
-            handler = (ViewHandlerProxy) new ViewHandlerProxy(handler);
+            handler = new ViewHandlerProxy(handler);
         return handler;
     }
 
@@ -256,7 +252,7 @@ public class ApplicationProxy extends Application implements Decorated {
         weaveDelegate();
         /*make sure you have the delegates as well in properties*/
         if (WeavingContext.isDynamic(viewHandler.getClass()))
-            viewHandler = (ViewHandlerProxy) new ViewHandlerProxy(viewHandler);
+            viewHandler = new ViewHandlerProxy(viewHandler);
 
         _delegate.setViewHandler(viewHandler);
     }
@@ -274,8 +270,6 @@ public class ApplicationProxy extends Application implements Decorated {
     public void addComponent(String componentType, String componentClass) {
         weaveDelegate();
         _delegate.addComponent(componentType, componentClass);
-        //TODO handle this properly
-        // WeavingContext.getRefreshContext().getComponentRendererDependencies(componentClass, "");
     }
 
     public UIComponent createComponent(String s) throws FacesException {
@@ -292,6 +286,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return (UIComponent) reloadInstance(component, ScriptingConst.ARTIFACT_TYPE_COMPONENT);
     }
 
+    @SuppressWarnings("deprecation")
     public UIComponent createComponent(ValueBinding valueBinding, FacesContext facesContext, String s) throws FacesException {
         weaveDelegate();
         UIComponent component = _delegate.createComponent(valueBinding, facesContext, s);
@@ -358,6 +353,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getConverterTypes();
     }
 
+    @SuppressWarnings("deprecation")
     public MethodBinding createMethodBinding(String s, Class[] classes) throws ReferenceSyntaxException {
         weaveDelegate();
         return _delegate.createMethodBinding(s, classes);
@@ -383,8 +379,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
         Validator retVal = _delegate.createValidator(s);
         if (WeavingContext.isDynamic(retVal.getClass()) && !Proxy.isProxyClass(retVal.getClass())) {
-            //todo bypass the serialisation problem on validators
-            retVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_VALIDATOR); //WeavingContext.createMethodReloadingProxyFromObject(retVal, Validator.class, ScriptingConst.ARTIFACT_TYPE_VALIDATOR);
+            retVal = (Validator) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_VALIDATOR);
         }
         return retVal;
     }
@@ -394,6 +389,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate.getValidatorIds();
     }
 
+    @SuppressWarnings("deprecation")
     public ValueBinding createValueBinding(String s) throws ReferenceSyntaxException {
         weaveDelegate();
         return _delegate.createValueBinding(s);
@@ -403,7 +399,7 @@ public class ApplicationProxy extends Application implements Decorated {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private final Object reloadInstance(Object instance, int artefactType) {
+    private Object reloadInstance(Object instance, int artefactType) {
         if (instance == null) {
             return null;
         }
@@ -414,9 +410,9 @@ public class ApplicationProxy extends Application implements Decorated {
         return instance;
     }
 
-    private final boolean alreadyWovenInRequest(String clazz) {
+    private boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        Map reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        Map<String,Object> reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         if (reqMap.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
             reqMap.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
             return false;

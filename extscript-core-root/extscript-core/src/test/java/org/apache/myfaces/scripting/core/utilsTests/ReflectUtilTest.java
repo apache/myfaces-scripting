@@ -66,7 +66,7 @@ public class ReflectUtilTest {
         assertTrue(MSG_PROBE_INSTANTIATED, probe != null);
 
         try {
-            probe = ReflectUtil.instantiate(Probe.class, new Cast(Integer.class, myHello), HELLO_WORLD);
+            ReflectUtil.instantiate(Probe.class, new Cast(Integer.class, myHello), HELLO_WORLD);
             fail();
         } catch (RuntimeException ex) {
             assertTrue(MSG_INIT_FAIL, true);
@@ -75,13 +75,13 @@ public class ReflectUtilTest {
         assertTrue(MSG_PROBE_INSTANTIATED, probe != null);
 
         try {
-            probe = ReflectUtil.instantiate(Probe.class, new Null(Integer.class), new Null(String.class));
+            ReflectUtil.instantiate(Probe.class, new Null(Integer.class), new Null(String.class));
             fail();
         } catch (RuntimeException ex) {
             assertTrue(MSG_INIT_FAIL, true);
         }
 
-        //TODO test fails, but is not used so we can live with it
+        //TODO (1.1) test fails, but is not used so we can live with it  
         //probe = ReflectUtil.instantiate(Probe2.class,new Array(String.class, HELLO_WORLD, HELLO_WORLD));
         //assertTrue("Probe must be instantiated", probe != null);
     }
@@ -98,7 +98,7 @@ public class ReflectUtilTest {
         assertTrue("retval must be true", retVal);
 
         try {
-            retVal = (Boolean) ReflectUtil.executeStaticMethod(Boolean.class, "xx_valueOf", "true");
+            ReflectUtil.executeStaticMethod(Boolean.class, "xx_valueOf", "true");
             fail();
         } catch (RuntimeException ex) {
             assertTrue("Exception must be thrown", true);
@@ -123,7 +123,7 @@ public class ReflectUtilTest {
     @Test
     public void testExecuteMethod() throws Exception {
 
-        Boolean probe = new Boolean(true);
+        Boolean probe = true;
         Boolean retVal = (Boolean) ReflectUtil.executeMethod(probe, "valueOf", "true");
         assertTrue(retVal);
         String sRetVal = (String) ReflectUtil.executeMethod(probe, "toString");
@@ -133,7 +133,7 @@ public class ReflectUtilTest {
         assertTrue(hashVal != null);
 
         try {
-            hashVal = ReflectUtil.executeMethod(new Probe(), "xx_hashCode");
+            ReflectUtil.executeMethod(new Probe(), "xx_hashCode");
             fail();
         } catch (RuntimeException ex) {
             assertTrue("calling must faile with an RE", true);
@@ -143,7 +143,7 @@ public class ReflectUtilTest {
     @Test
     public void testFastExecuteMethod() throws Exception {
 
-        Boolean probe = new Boolean(true);
+        Boolean probe = true;
         Boolean retVal = (Boolean) ReflectUtil.fastExecuteMethod(probe, "valueOf", "true");
         assertTrue(retVal);
         String sRetVal = (String) ReflectUtil.fastExecuteMethod(probe, "toString");

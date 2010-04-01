@@ -22,9 +22,9 @@ import org.apache.myfaces.scripting.api.Decorated;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
-import javax.faces.el.VariableResolver;
-import javax.faces.el.EvaluationException;
 import javax.faces.context.FacesContext;
+import javax.faces.el.*;
+
 
 /**
  * objects loaded must
@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Werner Punz
  */
+@SuppressWarnings("deprecation") //we must suppress it here
 public class VariableResolverProxy extends VariableResolver implements Decorated {
     VariableResolver _delegate;
 
