@@ -19,6 +19,7 @@
 package org.apache.myfaces.scripting.sandbox.loader;
 
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.loaders.java.ThrowawayClassloader;
 import org.apache.myfaces.scripting.sandbox.loader.support.ClassFileLoader;
 import org.apache.myfaces.scripting.sandbox.loader.support.OverridingClassLoader;
 import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
@@ -27,6 +28,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -54,7 +58,6 @@ public class ReloadingClassLoader extends URLClassLoader {
      * use this version of the file separator in regex methods, like replaceAll().
      */
     private static String FILE_SEPARATOR = FileUtils.getFileSeparatorForRegex();
-   
 
     /**
      * The logger instance for this class.
@@ -223,14 +226,30 @@ public class ReloadingClassLoader extends URLClassLoader {
      *
      * @param className the class you want to reload
      */
-    public void reloadClass(String className) {
+    public void reloadClass(final String className) {
         ThrowAwayClassLoader classLoader;
 
-        File classFile = resolveClassFile(className);
-        if (classFile != null && classFile.exists()) {
-            classLoader = new ClassFileLoader(className, classFile, this);
-        } else {
-            classLoader = new OverridingClassLoader(className, this);
+        final File classFile = resolveClassFile(className);
+        final ReloadingClassLoader _this = this;
+        try {
+            if (classFile != null && classFile.exists()) {
+
+                classLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<ClassFileLoader>() {
+                    public ClassFileLoader run() {
+                        return new ClassFileLoader(className, classFile, _this);
+                    }
+                });
+
+            } else {
+                classLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<OverridingClassLoader>() {
+                    public OverridingClassLoader run() {
+                        return new OverridingClassLoader(className, _this);
+                    }
+                });
+            }
+        } catch (PrivilegedActionException e) {
+           _logger.log(Level.SEVERE, "", e);
+            return;
         }
 
         ThrowAwayClassLoader oldClassLoader = _classLoaders.put(className, classLoader);
@@ -255,9 +274,18 @@ public class ReloadingClassLoader extends URLClassLoader {
      * @return a copy of the current reloading class loader
      */
     @SuppressWarnings("unused")
-    public ReloadingClassLoader cloneWithParentClassLoader(ClassLoader parentClassLoader) {
-        ReloadingClassLoader classLoader =
-                new ReloadingClassLoader(parentClassLoader, _compilationDirectory);
+    public ReloadingClassLoader cloneWithParentClassLoader(final ClassLoader parentClassLoader) {
+        ReloadingClassLoader classLoader = null;
+        try {
+            classLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<ReloadingClassLoader>() {
+                public ReloadingClassLoader run() {
+                    return new ReloadingClassLoader(parentClassLoader, _compilationDirectory);
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            _logger.log(Level.SEVERE, "", e);
+            return null;
+        }
 
         // Note that we don't have to create "deep copies" as the class loaders in the map
         // are immutable anyway (they are only supposed to load a single class) and additionally

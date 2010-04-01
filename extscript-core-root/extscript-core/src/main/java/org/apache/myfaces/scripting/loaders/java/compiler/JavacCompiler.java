@@ -163,7 +163,10 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
             // Invoke the Javac compiler
             Method compile = _compilerClass.getMethod("compile", new Class[]{String[].class, PrintWriter.class});
             if (!targetPath.exists()) {
-                targetPath.mkdirs();
+                if (!targetPath.mkdirs()) {
+                    throw new IllegalStateException("It wasn't possible to create the target " +
+                            "directory for the compiler ['" + targetPath.getAbsolutePath() + "'].");
+                }
             }
 
             //TODO make a whitelist check here
@@ -200,7 +203,7 @@ public class JavacCompiler implements org.apache.myfaces.scripting.api.Compiler 
                 commandLine.append(compilerArgument);
                 commandLine.append(" ");
             }
-            _logger.log(Level.FINE,commandLine.toString());
+            _logger.log(Level.FINE, commandLine.toString());
         }
         if (_logger.isLoggable(Level.INFO)) {
             _logger.info("[EXT-SCRIPTING] compiling java");

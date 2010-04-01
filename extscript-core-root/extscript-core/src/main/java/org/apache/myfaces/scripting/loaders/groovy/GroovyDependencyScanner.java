@@ -26,18 +26,20 @@ public class GroovyDependencyScanner extends JavaDependencyScanner {
         super(weaver);
     }
 
+    static PrivilegedExceptionAction<ScannerClassloader> CLASSLOADER_PRIVILEGED = new PrivilegedExceptionAction<ScannerClassloader>() {
+        public ScannerClassloader run() {
+            return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, WeavingContext.getConfiguration().getCompileTarget());
+        }
+    };
+
     @Override
     protected ClassLoader getClassLoader() {
         //TODO move the temp dir handling into the configuration
         try {
-            return AccessController.doPrivileged(new PrivilegedExceptionAction<ScannerClassloader>() {
-                public ScannerClassloader run() {
-                    return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ScriptingConst.FILE_EXTENSION_GROOVY, WeavingContext.getConfiguration().getCompileTarget());
-                }
-            });
+            return AccessController.doPrivileged(CLASSLOADER_PRIVILEGED);
         } catch (PrivilegedActionException e) {
             Logger _logger = Logger.getLogger(this.getClass().getName());
-            _logger.log(Level.SEVERE,"", e);
+            _logger.log(Level.SEVERE, "", e);
         }
         return null;
     }

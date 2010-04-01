@@ -36,6 +36,7 @@ import java.util.logging.Logger;
  * This renderer is responsible for rendering the last compiler output
  * hosted in our weavingContext
  */
+@SuppressWarnings("unchecked")
 public class CompilerComponentRenderer extends Renderer {
 
     @Override
@@ -52,7 +53,7 @@ public class CompilerComponentRenderer extends Renderer {
                 result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
                 break;
             case ScriptingConst.ENGINE_TYPE_JSF_GROOVY:
-                result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
+                result = WeavingContext.getCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
                 break;
             case ScriptingConst.ENGINE_TYPE_JSF_ALL:
                 result = new CompilationResult("");
@@ -71,7 +72,6 @@ public class CompilerComponentRenderer extends Renderer {
                 Logger log = Logger.getLogger(this.getClass().getName());
                 log.warning(RendererConst.WARNING_ENGINE_NOT_FOUND);
                 break;
-
         }
 
         startDiv(component, wrtr, RendererConst.ERROR_BOX);
@@ -89,57 +89,57 @@ public class CompilerComponentRenderer extends Renderer {
 
     }
 
-    private void writeWarnings(UIComponent component, ResponseWriter wrtr, CompilationResult result) throws IOException {
-        startDiv(component, wrtr, RendererConst.WARNINGS);
+    private void writeWarnings(UIComponent component, ResponseWriter responseWriter, CompilationResult result) throws IOException {
+        startDiv(component, responseWriter, RendererConst.WARNINGS);
         for (CompilationResult.CompilationMessage msg : result.getWarnings()) {
-            startDiv(component, wrtr, RendererConst.LINE);
-            writeDiv(component, wrtr, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
-            writeDiv(component, wrtr, RendererConst.MESSAGE, msg.getMessage());
-            endDiv(wrtr);
+            startDiv(component, responseWriter, RendererConst.LINE);
+            writeDiv(component, responseWriter, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
+            writeDiv(component, responseWriter, RendererConst.MESSAGE, msg.getMessage());
+            endDiv(responseWriter);
         }
-        endDiv(wrtr);
+        endDiv(responseWriter);
     }
 
-    private void writeWarningsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
+    private void writeWarningsLabel(UIComponent component, ResponseWriter responseWriter, CompilerComponent compilerComp) throws IOException {
         if (!StringUtils.isBlank(compilerComp.getWarningsLabel())) {
-            startDiv(component, wrtr, RendererConst.WARNINGS_LABEL);
-            wrtr.write(compilerComp.getWarningsLabel());
-            endDiv(wrtr);
+            startDiv(component, responseWriter, RendererConst.WARNINGS_LABEL);
+            responseWriter.write(compilerComp.getWarningsLabel());
+            endDiv(responseWriter);
         }
     }
 
-    private void writeErrors(UIComponent component, ResponseWriter wrtr, CompilationResult result) throws IOException {
-        startDiv(component, wrtr, RendererConst.ERRORS);
+    private void writeErrors(UIComponent component, ResponseWriter responseWriter, CompilationResult result) throws IOException {
+        startDiv(component, responseWriter, RendererConst.ERRORS);
         for (CompilationResult.CompilationMessage msg : result.getErrors()) {
-            startDiv(component, wrtr, RendererConst.LINE);
-            writeDiv(component, wrtr, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
-            writeDiv(component, wrtr, RendererConst.MESSAGE, msg.getMessage());
-            endDiv(wrtr);
+            startDiv(component, responseWriter, RendererConst.LINE);
+            writeDiv(component, responseWriter, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
+            writeDiv(component, responseWriter, RendererConst.MESSAGE, msg.getMessage());
+            endDiv(responseWriter);
         }
-        endDiv(wrtr);
+        endDiv(responseWriter);
     }
 
-    private String writeDiv(UIComponent component, ResponseWriter wrtr, String styleClass, String value) throws IOException {
-        startDiv(component, wrtr, styleClass);
-        wrtr.write(value);
-        endDiv(wrtr);
+    private String writeDiv(UIComponent component, ResponseWriter responseWriter, String styleClass, String value) throws IOException {
+        startDiv(component, responseWriter, styleClass);
+        responseWriter.write(value);
+        endDiv(responseWriter);
         return "";
     }
 
-    private void endDiv(ResponseWriter wrtr) throws IOException {
-        wrtr.endElement(RendererConst.HTML_DIV);
+    private void endDiv(ResponseWriter responseWriter) throws IOException {
+        responseWriter.endElement(RendererConst.HTML_DIV);
     }
 
-    private void startDiv(UIComponent component, ResponseWriter wrtr, String styleClass) throws IOException {
-        wrtr.startElement(RendererConst.HTML_DIV, component);
-        wrtr.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
+    private void startDiv(UIComponent component, ResponseWriter responseWriter, String styleClass) throws IOException {
+        responseWriter.startElement(RendererConst.HTML_DIV, component);
+        responseWriter.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
     }
 
-    private void writeErrorsLabel(UIComponent component, ResponseWriter wrtr, CompilerComponent compilerComp) throws IOException {
+    private void writeErrorsLabel(UIComponent component, ResponseWriter responseWriter, CompilerComponent compilerComp) throws IOException {
         if (!StringUtils.isBlank(compilerComp.getErrorsLabel())) {
-            startDiv(component, wrtr, RendererConst.ERRORS_LABEL);
-            wrtr.write(compilerComp.getErrorsLabel());
-            endDiv(wrtr);
+            startDiv(component, responseWriter, RendererConst.ERRORS_LABEL);
+            responseWriter.write(compilerComp.getErrorsLabel());
+            endDiv(responseWriter);
         }
     }
 

@@ -37,6 +37,7 @@ import java.util.Date;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@SuppressWarnings("unchecked")
 public class TaintHistoryRenderer extends Renderer {
 
     @Override

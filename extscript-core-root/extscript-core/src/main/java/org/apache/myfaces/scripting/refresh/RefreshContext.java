@@ -50,7 +50,6 @@ public class RefreshContext {
      */
     private volatile long _personalScopedBeanRefresh = -1l;
 
-
     /**
      * the bean synchronisation has to be dealt with
      * differently, we have two volatile points in the lifecycle
@@ -59,7 +58,7 @@ public class RefreshContext {
      * and also a global refresh has to be atomic and no other
      * refreshes should happen
      */
-    public final static Boolean BEAN_SYNC_MONITOR = Boolean.TRUE;
+    public final static Boolean BEAN_SYNC_MONITOR = new Boolean(true);
 
     /**
      * second synchronisation monitor
@@ -67,7 +66,7 @@ public class RefreshContext {
      * compile cycle otherwise the classloader would get
      * half finished compile states to load
      */
-    public final static Boolean COMPILE_SYNC_MONITOR = Boolean.TRUE;
+    public final static Boolean COMPILE_SYNC_MONITOR = new Boolean(true);
 
     private volatile AtomicInteger _currentlyRunningRequests = null;
 
@@ -91,7 +90,6 @@ public class RefreshContext {
      */
     private List<TaintingHistoryEntry> _taintLog = Collections.synchronizedList(new LinkedList<TaintingHistoryEntry>());
 
-
     /**
      * the daemon thread which marks the scripting classes
      * depending on the state, changed => tainted == true, not changed
@@ -102,7 +100,7 @@ public class RefreshContext {
     /**
      * internal class used by our own history log
      */
-    class TaintingHistoryEntry {
+    static class TaintingHistoryEntry {
         long _timestamp;
         ReloadingMetadata _data;
 
@@ -119,8 +117,6 @@ public class RefreshContext {
             return _data;
         }
     }
-
-    
 
     /**
      * adds a new entry into our taint log

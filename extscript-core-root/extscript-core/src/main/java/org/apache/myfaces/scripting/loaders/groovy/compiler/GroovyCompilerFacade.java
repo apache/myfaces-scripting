@@ -25,9 +25,13 @@ import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.core.util.FileUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyRecompiledClassloader;
+import org.apache.myfaces.scripting.loaders.java.ThrowawayClassloader;
 import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
 
 import java.io.File;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,6 +49,12 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
     Logger _log = Logger.getLogger(this.getClass().getName());
     GroovyCompiler compiler;
+
+    static final PrivilegedExceptionAction<GroovyRecompiledClassloader> LOADER_ACTION = new PrivilegedExceptionAction<GroovyRecompiledClassloader>() {
+        public GroovyRecompiledClassloader run() {
+            return new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ".groovy");
+        }
+    };
 
     public GroovyCompilerFacade() {
         super();
@@ -66,7 +76,13 @@ public class GroovyCompilerFacade implements DynamicCompiler {
         //displayMessages(result);
 
         //if (!result.hasErrors()) {
-        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ".groovy");
+        GroovyRecompiledClassloader classLoader;
+        try {
+            classLoader = AccessController.doPrivileged(LOADER_ACTION);
+        } catch (PrivilegedActionException e) {
+            _log.log(Level.SEVERE, "", e);
+            return null;
+        }
 
         //fileManager.refreshClassloader();
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
@@ -80,7 +96,7 @@ public class GroovyCompilerFacade implements DynamicCompiler {
 
             //Not needed anymore due to change in the dynamic class detection system
             //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
-            if(className.startsWith("groovy.")) {
+            if (className.startsWith("groovy.")) {
                 _log.finer("debugpoint found");
             }
 
@@ -110,7 +126,14 @@ public class GroovyCompilerFacade implements DynamicCompiler {
      * @throws ClassNotFoundException
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
-        GroovyRecompiledClassloader classLoader = new GroovyRecompiledClassloader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_GROOVY, ".groovy");
+        GroovyRecompiledClassloader classLoader;
+        try {
+            classLoader = AccessController.doPrivileged(LOADER_ACTION);
+        } catch (PrivilegedActionException e) {
+            _log.log(Level.SEVERE, "", e);
+            return null;
+        }
+
         classLoader.setSourceRoot(sourceRoot);
         CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), classLoader);
 

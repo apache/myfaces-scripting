@@ -24,6 +24,7 @@ import org.apache.myfaces.scripting.api.ScriptingConst;
 import javax.el.ValueExpression;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import java.util.Locale;
 
 /**
  * Compiler component which currently
@@ -33,6 +34,7 @@ import javax.faces.context.FacesContext;
  * we do not use the StateHelper but go the old route
  * instead
  */
+@SuppressWarnings("unused")
 public class CompilerComponent extends UIOutput {
 
     String _scriptingLanguage = null;
@@ -70,6 +72,7 @@ public class CompilerComponent extends UIOutput {
         _warningsLabel = (String) values[3];
     }
 
+
     public String getScriptingLanguage() {
         if (_scriptingLanguage != null) {
             return _scriptingLanguage;
@@ -82,10 +85,10 @@ public class CompilerComponent extends UIOutput {
         if (StringUtils.isBlank(_scriptingLanguage)) {
             return ScriptingConst.ENGINE_TYPE_JSF_ALL;
         } else {
-            String scriptingLanguage = _scriptingLanguage.toLowerCase().trim();
+            String scriptingLanguage = _scriptingLanguage.toLowerCase(Locale.getDefault()).trim();
             if (scriptingLanguage.equals("java")) {
                 return ScriptingConst.ENGINE_TYPE_JSF_JAVA;
-            } else if (_scriptingLanguage.toLowerCase().trim().equals("groovy")) {
+            } else if (_scriptingLanguage.toLowerCase(Locale.getDefault()).trim().equals("groovy")) {
                 return ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
             }
         }

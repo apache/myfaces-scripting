@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -240,7 +241,7 @@ public class JavacCompiler implements Compiler {
             // The compiler isn't available in the current classpath, but the user could have specified the tools.jar file.
             if (toolsJar == null) {
                 String javaHome = System.getProperty("java.home");
-                if (javaHome.toLowerCase().endsWith(File.separator + "jre")) {
+                if (javaHome.toLowerCase(Locale.getDefault()).endsWith(File.separator + "jre")) {
                     // Note that even if the user has installed a valid JDK the $JAVA_HOME$ property might reference
                     // the JRE, e.g. '/usr/lib/jvm/java-6-sun-1.6.0.16/jre'. However, in this case we just have to
                     // remove the last four characters (i.e. the '/jre').

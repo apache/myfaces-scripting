@@ -70,11 +70,11 @@ public class FileChangedDaemon extends Thread {
     boolean _contextInitialized = false;
     Logger _log = Logger.getLogger(FileChangedDaemon.class.getName());
     ScriptingWeaver _weavers = null;
-    static WeakReference _externalContext;
+    static WeakReference<ServletContext> _externalContext;
 
     public static synchronized void startup(ServletContext externalContext) {
         if (_externalContext != null) return;
-        _externalContext = new WeakReference(externalContext);
+        _externalContext = new WeakReference<ServletContext>(externalContext);
 
         //we currently keep it as singleton but in the long run we will move it into the context
         //like everything else singleton-wise
@@ -98,7 +98,14 @@ public class FileChangedDaemon extends Thread {
     }
 
     public static synchronized FileChangedDaemon getInstance() {
-        return (FileChangedDaemon) ((ServletContext) _externalContext.get()).getAttribute(CONTEXT_KEY);
+        //we do it in this complicated manner because of find bugs
+        //practically this cannot really happen except for shutdown were it is not important anymore
+        ServletContext context = _externalContext.get();
+        if (context != null) {
+           return (FileChangedDaemon) context.getAttribute(CONTEXT_KEY);
+        }
+        return null;
+        //return (FileChangedDaemon) ((ServletContext) _externalContext.get()).getAttribute(CONTEXT_KEY);
     }
 
     /**
@@ -107,7 +114,7 @@ public class FileChangedDaemon extends Thread {
      */
     public void run() {
         while (WeavingContext.isScriptingEnabled() && _running) {
-            if (_externalContext != null && !_contextInitialized) {
+            if (_externalContext != null && _externalContext.get() != null && !_contextInitialized) {
                 WeavingContext.initThread((ServletContext) _externalContext.get());
                 _contextInitialized = true;
             }

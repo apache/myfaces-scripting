@@ -21,6 +21,8 @@ package org.apache.myfaces.scripting.core;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,6 +42,9 @@ import java.lang.reflect.Method;
  */
 @SuppressWarnings("unused")
 public class MethodLevelReloadingHandler extends ReloadingInvocationHandler implements Serializable {
+
+    private static final long serialVersionUID = -3034995032644947216L;
+
     transient ScriptingWeaver _weaver = null;
     int _artifactType;
 
@@ -120,4 +125,10 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
     public void setArtifactType(int artifactType) {
         _artifactType = artifactType;
     }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        _weaver = null;
+    }
+
 }

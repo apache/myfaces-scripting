@@ -31,9 +31,8 @@ import java.util.logging.Logger;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class TaintHistory extends UIOutput {
 
-    static Logger _log = Logger.getLogger(TaintHistory.class.getName());
+public class TaintHistory extends UIOutput {
 
     static final int DEFAULT_NO_ENTRIES = 10;
 
@@ -45,6 +44,7 @@ public class TaintHistory extends UIOutput {
         setRendererType(RENDERER_TYPE);
     }
 
+    @SuppressWarnings("unused")
     public void setNoEntries(Integer entries) {
         _noEntries = entries;
     }
@@ -74,10 +74,12 @@ public class TaintHistory extends UIOutput {
         return vb != null ? ((Integer) vb.getValue(getFacesContext().getELContext())) : DEFAULT_NO_ENTRIES;
     }
 
+    @SuppressWarnings("unused")
     public void setFilter(String filter) {
         _filter = filter;
     }
 
+    @SuppressWarnings("unused")
     public String getFilter() {
         if (_filter != null) {
             return _filter;

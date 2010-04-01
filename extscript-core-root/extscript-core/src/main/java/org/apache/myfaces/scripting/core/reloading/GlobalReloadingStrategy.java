@@ -129,7 +129,7 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
     /**
      * load dynamically the given strategy class
      *
-     * @param weaver        the weaver which the new strateg class is applied to
+     * @param weaver        the weaver which the new strategy class is applied to
      * @param strategyClass the strategy class which has to be loaded and instantiated
      * @return an instance of the strategy class if found otherwise null
      */

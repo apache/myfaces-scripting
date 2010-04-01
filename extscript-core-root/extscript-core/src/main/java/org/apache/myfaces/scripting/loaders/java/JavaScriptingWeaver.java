@@ -24,6 +24,8 @@ import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
 //import org.apache.myfaces.scripting.loaders.java.jsr199.ReflectCompilerFacade;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +53,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements Serializable {
 
     transient DynamicClassIdentifier _identifier = new DynamicClassIdentifier();
 
-    final Logger _logger = Logger.getLogger(JavaScriptingWeaver.class.getName());
+    transient Logger _logger = Logger.getLogger(JavaScriptingWeaver.class.getName());
 
     /**
      * helper to allow initial compiler classpath scanning
@@ -102,6 +104,12 @@ public class JavaScriptingWeaver extends BaseWeaver implements Serializable {
 
     protected DynamicCompiler instantiateCompiler() {
         return new CompilerFacade();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        _identifier = new DynamicClassIdentifier();
+        Logger.getLogger(JavaScriptingWeaver.class.getName());
     }
 
 }

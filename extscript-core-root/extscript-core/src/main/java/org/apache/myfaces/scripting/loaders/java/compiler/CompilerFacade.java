@@ -48,6 +48,13 @@ public class CompilerFacade implements DynamicCompiler {
 
     Logger _log = Logger.getLogger(this.getClass().getName());
 
+    static final PrivilegedExceptionAction<RecompiledClassLoader> CLASSLOADER_ACTION = new PrivilegedExceptionAction<RecompiledClassLoader>() {
+        public RecompiledClassLoader run() {
+            return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+
+        }
+    };
+
     public CompilerFacade() {
         super();
 
@@ -95,14 +102,9 @@ public class CompilerFacade implements DynamicCompiler {
 
     private RecompiledClassLoader getRecompiledClassLoader() {
         try {
-            return AccessController.doPrivileged(new PrivilegedExceptionAction<RecompiledClassLoader>() {
-                public RecompiledClassLoader run() {
-                    return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
-
-                }
-            });
+            return AccessController.doPrivileged(CLASSLOADER_ACTION);
         } catch (PrivilegedActionException e) {
-            _log.log(Level.SEVERE,"", e);
+            _log.log(Level.SEVERE, "", e);
         }
         return null;
     }

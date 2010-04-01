@@ -26,7 +26,6 @@ public class ThrowawayClassloader extends ClassLoader {
     int _scriptingEngine;
     String _engineExtension;
 
-    String _sourceRoot;
 
     public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
         super(classLoader);
@@ -196,7 +195,5 @@ public class ThrowawayClassloader extends ClassLoader {
         return ClassUtils.classNameToFile(ThrowawayClassloader._tempDir.getAbsolutePath(), className);
     }
 
-    public void setSourceRoot(String sourceRoot) {
-        this._sourceRoot = sourceRoot;
-    }
+   
 }

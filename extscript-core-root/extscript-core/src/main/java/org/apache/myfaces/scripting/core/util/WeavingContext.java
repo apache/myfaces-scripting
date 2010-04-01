@@ -173,7 +173,7 @@ public class WeavingContext {
      * @return true in case of being scriptable
      */
     public static boolean isScriptingEnabled() {
-        return _enabled.get();
+        return  _enabled.get();
     }
 
     public static void setScriptingEnabled(boolean enabled) {

@@ -40,6 +40,9 @@ public class RecompiledClassLoader extends ClassLoader {
     String _sourceRoot;
     ThrowawayClassloader _throwAwayLoader = null;
 
+
+    
+
     public RecompiledClassLoader(final ClassLoader classLoader, final int scriptingEngine, final String engineExtension) {
         super(classLoader);
         _scriptingEngine = scriptingEngine;
@@ -89,7 +92,7 @@ public class RecompiledClassLoader extends ClassLoader {
                     return new ThrowawayClassloader(_parent, _scriptingEngine, _engineExtension, _unTaintClasses);
                 }
             });
-            _throwAwayLoader.setSourceRoot(getSourceRoot());
+            //_throwAwayLoader.setSourceRoot(getSourceRoot());
             return _throwAwayLoader.loadClass(className);
         } catch (PrivilegedActionException e) {
             Logger _logger = Logger.getLogger(this.getClass().getName());
