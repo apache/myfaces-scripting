@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.scripting.core.classIdentifier;
 
+import org.apache.myfaces.scripting.core.support.TestConst;
 import org.apache.myfaces.scripting.sandbox.loader.support.ThrowAwayClassLoader;
 import org.apache.myfaces.scripting.core.util.ClassUtils;
 import org.apache.myfaces.scripting.loaders.java.JavaThrowAwayClassloader;
@@ -45,7 +46,7 @@ public class DynamicClassloader extends ClassLoader implements ThrowAwayClassLoa
 
     public Class loadClass(String className, boolean resolve) throws ClassNotFoundException {
 
-        if (className.contains("java.lang")) {
+        if (className.contains(TestConst.JAVA_LANG)) {
             return super.loadClass(className, resolve);
         }
 

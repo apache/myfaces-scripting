@@ -52,6 +52,13 @@ public class CompilerComponentTest extends AbstractJsfTestCase {
     private static final String ERROR_2 = "2_error";
     private static final String WARNING_1 = "1_warning";
     private static final String WARNING_2 = "2_warning";
+    private static final String ATTR_WARNINGS_LABEL = "warningsLabel";
+    private static final String ATTR_ERRORS_LABEL = "errorsLabel";
+    private static final String ATTR_SCRIPTING_LANGUAGE = "scriptingLanguage";
+    private static final String NO_COMPILE_ERRORS_FOUND = "no compile errors found";
+    private static final String COMPILE_ERRORS_FOUND = "Compile errors found";
+    private static final String BOOGA = "booga";
+    private static final String OUTPUT = "output";
 
     public CompilerComponentTest() {
         super(CompilerComponentTest.class.getName());
@@ -112,7 +119,7 @@ public class CompilerComponentTest extends AbstractJsfTestCase {
         assertTrue(_compilerComponent.getScriptingLanguageAsInt().equals(ScriptingConst.ENGINE_TYPE_JSF_GROOVY));
         _compilerComponent.setScriptingLanguage(BLANK);
         assertTrue(_compilerComponent.getScriptingLanguageAsInt().equals(ScriptingConst.ENGINE_TYPE_JSF_ALL));
-        _compilerComponent.setScriptingLanguage("booga");
+        _compilerComponent.setScriptingLanguage(BOOGA);
         assertTrue(_compilerComponent.getScriptingLanguageAsInt().equals(ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE));
     }
 
@@ -121,9 +128,9 @@ public class CompilerComponentTest extends AbstractJsfTestCase {
         _compilerComponent.setErrorsLabel(null);
         _compilerComponent.setScriptingLanguage(null);
 
-        _compilerComponent.getAttributes().put("warningsLabel", WARNINGS_LABEL);
-        _compilerComponent.getAttributes().put("errorsLabel", ERROR_LABEL);
-        _compilerComponent.getAttributes().put("scriptingLanguage", JAVA);
+        _compilerComponent.getAttributes().put(ATTR_WARNINGS_LABEL, WARNINGS_LABEL);
+        _compilerComponent.getAttributes().put(ATTR_ERRORS_LABEL, ERROR_LABEL);
+        _compilerComponent.getAttributes().put(ATTR_SCRIPTING_LANGUAGE, JAVA);
 
         assertDefaultTestingValues();
     }
@@ -131,28 +138,28 @@ public class CompilerComponentTest extends AbstractJsfTestCase {
     public void testRendererNoErrorsAndWarnings() throws Exception {
         _compilerComponent.encodeAll(facesContext);
         facesContext.renderResponse();
-        assertTrue("no compile errors found", _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
+        assertTrue(NO_COMPILE_ERRORS_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
     }
 
     public void testRendererNoErrorsAndWarnings2() throws Exception {
         _compilerComponent.setScriptingLanguage(GROOVY);
         _compilerComponent.encodeAll(facesContext);
         facesContext.renderResponse();
-        assertTrue("no compile errors found", _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
+        assertTrue(NO_COMPILE_ERRORS_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
     }
 
     public void testRendererNoErrorsAndWarnings3() throws Exception {
         _compilerComponent.setScriptingLanguage(BLANK);
         _compilerComponent.encodeAll(facesContext);
         facesContext.renderResponse();
-        assertTrue("no compile errors found", _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
+        assertTrue(NO_COMPILE_ERRORS_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
     }
 
     public void testRendererNoErrorsAndWarnings4() throws Exception {
-        _compilerComponent.setScriptingLanguage("booga");
+        _compilerComponent.setScriptingLanguage(BOOGA);
         _compilerComponent.encodeAll(facesContext);
         facesContext.renderResponse();
-        assertTrue("no compile errors found", _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
+        assertTrue(NO_COMPILE_ERRORS_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
     }
 
     public void testCompilationResultJava() throws Exception {
@@ -183,8 +190,8 @@ public class CompilerComponentTest extends AbstractJsfTestCase {
     }
 
     private void assertStandardResponse(String prefix) {
-        assertFalse("Compile errors found", _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
-        assertTrue("Compile errors found", _writer.getWriter().toString().contains(ERROR_LABEL));
+        assertFalse(COMPILE_ERRORS_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_COMPILE_ERRORS));
+        assertTrue(COMPILE_ERRORS_FOUND, _writer.getWriter().toString().contains(ERROR_LABEL));
 
         String response = _writer.getWriter().toString();
         assertTrue(response.contains(WARNINGS_LABEL));
@@ -222,7 +229,7 @@ public class CompilerComponentTest extends AbstractJsfTestCase {
     }
 
     private CompilationResult getCompilationResult(String prefix) {
-        CompilationResult result = new CompilationResult("output");
+        CompilationResult result = new CompilationResult(OUTPUT);
 
         result.getErrors().add(new CompilationResult.CompilationMessage(1, prefix + ERROR_1));
         result.getErrors().add(new CompilationResult.CompilationMessage(2, prefix + ERROR_2));

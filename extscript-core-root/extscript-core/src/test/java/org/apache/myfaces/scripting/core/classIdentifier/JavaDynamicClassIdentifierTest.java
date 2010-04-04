@@ -20,6 +20,7 @@ package org.apache.myfaces.scripting.core.classIdentifier;
 
 import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.core.support.TWeavingContext;
+import org.apache.myfaces.scripting.core.support.TestConst;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +37,11 @@ public class JavaDynamicClassIdentifierTest {
     Object probe1 = null;
     Object probe2 = null;
     CoreWeaver weaver = null;
-
-    String classPath = "";
+    private static final String CLASS_SHOULD_BE_STATIC = "Class should be static";
+    private static final String CLASS_SHOULD_BE_DYNAMIC = "Class should be dynamic";
 
     @Before
     public void setUp() {
-
-
 
         probe1 = new Probe1();
         URL rootPath = this.getClass().getClassLoader().getResource(".");
@@ -50,7 +49,7 @@ public class JavaDynamicClassIdentifierTest {
         DynamicClassloader throwAwayClassloader = new DynamicClassloader(this.getClass().getClassLoader(), rootPath.getPath());
 
         try {
-            probe2 = throwAwayClassloader.loadClass("org.apache.myfaces.scripting.core.classIdentifier.Probe2", false).newInstance();
+            probe2 = throwAwayClassloader.loadClass(TestConst.PROBE2, false).newInstance();
         } catch (Throwable e) {
             fail(e.getMessage());
         }
@@ -62,12 +61,12 @@ public class JavaDynamicClassIdentifierTest {
 
     @Test
     public void isStatic() {
-        assertFalse("Class should be static", TWeavingContext.isDynamic(probe1.getClass()));
+        assertFalse(CLASS_SHOULD_BE_STATIC, TWeavingContext.isDynamic(probe1.getClass()));
     }
 
     @Test
     public void isDynamic() {
-        assertTrue("Class should be dynamic", TWeavingContext.isDynamic(probe2.getClass()));
+        assertTrue(CLASS_SHOULD_BE_DYNAMIC, TWeavingContext.isDynamic(probe2.getClass()));
     }
 
 }

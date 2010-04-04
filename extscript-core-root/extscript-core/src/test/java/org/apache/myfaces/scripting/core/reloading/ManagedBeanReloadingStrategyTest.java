@@ -23,10 +23,9 @@ import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.probes.Probe;
+import org.apache.myfaces.scripting.core.support.TestConst;
 import org.junit.Test;
 
-import static org.apache.myfaces.scripting.api.
-        ScriptingConst.*;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -38,32 +37,6 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class ManagedBeanReloadingStrategyTest {
-
-    static final int[] ARTIFACT_TYPES = {
-            ARTIFACT_TYPE_UNKNOWN,
-            ARTIFACT_TYPE_MANAGEDBEAN,
-            ARTIFACT_TYPE_MANAGEDPROPERTY,
-            ARTIFACT_TYPE_RENDERKIT,
-            ARTIFACT_TYPE_VIEWHANDLER,
-            ARTIFACT_TYPE_RENDERER,
-            ARTIFACT_TYPE_COMPONENT,
-            ARTIFACT_TYPE_VALIDATOR,
-            ARTIFACT_TYPE_BEHAVIOR,
-            ARTIFACT_TYPE_APPLICATION,
-            ARTIFACT_TYPE_ELCONTEXTLISTENER,
-            ARTIFACT_TYPE_ACTIONLISTENER,
-            ARTIFACT_TYPE_VALUECHANGELISTENER,
-            ARTIFACT_TYPE_CONVERTER,
-            ARTIFACT_TYPE_LIFECYCLE,
-            ARTIFACT_TYPE_PHASELISTENER,
-            ARTIFACT_TYPE_FACESCONTEXT,
-            ARTIFACT_TYPE_NAVIGATIONHANDLER,
-            ARTIFACT_TYPE_RESPONSEWRITER,
-            ARTIFACT_TYPE_RESPONSESTREAM,
-            ARTIFACT_TYPE_RESOURCEHANDLER,
-            ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER,
-            ARTIFACT_TYPE_SYSTEMEVENTLISTENER,
-    };
 
     static final class DummyWeaver extends BaseWeaver {
 
@@ -91,7 +64,7 @@ public class ManagedBeanReloadingStrategyTest {
     public void testReload() throws Exception {
         Probe probe = new Probe();
         ManagedBeanReloadingStrategy strategy = new ManagedBeanReloadingStrategy();
-        for (int artifactType : ARTIFACT_TYPES) {
+        for (int artifactType : TestConst.ARTIFACT_TYPES) {
             Object probe2 = strategy.reload(probe, artifactType);
             assertTrue(probe2 == probe);
         }

@@ -30,6 +30,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class ClassScanUtilsTest {
+
     @Test
     public void testIsStandardNamespace() throws Exception {
         new ClassScanUtils();//to reduce the dummy line coverage

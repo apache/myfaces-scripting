@@ -42,11 +42,15 @@ import static org.junit.Assert.fail;
  */
 
 public class RefreshContextTest {
-    private static String JAVA_FILE_ENDING = ".java";
 
     private static String PROBE1 = "../../src/test/resources/compiler/TestProbe1.java";
     private static String PROBE2 = "../../src/test/resources/compiler/TestProbe2.java";
     private static String RESOURCES = "../../src/test/resources/";
+
+    private static final String TAINT_HISTORY_SIZE = "Taint history size";
+    private static final String TAINT_HISTORY_CONTAINS = "Taint history contains";
+    private static final String THREE_NEW_ENTRIES_IN_THE_LOG = "three new entries in the log";
+    private static final String ALL_ENTRIES_GCED = "All entries gced";
 
     File probe1;
     File probe2;
@@ -87,21 +91,21 @@ public class RefreshContextTest {
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
 
-        assertTrue("three new entries in the log", ctx.getTaintHistory(0l).size() == 3);
+        assertTrue(THREE_NEW_ENTRIES_IN_THE_LOG, ctx.getTaintHistory(0l).size() == 3);
         try {
             Thread.sleep(20);
         } catch (InterruptedException e) {
             fail(e.toString());
         }
         ctx.gcTaintLog();
-        assertTrue("All entries gced", ctx.getTaintHistory(0l).size() == 0);
+        assertTrue(ALL_ENTRIES_GCED, ctx.getTaintHistory(0l).size() == 0);
 
         ctx.setTaintLogTimeout(300000000l);
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
         ctx.gcTaintLog();
-        assertTrue("three new entries in the log", ctx.getTaintHistory(0l).size() == 3);
+        assertTrue(THREE_NEW_ENTRIES_IN_THE_LOG, ctx.getTaintHistory(0l).size() == 3);
 
     }
 
@@ -120,8 +124,8 @@ public class RefreshContextTest {
         ctx.addTaintLogEntry(data);
 
         Set<String> result = ctx.getTaintHistoryClasses(0l);
-        assertTrue("Taint history contains", result.contains(this.getClass().getName()));
-        assertTrue("Taint history size", result.size() == 1);
+        assertTrue(TAINT_HISTORY_CONTAINS, result.contains(this.getClass().getName()));
+        assertTrue(TAINT_HISTORY_SIZE, result.size() == 1);
 
     }
 
@@ -140,13 +144,12 @@ public class RefreshContextTest {
         ctx.addTaintLogEntry(data);
 
         Collection<ReloadingMetadata> result = ctx.getLastTainted(100);
-        assertTrue("Taint history size", result.size() == 3);
+        assertTrue(TAINT_HISTORY_SIZE, result.size() == 3);
         result = ctx.getLastTainted(2);
-        assertTrue("Taint history size", result.size() == 2);
+        assertTrue(TAINT_HISTORY_SIZE, result.size() == 2);
         result = ctx.getLastTainted(0);
-        assertTrue("Taint history size", result.size() == 0);
+        assertTrue(TAINT_HISTORY_SIZE, result.size() == 0);
 
     }
-
 
 }

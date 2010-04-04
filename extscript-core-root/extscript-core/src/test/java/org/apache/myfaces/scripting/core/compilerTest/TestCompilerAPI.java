@@ -48,14 +48,21 @@ public class TestCompilerAPI {
     private static final String PROBE2 = _pathUtils.getResource("compiler/TestProbe2.java");
     private static final String RESOURCES = _pathUtils.getResource(".");
 
+    private static final String CLASSFILE1_IS_COMPILED = "Classfile1 is compiled into the target";
+    private static final String CLASSFILE2_IS_COMPILED = "Classfile2 is compiled into the target";
+    private static final String TARGET_EXISTS = "target exists files are compiled into the target";
+    private static final String CLASSFILE_1_IS_NOT_COMPILED = "Classfile_1 is not compiled into the target";
+    private static final String CLASSFILE_2_IS_NOT_COMPILED = "Classfile_2 is not compiled into the target";
+    private static final String CLASSFILE_3_IS_COMPILED = "Classfile_3 is compiled into the target";
+
     File probe1;
     File probe2;
     File root;
 
     public TestCompilerAPI() {
-        String sourcePath1 =  PROBE1;
+        String sourcePath1 = PROBE1;
         String sourcePath2 = PROBE2;
-        String rootPath =  RESOURCES;
+        String rootPath = RESOURCES;
 
         sourcePath1 = FilenameUtils.normalize(sourcePath1);
         sourcePath2 = FilenameUtils.normalize(sourcePath2);
@@ -91,14 +98,14 @@ public class TestCompilerAPI {
 
             File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
 
-            assertTrue("target exists files are compiled into the target", target != null);
+            assertTrue(TARGET_EXISTS, target != null);
             File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1.class");
             File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2.class");
             File classFile3 = new File(target.getAbsolutePath() + "/compiler/myPackage/WhiteListedProbe.class");
-   
-            assertTrue("Classfile_1 is not compiled into the target",    !classFile1.exists());
-            assertTrue("Classfile_2 is not compiled into the target",    !classFile2.exists());
-            assertTrue("Classfile_3 is compiled into the target",        classFile3.exists());
+
+            assertTrue(CLASSFILE_1_IS_NOT_COMPILED, !classFile1.exists());
+            assertTrue(CLASSFILE_2_IS_NOT_COMPILED, !classFile2.exists());
+            assertTrue(CLASSFILE_3_IS_COMPILED, classFile3.exists());
 
         } catch (ClassNotFoundException e) {
             fail(e.toString());
@@ -115,12 +122,12 @@ public class TestCompilerAPI {
 
             File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
 
-            assertTrue("target exists files are compiled into the target", target != null);
+            assertTrue(TARGET_EXISTS, target != null);
             File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1.class");
             File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2.class");
 
-            assertTrue("Classfile1 is compiled into the target", classFile1.exists());
-            assertTrue("Classfile2 is compiled into the target", classFile2.exists());
+            assertTrue(CLASSFILE1_IS_COMPILED, classFile1.exists());
+            assertTrue(CLASSFILE2_IS_COMPILED, classFile2.exists());
         } catch (ClassNotFoundException e) {
             fail(e.toString());
         }

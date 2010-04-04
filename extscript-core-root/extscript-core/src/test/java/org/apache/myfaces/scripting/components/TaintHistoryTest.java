@@ -36,7 +36,7 @@ import java.io.StringWriter;
 /**
  * Test cases for the taint history component and renderer
  * (note the filter attribute currently is not yet
- * tested for semantic usage because we dont have it implemented yet)
+ * tested for semantic usage because we don't have it implemented yet)
  * 
  *
  * @author Werner Punz (latest modification by $Author$)
@@ -51,6 +51,11 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     private HtmlForm _form;
     private MockResponseWriter _writer;
     private static final String VAL_FILTER = "bla";
+    private static final String NO_TAINT_HISTORY_FOUND = "no taint history found";
+    private static final String BOOGA_JAVA = "booga.java";
+    private static final String TAINT_HISTORY_FOUND = "taint history found";
+    private static final String ATTR_NO_ENTRIES = "noEntries";
+    private static final String ATTR_FILTER = "filter";
 
     public TaintHistoryTest() {
         super(TaintHistoryTest.class.getName());
@@ -83,7 +88,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     public void testNoTaintHistory() throws Exception {
         _taintHistory.encodeAll(facesContext);
         facesContext.renderResponse();
-        assertTrue("no taint history found", _writer.getWriter().toString().contains(RendererConst.NO_TAINT_HISTORY_FOUND));
+        assertTrue(NO_TAINT_HISTORY_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_TAINT_HISTORY_FOUND));
     }
 
     public void testTaintHistory() throws Exception {
@@ -91,16 +96,16 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
         historyEntry.setAClass(this.getClass());
         historyEntry.setTimestamp(System.currentTimeMillis());
         historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
-        historyEntry.setFileName("booga.java");
+        historyEntry.setFileName(BOOGA_JAVA);
         historyEntry.setTainted(true);
         historyEntry.setTaintedOnce(true);
         WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
 
         _taintHistory.encodeAll(facesContext);
         facesContext.renderResponse();
-        assertFalse("taint history found", _writer.getWriter().toString().contains(RendererConst.NO_TAINT_HISTORY_FOUND));
+        assertFalse(TAINT_HISTORY_FOUND, _writer.getWriter().toString().contains(RendererConst.NO_TAINT_HISTORY_FOUND));
 
-        assertTrue(_writer.getWriter().toString().contains("booga.java"));
+        assertTrue(_writer.getWriter().toString().contains(BOOGA_JAVA));
     }
 
     public void testSaveRestore() {
@@ -125,9 +130,9 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
             historyEntry.setTimestamp(System.currentTimeMillis());
             historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
             if(cnt < 10)
-                historyEntry.setFileName("0"+cnt + "_booga.java");
+                historyEntry.setFileName("0"+cnt + "_"+BOOGA_JAVA);
             else
-                historyEntry.setFileName(cnt + "_booga.java");
+                historyEntry.setFileName(cnt + "_"+BOOGA_JAVA);
             historyEntry.setTainted(true);
             historyEntry.setTaintedOnce(true);
             WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
@@ -137,9 +142,9 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
         _taintHistory.encodeAll(facesContext);
         facesContext.renderResponse();
 
-        assertTrue(_writer.getWriter().toString().contains("99_booga.java"));
-        assertFalse(_writer.getWriter().toString().contains("89_booga.java"));
-        assertFalse(_writer.getWriter().toString().contains("00_booga.java"));
+        assertTrue(_writer.getWriter().toString().contains("99_"+BOOGA_JAVA));
+        assertFalse(_writer.getWriter().toString().contains("89_"+BOOGA_JAVA));
+        assertFalse(_writer.getWriter().toString().contains("00_"+BOOGA_JAVA));
     }
 
     public void testElAttributes() {
@@ -147,8 +152,8 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
        assertTrue(_taintHistory.getNoEntries().equals(TaintHistory.DEFAULT_NO_ENTRIES));
        _taintHistory.setNoEntries(null); 
 
-       _taintHistory.getAttributes().put("noEntries", 20);
-       _taintHistory.getAttributes().put("filter", VAL_FILTER);
+       _taintHistory.getAttributes().put(ATTR_NO_ENTRIES, 20);
+       _taintHistory.getAttributes().put(ATTR_FILTER, VAL_FILTER);
 
        assertTrue(_taintHistory.getNoEntries() == 20);
        assertTrue(_taintHistory.getFilter().equals(VAL_FILTER));

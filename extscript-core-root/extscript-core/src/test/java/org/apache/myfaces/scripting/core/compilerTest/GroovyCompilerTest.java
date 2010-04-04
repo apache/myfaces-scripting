@@ -54,6 +54,11 @@ public class GroovyCompilerTest {
     File root;
 
     GroovyCompiler compiler = new GroovyCompiler();
+    private static final String RESULT_HAS_NO_ERRORS = "result has no errors";
+    private static final String TARGET_DIR_EXISTS = "targetDir exists files are compiled into the targetDir";
+    private static final String CLASSFILE1_IS_COMPILED = "Classfile1 is compiled into the targetDir";
+    private static final String CLASSFILE1_IS_COMPILED1 = "Classfile1 is compiled into the target";
+    private static final String CLASSFILE2_IS_COMPILED = "Classfile2 is compiled into the target";
 
     public GroovyCompilerTest() {
         //we use a location relative to our current root one to reach the sources
@@ -92,12 +97,12 @@ public class GroovyCompilerTest {
 
             result = compiler.compile(root, targetDir, sourceFile, loader);
 
-            assertTrue("result has no errors", !result.hasErrors());
+            assertTrue(RESULT_HAS_NO_ERRORS, !result.hasErrors());
 
-            assertTrue("targetDir exists files are compiled into the targetDir", targetDir != null);
+            assertTrue(TARGET_DIR_EXISTS, targetDir != null);
             File classFile1 = new File(targetDir.getAbsolutePath() + "/compiler/TestProbe1Groovy.class");
 
-            assertTrue("Classfile1 is compiled into the targetDir", classFile1.exists());
+            assertTrue(CLASSFILE1_IS_COMPILED, classFile1.exists());
 
         } catch (CompilationException e) {
             fail(e.toString());
@@ -118,16 +123,16 @@ public class GroovyCompilerTest {
 
         CompilationResult result = compiler.compile(root, target, loader);
 
-        assertTrue("result has no errors", !result.hasErrors());
+        assertTrue(RESULT_HAS_NO_ERRORS, !result.hasErrors());
 
         assertTrue("target exists files are compiled into the target", target != null);
         File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1Groovy.class");
         File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2Groovy.class");
         File classFile3 = new File(target.getAbsolutePath() + "/compiler/myPackage/WhiteListedProbeGroovy.class");
 
-        assertTrue("Classfile1 is compiled into the target", !classFile1.exists());
-        assertTrue("Classfile2 is compiled into the target", !classFile2.exists());
-        assertTrue("Classfile2 is compiled into the target", classFile3.exists());
+        assertTrue(CLASSFILE1_IS_COMPILED1, !classFile1.exists());
+        assertTrue(CLASSFILE2_IS_COMPILED, !classFile2.exists());
+        assertTrue(CLASSFILE2_IS_COMPILED, classFile3.exists());
 
     }
 
@@ -142,14 +147,14 @@ public class GroovyCompilerTest {
 
         CompilationResult result = compiler.compile(root, target, loader);
 
-        assertTrue("result has no errors", !result.hasErrors());
+        assertTrue(RESULT_HAS_NO_ERRORS, !result.hasErrors());
 
-        assertTrue("target exists files are compiled into the target", target != null);
+        assertTrue(TARGET_DIR_EXISTS, target != null);
         File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1Groovy.class");
         File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2Groovy.class");
 
-        assertTrue("Classfile1 is compiled into the target", classFile1.exists());
-        assertTrue("Classfile2 is compiled into the target", classFile2.exists());
+        assertTrue(CLASSFILE1_IS_COMPILED1, classFile1.exists());
+        assertTrue(CLASSFILE2_IS_COMPILED, classFile2.exists());
 
     }
 
