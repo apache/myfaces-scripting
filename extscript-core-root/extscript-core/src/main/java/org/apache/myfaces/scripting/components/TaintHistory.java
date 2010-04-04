@@ -33,7 +33,7 @@ import javax.faces.context.FacesContext;
 
 public class TaintHistory extends UIOutput {
 
-    static final int DEFAULT_NO_ENTRIES = 10;
+    public static final int DEFAULT_NO_ENTRIES = 10;
 
     Integer _noEntries;
     String _filter;
