@@ -18,9 +18,6 @@
  */
 package org.apache.myfaces.scripting.core.dependencyScan.core;
 
-import java.util.Collection;
-import java.util.Set;
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -28,7 +25,6 @@ import java.util.Set;
  *          Utils which store the shared code
  */
 public class ClassScanUtils {
-    public static final String BINARY_PACKAGE = "\\/";
 
     private static final String DOMAIN_JAVA = "java.";
     private static final String DOMAIN_JAVAX = "javax.";
@@ -53,7 +49,7 @@ public class ClassScanUtils {
      * @param in the page or fully qualified classname
      * @return true if it belongs to one of the standard namespaces, false if not
      */
-    public static final boolean isStandardNamespace(String in) {
+    public static boolean isStandardNamespace(String in) {
         //We don't use a regexp here, because an test has shown that direct startsWith is 5 times as fast as applying
         //a precompiled regexp with match
 

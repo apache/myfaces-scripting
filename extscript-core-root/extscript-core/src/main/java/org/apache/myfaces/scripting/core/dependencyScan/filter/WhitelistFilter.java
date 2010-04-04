@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Filter class which depends upon a list of whitelisted packages
  * wildcards in this filter are implicit which means
- *
+ * <p/>
  * org.apache.myfaces includes all files
  * under org.apache.myfaces
  */
@@ -77,14 +77,13 @@ public class WhitelistFilter implements ClassFilter {
         }
     }
 
-    private void addEntry(String singlePackage) {
-        String[] subPackages = singlePackage.split("\\.");
-        WhiteListNode currPackage = _whiteList;
-        for (String subPackage : subPackages) {
-            currPackage = currPackage.addEntry(subPackage);
-        }
-    }
-
+    /**
+     * whitespace is allowed implementation
+     *
+     * @param engineType integer value of the engine type of the class
+     * @param clazz      the class itself to be processed by the filter
+     * @return true if it is white-spaced, false otherwise
+     */
     public final boolean isAllowed(Integer engineType, String clazz) {
         String[] subParts = clazz.split("\\.");
         WhiteListNode currPackage = _whiteList;
@@ -104,8 +103,17 @@ public class WhitelistFilter implements ClassFilter {
         return true;
     }
 
+    private void addEntry(String singlePackage) {
+        String[] subPackages = singlePackage.split("\\.");
+        WhiteListNode currPackage = _whiteList;
+        for (String subPackage : subPackages) {
+            currPackage = currPackage.addEntry(subPackage);
+        }
+    }
+
     //special conditions extracted for readability reasons in the core
     //algorithm
+
     private boolean isMismatch(WhiteListNode currPackage) {
         return currPackage == null;
     }

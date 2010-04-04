@@ -6,12 +6,13 @@ import org.apache.myfaces.scripting.core.util.ReflectUtil;
 import java.lang.reflect.InvocationHandler;
 
 /**
+ * <p/>
+ * We set our own invocation handler
+ * here to allow reflection utils directly targeting our
+ * _delegate.
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          We set our own invocation handler
- *          here to allow reflection utils directly targeting our
- *          _delegate.
  */
 @SuppressWarnings("unused")
 public abstract class ReloadingInvocationHandler implements InvocationHandler, Decorated {

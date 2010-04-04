@@ -39,7 +39,7 @@ public interface Compiler {
      * @param classLoader the class loader for dependent classes
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
      * @throws org.apache.myfaces.scripting.api.CompilationException
-     *          if a severe error occured while trying to compile a file
+     *          if a severe error occurred while trying to compile a file
      */
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
             throws org.apache.myfaces.scripting.api.CompilationException;

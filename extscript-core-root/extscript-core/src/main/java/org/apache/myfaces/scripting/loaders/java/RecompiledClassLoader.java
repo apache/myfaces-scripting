@@ -105,6 +105,7 @@ public class RecompiledClassLoader extends ClassLoader {
         return _throwAwayLoader.findClassExposed(name);
     }
 
+    @SuppressWarnings("unused")
     public String getSourceRoot() {
         return _sourceRoot;
     }

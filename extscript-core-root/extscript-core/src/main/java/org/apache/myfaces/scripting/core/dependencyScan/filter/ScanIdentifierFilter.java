@@ -18,7 +18,7 @@ public class ScanIdentifierFilter implements ClassFilter {
     }
 
     public boolean isAllowed(Integer identifier, String clazz) {
-        int id = identifier.intValue();
+        int id = identifier;
         for(int engineType: _engineType) {
             boolean allowed = engineType == id;
             if(allowed) return true;

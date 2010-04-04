@@ -51,7 +51,7 @@ public interface DynamicCompiler {
      * @param sourceRoot the source root directory for the compile step to be performed
      * @param classPath the classpath
      * @return
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException in case of an error
      */
     public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException;
 }

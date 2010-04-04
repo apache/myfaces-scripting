@@ -61,32 +61,32 @@ public class TaintHistoryRenderer extends Renderer {
 
     }
 
-    private void writeHistory(UIComponent component, ResponseWriter wrtr, Collection<ReloadingMetadata> result) throws IOException {
-        startDiv(component, wrtr, "history");
+    private void writeHistory(UIComponent component, ResponseWriter responseWriter, Collection<ReloadingMetadata> result) throws IOException {
+        startDiv(component, responseWriter, "history");
         for (ReloadingMetadata entry : result) {
-            startDiv(component, wrtr, RendererConst.LINE);
-            writeDiv(component, wrtr, RendererConst.TIMESTAMP, DateFormat.getInstance().format(new Date(entry.getTimestamp())));
-            writeDiv(component, wrtr, RendererConst.CHANGED_FILE, entry.getFileName());
-            endDiv(wrtr);
+            startDiv(component, responseWriter, RendererConst.LINE);
+            writeDiv(component, responseWriter, RendererConst.TIMESTAMP, DateFormat.getInstance().format(new Date(entry.getTimestamp())));
+            writeDiv(component, responseWriter, RendererConst.CHANGED_FILE, entry.getFileName());
+            endDiv(responseWriter);
         }
 
-        endDiv(wrtr);
+        endDiv(responseWriter);
     }
 
-    private String writeDiv(UIComponent component, ResponseWriter wrtr, String styleClass, String value) throws IOException {
-        startDiv(component, wrtr, styleClass);
-        wrtr.write(value);
-        endDiv(wrtr);
+    private String writeDiv(UIComponent component, ResponseWriter responseWriter, String styleClass, String value) throws IOException {
+        startDiv(component, responseWriter, styleClass);
+        responseWriter.write(value);
+        endDiv(responseWriter);
         return "";
     }
 
-    private void endDiv(ResponseWriter wrtr) throws IOException {
-        wrtr.endElement(RendererConst.HTML_DIV);
+    private void endDiv(ResponseWriter responseWriter) throws IOException {
+        responseWriter.endElement(RendererConst.HTML_DIV);
     }
 
-    private void startDiv(UIComponent component, ResponseWriter wrtr, String styleClass) throws IOException {
-        wrtr.startElement(RendererConst.HTML_DIV, component);
-        wrtr.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
+    private void startDiv(UIComponent component, ResponseWriter responseWriter, String styleClass) throws IOException {
+        responseWriter.startElement(RendererConst.HTML_DIV, component);
+        responseWriter.writeAttribute(RendererConst.HTML_CLASS, styleClass, null);
     }
 
 }

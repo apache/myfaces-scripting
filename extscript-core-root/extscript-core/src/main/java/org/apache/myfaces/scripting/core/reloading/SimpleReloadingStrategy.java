@@ -27,15 +27,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A simple implementation of our reloading strategy
+ * pattern this is the most basic implementation
+ * covering our reloading.
+ * <p/>
+ * Applicable for most artifacts except for now managed beans
+ * <p/> *
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          A simple implementation of our reloading strategy
- *          pattern this is the most basic implementation
- *          covering our reloading.
- *          <p/>
- *          Applicable for most artifacts except for now managed beans
- *          <p/>
  */
 
 public class SimpleReloadingStrategy implements ReloadingStrategy {
@@ -103,10 +103,10 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
         try {
             BeanUtils.copyProperties(target, src);
         } catch (IllegalAccessException e) {
-            getLog().log(Level.FINEST,e.toString());
+            getLog().log(Level.FINEST, e.toString());
             //this is wanted
         } catch (InvocationTargetException e) {
-            getLog().log(Level.FINEST,e.toString());
+            getLog().log(Level.FINEST, e.toString());
             //this is wanted
         }
     }
