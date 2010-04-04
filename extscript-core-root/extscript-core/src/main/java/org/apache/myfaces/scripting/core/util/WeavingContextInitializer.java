@@ -26,6 +26,7 @@ import org.apache.myfaces.scripting.core.CoreWeaver;
 import org.apache.myfaces.scripting.core.util.stax.FilterClassDigester;
 import org.apache.myfaces.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
+import org.apache.myfaces.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.scripting.refresh.RefreshContext;
 import org.apache.myfaces.scripting.servlet.ScriptingServletFilter;
@@ -33,6 +34,9 @@ import org.apache.myfaces.scripting.servlet.ScriptingServletFilter;
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.logging.Logger;
 
 /**
@@ -48,14 +52,40 @@ public class WeavingContextInitializer {
 
     static final Logger _logger = Logger.getLogger(WeavingContextInitializer.class.getName());
 
+    static final PrivilegedExceptionAction<RecompiledClassLoader> LOADER_ACTION = new PrivilegedExceptionAction<RecompiledClassLoader>() {
+        public RecompiledClassLoader run() {
+            return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
+        }
+    };
+
     public static void initWeavingContext(ServletContext servletContext) {
 
         validateWebXml(servletContext);
         initConfiguration(servletContext);
+        validateSecurityConstraints();
         initWeavers(servletContext);
         initRefreshContext(servletContext);
+
         initFileChangeDaemon(servletContext);
         initExternalContext(servletContext);
+
+    }
+
+    /**
+     * asserts the security constraints
+     * the only security which has to be allowed
+     * is the creation of classloaders
+     */
+    private static void validateSecurityConstraints() {
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
+        try {
+            AccessController.doPrivileged(LOADER_ACTION);
+        } catch (PrivilegedActionException e) {
+            _logger.severe("[EXT-SCRIPTING]ÊClass loader creation is prohibited by your security settings, I am going to disable Ext-Scripting");
+            WeavingContext.setScriptingEnabled(false);
+        }
     }
 
     private static void initExternalContext(ServletContext servletContext) {
