@@ -43,7 +43,7 @@ public class CompilerComponentRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 
-        ResponseWriter wrtr = FacesContext.getCurrentInstance().getResponseWriter();
+        ResponseWriter responseWriter = FacesContext.getCurrentInstance().getResponseWriter();
         CompilerComponent compilerComp = (CompilerComponent) component;
 
         Integer scriptingLanguage = compilerComp.getScriptingLanguageAsInt();
@@ -74,18 +74,18 @@ public class CompilerComponentRenderer extends Renderer {
                 break;
         }
 
-        startDiv(component, wrtr, RendererConst.ERROR_BOX);
+        startDiv(component, responseWriter, RendererConst.ERROR_BOX);
         if (result == null || (!result.hasErrors() && result.getWarnings().isEmpty())) {
-            wrtr.write(RendererConst.NO_COMPILE_ERRORS);
+            responseWriter.write(RendererConst.NO_COMPILE_ERRORS);
         } else {
-            writeErrorsLabel(component, wrtr, compilerComp);
-            writeErrors(component, wrtr, result);
-            writeWarningsLabel(component, wrtr, compilerComp);
-            writeWarnings(component, wrtr, result);
+            writeErrorsLabel(component, responseWriter, compilerComp);
+            writeErrors(component, responseWriter, result);
+            writeWarningsLabel(component, responseWriter, compilerComp);
+            writeWarnings(component, responseWriter, result);
         }
-        endDiv(wrtr);
+        endDiv(responseWriter);
 
-        wrtr.flush();
+        responseWriter.flush();
 
     }
 

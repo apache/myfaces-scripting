@@ -22,7 +22,6 @@ package org.apache.myfaces.scripting.components;
 import javax.el.ValueExpression;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import java.util.logging.Logger;
 
 /**
  * Component which allows to check which files
@@ -39,6 +38,7 @@ public class TaintHistory extends UIOutput {
     Integer _noEntries;
     String _filter;
     private static final String RENDERER_TYPE = "org.apache.myfaces.scripting.components.TaintHistoryRenderer";
+    private static final String NO_ENTRIES = "noEntries";
 
     public TaintHistory() {
         setRendererType(RENDERER_TYPE);
@@ -70,7 +70,7 @@ public class TaintHistory extends UIOutput {
         if (_noEntries != null) {
             return _noEntries;
         }
-        ValueExpression vb = getValueExpression("noEntries");
+        ValueExpression vb = getValueExpression(NO_ENTRIES);
         return vb != null ? ((Integer) vb.getValue(getFacesContext().getELContext())) : DEFAULT_NO_ENTRIES;
     }
 
@@ -84,7 +84,7 @@ public class TaintHistory extends UIOutput {
         if (_filter != null) {
             return _filter;
         }
-        ValueExpression vb = getValueExpression("noEntries");
+        ValueExpression vb = getValueExpression(NO_ENTRIES);
         return vb != null ? ((String) vb.getValue(getFacesContext().getELContext())) : null;
     }
 }

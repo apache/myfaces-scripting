@@ -41,6 +41,9 @@ public class CompilerComponent extends UIOutput {
     String _errorsLabel = null;
     String _warningsLabel = null;
     private static final String RENDERER_TYPE = "org.apache.myfaces.scripting.components.CompilerComponentRenderer";
+    private static final String ERRORS_LABEL = "errorsLabel";
+    private static final String WARNINGS_LABEL = "warningsLabel";
+    private static final String SCRIPTING_LANGUAGE = "scriptingLanguage";
 
     public CompilerComponent() {
         super();
@@ -77,7 +80,7 @@ public class CompilerComponent extends UIOutput {
         if (_scriptingLanguage != null) {
             return _scriptingLanguage;
         }
-        ValueExpression vb = getValueExpression("scriptingLanguage");
+        ValueExpression vb = getValueExpression(SCRIPTING_LANGUAGE);
         return vb != null ? ((String) vb.getValue(getFacesContext().getELContext())) : null;
     }
 
@@ -103,7 +106,7 @@ public class CompilerComponent extends UIOutput {
         if (_errorsLabel != null) {
             return _errorsLabel;
         }
-        ValueExpression vb = getValueExpression("errorsLabel");
+        ValueExpression vb = getValueExpression(ERRORS_LABEL);
         return vb != null ? ((String) vb.getValue(getFacesContext().getELContext())) : null;
     }
 
@@ -115,7 +118,7 @@ public class CompilerComponent extends UIOutput {
         if (_warningsLabel != null) {
             return _warningsLabel;
         }
-        ValueExpression vb = getValueExpression("warningsLabel");
+        ValueExpression vb = getValueExpression(WARNINGS_LABEL);
         return vb != null ? ((String) vb.getValue(getFacesContext().getELContext())) : null;
     }
 
