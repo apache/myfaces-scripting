@@ -39,7 +39,20 @@ import java.util.Map;
  */
 
 public class RefreshPhaseListener implements PhaseListener {
-    static final String EQ_KEY = "RefreshPhaseListenerDone";
+
+    public static final String EQ_KEY = "RefreshPhaseListenerDone";
+
+    /**
+     * this eases testing, because in our
+     * absence of intelligence we have
+     * not done yet the WeavingContext as singleton
+     * like it should be
+     */
+    static Runnable _action = new Runnable() {
+        public void run() {
+              WeavingContext.doRequestRefreshes();
+        }
+    };
 
     public void afterPhase(PhaseEvent event) {
     }
@@ -52,12 +65,16 @@ public class RefreshPhaseListener implements PhaseListener {
         if (requestMap.containsKey(EQ_KEY)) return;
         requestMap.put(EQ_KEY, Boolean.TRUE);
 
-        WeavingContext.doRequestRefreshes();
-
+       RefreshPhaseListener._action.run();
     }
 
     public PhaseId getPhaseId() {
         return PhaseId.ANY_PHASE;
+    }
+
+    @SuppressWarnings("unused")
+    public static void applyAction(Runnable newAction) {
+        _action = newAction;
     }
 
 }
