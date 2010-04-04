@@ -38,6 +38,7 @@ import java.util.Date;
  * @version $Revision$ $Date$
  */
 @SuppressWarnings("unchecked")
+//we have to suppress here because of the component cast
 public class TaintHistoryRenderer extends Renderer {
 
     @Override
