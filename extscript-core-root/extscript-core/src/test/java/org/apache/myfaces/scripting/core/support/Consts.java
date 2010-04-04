@@ -26,7 +26,7 @@ import static org.apache.myfaces.scripting.api.ScriptingConst.*;
  * @version $Revision$ $Date$
  */
 
-public class TestConst {
+public class Consts {
     public static final String PROBE2 = "org.apache.myfaces.scripting.core.classIdentifier.Probe2";
     public static String JAVA_FILE_ENDING = ".java";
     public static final int[] ARTIFACT_TYPES = {

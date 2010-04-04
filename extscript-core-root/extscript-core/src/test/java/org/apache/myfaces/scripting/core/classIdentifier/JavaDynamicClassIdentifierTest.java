@@ -19,8 +19,8 @@
 package org.apache.myfaces.scripting.core.classIdentifier;
 
 import org.apache.myfaces.scripting.core.CoreWeaver;
+import org.apache.myfaces.scripting.core.support.Consts;
 import org.apache.myfaces.scripting.core.support.TWeavingContext;
-import org.apache.myfaces.scripting.core.support.TestConst;
 import org.apache.myfaces.scripting.loaders.java.JavaScriptingWeaver;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class JavaDynamicClassIdentifierTest {
         DynamicClassloader throwAwayClassloader = new DynamicClassloader(this.getClass().getClassLoader(), rootPath.getPath());
 
         try {
-            probe2 = throwAwayClassloader.loadClass(TestConst.PROBE2, false).newInstance();
+            probe2 = throwAwayClassloader.loadClass(Consts.PROBE2, false).newInstance();
         } catch (Throwable e) {
             fail(e.getMessage());
         }

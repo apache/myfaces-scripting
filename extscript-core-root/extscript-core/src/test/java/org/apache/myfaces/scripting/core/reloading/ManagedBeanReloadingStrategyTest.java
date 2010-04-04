@@ -23,7 +23,7 @@ import org.apache.myfaces.scripting.api.BaseWeaver;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.scripting.core.probes.Probe;
-import org.apache.myfaces.scripting.core.support.TestConst;
+import org.apache.myfaces.scripting.core.support.Consts;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -64,7 +64,7 @@ public class ManagedBeanReloadingStrategyTest {
     public void testReload() throws Exception {
         Probe probe = new Probe();
         ManagedBeanReloadingStrategy strategy = new ManagedBeanReloadingStrategy();
-        for (int artifactType : TestConst.ARTIFACT_TYPES) {
+        for (int artifactType : Consts.ARTIFACT_TYPES) {
             Object probe2 = strategy.reload(probe, artifactType);
             assertTrue(probe2 == probe);
         }
