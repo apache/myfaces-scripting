@@ -44,14 +44,14 @@
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
-    <!--
+
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces12-example/src/main/webapp/WEB-INF/groovy
+            /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces12-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -61,7 +61,7 @@
         </description>
         <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces12-example/src/main/webapp/WEB-INF/java
+            /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces12-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
 
@@ -70,7 +70,7 @@
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces12-example/src/main/webapp
+            /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces12-example/src/main/webapp
         </param-value>
     </context-param>
 
@@ -81,7 +81,7 @@
          <param-name>facelets.RESOURCE_RESOLVER</param-name>
          <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
      </context-param>
-    -->
+    
     <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
