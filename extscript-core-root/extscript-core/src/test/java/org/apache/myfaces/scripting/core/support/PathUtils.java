@@ -53,10 +53,31 @@ public class PathUtils {
     }
 
     public String getResource(String in) {
-        if(in.startsWith("//") || in.startsWith("\\")) {
+        if (in.startsWith("//") || in.startsWith("\\")) {
             in = in.substring(1);
         }
         return _resourceRoot + File.separator + in;
+    }
+
+    /**
+     * Simulates the Unix touch statement on a relative pathed source file
+     *
+     * @param relativeSourceFile the relative path to the resource file
+     */
+    public void touch(String relativeSourceFile) {
+        File resource = new File(getResource(relativeSourceFile));
+        touch(resource);
+    }
+
+    /**
+     * Unix touch on a file object
+     *
+     * @param resource the file object to be touched
+     */
+    public void touch(File resource) {
+        if (resource.exists()) {
+            resource.setLastModified(System.currentTimeMillis());
+        }
     }
 
 }

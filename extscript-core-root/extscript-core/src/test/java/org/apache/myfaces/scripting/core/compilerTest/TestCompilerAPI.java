@@ -23,6 +23,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.DynamicCompiler;
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.support.ContextUtils;
 import org.apache.myfaces.scripting.core.support.PathUtils;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.loaders.java.compiler.CompilerFacade;
@@ -48,16 +49,16 @@ public class TestCompilerAPI {
     private static final String PROBE2 = _pathUtils.getResource("compiler/TestProbe2.java");
     private static final String RESOURCES = _pathUtils.getResource(".");
 
-    private static final String CLASSFILE1_IS_COMPILED = "Classfile1 is compiled into the target";
-    private static final String CLASSFILE2_IS_COMPILED = "Classfile2 is compiled into the target";
+    private static final String CLASSFILE1_IS_COMPILED = "Class file1 is compiled into the target";
+    private static final String CLASSFILE2_IS_COMPILED = "Class file2 is compiled into the target";
     private static final String TARGET_EXISTS = "target exists files are compiled into the target";
-    private static final String CLASSFILE_1_IS_NOT_COMPILED = "Classfile_1 is not compiled into the target";
-    private static final String CLASSFILE_2_IS_NOT_COMPILED = "Classfile_2 is not compiled into the target";
-    private static final String CLASSFILE_3_IS_COMPILED = "Classfile_3 is compiled into the target";
+    private static final String CLASSFILE_1_IS_NOT_COMPILED = "Class file_1 is not compiled into the target";
+    private static final String CLASSFILE_2_IS_NOT_COMPILED = "Class file_2 is not compiled into the target";
+    private static final String CLASSFILE_3_IS_COMPILED = "Class file_3 is compiled into the target";
 
-    File probe1;
-    File probe2;
-    File root;
+    File _probe1;
+    File _probe2;
+    File _root;
 
     public TestCompilerAPI() {
         String sourcePath1 = PROBE1;
@@ -68,12 +69,12 @@ public class TestCompilerAPI {
         sourcePath2 = FilenameUtils.normalize(sourcePath2);
         rootPath = FilenameUtils.normalize(rootPath);
 
-        probe1 = new File(sourcePath1);
-        probe2 = new File(sourcePath2);
-        root = new File(rootPath);
+        _probe1 = new File(sourcePath1);
+        _probe2 = new File(sourcePath2);
+        _root = new File(rootPath);
 
         WeavingContext.setConfiguration(new Configuration());
-        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JAVA, root.getAbsolutePath());
+        WeavingContext.getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JAVA, _root.getAbsolutePath());
     }
 
     @Test
@@ -88,7 +89,7 @@ public class TestCompilerAPI {
 
         try {
 
-            DynamicCompiler compiler = (DynamicCompiler) new CompilerFacade(false);//new ReflectCompilerFacade();
+            /*DynamicCompiler compiler = (DynamicCompiler) new CompilerFacade(false);//new ReflectCompilerFacade();
             try {
                 FileUtils.deleteDirectory(WeavingContext.getConfiguration().getCompileTarget());
             } catch (IOException e) {
@@ -96,7 +97,9 @@ public class TestCompilerAPI {
             }
             WeavingContext.getConfiguration().getCompileTarget().mkdirs();
 
-            File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
+            File target = compiler.compileAllFiles(_root.getAbsolutePath(), "");
+            */
+            File target = ContextUtils.doJavaRecompile(_root.getAbsolutePath());
 
             assertTrue(TARGET_EXISTS, target != null);
             File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1.class");
@@ -120,7 +123,7 @@ public class TestCompilerAPI {
 
             DynamicCompiler compiler = (DynamicCompiler) new CompilerFacade(false);//new ReflectCompilerFacade();
 
-            File target = compiler.compileAllFiles(root.getAbsolutePath(), "");
+            File target = compiler.compileAllFiles(_root.getAbsolutePath(), "");
 
             assertTrue(TARGET_EXISTS, target != null);
             File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1.class");

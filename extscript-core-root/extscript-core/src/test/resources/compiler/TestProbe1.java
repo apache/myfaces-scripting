@@ -6,4 +6,13 @@ package compiler;
 
 public class TestProbe1 {
 
+    private String testAttr;
+
+    public String getTestAttr() {
+        return testAttr;
+    }
+
+    public void setTestAttr(String testAttr) {
+        this.testAttr = testAttr;
+    }
 }

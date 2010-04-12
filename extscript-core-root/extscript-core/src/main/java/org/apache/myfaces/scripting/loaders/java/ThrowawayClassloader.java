@@ -40,7 +40,6 @@ public class ThrowawayClassloader extends ClassLoader {
 
     static final Logger _logger = Logger.getLogger(ThrowawayClassloader.class.getName());
 
-    private static File _tempDir = null;
     int _scriptingEngine;
     String _engineExtension;
 
@@ -51,11 +50,6 @@ public class ThrowawayClassloader extends ClassLoader {
         synchronized (this.getClass()) {
             _scriptingEngine = scriptingEngine;
             _engineExtension = engineExtension;
-            
-            if (_tempDir != null) {
-                return;
-            }
-            _tempDir = WeavingContext.getConfiguration().getCompileTarget();
         }
     }
 
@@ -80,7 +74,7 @@ public class ThrowawayClassloader extends ClassLoader {
 
     @Override
     public InputStream getResourceAsStream(String name) {
-        File resource = new File(_tempDir.getAbsolutePath() + File.separator + name);
+        File resource = new File(WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath() + File.separator + name);
         if (resource.exists()) {
             try {
                 return new FileInputStream(resource);
@@ -97,10 +91,15 @@ public class ThrowawayClassloader extends ClassLoader {
 
         File target = getClassFile(className);
         if (target.exists()) {
+            _logger.log(Level.INFO,"[EXT-SCRIPTING] target {0} exists", className);
+
             ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
             if (data != null && !data.isTainted()) {
+                _logger.info("[EXT-SCRIPTING] data found but not tainted yet");
+
                 return data.getAClass();
             }
+             _logger.log(Level.FINER,"[EXT-SCRIPTING] loading class {0} from filesystem", className);
 
             FileInputStream iStream = null;
 
@@ -114,33 +113,23 @@ public class ThrowawayClassloader extends ClassLoader {
                     fileContent = new byte[fileLength];
                     iStream = new FileInputStream(target);
                     int result = iStream.read(fileContent);
-                    if (_logger.isLoggable(Level.FINER)) {
-                        _logger.log(Level.FINER, "read {0} bytes", String.valueOf(result));
-                    }
+                    _logger.log(Level.FINER, "read {0} bytes", String.valueOf(result));
                 }
-                // Erzeugt aus dem byte Feld ein Class Object.
+
                 Class retVal;
 
                 //we have to do it here because just in case
-                //a dependend class is loaded as well we run into classcast exceptions
+                //a dependent class is loaded as well we run into classcast exceptions
                 if (data != null) {
                     data.setTainted(false);
 
-                    //storeReloadableDefinitions(className, target, fileLength, fileContent)
-                    //try {
-
                     retVal = super.defineClass(className, fileContent, 0, fileLength);
 
-                    //} catch (java.lang.LinkageError e) {
-                    //something has interfered in a dirty manner (direct classforname instead) we generate a quick throw away classloader to fix this
-                    //    ClassLoader loader = new RecompiledClassLoader(this.getParent(), _scriptingEngine, _engineExtension);
-                    //    retVal = loader.loadClass(className);
-                    //}
                     data.setAClass(retVal);
                     return retVal;
                 } else {
                     //we store the initial reloading meta data information so that it is refreshed
-                    //later on, this we we cover dependend classes on the initial load
+                    //later on, this we we cover dependent classes on the initial load
                     return storeReloadableDefinitions(className, fileLength, fileContent);
                 }
 
@@ -159,7 +148,7 @@ public class ThrowawayClassloader extends ClassLoader {
                 }
             }
         }
-
+         _logger.log(Level.FINER,"[EXT-SCRIPTING] target {0} does not exist", target.getAbsolutePath());
         return super.loadClass(className);
     }
 
@@ -210,7 +199,7 @@ public class ThrowawayClassloader extends ClassLoader {
     }
 
     public File getClassFile(String className) {
-        return ClassUtils.classNameToFile(ThrowawayClassloader._tempDir.getAbsolutePath(), className);
+        return ClassUtils.classNameToFile(WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), className);
     }
 
    

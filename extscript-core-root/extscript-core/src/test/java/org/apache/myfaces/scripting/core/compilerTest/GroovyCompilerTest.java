@@ -24,8 +24,9 @@ import org.apache.myfaces.scripting.api.CompilationResult;
 import org.apache.myfaces.scripting.api.Configuration;
 import org.apache.myfaces.scripting.api.ScriptingConst;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
-import org.apache.myfaces.scripting.sandbox.compiler.GroovyCompiler;
+
 import org.apache.myfaces.scripting.core.util.FileUtils;
+import org.apache.myfaces.scripting.loaders.groovy.compiler.GroovyCompiler;
 import org.junit.Test;
 
 import java.io.File;

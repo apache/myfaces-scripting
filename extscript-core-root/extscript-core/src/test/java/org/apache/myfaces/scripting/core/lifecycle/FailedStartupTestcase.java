@@ -20,11 +20,13 @@
 package org.apache.myfaces.scripting.core.lifecycle;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.support.ContextUtils;
 import org.apache.myfaces.scripting.core.support.LoggingHandler;
 import org.apache.myfaces.scripting.core.support.MockServletContext;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.util.WeavingContextInitializer;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.ServletContext;
@@ -41,6 +43,7 @@ import static org.junit.Assert.*;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 
 public class FailedStartupTestCase {
     ServletContext context;
@@ -65,16 +68,14 @@ public class FailedStartupTestCase {
 
     @Test
     public void testStartup() {
-        context = new MockServletContext(VALID_PATH);
-        WeavingContextInitializer.initWeavingContext(context);
+        context = ContextUtils.startupSystem(VALID_PATH);
         assertFalse(MSG_DISABLED, WeavingContext.isScriptingEnabled());
         assertTrue(handler.getOutput().toString().contains(ScriptingConst.ERR_SERVLET_FILTER));
     }
 
     @Test
     public void testWebxmlMissing() {
-        context = new MockServletContext(INVALID_PATH);
-        WeavingContextInitializer.initWeavingContext(context);
+        context =  ContextUtils.startupSystem(INVALID_PATH);
         assertFalse(MSG_DISABLED, WeavingContext.isScriptingEnabled());
         assertTrue(handler.getOutput().toString().contains(ScriptingConst.ERR_SERVLET_FILTER));
     }

@@ -121,6 +121,11 @@ public class JSR199Compiler implements org.apache.myfaces.scripting.api.Compiler
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
         List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA), CompilerConst.JAVA_WILDCARD);
+        for(File sourceFile: sourceFiles) {
+            if(!sourceFile.exists()) {
+                getLog().log(Level.WARNING, "[EXT-SCRIPTING] Source file with path {0} does not exist it might cause an error in the compilation process", sourceFile.getAbsolutePath());
+            }
+        }
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[sourceFiles.size()]));
         String[] options = new String[]{CompilerConst.JC_CLASSPATH, fileManager.getClassPath(), CompilerConst.JC_TARGET_PATH, WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), CompilerConst.JC_SOURCEPATH, sourceRoot.getAbsolutePath(), CompilerConst.JC_DEBUG};
         javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();

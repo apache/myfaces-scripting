@@ -20,6 +20,7 @@
 package org.apache.myfaces.scripting.core.lifecycle;
 
 import org.apache.myfaces.scripting.api.ScriptingConst;
+import org.apache.myfaces.scripting.core.support.ContextUtils;
 import org.apache.myfaces.scripting.core.support.MockServletContext;
 import org.apache.myfaces.scripting.core.util.WeavingContext;
 import org.apache.myfaces.scripting.core.util.WeavingContextInitializer;
@@ -42,8 +43,7 @@ public class StartupTestCase {
 
     @Before
     public void init() {
-        context = new MockServletContext();
-        WeavingContextInitializer.initWeavingContext(context);
+        context = ContextUtils.startupSystem();
     }
 
     @Test

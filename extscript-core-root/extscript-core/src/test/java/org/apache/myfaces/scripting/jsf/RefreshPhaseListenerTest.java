@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.scripting.jsf;
 
+import org.apache.myfaces.scripting.core.support.ContextUtils;
 import org.apache.myfaces.scripting.core.support.MockServletContext;
 import org.apache.myfaces.scripting.core.util.WeavingContextInitializer;
 import org.apache.myfaces.test.base.AbstractJsfTestCase;
@@ -48,8 +49,7 @@ public class RefreshPhaseListenerTest extends AbstractJsfTestCase {
     public void setUp() throws Exception {
         super.setUp();
         probe = new RefreshPhaseListener();
-        context = new MockServletContext();
-        WeavingContextInitializer.initWeavingContext(context);
+        context = ContextUtils.startupSystem();
 
         runner = new Runnable() {
             public void run() {
