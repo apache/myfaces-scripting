@@ -28,8 +28,8 @@ http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
     <tag>
         <tag-name>compilerOutput</tag-name>
         <component>
-            <component-type>org.apache.myfaces.scripting.components.CompilerComponent</component-type>
-            <renderer-type>org.apache.myfaces.scripting.components.CompilerComponentRenderer</renderer-type>
+            <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
+            <renderer-type>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-type>
         </component>
     </tag>
 

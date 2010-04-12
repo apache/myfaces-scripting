@@ -1,10 +1,10 @@
 package org.apache.myfaces.groovyloader.core
 
-import org.apache.myfaces.scripting.api.ReloadingStrategy
-import org.apache.myfaces.scripting.core.reloading.SimpleReloadingStrategy
-import org.apache.myfaces.scripting.api.BaseWeaver
-import org.apache.myfaces.scripting.core.reloading.NoMappingReloadingStrategy
-import org.apache.myfaces.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.extensions.scripting.api.ReloadingStrategy
+import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy
+import org.apache.myfaces.extensions.scripting.api.BaseWeaver
+import org.apache.myfaces.extensions.scripting.core.reloading.NoMappingReloadingStrategy
+import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
 
 /**
  * Reloading strategy for the groovy
@@ -19,7 +19,7 @@ import org.apache.myfaces.scripting.api.ScriptingWeaver;
  * and cope with the rest the standard java way by not doing anything
  *
  */
-public class GroovyGlobalReloadingStrategy extends org.apache.myfaces.scripting.core.reloading.GlobalReloadingStrategy {
+public class GroovyGlobalReloadingStrategy extends org.apache.myfaces.extensions.scripting.core.reloading.GlobalReloadingStrategy {
 
   //we cannot use a constructor here to bypass a groovy bug
   //we use an explicit call to setWeaver instead

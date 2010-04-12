@@ -21,7 +21,7 @@ package org.apache.myfaces.javaloader.blog;
 import javax.faces.context.FacesContext;
 import java.util.logging.Logger;
 
-import static org.apache.myfaces.scripting.core.util.ReflectUtil.executeMethod;
+import static org.apache.myfaces.extensions.scripting.core.util.ReflectUtil.executeMethod;
 
 /**
  * @author werpu2
@@ -49,7 +49,7 @@ public class JSFUtil {
 
         /*
          if you want to enable this then use
-         org.apache.myfaces.scripting.java.JAR_PATHS
+         org.apache.myfaces.extensions.scripting.java.JAR_PATHS
          pointing towards the lingering jars
          The compiler cannot pick up the implicit containers classpaths
         */

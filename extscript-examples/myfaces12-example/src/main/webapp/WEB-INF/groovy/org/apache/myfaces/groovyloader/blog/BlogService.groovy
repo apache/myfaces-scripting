@@ -28,9 +28,14 @@ public class BlogService {
   List blogEntries = new ArrayList()
 
   public void addEntry2(BlogEntry entry) {
-    Logger log = Logger.getLogger(BlogService.class)
-    log.info("(BlogService.addEntry2): Adding entry")
+    Logger log = Logger.getLogger(BlogService.class.getName())
+    log.info("(BlogService.addEntry2) from groovy blogservice: Adding entry")
     blogEntries << entry
+    log.info("(BlogService.addEntry2) from groovy blogservice: Adding entry"+blogEntries.size())
+
   }
 
+  public List getBlogEntries() {
+    return blogEntries
+  }
 }

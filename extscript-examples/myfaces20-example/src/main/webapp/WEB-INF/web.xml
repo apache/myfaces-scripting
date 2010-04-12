@@ -28,7 +28,7 @@
             Initializes the plugins for our groovy handlers
         </description>
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+        <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
 
 
@@ -37,7 +37,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
             /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
         </param-value>
@@ -48,7 +48,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
             /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
         </param-value>
@@ -56,7 +56,7 @@
 
     <context-param>
         <description>resource paths for our custom JSF2 resource resolver</description>
-        <param-name>org.apache.myfaces.scripting.resources.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
             /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp
         </param-value>
@@ -67,7 +67,7 @@
             source dir
         </description>
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
-        <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
+        <param-value>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</param-value>
     </context-param>
     -->
     <!--
@@ -75,7 +75,7 @@
         <description>a comma separated whitelist of root packages which are compiled those and nothing else
             will be compiled during all compile stages, all other files stay permanently as they are
         </description>
-        <param-name>org.apache.myfaces.scripting.PGK_WHITELIST</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.PGK_WHITELIST</param-name>
         <param-value>org.apache.myfaces.groovyloader.blog</param-value>
     </context-param>
     -->
@@ -86,7 +86,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy</param-value>
     </context-param>
 
@@ -95,7 +95,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/java</param-value>
     </context-param>
 
@@ -130,7 +130,7 @@
 
     <filter>
         <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>scriptingFilter</filter-name>

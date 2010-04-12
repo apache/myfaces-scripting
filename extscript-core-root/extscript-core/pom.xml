@@ -161,7 +161,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.objectweb.asm</pattern>
-                            <shadedPattern>org.apache.myfaces.scripting.org.objectweb.asm</shadedPattern>
+                            <shadedPattern>org.apache.myfaces.extensions.scripting.org.objectweb.asm</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

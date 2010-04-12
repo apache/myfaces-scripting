@@ -33,15 +33,15 @@ one for jsf 2.0 but for now this approach is fine enough.
     <tag>
         <tag-name>compilerOutput</tag-name>
         <component>
-            <component-type>org.apache.myfaces.scripting.components.CompilerComponent</component-type>
-            <renderer-type>org.apache.myfaces.scripting.components.CompilerComponentRenderer</renderer-type>
+            <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
+            <renderer-type>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-type>
         </component>
     </tag>
     <tag>
          <tag-name>taintHistory</tag-name>
          <component>
-             <component-type>org.apache.myfaces.scripting.components.TaintHistory</component-type>
-             <renderer-type>org.apache.myfaces.scripting.components.TaintHistoryRenderer</renderer-type>
+             <component-type>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-type>
+             <renderer-type>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-type>
          </component>
      </tag>
 </facelet-taglib>

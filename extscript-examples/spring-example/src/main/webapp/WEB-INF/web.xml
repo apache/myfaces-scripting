@@ -53,14 +53,14 @@
             Initializes the plugins for our groovy handlers
         </description>
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+        <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
 
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
@@ -69,7 +69,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/spring-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
@@ -253,7 +253,7 @@
 
     <filter>
         <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>scriptingFilter</filter-name>

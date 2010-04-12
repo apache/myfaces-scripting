@@ -45,7 +45,7 @@
                 <tr>
                     <td>org.apache.myfaces.FACES_INIT_PLUGINS</td>
                     <td>YES</td>
-                    <td>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</td>
+                    <td>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</td>
                     <td>MyFaces Extension Point Setup</td>
                 </tr>
                 <tr>
@@ -57,7 +57,7 @@
 
 
                 <tr>
-                    <td>org.apache.myfaces.scripting.groovy.LOADER_PATHS</td>
+                    <td>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</td>
                     <td>NO</td>
                     <td>comma separate list of paths</td>
                     <td>Additional comma separated loader paths to allow direct editing of groovy files on the sources
@@ -65,7 +65,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>org.apache.myfaces.scripting.java.LOADER_PATHS</td>
+                    <td>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</td>
                     <td>NO</td>
                     <td>comma separate list of paths</td>
                     <td>Additional comma separated loader paths to allow direct editing of java files on the sources
@@ -73,7 +73,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>org.apache.myfaces.scripting.resource.LOADER_PATHS</td>
+                    <td>org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS</td>
                     <td>NO</td>
                     <td>comma separate list of paths</td>
                     <td>Additional comma separated loader paths to allow direct editing of resources on the sources
@@ -83,9 +83,9 @@
                 <tr>
                     <td>facelets.RESOURCE_RESOLVER</td>
                     <td>NO</td>
-                    <td>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</td>
+                    <td>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</td>
                     <td>Enables the loading of xhtml facelet pages from your sourcedir if
-                        org.apache.myfaces.scripting.resource.LOADER_PATHS is set properly
+                        org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS is set properly
                     </td>
                 </tr>
                 <tr>
@@ -97,7 +97,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>org.apache.myfaces.scripting.PGK_ADDITIONAL_CLASSPATH</td>
+                    <td>org.apache.myfaces.extensions.scripting.PGK_ADDITIONAL_CLASSPATH</td>
                     <td>NO</td>
                     <td>a comma separate list of additional classpaths</td>
                     <td>enables additional classpaths for the compile time</td>

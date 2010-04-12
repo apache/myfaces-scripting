@@ -129,7 +129,7 @@
         </description>
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
         <param-value>
-            org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader
+            org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader
         </param-value>
      </context-param>]]></source>
                 <h4>Second Step</h4>
@@ -137,7 +137,7 @@
                 <source><![CDATA[
     <filter>
         <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.scripting.servlet.ScriptingServletFilter</filter-class>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>scriptingFilter</filter-name>
@@ -192,7 +192,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
            <some project path>/src/main/webapp/WEB-INF/groovy
         </param-value>
@@ -201,7 +201,7 @@
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
-        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
+        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
             <some project path>/src/main/webapp/WEB-INF/java
         </param-value>
@@ -209,11 +209,11 @@
                 ]]></source>
                 <ul>
                     <li>
-                        <b>org.apache.myfaces.scripting.groovy.LOADER_PATHS</b>
+                        <b>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</b>
                         can be a comma separated list of paths which point to the actual Groovy sources.
                     </li>
                     <li>
-                        <b>org.apache.myfaces.scripting.java.LOADER_PATHS</b>
+                        <b>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</b>
                         does the same for Java sources..
                     </li>
                 </ul>

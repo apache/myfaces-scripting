@@ -73,9 +73,9 @@
             </p>
             <p>
                 If you prefer your own source paths to be the sources of everything set the
-                <b>org.apache.myfaces.scripting.java.LOADER_PATHS</b>
+                <b>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</b>
                 or
-                <b>org.apache.myfaces.scripting.groovy.LOADER_PATHS</b>
+                <b>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</b>
                 accordingly in your web.xml the same goes for the resource roots.
             </p>
 

@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 public class Blog {
   //bug application and session scoped beans  are not refreshed structurally yet
 
-  Logger log = Logger.getLogger(Blog.class.getName())
+  Logger log = Logger.getLogger("Blog")
 
   String title = "Hello to the myfaces dynamic blogging Groovy JSF 1.2 Blog "
   String title1 = """\
@@ -67,7 +67,7 @@ public class Blog {
     service.addEntry2(entry)
 
     //we stay on the same page
-    return null;
+    return "blog";
   }
 
 }
