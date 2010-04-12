@@ -48,4 +48,16 @@
         <module>spring-example</module>
     </modules>
 
+
+
+    <profiles>
+        <profile>
+            <id>development</id>
+
+            <properties>
+                <maven.war.webxml>${basedir}/src/main/conf/dev/web.xml</maven.war.webxml>
+            </properties>
+        </profile>
+    </profiles>    
+
 </project>

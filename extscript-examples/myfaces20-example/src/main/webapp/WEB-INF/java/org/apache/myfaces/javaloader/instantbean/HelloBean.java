@@ -20,7 +20,7 @@
 package org.apache.myfaces.javaloader.instantbean;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -28,8 +28,12 @@ import javax.faces.bean.RequestScoped;
  */
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class HelloBean {
+
+    int cnt = 0;
+
+    
     private String hello = "Hello world from an instant bean";
 
     private String addedMethod() {
@@ -40,7 +44,22 @@ public class HelloBean {
         return hello ;
     }
 
+
+    public String getHello2() {
+        return hello ;
+    }
     public void setHello(String hello) {
         this.hello = hello;
+    }
+    public void setHello2(String hello) {
+        this.hello = hello;
+    }
+
+    public int getCnt() {
+        return ++cnt;
+    }
+
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
     }
 }

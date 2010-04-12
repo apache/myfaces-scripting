@@ -13,6 +13,7 @@ public class TestBeanImpl implements TestBean {
 
     TestBean _delegate = null;
 
+
     public TestBeanImpl() {
         try {
             String resourceRoot = this.getClass().getClassLoader().getResource("./").getFile();

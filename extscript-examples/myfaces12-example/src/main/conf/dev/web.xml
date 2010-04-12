@@ -18,6 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
+<!--
+This web.xml is for development purposes
+it can be pulled in via mvn -P development ....
+it replaces the original web.xml in case
+of a development profile being set!
+-->
+
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
@@ -45,7 +52,6 @@
         <param-value>org.apache.myfaces.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
 
-    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -82,25 +88,8 @@
          <param-name>facelets.RESOURCE_RESOLVER</param-name>
          <param-value>org.apache.myfaces.scripting.facelet.ReroutingResourceResolver</param-value>
      </context-param>
-    -->
-    <!--
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces12-example/src/main/webapp/WEB-INF/groovy</param-value>
-    </context-param>
+    
 
-
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.scripting.java.LOADER_PATHS</param-name>
-        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces12-example/src/main/webapp/WEB-INF/java</param-value>
-    </context-param>
-    -->
     
     <context-param>
         <description>State saving method: "client" or "server" (= default)

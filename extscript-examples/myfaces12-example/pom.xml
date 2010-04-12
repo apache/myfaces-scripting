@@ -14,8 +14,12 @@
     <url>http://www.apache.org</url>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example</developerConnection>
+        <connection>
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example
+        </developerConnection>
         <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example</url>
     </scm>
 
@@ -38,14 +42,14 @@
             <version>1.2.8</version>
             <scope>compile</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
             <version>1.2.8</version>
             <scope>compile</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
@@ -79,4 +83,7 @@
         </dependency>
 
     </dependencies>
+
+    
+   
 </project>

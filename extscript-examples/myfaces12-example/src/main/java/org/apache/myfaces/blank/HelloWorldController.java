@@ -26,6 +26,8 @@ public class HelloWorldController {
     //properties
     private String name;
 
+    private int mylen = 10;
+
     /**
      * default empty constructor
      */
@@ -50,5 +52,13 @@ public class HelloWorldController {
     public String send() {
         //do real logic, return a string which will be used for the navigation system of JSF
         return "success";
+    }
+
+    public int getMylen() {
+        return mylen;
+    }
+
+    public void setMylen(int mylen) {
+        this.mylen = mylen;
     }
 }

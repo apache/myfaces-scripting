@@ -29,6 +29,7 @@
         <managed-bean-class>org.apache.myfaces.blank.HelloWorldController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+
     <managed-bean>
         <managed-bean-name>testbean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.groovyloader.test.TestBean</managed-bean-class>
@@ -81,6 +82,7 @@
         </phase-listener>
     </lifecycle>
 
+
     <!-- navigation rules for helloWorld.jsp -->
     <navigation-rule>
         <from-view-id>/helloWorld.*</from-view-id>
@@ -98,6 +100,7 @@
             <to-view-id>/helloWorld.jsf</to-view-id>
         </navigation-case>
     </navigation-rule>
+
 
     <validator>
         <validator-id>org.apache.myfaces.groovyloader.test.TestValidator</validator-id>
@@ -119,4 +122,5 @@
             <renderer-class>org.apache.myfaces.groovyloader.test.TestRenderer</renderer-class>
         </renderer>
     </render-kit>
+   
 </faces-config>
