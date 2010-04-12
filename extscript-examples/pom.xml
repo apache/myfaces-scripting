@@ -23,6 +23,7 @@
         <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples</url>
     </scm>
 
+    
     <build>
         <plugins>
             <plugin>
