@@ -417,7 +417,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
          * at the next refresh the second step of the registration cycle should pick the new class up
          *
          */
-        if (_annotationScanner != null && retVal != null) {
+        if (_annotationScanner != null && FacesContext.getCurrentInstance() != null && retVal != null) {
             _annotationScanner.scanClass(retVal);
         }
 

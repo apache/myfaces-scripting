@@ -29,9 +29,9 @@ public class ScriptingConst {
 
 
 
-    public static final String SCRIPTING_CLASSLOADER = "org.apache.myfaces.SCRIPTING_CLASSLOADER";
-    public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.SCRIPTING_GROOVYFACTORY";
-    public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.SCRIPTING_REQUSINGLETON";
+    public static final String SCRIPTING_CLASSLOADER = "org.apache.myfaces.extensions.SCRIPTING_CLASSLOADER";
+    public static final String SCRIPTING_GROOVFACTORY = "org.apache.myfaces.extensions.SCRIPTING_GROOVYFACTORY";
+    public static final String SCRIPTING_REQUSINGLETON = "org.apache.myfaces.extensions.SCRIPTING_REQUSINGLETON";
 
     public static final String INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST = "org.apache.myfaces.extensions.scripting.PGK_WHITELIST";
     public static final String INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH = "org.apache.myfaces.extensions.scripting.ADDITIONAL_CLASSPATH";

@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.loaders.groovy;
 
-import org.apache.myfaces.groovyloader.core.StandardGroovyReloadingStrategy;
+import org.apache.myfaces.extensions.scripting.groovyloader.core.StandardGroovyReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.api.*;
 import org.apache.myfaces.extensions.scripting.core.util.Cast;
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
