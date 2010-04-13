@@ -32,7 +32,7 @@ public class TestRenderer extends HtmlTextRendererBase {
 
     //uncomment for demo 1
     
-    facesContext.responseWriter.write(myNewString())
+    //facesContext.responseWriter.write(myNewString())
 
 
     facesContext.responseWriter.write """
@@ -70,10 +70,10 @@ public class TestRenderer extends HtmlTextRendererBase {
 
 
   //uncomment for demo 1
- def myNewString() {
+ /*def myNewString() {
     return """\
-    <h1 style="color: yellow;"> hello world from new String </h1>
+    <h1 style="color: yellow;"> Hello world from the groovy renderer </h1>
     """
-  }
+  }*/
   
 }

@@ -76,6 +76,29 @@
             <artifactId>portlet-api</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <!-- bean validation dependencies -->
+         <dependency>
+            <groupId>org.apache.myfaces.extensions.validator</groupId>
+            <artifactId>myfaces-extval-core</artifactId>
+            <version>2.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
+            <artifactId>myfaces-extval-property-validation</artifactId>
+            <version>2.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
+            <artifactId>myfaces-extval-bean-validation</artifactId>
+            <version>2.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+
         
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>
