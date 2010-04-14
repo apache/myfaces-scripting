@@ -31,13 +31,17 @@
             <a href="using_general.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 
+        
+
 
         <section name="Checkout and Build">
             <p>
-                Currently as time of writing, Ext-Scripting does not have a final release yet, so the only means of
-                but the latest semi stable version is the beta 1
-                a build is checking out the project via
-                <a href="http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/1_0_beta_1">The beta 1 tag,
+               A manual build for beta-1 is not necessary you always can obtain the needed files
+                via Maven(see below) or you can download them manually and have the integrated
+                manually (also see below), however if you prefer a build from source
+                you can follow the explanations presented here:
+                You can download the sources of the Ext-Scripting Beta-1 from:
+                The beta 1 tag <a href="http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/1_0_beta_1">
                     http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/1_0_beta_1
                 </a>
             </p>
@@ -91,8 +95,32 @@
             TODO add the ALPHA 1 Installation here as separate link!
 
             <subsection name="Preparations via Apache Maven 2">
-                <p>The easiest way once Extension scripting is compiled is probably a setup via Apache Maven 2
+                <p>The easiest way is probably to use Ext-Scripting via Apache Maven 2
                 </p>
+                <p>(note a compile is not necessary since all needed files are hosted on the apache infrastructure)</p>
+
+
+                <p>
+                    As a prerequisite make sure you have added following entry to your pom.xml so that
+                    the appropriate jars can be loaded from our beta build repository:
+                    <source><![CDATA[
+    <repositories>
+        <repository>
+            <id>extscript-beta-1</id>
+            <url>http://people.apache.org/~lu4242/extscript10beta1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+                    ]]>
+                    </source>
+                </p>
+                <p>This will enable Maven to download the beta-1 build jars from the internet.</p>
+
                 <p>
                     Depending on your configuration and preferred JDK version you can add following entries to your
                     Maven pom.xml to enable Ext-Scripting

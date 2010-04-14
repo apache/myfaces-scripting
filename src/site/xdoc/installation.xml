@@ -31,15 +31,41 @@
             <a href="using_general.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 
+        <section name="General information">
+            This section applies to setting up ext-scripting from the latest codebase if you want
+            to setup ext-scripting from one of the beta or alpha builds please follow following instructions:
+            <ul>
+                <li>
+                    <a href="install_beta_1.html">Installation Instructions for Beta-1</a>
+                </li>
+                <li>
+                    <a href="install_alpha_1.html">Installation Instructions for Alpha-1</a>
+                </li>
+            </ul>
+        </section>
+
+        <section name="Checklist">
+            <p>
+
+            For a short checklist of setup steps please follow <b><a href="setup_steps.html"> this link</a></b>. For a detailed
+                setup guide, please continue reading.
+            </p>
+        </section>
+
 
         <section name="Checkout and Build">
             <p>
-                Currently as time of writing, Ext-Scripting does not have a release yet, so the only means of
-                obtaining
-                a build is checking out the project via
-                <a href="http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk">The svn trunk under,
+                While Ext-Scripting is already in beta stage, the best way to get started
+                is probably to checkout and build ext-scripting yourself from the latest codebase.
+                All other installation steps will have this step as prerequisite if you want to
+                use the latest codebase instead of one of the beta releases!
+                First you have to check out the latest codebase from
+
+                <a href="http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk">
                     http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk
                 </a>
+
+                via a subversion client.
             </p>
             <p>
                 Make sure you have following requirements fulfilled before checking out:
@@ -50,7 +76,7 @@
                 <li>Maven 2.0.9 or higher</li>
             </ul>
             <p>
-                After checkout, a full build can be obtained from the root directory of your checkout via<b>mvn
+                After checkout, a full build can be obtained from the root directory of your checkout via <b>mvn
                 clean install</b>.
             </p>
             <p>
@@ -58,12 +84,18 @@
                 two blueprint projects which you can use as starting points for your own projects under
                 <b>&lt;checkoutDir&gt;/examples</b>
                 , which can be started via<b>mvn jetty:run-exploded</b>.
+                The now generated files either can be used to be included in a maven install or be included manually
+                (please go to the next section for detailed setup instructions)
+
             </p>
+
         </section>
+
         <section name="Setup of Ext-Scripting">
+
             <subsection name="Requirements">
                 <p>
-                    Before setting up Ext-Scripting make sure following requirements are met.
+                    Before setting up Ext-Scripting for your project make sure following requirements are met.
                 </p>
                 <ul>
                     <li>JAVA_HOME points towards a valid Java SDK (JRE is not sufficient)</li>
@@ -72,6 +104,7 @@
                     </li>
                 </ul>
             </subsection>
+
             <subsection name="Setup">
                 <p>
                     While one of the aims of Ext-Scripting was to enable an easy setup, for now it was not entirely
@@ -88,7 +121,7 @@
                 </ul>
 
             </subsection>
-            TODO add the ALPHA 1 Installation here as separate link!
+
 
             <subsection name="Preparations via Apache Maven 2">
                 <p>The easiest way once Extension scripting is compiled is probably a setup via Apache Maven 2
@@ -97,6 +130,7 @@
                     Depending on your configuration and preferred JDK version you can add following entries to your
                     Maven pom.xml to enable Ext-Scripting
                 </p>
+
                 <p/>
                 <h4>MyFaces 1.2.8+</h4>
                 <source><![CDATA[
@@ -115,7 +149,25 @@
      </dependency>]]></source>
             </subsection>
 
-            <!-- TODO add download information here -->
+    
+            <subsection name="Manual Setup">
+                <p>If you do not like Maven or you prefer a manual setup, Ext-Scripting provides convenient meta bundles.
+                    A manual setup
+                    comes down to the task of adding the appropriate meta bundle (extscript-myfaces12-bundle or
+                    extscript-myfaces20-bundle)
+                    to your WEB-INF/lib directory and adding a groovy-all.jar as additional dependency.
+                </p>
+                <p>you can obtain both jars after the build from:
+                    <ul>
+                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/xtscript-myfaces12-bundle/target/extscript-myfaces12-bundle-1.0-SNAPSHOT.jar</li>
+                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/xtscript-myfaces12-bundle/target/extscript-myfaces20-bundle-1.0-SNAPSHOT.jar</li>
+                    </ul>
+                </p>
+                <p>After having done that you are ready to setup the rest of the ext-scripting configuration manually as
+                    described in the section blow
+                </p>
+            </subsection>
+
 
             <subsection name="Preparing the Necessary web.xml Entries">
                 <h4>First Step</h4>
