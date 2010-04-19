@@ -48,12 +48,23 @@
     </build>
 
     <dependencies>
+        <!--
+             optional Groovy include,
+             if we leave it out, Groovy support is disabled
+             and only java support will work
+         -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>1.5.6</version>
         </dependency>
 
+        <!--
+             Note this is the only dependency we need
+             for ext-scripting, the include is a so called
+             meta bundle, which includes the entire
+             ext-scripting core+java6 support + myfaces 2 support
+         -->
         <dependency>
             <groupId>org.apache.myfaces.extension-scripting</groupId>
             <artifactId>extscript-myfaces20-bundle</artifactId>
