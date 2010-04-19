@@ -15,8 +15,12 @@
     <url>http://www.apache.org</url>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example</developerConnection>
+        <connection>
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example
+        </developerConnection>
         <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-example</url>
     </scm>
 
@@ -78,8 +82,13 @@
         </dependency>
 
         <!-- bean validation dependencies -->
-        
-         <dependency>
+        <!--
+             note, this is a purely optional 
+             dependency part and is only needed
+             if you want to run bean validation
+             and/or MyFaces ext-val
+         -->
+        <dependency>
             <groupId>org.apache.myfaces.extensions.validator</groupId>
             <artifactId>myfaces-extval-core</artifactId>
             <version>2.0.3</version>
@@ -94,17 +103,17 @@
         </dependency>
 
         <dependency>
- 	        <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
- 	        <artifactId>myfaces-extval-bean-validation</artifactId> 
+            <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
+            <artifactId>myfaces-extval-bean-validation</artifactId>
             <version>2.0.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-         	<groupId>org.hibernate</groupId>
-         	<artifactId>hibernate-validator</artifactId>
-        	<version>4.0.0.GA</version>
-    	</dependency> 
-
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.0.0.GA</version>
+        </dependency>
+        <!-- Hibernate annotations needs sl4j as dependency -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -116,8 +125,8 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.4.2</version>
         </dependency>
-          
 
+        <!-- bean validation end -->
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>
             <artifactId>tomahawk</artifactId>
