@@ -55,6 +55,12 @@ import java.util.logging.Logger;
 
 public class WeavingContextInitializer {
 
+    static class StartupException extends Exception {
+        StartupException(String message) {
+            super(message);
+        }
+    }
+
     static final Logger _logger = Logger.getLogger(WeavingContextInitializer.class.getName());
 
     static final PrivilegedExceptionAction<RecompiledClassLoader> LOADER_ACTION = new PrivilegedExceptionAction<RecompiledClassLoader>() {
@@ -66,36 +72,35 @@ public class WeavingContextInitializer {
     private static final String GROOVY_OBJECT = "groovy.lang.GroovyObject";
 
     public static void initWeavingContext(ServletContext servletContext) {
+        try {
+            WeavingContext.setScriptingEnabled(true);
+            validateWebXml(servletContext);
+            initConfiguration(servletContext);
+            validateSecurityConstraints();
+            initWeavers(servletContext);
+            validateSourcePaths();
+            initRefreshContext(servletContext);
 
-        validateWebXml(servletContext);
-        initConfiguration(servletContext);
-        validateSecurityConstraints();
-        initWeavers(servletContext);
-        validateSourcePaths();
-        initRefreshContext(servletContext);
-
-        initFileChangeDaemon(servletContext);
-        initExternalContext(servletContext);
+            initFileChangeDaemon(servletContext);
+            initExternalContext(servletContext);
+        } catch (StartupException ex) {
+            _logger.severe("[EXT-SCRIPTING] " + ex.getMessage());
+            WeavingContext.setScriptingEnabled(false);
+        }
 
     }
 
     /**
      * validates the source paths which were determined by the
      * startup for failures
-     *
      */
-    private static void validateSourcePaths() {
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
+    private static void validateSourcePaths() throws StartupException {
+
         Collection<String> dirs = WeavingContext.getConfiguration().getAllSourceDirs();
         for (String currentDir : dirs) {
             File probe = new File(currentDir);
-            _logger.info("[PROBE]"+probe.getAbsolutePath());
             if (!probe.exists()) {
-                _logger.log(Level.SEVERE, "[EXT-SCRIPTING] The directory {0} does not exist, disabling scripting support", probe);
-                WeavingContext.setScriptingEnabled(false);
-                return;
+                throw new StartupException("The directory " + probe + " does not exist, disabling scripting support");
             }
         }
     }
@@ -105,38 +110,28 @@ public class WeavingContextInitializer {
      * the only security which has to be allowed
      * is the creation of classloaders
      */
-    private static void validateSecurityConstraints() {
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
+    private static void validateSecurityConstraints() throws StartupException {
+
         try {
             AccessController.doPrivileged(LOADER_ACTION);
         } catch (PrivilegedActionException e) {
-            _logger.severe("[EXT-SCRIPTING] Class loader creation is prohibited by your security settings, I am going to disable Ext-Scripting");
-            WeavingContext.setScriptingEnabled(false);
+            throw new StartupException("Class loader creation is prohibited by your security settings, I am going to disable Ext-Scripting");
         }
     }
 
     private static void initExternalContext(ServletContext servletContext) {
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
+
         WeavingContext.setExternalContext(servletContext);
     }
 
     private static void initFileChangeDaemon(ServletContext servletContext) {
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
 
         FileChangedDaemon.startup(servletContext);
         WeavingContext.getRefreshContext().setDaemon(FileChangedDaemon.getInstance());
     }
 
     private static void initConfiguration(ServletContext servletContext) {
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
+
         final Configuration configuration = new Configuration();
         servletContext.setAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION, configuration);
         WeavingContext.setConfiguration(configuration);
@@ -181,22 +176,18 @@ public class WeavingContextInitializer {
         }
     }
 
-    private static void validateWebXml(ServletContext context) {
+    private static void validateWebXml(ServletContext context) throws StartupException {
         try {
             URL webXml = context.getResource("/WEB-INF/web.xml");
 
             if (webXml != null) {
-                WeavingContext.setScriptingEnabled(FilterClassDigester.findFilter(webXml, ScriptingServletFilter.class));
+                if (!FilterClassDigester.findFilter(webXml, ScriptingServletFilter.class)) {
+                    throw new StartupException(ScriptingConst.ERR_SERVLET_FILTER);
+                }
             }
 
         } catch (IOException e) {
-            _logger.severe("[EXT-SCRIPTING] Web.xml could not be parsed disabling scripting");
-            WeavingContext.setScriptingEnabled(false);
-        }
-
-        if (!WeavingContext.isScriptingEnabled()) {
-            String warnMsg = ScriptingConst.ERR_SERVLET_FILTER;
-            _logger.severe(warnMsg);
+            throw new StartupException("Web.xml could not be parsed disabling scripting");
         }
     }
 
@@ -206,25 +197,15 @@ public class WeavingContextInitializer {
      *
      * @param servletContext the standard servlet context
      */
-    private static void initWeavers(ServletContext servletContext) {
+    private static void initWeavers(ServletContext servletContext) throws StartupException {
         _logger.fine("[EXT-SCRIPTING] initializing the weaving contexts");
-
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
 
         List<ScriptingWeaver> weavers = new ArrayList<ScriptingWeaver>(2);
 
         initGroovyWeaver(servletContext, weavers);
         initJavaWeaver(servletContext, weavers);
-        if(WeavingContext.isFilterEnabled() && weavers.size() == 0) {
-            _logger.info("[EXT-SCRIPTING] No scripting languages initialized disabling EXT-SCRIPTING ");
-            WeavingContext.setScriptingEnabled(false);
-            return;
-        }
-
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
+        if (WeavingContext.isFilterEnabled() && weavers.size() == 0) {
+            throw new StartupException("No scripting languages initialized disabling EXT-SCRIPTING");
         }
 
         WeavingContext.setWeaver(new CoreWeaver(weavers));
@@ -238,10 +219,10 @@ public class WeavingContextInitializer {
      * @param servletContext the standard servlet context
      * @param weavers        our list of weavers which should receive the resulting weaver
      */
-    private static void initJavaWeaver(ServletContext servletContext, List<ScriptingWeaver> weavers) {
+    private static void initJavaWeaver(ServletContext servletContext, List<ScriptingWeaver> weavers) throws StartupException {
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
         setupScriptingPaths(servletContext, javaWeaver, ScriptingConst.JAVA_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS);
-        if(WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).size() > 0) {
+        if (WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).size() > 0) {
             weavers.add(javaWeaver);
         } else {
             _logger.log(Level.WARNING, "[EXT-SCRIPTING] No valid source path for Java found either add WEB-INF/java to your filesystem, or add a custom Java source path, disabling EXT-SCRIPTING Java support");
@@ -262,7 +243,7 @@ public class WeavingContextInitializer {
                 //groovy found ewe now enabled our groovy weaving support
                 ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
                 setupScriptingPaths(servletContext, groovyWeaver, ScriptingConst.GROOVY_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS);
-                if(WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_GROOVY).size() > 0) {
+                if (WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_GROOVY).size() > 0) {
                     weavers.add(groovyWeaver);
                 } else {
                     _logger.log(Level.WARNING, "[EXT-SCRIPTING] No valid source path for Groovy found either add WEB-INF/groovy to your filesystem, or add a custom Groovy source path, disabling EXT-SCRIPTING Groovy support");
@@ -285,18 +266,12 @@ public class WeavingContextInitializer {
     private static void initRefreshContext(ServletContext servletContext) {
         _logger.fine("[EXT-SCRIPTING] initializing the refresh context");
 
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
         RefreshContext rContext = new RefreshContext();
         servletContext.setAttribute(ScriptingConst.CTX_ATTR_REFRESH_CONTEXT, rContext);
         WeavingContext.setRefreshContext(rContext);
     }
 
-    private static void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) {
-        if (!WeavingContext.isScriptingEnabled()) {
-            return;
-        }
+    private static void setupScriptingPaths(ServletContext servletContext, ScriptingWeaver weaver, String contextRootKey, String initParams) throws StartupException {
 
         String classRoot = "";
         String scriptingRoot;
@@ -318,16 +293,11 @@ public class WeavingContextInitializer {
         appendAdditionalPaths(additionalLoaderPaths, weaver);
         if (additionalLoaderPaths == null || additionalLoaderPaths.trim().equals("")) {
             if (contextRoot.equals("")) {
-
-                _logger.warning("[EXT-SCRIPTING] Standard paths (WEB-INF/groovy and WEB-INF/java could not be determined, also no additional loader paths are set, I cannot start properly, please set additional loader paths for Ext-Scripting to work correctly!");
-                _logger.warning("[EXT-SCRIPTING] I am disabling Ext-Scripting!");
-
-                WeavingContext.setScriptingEnabled(false);
-                return;
+                throw new StartupException("Standard paths (WEB-INF/groovy and WEB-INF/java could not be determined, also no additional loader paths are set, I cannot start properly, please set additional loader paths for Ext-Scripting to work correctly! I am disabling Ext-Scripting!");
             }
             if (!StringUtils.isBlank(scriptingRoot)) {
                 File probe = new File(scriptingRoot);
-                if(probe.exists()) {
+                if (probe.exists()) {
                     weaver.appendCustomScriptPath(scriptingRoot);
 
                 } else {
