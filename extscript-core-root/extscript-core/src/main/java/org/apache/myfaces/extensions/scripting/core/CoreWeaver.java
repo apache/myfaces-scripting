@@ -40,6 +40,10 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     List<ScriptingWeaver> _weavers = new ArrayList<ScriptingWeaver>();
 
+    public CoreWeaver(Collection<ScriptingWeaver> weavers) {
+        _weavers.addAll(weavers);
+    }
+
     public CoreWeaver(ScriptingWeaver... weavers) {
         _weavers.addAll(Arrays.asList(weavers));
     }

@@ -37,6 +37,8 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -57,6 +59,8 @@ public class WeavingContextInitializer {
             return new RecompiledClassLoader(ClassUtils.getContextClassLoader(), ScriptingConst.ENGINE_TYPE_JSF_JAVA, ".java");
         }
     };
+    private static final String GROOVY_NOT_FOUND = "[EXT-SCRIPTING] Groovy not found disabling Ext-Scripting Groovy support";
+    private static final String GROOVY_OBJECT = "groovy.lang.GroovyObject";
 
     public static void initWeavingContext(ServletContext servletContext) {
 
@@ -83,7 +87,7 @@ public class WeavingContextInitializer {
         try {
             AccessController.doPrivileged(LOADER_ACTION);
         } catch (PrivilegedActionException e) {
-            _logger.severe("[EXT-SCRIPTING]�Class loader creation is prohibited by your security settings, I am going to disable Ext-Scripting");
+            _logger.severe("[EXT-SCRIPTING] Class loader creation is prohibited by your security settings, I am going to disable Ext-Scripting");
             WeavingContext.setScriptingEnabled(false);
         }
     }
@@ -171,27 +175,65 @@ public class WeavingContextInitializer {
         }
     }
 
-    private static boolean initWeavers(ServletContext servletContext) {
+    /**
+     * inits the weaver chain which depends on the scripting
+     * language supported by the internal jars
+     *
+     * @param servletContext the standard servlet context
+     */
+    private static void initWeavers(ServletContext servletContext) {
         _logger.fine("[EXT-SCRIPTING] initializing the weaving contexts");
 
         if (!WeavingContext.isScriptingEnabled()) {
-            return false;
+            return;
         }
 
-        ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
-        ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
 
-        setupScriptingPaths(servletContext, groovyWeaver, ScriptingConst.GROOVY_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS);
-        setupScriptingPaths(servletContext, javaWeaver, ScriptingConst.JAVA_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS);
+        List<ScriptingWeaver> weavers = new ArrayList<ScriptingWeaver>(2);
+
+        initGroovyWeaver(servletContext, weavers);
+        initJavaWeaver(servletContext, weavers);
+
         if (!WeavingContext.isScriptingEnabled()) {
-            return true;
+            return ;
         }
 
-        //we have to store it because our filter
-        //does not trigger upon initialisation
-        WeavingContext.setWeaver(new CoreWeaver(groovyWeaver, javaWeaver));
+        WeavingContext.setWeaver(new CoreWeaver(weavers));
         servletContext.setAttribute(ScriptingConst.CTX_ATTR_SCRIPTING_WEAVER, WeavingContext.getWeaver());
-        return false;
+    }
+
+    /**
+     * inits the standard java weaver
+     * for weaving and recompiling java classes on the fly
+     *
+     * @param servletContext the standard servlet context
+     * @param weavers our list of weavers which should receive the resulting weaver
+     */
+    private static void initJavaWeaver(ServletContext servletContext, List<ScriptingWeaver> weavers) {
+        ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
+        setupScriptingPaths(servletContext, javaWeaver, ScriptingConst.JAVA_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS);
+        weavers.add(javaWeaver);
+    }
+
+    /**
+     * initializes our groovy weaver
+     *
+     * @param servletContext the servlet context
+     * @param weavers the list of weavers receiving the resulting weaver if an initialization is possoble
+     */
+    private static void initGroovyWeaver(ServletContext servletContext, List<ScriptingWeaver> weavers) {
+        //check if groovy can be enabled:
+        try {
+            Class groovyObject = ClassUtils.forName(GROOVY_OBJECT);
+            if(groovyObject != null) {
+                //groovy found ewe now enabled our groovy weaving support
+                ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
+                setupScriptingPaths(servletContext, groovyWeaver, ScriptingConst.GROOVY_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS);
+                weavers.add(groovyWeaver);
+            }
+        } catch (Exception e) {
+            _logger.info(GROOVY_NOT_FOUND);
+        }
     }
 
     /**
