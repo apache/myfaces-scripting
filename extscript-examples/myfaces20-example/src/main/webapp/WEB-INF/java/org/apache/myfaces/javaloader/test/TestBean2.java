@@ -49,7 +49,7 @@ public class TestBean2 {
     }
 
     public String getSayHello() {
-        System.out.println("cnt++:" + cnt++);
+      
 
         return bean4.getHello();
     }

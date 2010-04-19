@@ -50,7 +50,9 @@ public class FacesContextProxy extends FacesContext implements Decorated {
     public FacesContext _delegate = null;
 
     private void weaveDelegate() {
-        if (_delegate != null)
+        //in case of a context destroyed the weaver might be accessed a last time
+        //but is already null due to having no weaver in the shutdown thread
+        if (_delegate != null && WeavingContext.getWeaver() != null)
             _delegate = (FacesContext) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_FACESCONTEXT);
     }
 

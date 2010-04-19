@@ -91,11 +91,11 @@ public class ThrowawayClassloader extends ClassLoader {
 
         File target = getClassFile(className);
         if (target.exists()) {
-            _logger.log(Level.INFO,"[EXT-SCRIPTING] target {0} exists", className);
+            _logger.log(Level.FINE,"[EXT-SCRIPTING] target {0} exists", className);
 
             ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
             if (data != null && !data.isTainted()) {
-                _logger.info("[EXT-SCRIPTING] data found but not tainted yet");
+                _logger.log(Level.INFO,"[EXT-SCRIPTING] data from target {0} found but not tainted yet", className);
 
                 return data.getAClass();
             }
