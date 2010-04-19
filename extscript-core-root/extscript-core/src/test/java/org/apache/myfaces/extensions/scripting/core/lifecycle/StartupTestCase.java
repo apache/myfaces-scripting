@@ -62,10 +62,10 @@ public class StartupTestCase {
         assertTrue("Compile target dir must be set", WeavingContext.getConfiguration().getCompileTarget() != null);
         assertTrue("Initial compile flag must be set to allow the initial compile", WeavingContext.getConfiguration().isInitialCompile());
 
-        assertTrue("Source dirs per registered scripting engine must be one", WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).size() == 1);
-        assertTrue("Source dirs per registered scripting engine must be one", WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_GROOVY).size() == 1);
+        assertTrue("Source dirs per registered scripting engine must be zero because they do not exist", WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).size() == 1);
+        assertTrue("Source dirs per registered scripting engine must be zero because they do not exist", WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_GROOVY).size() == 1);
     }
-
+    
     @Test
     public void testNotFullyStarted() {
         assertTrue("Startup not done yet", context.getAttribute(ScriptingConst.CTX_ATTR_STARTUP) == null);

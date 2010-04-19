@@ -81,6 +81,16 @@ public class Configuration {
         return retVal;
     }
 
+    public Collection<String> getAllSourceDirs() {
+        Set<String> retVal = new HashSet(10);
+        for (Map.Entry<Integer, CopyOnWriteArrayList<String>> entry : _sourceDirs.entrySet()) {
+            for (String dir : entry.getValue()) {
+                retVal.add(dir);
+            }
+        }
+        return retVal;
+    }
+
     /**
      * returns a set of whitelisted subdirs hosting the source
      *

@@ -32,13 +32,16 @@ import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
 import org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter;
 
 import javax.servlet.ServletContext;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -68,11 +71,33 @@ public class WeavingContextInitializer {
         initConfiguration(servletContext);
         validateSecurityConstraints();
         initWeavers(servletContext);
+        validateSourcePaths();
         initRefreshContext(servletContext);
 
         initFileChangeDaemon(servletContext);
         initExternalContext(servletContext);
 
+    }
+
+    /**
+     * validates the source paths which were determined by the
+     * startup for failures
+     *
+     */
+    private static void validateSourcePaths() {
+        if (!WeavingContext.isScriptingEnabled()) {
+            return;
+        }
+        Collection<String> dirs = WeavingContext.getConfiguration().getAllSourceDirs();
+        for (String currentDir : dirs) {
+            File probe = new File(currentDir);
+            _logger.info("[PROBE]"+probe.getAbsolutePath());
+            if (!probe.exists()) {
+                _logger.log(Level.SEVERE, "[EXT-SCRIPTING] The directory {0} does not exist, disabling scripting support", probe);
+                WeavingContext.setScriptingEnabled(false);
+                return;
+            }
+        }
     }
 
     /**
@@ -188,14 +213,18 @@ public class WeavingContextInitializer {
             return;
         }
 
-
         List<ScriptingWeaver> weavers = new ArrayList<ScriptingWeaver>(2);
 
         initGroovyWeaver(servletContext, weavers);
         initJavaWeaver(servletContext, weavers);
+        if(WeavingContext.isFilterEnabled() && weavers.size() == 0) {
+            _logger.info("[EXT-SCRIPTING] No scripting languages initialized disabling EXT-SCRIPTING ");
+            WeavingContext.setScriptingEnabled(false);
+            return;
+        }
 
         if (!WeavingContext.isScriptingEnabled()) {
-            return ;
+            return;
         }
 
         WeavingContext.setWeaver(new CoreWeaver(weavers));
@@ -207,30 +236,39 @@ public class WeavingContextInitializer {
      * for weaving and recompiling java classes on the fly
      *
      * @param servletContext the standard servlet context
-     * @param weavers our list of weavers which should receive the resulting weaver
+     * @param weavers        our list of weavers which should receive the resulting weaver
      */
     private static void initJavaWeaver(ServletContext servletContext, List<ScriptingWeaver> weavers) {
         ScriptingWeaver javaWeaver = new JavaScriptingWeaver(servletContext);
         setupScriptingPaths(servletContext, javaWeaver, ScriptingConst.JAVA_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS);
-        weavers.add(javaWeaver);
+        if(WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA).size() > 0) {
+            weavers.add(javaWeaver);
+        } else {
+            _logger.log(Level.WARNING, "[EXT-SCRIPTING] No valid source path for Java found either add WEB-INF/java to your filesystem, or add a custom Java source path, disabling EXT-SCRIPTING Java support");
+        }
     }
 
     /**
      * initializes our groovy weaver
      *
      * @param servletContext the servlet context
-     * @param weavers the list of weavers receiving the resulting weaver if an initialization is possoble
+     * @param weavers        the list of weavers receiving the resulting weaver if an initialization is possoble
      */
     private static void initGroovyWeaver(ServletContext servletContext, List<ScriptingWeaver> weavers) {
         //check if groovy can be enabled:
         try {
             Class groovyObject = ClassUtils.forName(GROOVY_OBJECT);
-            if(groovyObject != null) {
+            if (groovyObject != null) {
                 //groovy found ewe now enabled our groovy weaving support
                 ScriptingWeaver groovyWeaver = new GroovyScriptingWeaver(servletContext);
                 setupScriptingPaths(servletContext, groovyWeaver, ScriptingConst.GROOVY_SOURCE_ROOT, ScriptingConst.INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS);
-                weavers.add(groovyWeaver);
+                if(WeavingContext.getConfiguration().getSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_GROOVY).size() > 0) {
+                    weavers.add(groovyWeaver);
+                } else {
+                    _logger.log(Level.WARNING, "[EXT-SCRIPTING] No valid source path for Groovy found either add WEB-INF/groovy to your filesystem, or add a custom Groovy source path, disabling EXT-SCRIPTING Groovy support");
+                }
             }
+
         } catch (Exception e) {
             _logger.info(GROOVY_NOT_FOUND);
         }
@@ -266,6 +304,7 @@ public class WeavingContextInitializer {
         String additionalLoaderPaths;
 
         String contextRoot = servletContext.getRealPath(contextRootKey);
+
         if (contextRoot == null) {
             _logger.warning("[EXT-SCRIPTING] one of the standard paths could not be resolved: " + contextRootKey + " this is either due to the path is missing or due to a configuration error! You can bypass the problem by setting additional loader paths if they are not set already!");
             contextRoot = "";
@@ -287,12 +326,19 @@ public class WeavingContextInitializer {
                 return;
             }
             if (!StringUtils.isBlank(scriptingRoot)) {
-                weaver.appendCustomScriptPath(scriptingRoot);
+                File probe = new File(scriptingRoot);
+                if(probe.exists()) {
+                    weaver.appendCustomScriptPath(scriptingRoot);
+
+                } else {
+                    _logger.log(Level.WARNING, "[EXT-SCRIPING] path {0} could not be found this might cause compile problems ", scriptingRoot);
+                }
             }
             if (!StringUtils.isBlank(classRoot)) {
                 weaver.appendCustomScriptPath(classRoot);
             }
         }
+
     }
 
     private static void appendAdditionalPaths(String additionalLoaderPaths, ScriptingWeaver workWeaver) {
