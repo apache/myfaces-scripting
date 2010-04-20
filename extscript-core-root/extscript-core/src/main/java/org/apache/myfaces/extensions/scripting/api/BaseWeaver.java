@@ -282,14 +282,13 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             //and an inner check again to avoid unneeded compile triggers
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
+                    //TODO move this over to application events once they are in place
+                    clearExtvalCache();
                     recompileRefresh();
                     return;
                 }
             }
         }
-
-        //TODO move this over to application events once they are in place
-        clearExtvalCache();
 
         _beanHandler.personalScopeRefresh();
 
@@ -305,13 +304,23 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         if (requestMap.containsKey(ScriptingConst.EXT_VAL_REQ_KEY)) {
             return;
         }
+        //we have to remove the Validator Factory to clear its cache
+        //ext-val does basically the same with a replacement one
+        //but in case of a normal bean validation impl this has to be done
+        //this is somewhat brute force, but it will be tested it it works out
+
         requestMap.put(ScriptingConst.EXT_VAL_REQ_KEY, Boolean.TRUE);
         Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
         Set<String> keySet = applicationMap.keySet();
+        boolean extValPresent = false;
         for (String key : keySet) {
             if (key.startsWith(ScriptingConst.EXT_VAL_MARKER)) {
                 applicationMap.remove(key);
+                extValPresent = true;
             }
+        }
+        if (!extValPresent) {
+            requestMap.remove("javax.faces.validator.beanValidator.ValidatorFactory");
         }
     }
 
