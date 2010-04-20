@@ -32,8 +32,8 @@
         </section>
 
         <section name="General information">
-            This section applies to setting up ext-scripting from the latest codebase if you want
-            to setup ext-scripting from one of the beta or alpha builds please follow following instructions:
+            This section applies to setting up Ext-Scripting from the latest codebase if you want
+            to set it up from one of the beta or alpha builds please follow following instructions:
             <ul>
                 <li>
                     <a href="install_beta_1.html">Installation Instructions for Beta-1</a>
@@ -163,7 +163,7 @@
                         <li>&lt;yourbuilderoot&gt;/extscript-bundles/xtscript-myfaces12-bundle/target/extscript-myfaces20-bundle-1.0-SNAPSHOT.jar</li>
                     </ul>
                 </p>
-                <p>After having done that you are ready to setup the rest of the ext-scripting configuration manually as
+                <p>After having done that you are ready to setup the rest of the Ext-Scripting configuration manually as
                     described in the section blow
                 </p>
             </subsection>
