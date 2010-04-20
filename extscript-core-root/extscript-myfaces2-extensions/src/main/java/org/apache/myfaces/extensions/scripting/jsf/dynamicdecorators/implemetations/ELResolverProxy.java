@@ -60,15 +60,15 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
             return newRetVal;
 
-        } else if (retVal == null) {
+        } /*else if (retVal == null) {
             retVal = reloadAnnotatedBean(elContext, base, property, null);
-        }
+        }*/
 
         return retVal;
     }
 
     private Object reloadAnnotatedBean(ELContext elContext, Object base, Object property, Object newRetVal) {
-        //Avoid recursive calls into ourselfs here
+        //Avoid recursive calls into ourselves here
 
         try {
             if (_getValue.get() != null && _getValue.get().equals(Boolean.TRUE)) {
@@ -76,11 +76,16 @@ public class ELResolverProxy extends ELResolver implements Decorated {
             }
             _getValue.set(Boolean.TRUE);
             //base == null means bean el
+
+            //TODO is this code still needed, the scan should have a proper
+            //information base at the time of the el consumption anyway
+            //since it is triggered already
+            //this looks like old code to me where we did the annotation scan two phased!
             if (base == null) {
                 final FacesContext facesContext = FacesContext.getCurrentInstance();
                 RuntimeConfig config = RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
                 Map<String, org.apache.myfaces.config.element.ManagedBean> mbeans = config.getManagedBeans();
-                if (!mbeans.containsKey(property.toString())) {
+                if (!((String)property).startsWith("javax_") && (!((String)property).startsWith("org_") && !mbeans.containsKey(property.toString()))) {
                     if (log.isLoggable(Level.FINE)) {
                         log.log(Level.FINE, "[EXT-SCRIPTING] ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
                     }
