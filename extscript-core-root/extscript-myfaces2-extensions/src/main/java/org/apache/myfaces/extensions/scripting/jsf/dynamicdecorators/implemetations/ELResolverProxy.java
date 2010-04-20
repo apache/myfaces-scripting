@@ -67,6 +67,9 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return retVal;
     }
 
+
+    @Deprecated
+    //soon do be removed
     private Object reloadAnnotatedBean(ELContext elContext, Object base, Object property, Object newRetVal) {
         //Avoid recursive calls into ourselves here
 
