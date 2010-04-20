@@ -75,6 +75,12 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
 
     }
 
+    public void markAsFullyRecompiled() {
+        for (ScriptingWeaver weaver : _weavers) {
+            weaver.markAsFullyRecompiled();
+        }
+    }
+
     public Class loadScriptingClassFromName(String className) {
         for (ScriptingWeaver weaver : _weavers) {
             Class retVal = weaver.loadScriptingClassFromName(className);

@@ -165,6 +165,10 @@ public class WeavingContextInitializer {
         applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH), addAdditionalClassPathStrategy);
         applyEntries(servletContext.getInitParameter(ScriptingConst.INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST), addWhiteListPackageStrategy);
 
+        String initialCompile = servletContext.getInitParameter(ScriptingConst.INIT_PARAM_INITIAL_COMPILE);
+
+        configuration.setInitialCompile((initialCompile == null) || initialCompile.trim().toLowerCase().equals("true"));
+
     }
 
     private static void applyEntries(String val, Strategy strategy) {

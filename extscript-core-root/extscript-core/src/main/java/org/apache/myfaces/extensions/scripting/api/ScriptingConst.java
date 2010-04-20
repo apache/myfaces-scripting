@@ -38,6 +38,7 @@ public class ScriptingConst {
     public static final String INIT_PARAM_RESOURCE_PATH = "org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.java.LOADER_PATHS";
+    public static final String INIT_PARAM_INITIAL_COMPILE="org.apache.myfaces.extensions.scripting.INITIAL_COMPILE_AND_SCAN";
     public static final String INIT_PARAM_MYFACES_PLUGIN = "org.apache.myfaces.FACES_INIT_PLUGINS";
 
     public static final String EXT_VAL_MARKER="org.apache.myfaces.extensions.validator";

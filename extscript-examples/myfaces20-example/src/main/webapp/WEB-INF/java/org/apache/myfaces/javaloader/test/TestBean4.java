@@ -25,7 +25,8 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 
 public class TestBean4 {
-    private String hello = "hello world form bean 4";
+    
+    private String hello = "Hello world from test bean 4";
 
     public String getHello() {
         return hello;

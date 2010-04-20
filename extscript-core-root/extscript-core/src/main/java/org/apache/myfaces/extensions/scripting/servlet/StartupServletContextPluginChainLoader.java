@@ -55,7 +55,12 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
         initContext(servletContext);
         initChainLoader(servletContext);
-        initCompileAndScan();
+        String initialCompileAndScan = (String) servletContext.getInitParameter(ScriptingConst.INIT_PARAM_INITIAL_COMPILE);
+        if(WeavingContext.isScriptingEnabled() && WeavingContext.getConfiguration().isInitialCompile()) {
+            initCompileAndScan();
+        } else if(!WeavingContext.getConfiguration().isInitialCompile()) {
+            WeavingContext.getWeaver().markAsFullyRecompiled();
+        }
     }
 
     private void initCompileAndScan() {

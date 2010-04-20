@@ -90,6 +90,10 @@ public class MockupScriptingWeaver implements ScriptingWeaver {
         _lastOp = "fullRecompile";
     }
 
+    public void markAsFullyRecompiled() {
+        
+    }
+
     public void postStartupActions() {
         _lastOp = "postStartupActions";
     }

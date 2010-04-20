@@ -44,16 +44,18 @@ public class IntialScanAnnotationListener implements SystemEventListener {
     }
 
     public void processEvent(SystemEvent event) {
-            if (!event.getClass().equals(PostConstructApplicationEvent.class)) {
-                return;
-            }
-            //we can rely on being in the same thread as the original
-            //startup context listener, so the initial weaver still is activated
-            ScriptingWeaver weaver = WeavingContext.getWeaver();
+        if (!event.getClass().equals(PostConstructApplicationEvent.class)) {
+            return;
+        }
+        //we can rely on being in the same thread as the original
+        //startup context listener, so the initial weaver still is activated
+        ScriptingWeaver weaver = WeavingContext.getWeaver();
 
+        if (WeavingContext.isScriptingEnabled() && WeavingContext.getConfiguration().isInitialCompile()) {
             weaver.fullRecompile();
             //we now do a full source or precompiled annotation scan
             //the entire scripting subsystem should be initialized by now
             weaver.fullClassScan();
+        }
     }
 }

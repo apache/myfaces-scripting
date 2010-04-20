@@ -111,6 +111,11 @@ public interface ScriptingWeaver {
     public void fullRecompile();
 
     /**
+     * allows to mark the current weaving state as fully recompiled
+     */
+    public void markAsFullyRecompiled();
+
+    /**
      * initiates all post startup actions which have to be performed
      * on the scripting subsystems after the entire scripting engine
      * configuration has been activated (in most cases

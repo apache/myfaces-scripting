@@ -383,7 +383,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return context != null && context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
     }
 
-    protected void markAsFullyRecompiled() {
+    public void markAsFullyRecompiled() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context != null) {
             //mark the request as tainted with recompile
