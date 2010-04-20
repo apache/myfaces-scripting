@@ -279,9 +279,10 @@
             </p>
             <p></p>
             <center>
-               
+
                 <object width="660" height="405">
-                    <param name="movie" value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1"></param>
+                    <param name="movie"
+                           value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1"></param>
                     <param name="allowFullScreen" value="true"></param>
                     <param name="allowscriptaccess" value="always"></param>
                     <embed src="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1&#38;?&#38;border=1"
@@ -372,8 +373,38 @@
                 </ul>
             </subsection>
 
+
             <subsection name="Visual Overview">
                 <img src="images/ext-scripting-structure-fine.jpg"/>
+            </subsection>
+        </section>
+
+        <section name="Extension Frameworks">
+
+            <subsection name="EXT-SCRIPTING and EXT-VAL">
+                <p>While the target of supporting extension frameworks will be post 1.0 Ext-Scripting already
+                    supports dynamic bean validation and Ext-Val
+                </p>
+
+                <p>To setup Ext-Val simply add the needed dependencies and you can start to use it instantly</p>
+                <p>The MyFaces 2.0 demo has a simple example ported over from the Ext-Val distribution which
+                    shows the dynamic aspects of using Ext-Val and Ext-Scripting combined
+                </p>
+
+                <p>The same what applies to Ext-Val also applies to straight bean validation.</p>
+
+            </subsection>
+
+            <subsection name="EXT-SCRIPTING and Spring">
+                <p>Currently there is no direct Spring support for Ext-Scripting, it however is in the works
+                    and will be delivered in a release post 1.0
+                </p>
+            </subsection>
+
+            <subsection name="EXT-SCRIPTING and CDI">
+                <p>Currently there is no direct CDI support for Ext-Scripting, it however the
+                    work on it will be started post 1.0
+                </p>
             </subsection>
         </section>
 
