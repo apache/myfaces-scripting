@@ -98,6 +98,8 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
     }
 
     private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
+        /*since we reprocess the managed properties we can handle them here by clearing them first*/
+        mbean.getManagedProperties().clear();
         for (Field field : fields) {
             if (log.isLoggable(Level.FINEST)) {
                 log.log(Level.FINEST, "  Scanning field '" + field.getName() + "'");

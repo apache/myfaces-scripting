@@ -16,28 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.myfaces.javaloader.test;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ManagedProperty;
-
+import javax.faces.bean.RequestScoped;
 import javax.faces.event.ComponentSystemEvent;
-import javax.el.ELContext;
+
+/**
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
+
+public class JavaTestBeanReplacement {
 
 
-@ManagedBean(name = "javatestbean")
-@RequestScoped
-public class TestBean2 {
-
-
-    
-    int cnt = 0;
-    
-    String sayHello = "<h2>hello world test</h2>";
-    String hello2 = "hello from added attribute";
-    String hello3 = "hello from  added attribute 2";
+    String sayHello = "<h2>hello world test JavaTestBeanReplacement</h2>";
+    String hello2 = "hello from added attribute JavaTestBeanReplacement";
+    String hello3 = "hello from  added attribute 2 JavaTestBeanReplacement";
 
 
     @ManagedProperty(value = "#{javatestbean4xxx}")
@@ -51,10 +48,10 @@ public class TestBean2 {
     }
 
     public String getSayHello() {
-      
 
-      return bean4.getHello();
-        //return "replacement";
+
+       // return bean4.getHello();
+        return sayHello;
     }
 
     public String getSayHello2() {

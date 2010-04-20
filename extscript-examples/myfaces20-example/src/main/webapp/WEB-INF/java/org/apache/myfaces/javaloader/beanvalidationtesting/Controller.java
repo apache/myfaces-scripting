@@ -47,7 +47,7 @@ public class Controller {
     
     @BeanValidation.List({
             @BeanValidation(useGroups = Default.class),
-            @BeanValidation(viewIds = "/beanValidation.xhtml", useGroups = User.class)
+            @BeanValidation(viewIds = "/beanValidation.xhtml", useGroups = Admin.class)
             
     })
     private Person person = new Person();
