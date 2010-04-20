@@ -20,6 +20,7 @@ package org.apache.myfaces.extensions.scripting.core;
 
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 
 import java.io.Serializable;
 import java.util.*;
@@ -129,8 +130,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void requestRefresh() {
-
-        for (ScriptingWeaver weaver : _weavers) {
+    for (ScriptingWeaver weaver : _weavers) {
             weaver.requestRefresh();
         }
     }

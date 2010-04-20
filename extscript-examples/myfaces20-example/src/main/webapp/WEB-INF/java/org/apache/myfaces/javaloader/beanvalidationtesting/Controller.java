@@ -33,6 +33,8 @@ import javax.validation.groups.Default;
 
 /**
  * Controller class which is triggered and uses the EXT-VAL validation
+ * the idea is to have full ext-val support in ext-scripting
+ * so that you can edit your constraints and groups on the fly
  *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -45,19 +47,14 @@ public class Controller {
     
     @BeanValidation.List({
             @BeanValidation(useGroups = Default.class),
-            @BeanValidation(viewIds = "/beanValidation.xhtml", useGroups = User.class),
-            @BeanValidation(viewIds = "/groupValidation02.jsp", useGroups = Admin.class),
-            @BeanValidation(viewIds = "/modelValidation01.jsp", useGroups = Admin.class),
-            @BeanValidation(viewIds = "/modelValidation01.jsp", useGroups = Name.class,
-                    modelValidation = @ModelValidation(isActive = true))
+            @BeanValidation(viewIds = "/beanValidation.xhtml", useGroups = Admin.class)
+            
     })
     private Person person = new Person();
 
 
 
     public String validateSubmit() {
-        System.out.println("Validating submit");
-        // System.out.println(FacesContext.getCurrentInstance().getViewRoot().getViewId());
         return null;
     }
 

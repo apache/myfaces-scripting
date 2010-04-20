@@ -39,7 +39,8 @@ public class ScriptingConst {
     public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.java.LOADER_PATHS";
     public static final String INIT_PARAM_MYFACES_PLUGIN = "org.apache.myfaces.FACES_INIT_PLUGINS";
-        
+
+    public static final String EXT_VAL_MARKER="org.apache.myfaces.extensions.validator";
 
     public static final String CONTEXT_VALUE_DIVIDER = ",";
 
@@ -112,4 +113,5 @@ public class ScriptingConst {
             "        <dispatcher>INCLUDE</dispatcher>\n" +
             "        <dispatcher>ERROR</dispatcher>\n" +
             "    </filter-mapping>";
+    static final String EXT_VAL_REQ_KEY = "org.apache.myfaces.extension.scripting.clearExtvalCache_Done";
 }

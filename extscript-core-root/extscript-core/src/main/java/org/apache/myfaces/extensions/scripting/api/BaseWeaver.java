@@ -287,8 +287,32 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 }
             }
         }
+
+        //TODO move this over to application events once they are in place
+        clearExtvalCache();
+
         _beanHandler.personalScopeRefresh();
 
+    }
+
+    /**
+     * this clears the attached EXT-VAL cache in case of a refresh,
+     * note this is a temporarily hack once our application
+     * event system is in place this will be moved over to a specialized event handler
+     */
+    private void clearExtvalCache() {
+        Map requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        if (requestMap.containsKey(ScriptingConst.EXT_VAL_REQ_KEY)) {
+            return;
+        }
+        requestMap.put(ScriptingConst.EXT_VAL_REQ_KEY, Boolean.TRUE);
+        Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
+        Set<String> keySet = applicationMap.keySet();
+        for (String key : keySet) {
+            if (key.startsWith(ScriptingConst.EXT_VAL_MARKER)) {
+                applicationMap.remove(key);
+            }
+        }
     }
 
     /**

@@ -150,6 +150,8 @@ public class WeavingContext {
      * some artefacts need a full request refresh
      */
     public static void doRequestRefreshes() {
+        //TODO emit an application event here
+        //which enforces attached libraries to refresh themselves
         if (isScriptingEnabled())
             getWeaver().requestRefresh();
     }
