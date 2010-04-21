@@ -45,7 +45,7 @@ public class Person {
     //demo for bean validation based validation support
     @NotNull
     @Size.List({
-            @Size(min = 3, max = 6, groups = User.class),
+            @Size(min = 3, max = 8, groups = User.class),
             @Size(min = 3, max = 12, groups = Admin.class)
     })
     private String lastName;

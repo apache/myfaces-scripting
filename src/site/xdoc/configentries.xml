@@ -24,7 +24,7 @@
         or
         <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
     </section>
-    
+
     <section name="Appendix: Configuration Entries">
         <subsection name="General Information">
             <p>
@@ -79,9 +79,12 @@
                     <td>Additional comma separated loader paths to allow direct editing of resources on the sources
                         directory instead of editing in the deployment directory
                     </td>
-                    <td>Important notice, in most cases this path will point to the root of your web application directory
-                    (ie: src/main/webapp in a standard Maven2 structure or &lt;project-root&gt;/webapp for a standard
-                    Eclipse project structure)</td>
+                    <td>Important notice, in most cases this path will point to the root of your web application
+                        directory
+                        (ie: src/main/webapp in a standard Maven2 structure or &lt;project-root&gt;/webapp for a
+                        standard
+                        Eclipse project structure)
+                    </td>
                 </tr>
                 <tr>
                     <td>facelets.RESOURCE_RESOLVER</td>
@@ -109,7 +112,7 @@
         </table>
 
         <section name="Navigation Bottom">
-            <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+            <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
             or
             <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
         </section>
