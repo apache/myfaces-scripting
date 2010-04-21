@@ -3,14 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
       xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:grv="http://myfaces.apache.org/groovy">
-<head>
+<h:head>
     <title>Hello World</title>
-</head>
+</h:head>
 <body>
 <ui:composition template="/template.xhtml">
 
     <ui:define name="body">
-
+        <h:outputScript name="jsf.js" library="javax.faces"
+            target="head"/>
+        
 
         <h1>
             <ui:insert name="title">Ext-Scripting Javablog Example</ui:insert>
@@ -38,11 +40,13 @@
                         <h:inputTextarea value="#{javaBlogView.content}"/>
                     </h:panelGrid>
                     <hr/>
-                    <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry}" value="Add Blog Entry"/>
+                    <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry}" value="Add Blog Entry">
+                        <f:ajax execute="@this" render="content"/>
+                    </h:commandButton>
                 </h:panelGrid>
             </div>
 
-            <h:panelGrid columns="1" styleClass="right">
+            <h:panelGrid id="content" columns="1" styleClass="right">
                 <ui:repeat value="#{javaBlogService.blogEntries}" var="item">
                     <h:panelGrid columns="1" styleClass="messageBox">
                         <h:panelGroup styleClass="topic">
