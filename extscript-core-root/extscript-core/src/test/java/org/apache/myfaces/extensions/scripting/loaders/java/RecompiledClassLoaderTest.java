@@ -69,14 +69,15 @@ public class RecompiledClassLoaderTest {
 
     @Test
     public void testLoadClass() throws Exception {
+        synchronized (ContextUtils.COMPILE_LOAD_MONITOR) {
+            //the simple reloading case is handled by the reloading strategy testcase
+            //so this test is mostly just to test the rest of the class
 
-        //the simple reloading case is handled by the reloading strategy testcase
-        //so this test is mostly just to test the rest of the class
+            Class clazz1 = _loader.loadClass("java.lang.String");
+            Class clazz2 = _loader.loadClass("java.lang.String");
+            assertTrue(clazz1.hashCode() == clazz2.hashCode());
 
-        Class clazz1 = _loader.loadClass("java.lang.String");
-        Class clazz2 = _loader.loadClass("java.lang.String");
-        assertTrue(clazz1.hashCode() == clazz2.hashCode());
-
+        }
     }
 
     @Test

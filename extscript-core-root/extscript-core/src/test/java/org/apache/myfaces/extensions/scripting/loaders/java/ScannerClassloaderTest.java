@@ -63,10 +63,11 @@ public class ScannerClassloaderTest {
 
     @Test
     public void testLoadClass() throws Exception {
-        Class clazz1 = _loader.loadClass("compiler.TestProbe1");
-        Class clazz2 = _loader.loadClass("compiler.TestProbe1");
-        assertTrue(clazz1 == clazz2);
+        synchronized (ContextUtils.COMPILE_LOAD_MONITOR) {
+            Class clazz1 = _loader.loadClass("compiler.TestProbe1");
+            Class clazz2 = _loader.loadClass("compiler.TestProbe1");
+            assertTrue(clazz1 == clazz2);
+        }
     }
 
-    
 }

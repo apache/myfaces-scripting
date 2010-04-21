@@ -85,20 +85,21 @@ public class SimpleReloadingStrategyTest {
 
     @Test
     public void testReload() throws Exception {
+        synchronized (ContextUtils.COMPILE_LOAD_MONITOR) {
+            Object probe = _loader.loadClass("compiler.TestProbe1").newInstance();
+            ReloadingMetadata metaData = getMetadata(probe);
+            WeavingContext.getRefreshContext().getDaemon().getClassMap().put("compiler.TestProbe1", metaData);
 
-        Object probe = _loader.loadClass("compiler.TestProbe1").newInstance();
-        ReloadingMetadata metaData = getMetadata(probe);
-        WeavingContext.getRefreshContext().getDaemon().getClassMap().put("compiler.TestProbe1", metaData);
+            ReflectUtil.executeMethod(probe, "setTestAttr", "hello");
+            Object probe2 = _strategy.reload(probe, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
+            Object attr = ReflectUtil.executeMethod(probe, "getTestAttr");
+            assertFalse(probe.hashCode() == probe2.hashCode());
+            assertTrue(attr instanceof String);
+            assertTrue(((String) attr).equals("hello"));
 
-        ReflectUtil.executeMethod(probe, "setTestAttr", "hello");
-        Object probe2 = _strategy.reload(probe, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
-        Object attr =  ReflectUtil.executeMethod(probe, "getTestAttr");
-        assertFalse(probe.hashCode() == probe2.hashCode());
-        assertTrue(attr instanceof String);
-        assertTrue(((String)attr).equals("hello"));
-
-        Object probe3 = _strategy.reload(probe2, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
-        assertTrue(probe2 == probe3);
+            Object probe3 = _strategy.reload(probe2, ScriptingConst.ENGINE_TYPE_JSF_JAVA);
+            assertTrue(probe2 == probe3);
+        }
     }
 
     private ReloadingMetadata getMetadata(Object probe) {

@@ -37,6 +37,12 @@ import static org.junit.Assert.fail;
  * @version $Revision$ $Date$
  */
 public class ContextUtils {
+
+    /**
+     * locking monitor for the compile/load parts
+     */
+    public static volatile Boolean COMPILE_LOAD_MONITOR = new Boolean(true);
+
     /**
      * A startup routine shared by many tests
      * to do the basic weaving initialization
@@ -51,6 +57,7 @@ public class ContextUtils {
 
     /**
      * same as the other one but with a web.xml path being possible
+     *
      * @param webXmlPath the path to the web.xml
      * @return the servlet context
      */
@@ -60,17 +67,18 @@ public class ContextUtils {
         return context;
     }
 
-
     public static File doJavaRecompile(String sourceRoot) throws ClassNotFoundException {
-        DynamicCompiler compiler = new CompilerFacade(false);
-        try {
-            FileUtils.deleteDirectory(WeavingContext.getConfiguration().getCompileTarget());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        WeavingContext.getConfiguration().getCompileTarget().mkdirs();
-        return compiler.compileAllFiles(sourceRoot, "");
+        synchronized (COMPILE_LOAD_MONITOR) {
 
+            DynamicCompiler compiler = new CompilerFacade(false);
+            try {
+                FileUtils.deleteDirectory(WeavingContext.getConfiguration().getCompileTarget());
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+            WeavingContext.getConfiguration().getCompileTarget().mkdirs();
+            return compiler.compileAllFiles(sourceRoot, "");
+        }
     }
 
 }
