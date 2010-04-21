@@ -250,13 +250,44 @@
                     changes on them can be watched on the fly simple by a browser reload. There is no need to adjust
                     your web application server or your IDE for auto deployment mechanisms. Unnecessary web application
                     restarts for changed resources can be avoided that way.
+                    <b>Note while page reloading works on the fly for both JSF 1.2 and JSF 2.x+, resource reloading
+                    only works for JSF2.x+, if you need similar functionality for JSF 1.x  you can use
+                    a third party resource loading library like <a href="weblets.dev.java.net">Weblets</a>. </b>
                 </p>
                 <center>
                     <img src="images/source-resource.jpg" width="557px" height="470px" alt="Page and Resource Reloading"
                          title="Page and Resource Reloading"/>
                 </center>
             </subsection>
+            <subsection name="Setup and Usage">
+                <p> The central point of setting up your resource reloading are two configuration parameters</p>
+                <ul>
+                    <li>org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS</li>
+                    <li>facelets.RESOURCE_RESOLVER</li>
+                </ul>
+                <p>
+                The first parameter <b>org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS</b> defines
+                the root path for your resources (aka everything web related, like xhtml facelet templates css files etc..).
+                Note, despite being called resource LOADER_PATH in most cases this path will just be pointed
+                to the your <b>source web application root directory</b>.
+                (ie: src/main/webapp in a standard Maven2 structure or &lt;project-root&gt;/webapp for a standard
+                    Eclipse project structure.
+                The name resource just refers to the fact that for Ext-Scripting every web related file is seen as resource
+                </p>
+                <p>
+                    The second parameter <b>facelets.RESOURCE_RESOLVER</b> is responsible for enabling the resouce loading
+                    of facelet templates and pages, since Facelets does not have an auto plugging mechanism this has to be
+                    set to a standard value which is <b>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</b>
+                </p>
+                <p>
+                    For further reference please also visit out <a href="configentries.html">Appendix: Configuration Entries Overview</a>
+                    page.
+                </p>
+            </subsection>
+
+
         </section>
+
 
 
         <section name="Advanced Dependency Detection">

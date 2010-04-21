@@ -52,8 +52,9 @@
       <item name="Installation Beta 1" href="install_beta_1.html" />
 
       <item name="Users Guide" href="usersguide.html"/>
-      <item name="Appendix A: Configuration Entries" href="configentries.html" />
-      <item name="Appendix B: Example Configurations" href="exampleconfig.html" />
+      <item name="Appendix A: Setup Checklist" href="setup_steps.html" />
+      <item name="Appendix B: Configuration Entries" href="configentries.html" />
+      <item name="Appendix C: Example Configurations" href="exampleconfig.html" />
     </menu>
 
     <menu name="Foundation">

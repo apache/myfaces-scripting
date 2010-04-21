@@ -21,7 +21,7 @@
 
 <document>
     <section name="Navigation Top">
-        <a href="configentries.html">&lt;&lt;Appendix Configuration Entries</a>
+        <a href="configentries.html">&lt;&lt;appendix Configuration Entries</a>
     </section>
     <section name="Appendix: Example Configuration">
         <subsection name="General Information">
@@ -233,6 +233,6 @@
         </subsection>
     </section>
     <section name="Navigation Bottom">
-        <a href="configentries.html">&lt;&lt;Appendix Configuration Entries</a>
+        <a href="configentries.html">&lt;&lt;appendix Configuration Entries</a>
     </section>
 </document>    

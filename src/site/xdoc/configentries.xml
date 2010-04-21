@@ -20,9 +20,9 @@
 -->
 <document>
     <section name="Navigation Top">
-        <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+        <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
         or
-        <a href="exampleconfig.html">On to the Appendix: Example Configuration&gt;&gt;</a>
+        <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
     </section>
     
     <section name="Appendix: Configuration Entries">
@@ -79,17 +79,20 @@
                     <td>Additional comma separated loader paths to allow direct editing of resources on the sources
                         directory instead of editing in the deployment directory
                     </td>
+                    <td>Important notice, in most cases this path will point to the root of your web application directory
+                    (ie: src/main/webapp in a standard Maven2 structure or &lt;project-root&gt;/webapp for a standard
+                    Eclipse project structure)</td>
                 </tr>
                 <tr>
                     <td>facelets.RESOURCE_RESOLVER</td>
                     <td>NO</td>
                     <td>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</td>
-                    <td>Enables the loading of xhtml facelet pages from your sourcedir if
+                    <td>Enables the loading of xhtml facelet pages from your source directory, if
                         org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS is set properly
                     </td>
                 </tr>
                 <tr>
-                    <td>org.apache.myfaces. scripting.PGK_WHITELIST</td>
+                    <td>org.apache.myfaces.scripting.PGK_WHITELIST</td>
                     <td>NO</td>
                     <td>a comma separate list of whitelisted packages</td>
                     <td>Enables package whitelisting, a mechanism which allows to compile and reload only from
@@ -108,7 +111,7 @@
         <section name="Navigation Bottom">
             <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
             or
-            <a href="exampleconfig.html">On to the Appendix: Example Configuration&gt;&gt;</a>
+            <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
         </section>
 
 

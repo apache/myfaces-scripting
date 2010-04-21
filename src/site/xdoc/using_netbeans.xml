@@ -27,7 +27,7 @@
         <section name="Navigation Top">
             <a href="using_intellij.html">&lt;&lt;Back to the Intellij Users Guide</a>
             or
-            <a href="configentries.html">On to the Appendix: Config Entries&gt;&gt;</a>
+            <a href="setup_steps.html">On to the appendix: Setup Steps&gt;&gt;</a>
         </section>
 
 
@@ -98,7 +98,7 @@
         <section name="Navigation Bottom">
             <a href="using_intellij.html">&lt;&lt;Back to the Intellij Users Guide</a>
             or
-            <a href="configentries.html">On to the Appendix: Config Entries&gt;&gt;</a>
+            <a href="configentries.html">On to the appendix: Config Entries&gt;&gt;</a>
         </section>
 
     </body>

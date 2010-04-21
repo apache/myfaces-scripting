@@ -24,43 +24,62 @@
 
     <body>
 
-        <section name="Short setup overview">
-            <p>This section is only a checklist of things to do at the setup for details follow the explanations below
-            </p>
-
-            <p>
-                Manual setup
-                <ul>
-                    <li>Check if your installation environment is setup</li>
-                    <li>Download the appropriate meta bundle and place it in WEB-INF/lib</li>
-                    <li>Download groovy-all.jar and place it in WEB-INF/lib</li>
-                    <li>Prepare your script paths</li>
-                    <li>Add your web.xml entries</li>
-                    <li>mvn clean install ...</li>
-                </ul>
-            </p>
-            <p>
-                Build via maven
-                <ul>
-                    <li>Check if your installation environment is setup</li>
-                    <li>Add your pom xml dependencies and the repository entry</li>
-                    <li>Prepare your script paths</li>
-                    <li>Add your web.xml entries</li>
-                    <li>mvn clean install ...</li>
-                </ul>
-            </p>
-
-            <p>
-                Build via ide
-                <ul>
-                    <li>Check if your installation environment is setup</li>
-                    <li>Download the appropriate meta bundle and add it to your dependency and deployment settings</li>
-                    <li>Download groovy-all.jar and add it to your dependency and deployment settings</li>
-                    <li>Prepare your script paths</li>
-                    <li>Add your web.xml entries</li>
-                    <li>mvn clean install ...</li>
-                </ul>
-            </p>
+        <section name="Navigation Top">
+            <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+            or
+            <a href="configentries.html">On to the configuration entries overview&gt;&gt;</a>
         </section>
+
+        <section name="Appendix: Setup Steps">
+
+
+            <subsection name="Short setup overview">
+                <p>This section is only a checklist of things to do at the setup for details follow the explanations
+                    below
+                </p>
+
+                <p>
+                    Manual setup
+                    <ul>
+                        <li>Check if your installation environment is setup</li>
+                        <li>Download the appropriate meta bundle and place it in WEB-INF/lib</li>
+                        <li>Download groovy-all.jar and place it in WEB-INF/lib</li>
+                        <li>Prepare your script paths</li>
+                        <li>Add your web.xml entries</li>
+                        <li>mvn clean install ...</li>
+                    </ul>
+                </p>
+                <p>
+                    Build via maven
+                    <ul>
+                        <li>Check if your installation environment is setup</li>
+                        <li>Add your pom xml dependencies and the repository entry</li>
+                        <li>Prepare your script paths</li>
+                        <li>Add your web.xml entries</li>
+                        <li>mvn clean install ...</li>
+                    </ul>
+                </p>
+
+                <p>
+                    Build via ide
+                    <ul>
+                        <li>Check if your installation environment is setup</li>
+                        <li>Download the appropriate meta bundle and add it to your dependency and deployment settings
+                        </li>
+                        <li>Download groovy-all.jar and add it to your dependency and deployment settings</li>
+                        <li>Prepare your script paths</li>
+                        <li>Add your web.xml entries</li>
+                        <li>mvn clean install ...</li>
+                    </ul>
+                </p>
+            </subsection>
+        </section>
+
+        <section name="Navigation Bottom">
+                   <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+                   or
+                   <a href="configentries.html">On to the configuration entries overview&gt;&gt;</a>
+               </section>
+
     </body>
 </document>

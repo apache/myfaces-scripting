@@ -44,6 +44,26 @@
             </ul>
         </section>
 
+
+        <section name="Setup overview">
+            <subsection name="General Setup Information" >
+             <p>
+
+                Ext-Scripting has a complete appendix list over all configuration and setup options
+                for a quick overview please visit the following links. If you need detailed
+                setup information, then read further on.
+             </p>
+            </subsection>
+            <subsection name="Links">
+                <p>
+                    <ul><a href="setup_steps.html">Appendix: Configuration Setup Steps</a> </ul>
+                    <ul><a href="exampleconfig.html">Appendix: Example Configurations</a> </ul>
+                    <ul><a href="configentries.html">Appendix: List of Configuration Options</a> </ul>
+                </p>
+            </subsection>
+        </section>
+
+
         <section name="Checklist">
             <p>
 
@@ -193,7 +213,7 @@
     </filter>
     <filter-mapping>
         <filter-name>scriptingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/*.jsf</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -203,12 +223,16 @@
                     <b>MUST</b>
                     be set otherwise Ext-Scripting will not be enabled!
                 </p>
+                <p> For the filter pattern you can use every pattern which enables your web pages,
+                the standard cases are, either <b>*.jsf</b> or <b>/faces/*</b>
+                Note you <b>must</b> use the same pattern as described in the configuration
+                part of your Faces Servlet.</p>
                 <h4>Additional Optional Steps</h4>
                 <p>Ext-Scripting exposes a number configuration parameters which can be set via context parameters in
                     your web.xml
                 </p>
 
-                <h4>Adjust the web.xml Root source paths</h4>
+                <h4>Adjust the web.xml Root source paths.</h4>
                 <p>Since the goal of Ext-Scripting is to provide scriptability to a running web application, it has to
                     know where to find the sources. For this, a default location has been chosen
                     according to the standards set by the Mojarra Groovy Extension.
@@ -272,6 +296,7 @@
 
             </subsection>
         </section>
+
         <section name="Navigation Bottom">
             <a href="index.html">&lt;&lt;Back to the Start Page</a>
             or
