@@ -20,12 +20,13 @@ package org.apache.myfaces.groovyloader.blog
 
 import org.apache.myfaces.groovyloader.blog.BlogEntry;
 import java.util.List
+import java.util.ArrayList
 import java.util.logging.Logger
 
 
 
 public class BlogService {
-  List blogEntries = new ArrayList()
+  def blogEntries = new ArrayList()
 
   public void addEntry2(BlogEntry entry) {
     Logger log = Logger.getLogger(BlogService.class.getName())
@@ -35,7 +36,5 @@ public class BlogService {
 
   }
 
-  public List getBlogEntries() {
-    return blogEntries
-  }
+
 }
