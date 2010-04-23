@@ -41,20 +41,20 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.6.7</version>
+            <version>${groovy.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
-            <version>1.2.8</version>
+            <version>${myfaces12.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
-            <version>1.2.8</version>
+            <version>${myfaces12.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -93,7 +93,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.6.7</version>
+            <version>${groovy.version}</version>
         </dependency>
     </dependencies>
 
@@ -128,7 +128,7 @@
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-all</artifactId>
-                        <version>1.6.7</version>
+                        <version>${groovy.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
