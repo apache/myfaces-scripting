@@ -1,8 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:grv="http://myfaces.apache.org/groovy">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:grv="http://myfaces.apache.org/groovy">
 <head>
     <title>Hello World</title>
 </head>
@@ -33,14 +36,16 @@
                     </h:panelGrid>
                     <h:panelGrid columns="2" columnClasses="label, input">
                         <h:outputText styleClass="label" value="Content"/>
-                        <h:inputTextarea value="#{blogView.content}"/>
+                        <h:inputText value="#{blogView.content}"/>
                     </h:panelGrid>
                     <hr/>
-                    <h:commandButton styleClass="btn" action="#{blogView.addEntry}" value="Add Blog Entry"/>
+                    <h:commandButton styleClass="btn" action="#{blogView.addEntry}" value="Add Blog Entry">
+                       
+                    </h:commandButton>
                 </h:panelGrid>
             </div>
 
-            <h:panelGrid columns="1" styleClass="right">
+            <h:panelGrid id="content" columns="1" styleClass="right">
                 <ui:repeat value="#{blogService.blogEntries}" var="item">
                     <h:panelGrid columns="1" styleClass="messageBox">
                         <h:panelGroup styleClass="topic">

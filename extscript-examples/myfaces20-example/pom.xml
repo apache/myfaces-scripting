@@ -74,14 +74,14 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
-            <version>2.0.0-beta-3</version>
+            <version>${myfaces2.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
-            <version>2.0.0-beta-3</version>
+            <version>${myfaces2.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -99,26 +99,29 @@
              if you want to run bean validation
              and/or MyFaces ext-val
          -->
+
+        
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator</groupId>
             <artifactId>myfaces-extval-core</artifactId>
-            <version>2.0.3</version>
-            <scope>compile</scope>
+            <version>${extval.version}</version>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
             <artifactId>myfaces-extval-property-validation</artifactId>
-            <version>2.0.3</version>
-            <scope>compile</scope>
+            <version>${extval.version}</version>
         </dependency>
-
+        -->
+        
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
             <artifactId>myfaces-extval-bean-validation</artifactId>
-            <version>2.0.3</version>
-            <scope>compile</scope>
+            <version>${extval.version}</version>
         </dependency>
+
+        
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>

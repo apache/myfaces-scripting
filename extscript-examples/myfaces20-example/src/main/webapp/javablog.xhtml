@@ -41,7 +41,7 @@
                     </h:panelGrid>
                     <hr/>
                     <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry}" value="Add Blog Entry">
-                        <f:ajax execute="@this" render="content"/>
+                        <f:ajax execute="@form" render="content"/>
                     </h:commandButton>
                 </h:panelGrid>
             </div>

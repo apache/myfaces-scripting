@@ -9,7 +9,9 @@ http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
     <tag>
         <tag-name>groovyvalidator</tag-name>
         <validator>
+
             <validator-id>org.apache.myfaces.groovyloader.test.TestValidator</validator-id>
+           
         </validator>
     </tag>
     <tag>

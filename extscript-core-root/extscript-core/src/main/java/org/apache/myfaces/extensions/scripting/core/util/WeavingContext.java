@@ -163,11 +163,11 @@ public class WeavingContext {
      * @return true in case of being scriptable
      */
     public static boolean isScriptingEnabled() {
-        return  _enabled.get();
+        return  _enabled != null && _enabled.get();
     }
 
     public static void setScriptingEnabled(boolean enabled) {
-        _enabled = new AtomicBoolean(enabled);
+        _enabled.set(enabled);
     }
 
     /**
@@ -182,7 +182,7 @@ public class WeavingContext {
      * @param enabled true set from out filter init
      */
     public static void setFilterEnabled(boolean enabled) {
-        _filterEnabled = new AtomicBoolean(enabled);
+        _filterEnabled.set(enabled);
     }
 
     /**

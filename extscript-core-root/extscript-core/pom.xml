@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -105,8 +106,13 @@
         <plugins>
            
             <plugin>
-                <groupId>org.codehaus.mojo.groovy</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+
+                    <providerSelection>1.7</providerSelection>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -123,6 +129,19 @@
                         <artifactId>groovy-all</artifactId>
                         <version>${groovy.version}</version>
                     </dependency>
+                    <!--
+                    <dependency>
+                        <groupId>org.codehaus.gmaven.runtime</groupId>
+                        <artifactId>gmaven-runtime-1.7</artifactId>
+                        <version>1.2</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>org.codehaus.groovy</groupId>
+                                <artifactId>groovy-all</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    -->
                 </dependencies>
             </plugin>
 

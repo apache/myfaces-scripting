@@ -11,8 +11,9 @@
     
     <properties>
         <myfaces12.version>1.2.8</myfaces12.version>
-        <myfaces2.version>2.0.0-SNAPSHOT</myfaces2.version>
+        <myfaces2.version>2.0.0</myfaces2.version>
         <groovy.version>1.7.1</groovy.version>
+        <extval.version>2.0.4-SNAPSHOT</extval.version>
     </properties>
 
     <description>
@@ -64,27 +65,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>apache-maven-snapshots</id>
-            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-        </repository>
-        <repository>
-            <id>myfaces2beta3</id>
-            <url>http://people.apache.org/~lu4242/myfaces200beta3/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
+        
     </repositories>
 
     <dependencies>
@@ -214,10 +195,11 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
+                <!--
                 <configuration>
                     <aggregate>true</aggregate>
                 </configuration>
-
+                -->
             </plugin>
 
             <plugin>
@@ -232,10 +214,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>surefire-report-maven-plugin</artifactId>
-                <configuration>
-                    <parallel>classes</parallel>
-                    <threadCount>4</threadCount>
-                </configuration>
+                
             </plugin>
 
             <plugin>

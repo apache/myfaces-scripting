@@ -31,7 +31,9 @@
                 <h:inputText value="#{blogView.content}"/>
 
 
-                <h:commandLink action="#{blogView.addEntry}" value="Add Blog"/>
+                <h:commandLink action="#{blogView.addEntry}" value="Add Blog">
+                     <f:ajax execute="@this" render="content"/>
+                </h:commandLink>
             </h:panelGrid>
             <h:panelGrid columns="1">
                 <h:outputText value="Blog Entries"/>
