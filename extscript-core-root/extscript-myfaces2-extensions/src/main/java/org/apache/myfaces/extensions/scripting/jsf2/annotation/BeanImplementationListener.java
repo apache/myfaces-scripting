@@ -30,12 +30,12 @@ import java.util.*;
 import java.util.logging.Level;
 
 /**
+ * bean implementation listener which registers new java sources
+ * into the runtime config, note this class is not thread safe
+ * it is only allowed to be called from a single thread
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          bean implementation listener which registers new java sources
- *          into the runtime config, note this class is not thread safe
- *          it is only allowed to be called from a single thread
  */
 
 public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener {
@@ -101,14 +101,14 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         /*since we reprocess the managed properties we can handle them here by clearing them first*/
         mbean.getManagedProperties().clear();
         for (Field field : fields) {
-            if (log.isLoggable(Level.FINEST)) {
-                log.log(Level.FINEST, "  Scanning field '" + field.getName() + "'");
+            if (_log.isLoggable(Level.FINEST)) {
+                _log.log(Level.FINEST, "  Scanning field '" + field.getName() + "'");
             }
             javax.faces.bean.ManagedProperty property = field
                     .getAnnotation(ManagedProperty.class);
             if (property != null) {
-                if (log.isLoggable(Level.FINE)) {
-                    log.log(Level.FINE, "  Field '" + field.getName()
+                if (_log.isLoggable(Level.FINE)) {
+                    _log.log(Level.FINE, "  Field '" + field.getName()
                             + "' has a @ManagedProperty annotation");
                 }
 

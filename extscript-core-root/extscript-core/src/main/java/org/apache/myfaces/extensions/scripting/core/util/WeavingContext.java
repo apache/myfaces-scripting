@@ -190,7 +190,7 @@ public class WeavingContext {
      */
     @SuppressWarnings("unused")
     public static boolean isFilterEnabled() {
-        return _filterEnabled.get();
+        return _filterEnabled!= null && _filterEnabled.get();
     }
 
     /**

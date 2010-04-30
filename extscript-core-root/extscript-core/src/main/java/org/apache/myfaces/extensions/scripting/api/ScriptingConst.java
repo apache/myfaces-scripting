@@ -115,4 +115,5 @@ public class ScriptingConst {
             "        <dispatcher>ERROR</dispatcher>\n" +
             "    </filter-mapping>";
     static final String EXT_VAL_REQ_KEY = "org.apache.myfaces.extension.scripting.clearExtvalCache_Done";
+    public static final String JAVAX_FACES = "javax.faces";
 }

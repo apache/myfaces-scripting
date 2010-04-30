@@ -16,8 +16,7 @@
         <h:form id="form">
             <h:panelGroup styleClass="left">
                 <h:panelGroup styleClass="stdBox">
-                    <h:messages />
-                        
+                    <h:messages/>
                     <h3>Validator Test 1</h3>
                     <h:outputText id="output1" value="Please enter your name"/>
                     <h:outputText value="#{javatestbean4.hello}"/>
@@ -40,16 +39,15 @@
                     <br/>
                     <h:outputFormat escape="false" value="#{javatestbean.sayHello}"/>
                 </h:panelGroup>
-                <!--
+
                 <h:panelGroup styleClass="stdBox">
                     <h3>Converter Test 1</h3>
                     please insert "hello world" into the input field
-                    <h:inputText>
+                    <h:inputText value="#{testbean.xxx}">
                         <grv:testConverter1/>
                         <grv:testValidator1/>
                     </h:inputText>
                 </h:panelGroup>
-                -->
                 <h:panelGroup styleClass="stdBox">
                     <h3>Action Test 1</h3>
                     <h:commandButton value="Press me dynamic" action="#{testbean.doit}"/>

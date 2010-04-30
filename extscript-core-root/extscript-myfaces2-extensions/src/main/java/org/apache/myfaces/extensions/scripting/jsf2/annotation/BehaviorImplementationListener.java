@@ -19,7 +19,6 @@
 package org.apache.myfaces.extensions.scripting.jsf2.annotation;
 
 import org.apache.myfaces.extensions.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.extensions.scripting.jsf2.annotation.purged.PurgedComponent;
 import org.apache.myfaces.extensions.scripting.jsf2.annotation.purged.PurgedBehavior;
 
 import javax.faces.component.behavior.FacesBehavior;
@@ -47,8 +46,8 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
 
 
     protected void addEntity(Class clazz, String val) {
-        if (log.isLoggable(Level.FINEST)) {
-            log.log(Level.FINEST, "addBehavior(" + val + ","
+        if (_log.isLoggable(Level.FINEST)) {
+            _log.log(Level.FINEST, "addBehavior(" + val + ","
                     + clazz.getName() + ")");
         }
         getApplication().addBehavior(val, clazz.getName());

@@ -29,7 +29,6 @@ import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 /**
@@ -78,7 +77,7 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
                     renderKitId == null && toCompare.getRenderKitId() == null) {
                 return true;
             }
-            //TODO a simple hash compare should be enough for almost if not all cases since the hashes have a very low propability to be the same
+
             return componentFamily.equals(toCompare.getComponentFamily()) &&
                     rendererType.equals(toCompare.getRendererType()) &&
                     renderKitId.equals(toCompare.getRenderKitId());
@@ -129,8 +128,8 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         _inverseIndex.put(entry, clazz.getName());
         _alreadyRegistered.put(clazz.getName(), entry);
 
-        if (log.isLoggable(Level.FINEST)) {
-            log.log(Level.FINEST, "addRenderer(" + renderKitId + ", "
+        if (_log.isLoggable(Level.FINEST)) {
+            _log.log(Level.FINEST, "addRenderer(" + renderKitId + ", "
                     + entry.getComponentFamily() + ", " + entry.getRendererType()
                     + ", " + clazz.getName() + ")");
         }
@@ -138,9 +137,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
         try {
             renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), (Renderer) clazz.newInstance());
         } catch (InstantiationException e) {
-            log.log(Level.SEVERE, "", e);
+            _log.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            log.log(Level.SEVERE, "", e);
+            _log.log(Level.SEVERE, "", e);
         }
     }
 
@@ -193,9 +192,9 @@ public class RendererImplementationListener extends MapEntityAnnotationScanner i
                 renderKit.addRenderer(entry.getComponentFamily(), entry.getRendererType(), PurgedRenderer.class.newInstance());
             }
         } catch (InstantiationException e) {
-            log.log(Level.SEVERE, "", e);
+            _log.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            log.log(Level.SEVERE, "", e);
+            _log.log(Level.SEVERE, "", e);
         }
     }
 }

@@ -8,28 +8,16 @@
 </head>
 <body>
 <ui:composition template="/template.xhtml">
+    <ui:define name="additionalHeadIncludes">
+        <link type="text/css" rel="stylesheet" href="#{resource['styles:compilerWindow.css']}"/>
+    </ui:define>
+
     <ui:define name="body">
-        <style type="text/css">
-            div#menu {
-                display: none;
-            }
-
-
-            div.centerDiv {
-                width: auto;
-            }
-            div.errorBox {
-                width: auto;
-            }
-
-            div.errorBox .line {
-                width: auto;
-            }
-        </style>
         <!-- also we need to add some values here -->
         <div class="centerDiv">
             <h:form>
-                <h:outputLink style="margin-left: 10px; color: white; font-weight: bold;" value="./compilerWindow.jsf" >Refresh Compiler output &gt;&gt;</h:outputLink>
+                <h:outputLink style="margin-left: 10px; color: white; font-weight: bold;"
+                              value="./compilerWindow.jsf">Refresh Compiler output &gt;&gt;</h:outputLink>
             </h:form>
         </div>
     </ui:define>

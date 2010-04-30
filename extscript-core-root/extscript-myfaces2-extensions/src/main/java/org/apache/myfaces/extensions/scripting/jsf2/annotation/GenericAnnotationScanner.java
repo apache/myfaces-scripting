@@ -18,10 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf2.annotation;
 
-import org.apache.myfaces.extensions.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.extensions.scripting.api.ClassScanListener;
-import org.apache.myfaces.extensions.scripting.api.ClassScanner;
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.extensions.scripting.api.*;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.java.ScannerClassloader;
 import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
@@ -47,7 +44,6 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
 
     Map<String, String> _registeredAnnotations = new HashMap<String, String>();
     LinkedList<String> _sourcePaths = new LinkedList<String>();
-    private static final String JAVAX_FACES = "javax.faces";
 
     ScriptingWeaver _weaver = null;
 
@@ -68,7 +64,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
         List<java.lang.annotation.Annotation> retVal = new ArrayList<java.lang.annotation.Annotation>(annotations.length);
         
         for (java.lang.annotation.Annotation annotation : annotations) {
-            if (annotation.annotationType().getName().startsWith(JAVAX_FACES)) {
+            if (annotation.annotationType().getName().startsWith(ScriptingConst.JAVAX_FACES)) {
                 retVal.add(annotation);
             }
 

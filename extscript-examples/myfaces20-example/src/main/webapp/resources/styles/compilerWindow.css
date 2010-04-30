@@ -1,0 +1,15 @@
+div#menu {
+    display: none;
+}
+
+div.centerDiv {
+    width: auto;
+}
+
+div.errorBox {
+    width: auto;
+}
+
+div.errorBox .line {
+    width: auto;
+}

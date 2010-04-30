@@ -27,12 +27,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
+ * Base Class for the JSF2 annotation scanning
+ * (note we do not rely on the impl
+ * for annotation scanning because in the long
+ * run we want to support Mojarra)
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
 public class BaseAnnotationScanListener {
-    Logger log = Logger.getLogger(this.getClass().getName());
+    Logger _log = Logger.getLogger(this.getClass().getName());
     static Map<String, Object> _alreadyRegistered = new ConcurrentHashMap<String, Object>(8, 0.75f, 1);
 
     protected RuntimeConfig getRuntimeConfig() {

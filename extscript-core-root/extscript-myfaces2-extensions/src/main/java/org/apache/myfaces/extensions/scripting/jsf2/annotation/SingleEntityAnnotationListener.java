@@ -25,6 +25,9 @@ import java.util.Map;
 import java.lang.annotation.Annotation;
 
 /**
+ * annotation scanner which generalized
+ * scans annotations with one value entry
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

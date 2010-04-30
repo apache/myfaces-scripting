@@ -12,21 +12,15 @@
     <ui:define name="body">
         <h:outputScript name="jsf.js" library="javax.faces"
             target="head"/>
-        
-
         <h1>
             <ui:insert name="title">Ext-Scripting Javablog Example</ui:insert>
         </h1>
-
         <h:form id="form">
-
             <div class="left" style="margin-top: 3px;">
                 <h:panelGrid id="grid" columns="1" styleClass="stdBox">
                     <h:outputFormat id="title1" escape="false" styleClass="title" value="#{javaBlogView.title}"/>
                     <h:outputFormat id="title11" escape="false"  styleClass="title1" value="#{javaBlogView.title1}"/>
-
                     <hr/>
-
                     <h:panelGrid columns="2" columnClasses="label, input">
                         <h:outputText value="First Name"/>
                         <h:inputText value="#{javaBlogView.firstName}"/>
@@ -45,7 +39,6 @@
                     </h:commandButton>
                 </h:panelGrid>
             </div>
-
             <h:panelGrid id="content" columns="1" styleClass="right">
                 <ui:repeat value="#{javaBlogService.blogEntries}" var="item">
                     <h:panelGrid columns="1" styleClass="messageBox">
@@ -61,7 +54,6 @@
                     <br/>
                 </ui:repeat>
             </h:panelGrid>
-
         </h:form>
     </ui:define>
 </ui:composition>

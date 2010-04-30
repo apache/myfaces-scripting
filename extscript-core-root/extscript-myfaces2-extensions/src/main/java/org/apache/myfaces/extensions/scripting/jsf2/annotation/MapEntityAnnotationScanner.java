@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.lang.annotation.Annotation;
 
 /**
+ * Annotation scanner which scans generically
+ * an annotation with more than one entry values.
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

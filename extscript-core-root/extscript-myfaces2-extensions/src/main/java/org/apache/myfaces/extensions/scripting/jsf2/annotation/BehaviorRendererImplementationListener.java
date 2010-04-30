@@ -19,7 +19,6 @@
 package org.apache.myfaces.extensions.scripting.jsf2.annotation;
 
 import org.apache.myfaces.extensions.scripting.jsf2.annotation.purged.PurgedClientBehaviorRenderer;
-import org.apache.myfaces.extensions.scripting.jsf2.annotation.purged.PurgedRenderer;
 
 import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
@@ -166,9 +165,9 @@ public class BehaviorRendererImplementationListener extends MapEntityAnnotationS
                 renderKit.addClientBehaviorRenderer(entry.getRendererType(), PurgedClientBehaviorRenderer.class.newInstance());
             }
         } catch (InstantiationException e) {
-            log.log(Level.SEVERE, "", e);
+            _log.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            log.log(Level.SEVERE, "", e);
+            _log.log(Level.SEVERE, "", e);
         }
     }
 

@@ -19,7 +19,6 @@
 package org.apache.myfaces.extensions.scripting.jsf2.annotation;
 
 import org.apache.myfaces.extensions.scripting.api.AnnotationScanListener;
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.jsf2.annotation.purged.PurgedComponent;
 
 import javax.faces.component.FacesComponent;
@@ -47,8 +46,8 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
 
 
     protected void addEntity(Class clazz, String val) {
-        if (log.isLoggable(Level.FINEST)) {
-            log.log(Level.FINEST, "addComponent(" + val + "," + clazz.getName() + ")");
+        if (_log.isLoggable(Level.FINEST)) {
+            _log.log(Level.FINEST, "addComponent(" + val + "," + clazz.getName() + ")");
         }
         getApplication().addComponent(val, clazz.getName());
         //register the renderer if not registered

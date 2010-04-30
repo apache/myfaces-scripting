@@ -7,12 +7,17 @@
 </head>
 <body>
 
-<ui:composition template="/template.xhtml">
 
+<ui:composition template="/template.xhtml">
     <ui:define name="body">
         <h1>
-            <h:outputText value="Hello this form should trigger some bean validation via ext-val"/>
+            <h:outputText
+                    value="A simple bean validation example using Apache MyFaces Ext-Val and the Bean Validation RI"/>
         </h1>
+        <h2>
+            <h:outputText
+                    value="You can edit the corresponding files under /WEB-INF/java/org/apache/myfaces/javaloader/beanvalidationtesting/"/>
+        </h2>
         <h:form id="form2">
             <h:panelGrid id="grid" columns="1" styleClass="stdBox">
                 <h:panelGrid columns="3">
@@ -27,7 +32,6 @@
                 <h:commandLink id="link1" action="#{validationController.validateSubmit}">
                     <h:outputText id="linkText" value="Submit"/>
                 </h:commandLink>
-
             </h:panelGrid>
         </h:form>
     </ui:define>
