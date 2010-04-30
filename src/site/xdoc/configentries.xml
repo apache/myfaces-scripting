@@ -52,7 +52,7 @@
                     <td>scriptingFilter</td>
                     <td>YES</td>
                     <td></td>
-                    <td>The scripting filter for further information look below</td>
+                    <td>The scripting filter for further information look <a href="#scriptingFilter">below</a></td>
                 </tr>
 
 
@@ -111,12 +111,61 @@
             </tbody>
         </table>
 
-        <section name="Navigation Bottom">
-            <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
-            or
-            <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
-        </section>
+
+
+
 
 
     </section>
+
+    <section name="Normal configuration entries">
+        <p>all configuration entries except for the scripting filter follow the context parameter convention</p>
+         <source><![CDATA[
+            <context-param>
+                <description>
+                    Initializes the plugins for our scripting support
+                </description>
+                <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+                <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+            </context-param>
+         ]]>
+         </source>
+
+    </section>
+
+    <section name="Scripting Filter">
+        <a name="scriptingFilter" />
+        <p>All configuration entries are context parameters, the only exception is the scripting filter which is a servlet filter</p>
+        <p>The scripting filter differs in its configuration by having to provide a servlet filter tag and a pattern:</p>
+
+        <source><![CDATA[
+            <!-- ======================================================================================
+                    Scripting Filter
+                    Second step to enable Ext-Scripting
+                 ====================================================================================== -->
+            <filter>
+                <filter-name>scriptingFilter</filter-name>
+                <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+            </filter>
+            <filter-mapping>
+                <filter-name>scriptingFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+                <dispatcher>REQUEST</dispatcher>
+                <dispatcher>FORWARD</dispatcher>
+                <dispatcher>INCLUDE</dispatcher>
+                <dispatcher>ERROR</dispatcher>
+            </filter-mapping>
+        ]]>
+        </source>            
+        <p>Note for further examples of the configuration go to the section <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a> </p>
+    </section>
+
+
+    <section name="Navigation Bottom">
+        <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
+        or
+        <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
+    </section>
+
+
 </document>

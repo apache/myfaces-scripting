@@ -439,6 +439,78 @@
             </subsection>
         </section>
 
+        
+
+        <section name="Build Process and Multiuser Environments">
+            <p>While Ext-Scripting itself is only used for rapid prototyping following two szenarii will probably occur in a typical
+            user development environment</p>
+            <subsection name="Compiling the Groovy classes for the final build">
+                <p>while it makes sense to have the Groovy sources for editing, for the final deployment, it makes sense
+                to just deliver the classes instead of the source files.
+                While doing that for your ide is out of scope of this documentation (currently). The documentation can provide you the information on how
+                to do it in Apache Maven:</p>
+                <p> The trick is to combine two things. Apache Maven 2 profiles and the Apache Maven2 groovy plugin</p>
+                <p> For a short explanation on Apache Maven 2 profiles please follow this link: <a href="http://maven.apache.org/guides/introduction/introduction-to-profiles.html">Apache Maven 2 Profiles</a> </p>
+                <p> The idea is, to define a deployment profile which triggers the Maven 2 groovy plugin which then will compile your classes, here is an example
+                configuration of such a profile, which can be copy pasted into your build file</p>
+            
+                  <source><![CDATA[
+                     <profiles>
+                         <profile>
+                             <id>deployment</id>
+                             <plugins>
+                                 <plugin>
+                                    <groupId>org.codehaus.gmaven</groupId>
+                                    <artifactId>gmaven-plugin</artifactId>
+                                    <version>1.2</version>
+                                    <configuration>
+                                        <providerSelection>1.7</providerSelection>
+                                    </configuration>
+                                    <executions>
+                                        <execution>
+                                            <goals>
+                                                <goal>generateStubs</goal>
+                                                <goal>compile</goal>
+                                                <goal>generateTestStubs</goal>
+                                                <goal>testCompile</goal>
+                                            </goals>
+                                        </execution>
+                                    </executions>
+                                    <dependencies>
+                                        <dependency>
+                                            <groupId>org.codehaus.groovy</groupId>
+                                            <artifactId>groovy-all</artifactId>
+                                            <version>1.7.1</version>
+                                        </dependency>
+                                    </dependencies>
+                                </plugin>
+                            </profile>
+                        </plugins>
+                    </profiles>
+                ]]></source>
+                
+                <p>The standard settings of the groovy maven plugin is that it will use your src/main/groovy directory as the path to pickup the sources.
+                You either can use that one and adjust the corresponding org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS setting for editing.
+                Or you can readjust the corresponding plugin settings of the Groovy Maven plugin. Follow this <a href="http://groovy.codehaus.org/GMaven">link</a> for further information.
+                </p>
+                <p> A call to maven clean install -P deployment now triggers the groovy compile task. You also can use the extended features
+                of the maven profiles to automate the switch if you use maven also for deployment of your project.</p>
+
+
+
+
+            </subsection>
+            <subsection name="Compiling the Groovy classes for the final build">
+                <p>One problem you might have noticed is, that if you do not work with the default configuration on your sources
+                (aka. WEB-INF/&lt;scripting-language&gt;, you have to rely on the corresponding configuration entries, which in itself take absolute paths.
+                One user of the system came up with the question, on how to deal with multiple developers. The answer is plain and simple, unfortunately the
+                    support of such a use case could be better for 1.0, all you can do is either to rely on the default paths, or use your build system to handle
+                    the configuration parts per user, or standardize on the same file structure for every user.
+                    Additional support for this scenario will be added post 1.0 to ease this usecase but for now it is a known but not entirely solved problem.
+                </p>
+            </subsection>
+        </section>
+
         <section name="Navigation Bottom">
             <a href="using_general.html">&lt;&lt;Back to the General Users Guide</a>
             or
