@@ -500,7 +500,7 @@
 
 
             </subsection>
-            <subsection name="Compiling the Groovy classes for the final build">
+            <subsection name="Multi Developer Scenarii">
                 <p>One problem you might have noticed is, that if you do not work with the default configuration on your sources
                 (aka. WEB-INF/&lt;scripting-language&gt;, you have to rely on the corresponding configuration entries, which in itself take absolute paths.
                 One user of the system came up with the question, on how to deal with multiple developers. The answer is plain and simple, unfortunately the
