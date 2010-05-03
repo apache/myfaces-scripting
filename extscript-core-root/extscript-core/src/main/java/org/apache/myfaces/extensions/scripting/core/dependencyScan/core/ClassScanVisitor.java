@@ -56,12 +56,15 @@ public class ClassScanVisitor implements ClassVisitor {
     public void visit(int version, int access, String name,
                       String signature, String superName, String[] interfaces) {
         _currentlyVistedClass = Type.getObjectType(name).getClassName();
-        registerDependency(Type.getObjectType(superName));
+        if (superName != null)
+            registerDependency(Type.getObjectType(superName));
+
         handleGenerics(signature, true);
 
         if (interfaces != null && interfaces.length > 0) {
             for (String currInterface : interfaces) {
-                registerDependency(Type.getObjectType(currInterface));
+                if (currInterface != null)
+                    registerDependency(Type.getObjectType(currInterface));
             }
         }
     }
@@ -73,33 +76,33 @@ public class ClassScanVisitor implements ClassVisitor {
     public void visitOuterClass(String owner, String name, String description) {
         //nothing has to be done here I guess because
         //we only try to fetch the dependencies
-        _log.log(Level.FINEST, "visitOuterClass: {0} {1} {2}", new String [] {owner, name, description});
+        _log.log(Level.FINEST, "visitOuterClass: {0} {1} {2}", new String[]{owner, name, description});
 
     }
 
     public AnnotationVisitor visitAnnotation(String description,
                                              boolean visible) {
-        registerDependency(Type.getType(description));
+        if (description != null)
+            registerDependency(Type.getType(description));
 
         return null;
     }
 
     public void visitAttribute(Attribute attribute) {
-        //_log._log(Level.INFO, "Attribute: {0}", attribute.type);
-        System.out.println(attribute.getClass().getName());
     }
 
     public void visitInnerClass(String name, String outerName,
                                 String innerName, int access) {
         //same as outer class
-        _log.log(Level.FINEST, "visitInnerClass: {0}  {1} {2} ", new String [] {name, outerName, innerName});
+        _log.log(Level.FINEST, "visitInnerClass: {0}  {1} {2} ", new String[]{name, outerName, innerName});
     }
 
     public FieldVisitor visitField(int access, String name, String description,
                                    String signature, Object value) {
         //_log._log(Level.INFO, "Field:{0} {1} ", new Object[]{description, name});
         handleGenerics(signature, false);
-        registerDependency(Type.getType(description));
+        if (description != null)
+            registerDependency(Type.getType(description));
 
         return null;
     }
@@ -119,23 +122,26 @@ public class ClassScanVisitor implements ClassVisitor {
     public MethodVisitor visitMethod(int access, String name,
                                      String description, String signature, String[] exceptions) {
 
-        registerDependency(Type.getReturnType(description));
+        if (description != null)
+            registerDependency(Type.getReturnType(description));
 
         handleGenerics(signature, true);
 
-        for (Type argumentType : Type.getArgumentTypes(description)) {
-            registerDependency(argumentType);
+        if (description != null) {
+            for (Type argumentType : Type.getArgumentTypes(description)) {
+                registerDependency(argumentType);
+            }
         }
         return new MethodScanVisitor(_engineType, _rootClass, _currentlyVistedClass, _dependencyRegistry);
     }
 
     private void handleGenerics(String signature, boolean accept) {
-        if(signature != null && signature.contains("<")) {
+        if (signature != null && signature.contains("<")) {
             SignatureReader reader = new SignatureReader(signature);
-            if(accept)
-                reader.accept(new DependencySignatureVisitor(_dependencyRegistry,_engineType, _rootClass, _currentlyVistedClass));
+            if (accept)
+                reader.accept(new DependencySignatureVisitor(_dependencyRegistry, _engineType, _rootClass, _currentlyVistedClass));
             else
-                reader.acceptType(new DependencySignatureVisitor(_dependencyRegistry,_engineType, _rootClass, _currentlyVistedClass));
+                reader.acceptType(new DependencySignatureVisitor(_dependencyRegistry, _engineType, _rootClass, _currentlyVistedClass));
         }
     }
 

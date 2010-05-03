@@ -58,14 +58,16 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     public AnnotationVisitor visitAnnotation(String description, boolean b) {
-        registerDependency(Type.getType(description));
-
+        if(description != null) {
+            registerDependency(Type.getType(description));
+        }
         return null;
     }
 
     public AnnotationVisitor visitParameterAnnotation(int opCode, String description, boolean b) {
-        registerDependency(Type.getType(description));
-
+        if(description != null) {
+            registerDependency(Type.getType(description));
+        }
         return null;
     }
 
@@ -96,10 +98,11 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTypeInsn(int opCode, String castType) {
         //cast
         // log.log(Level.INFO, "TypeInsn: {0} ", new String[]{castType});
-        registerDependency(Type.getObjectType(castType));
-        if (_log.isLoggable(Level.FINEST))
-            _log.log(Level.FINEST, "visitTypeInsn {0}", castType);
-
+        if (castType != null) {
+            registerDependency(Type.getObjectType(castType));
+            if (_log.isLoggable(Level.FINEST))
+                _log.log(Level.FINEST, "visitTypeInsn {0}", castType);
+        }
     }
 
     private void registerDependency(Type dependency) {
@@ -194,14 +197,19 @@ class MethodScanVisitor implements MethodVisitor {
     public void visitTryCatchBlock(Label label, Label label1, Label label2, String catchType) {
         //try catch block type information in the last string
         //log.log(Level.INFO, "visitTryCatchBlock: {0} {1} {2} {3}", new Object[]{label.toString(), label1.toString(), label2.toString(), catchType});
-        registerDependency(Type.getObjectType(catchType));
-
+        if (catchType != null) {
+            registerDependency(Type.getObjectType(catchType));
+        }
     }
 
     public void visitLocalVariable(String name, String description, String signature, Label label, Label label1, int i) {
         //local variable on method level
-        registerDependency(Type.getType(description));
-        handleGenerics(signature);
+        if (description != null) {
+            registerDependency(Type.getType(description));
+        }
+        if (signature != null) {
+            handleGenerics(signature);
+        }
     }
 
     public void visitLineNumber(int i, Label label) {
