@@ -21,6 +21,8 @@ package org.apache.myfaces.javaloader.instantbean;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -32,9 +34,15 @@ import javax.faces.bean.SessionScoped;
 public class HelloBean {
 
     int cnt = 0;
+    //we deliberately make a warning here to cover warnings in our compiler interface
+    List testList = new LinkedList();
 
-    
     private String hello = "Hello world from an instant bean";
+
+    public HelloBean() {
+        //unchecked operation deliberately done
+        testList.add(hello);
+    }
 
     private String addedMethod() {
         return "you can add change and remove methods on the fly without any server restart";

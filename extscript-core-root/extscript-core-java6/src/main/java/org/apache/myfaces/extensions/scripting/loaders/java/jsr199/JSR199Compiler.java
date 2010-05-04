@@ -121,8 +121,8 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.a
         getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
         List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration().getWhitelistedSourceDirs(ScriptingConst.ENGINE_TYPE_JSF_JAVA), CompilerConst.JAVA_WILDCARD);
-        for(File sourceFile: sourceFiles) {
-            if(!sourceFile.exists()) {
+        for (File sourceFile : sourceFiles) {
+            if (!sourceFile.exists()) {
                 getLog().log(Level.WARNING, "[EXT-SCRIPTING] Source file with path {0} does not exist it might cause an error in the compilation process", sourceFile.getAbsolutePath());
             }
         }
@@ -151,17 +151,38 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.a
             Logger log = Logger.getLogger(this.getClass().getName());
             StringBuilder errors = new StringBuilder();
             CompilationResult result = new CompilationResult("");
+            boolean hasError = false;
             for (Diagnostic diagnostic : diagnosticCollector.getDiagnostics()) {
                 String error = createErrorMessage(diagnostic);
                 log.log(Level.WARNING, "[EXT-SCRIPTING] Compiler: {0}", error);
-                result.getErrors().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
+
+                if (diagnostic.getKind().equals(Diagnostic.Kind.ERROR)) {
+                    hasError = true;
+                    result.getErrors().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
+                } else {
+                    result.getWarnings().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
+                }
                 errors.append(error);
             }
             WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
-
-            throw new ClassNotFoundException("Compile error of java file:" + errors.toString());
+            assertErrorFound(errors, hasError);
         } else {
             WeavingContext.setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, new CompilationResult(""));
+        }
+    }
+
+    /**
+     * interruption of the compile flow should only
+     * happen if an error has ocurred otherwise we will proceed
+     * as expected
+     *
+     * @param errors   the errors messages found
+     * @param hasError marker if an error was found or not
+     * @throws ClassNotFoundException in case of a compile error
+     */
+    private void assertErrorFound(StringBuilder errors, boolean hasError) throws ClassNotFoundException {
+        if (hasError) {
+            throw new ClassNotFoundException("Compile error of java file:" + errors.toString());
         }
     }
 
@@ -177,7 +198,17 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.a
         if (diagnostic == null) {
             return retVal.toString();
         }
-        retVal.append(CompilerConst.STD_ERROR_HEAD);
+        if (diagnostic.getKind().equals(Diagnostic.Kind.ERROR)) {
+            retVal.append(CompilerConst.STD_ERROR_HEAD);
+        } else if (diagnostic.getKind().equals(Diagnostic.Kind.NOTE)) {
+            retVal.append(CompilerConst.STD_NOTE_HEAD);
+        } else if (diagnostic.getKind().equals(Diagnostic.Kind.WARNING)) {
+            retVal.append(CompilerConst.STD_WARN_HEAD);
+        } else if (diagnostic.getKind().equals(Diagnostic.Kind.MANDATORY_WARNING)) {
+            retVal.append(CompilerConst.STD_MANDATORY_WARN_HEAD);
+        } else if (diagnostic.getKind().equals(Diagnostic.Kind.OTHER)) {
+            retVal.append(CompilerConst.STD_OTHER_HEAD);
+        }
         String message = diagnostic.getMessage(Locale.getDefault());
         message = (message == null) ? "" : message;
         retVal.append(message);

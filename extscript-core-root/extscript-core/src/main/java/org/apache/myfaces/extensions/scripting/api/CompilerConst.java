@@ -27,7 +27,11 @@ package org.apache.myfaces.extensions.scripting.api;
  */
 
 public class CompilerConst {
-    public static final String STD_ERROR_HEAD = "Java Compiler, Error on line: ";
+    public static final String STD_ERROR_HEAD = "Java Compiler, error on line: ";
+    public static final String STD_WARN_HEAD = "Java Compiler, warning on line: ";
+    public static final String STD_MANDATORY_WARN_HEAD = "Java Compiler, mandatory warning on line: ";
+    public static final String STD_OTHER_HEAD = "Java Compiler, other diagnostic on line: ";
+    public static final String STD_NOTE_HEAD = "Java Compiler, Info on line: ";
     public static final String JC_CLASSPATH = "-cp";
     public static final String JC_TARGET_PATH = "-d";
     public static final String JC_SOURCEPATH = "-sourcepath";
