@@ -173,7 +173,7 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.a
 
     /**
      * interruption of the compile flow should only
-     * happen if an error has ocurred otherwise we will proceed
+     * happen if an error has occurred otherwise we will proceed
      * as expected
      *
      * @param errors   the errors messages found
