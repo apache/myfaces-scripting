@@ -155,7 +155,7 @@
                 <h4>MyFaces 1.2.8+</h4>
                 <source><![CDATA[
      <dependency>
-        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-myfaces12-bundle</artifactId>
         <version>1.0-SNAPSHOT</version>
      </dependency>]]></source>
@@ -163,7 +163,7 @@
                 <h4>MyFaces 2.+</h4>
                 <source><![CDATA[
      <dependency>
-        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-myfaces20-bundle</artifactId>
         <version>1.0-SNAPSHOT</version>
      </dependency>]]></source>

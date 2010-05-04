@@ -9,11 +9,11 @@
     <name>MyFaces Extension Scripting Core</name>
 
     <description>
-        Core of the MyFaces Extension-scripting
+        Core of the MyFaces extensions.scripting
     </description>
 
     <parent>
-        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-core-root</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>

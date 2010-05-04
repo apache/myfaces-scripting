@@ -2,11 +2,11 @@
 <project>
     <parent>
         <artifactId>extscript-examples</artifactId>
-        <groupId>org.apache.myfaces.extension-scripting</groupId>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.myfaces.extension-scripting</groupId>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces12-example</artifactId>
     <packaging>war</packaging>
     <name>A custom project using myfaces 1.2</name>
@@ -31,7 +31,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.myfaces.extension-scripting</groupId>
+            <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces12-bundle</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

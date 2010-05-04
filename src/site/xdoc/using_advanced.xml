@@ -102,13 +102,13 @@
                     <center>
                         <object width="640px" height="505px">
                             <param name="movie"
-                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"></param>
-                            <param name="allowFullScreen" value="true"></param>
-                            <param name="allowscriptaccess" value="always"></param>
+                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1" />
+                            <param name="allowFullScreen" value="true" />
+                            <param name="allowscriptaccess" value="always" />
                             <embed src="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
                                    type="application/x-shockwave-flash" allowscriptaccess="always"
                                    allowfullscreen="true"
-                                   width="640px" height="505px"></embed>
+                                   width="640px" height="505px" />
                         </object>
                     </center>
                     <div class="objectAnnotation">Video: Compiler Component in Action</div>
@@ -308,17 +308,17 @@
             <p>
                 Following video shows the mechanism working:
             </p>
-            <p></p>
+            <p />
             <center>
 
                 <object width="660" height="405">
                     <param name="movie"
-                           value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1"></param>
-                    <param name="allowFullScreen" value="true"></param>
-                    <param name="allowscriptaccess" value="always"></param>
+                           value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="allowscriptaccess" value="always" />
                     <embed src="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1&#38;?&#38;border=1"
                            type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
-                           width="660" height="405"></embed>
+                           width="660" height="405" />
                 </object>
 
 
@@ -351,12 +351,12 @@
             <center>
                 <object width="640" height="505">
                     <param name="movie"
-                           value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"></param>
-                    <param name="allowFullScreen" value="true"></param>
-                    <param name="allowscriptaccess" value="always"></param>
+                           value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="allowscriptaccess" value="always" />
                     <embed src="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
                            type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
-                           width="640" height="505"></embed>
+                           width="640" height="505" />
                 </object>
             </center>
         </section>
@@ -423,6 +423,24 @@
                 </p>
 
                 <p>The same what applies to Ext-Val also applies to straight bean validation.</p>
+
+                <p>Note at the time of release, the current stable version of Ext-Val has a bug
+                which enforces one manual configuration entry!</p>
+
+                <source><![CDATA[
+                <application>
+                    <!-- disable an Ext-Val warning which is triggered falsely by the latest version -->
+                    <system-event-listener>
+                        <system-event-listener-class>org.apache.myfaces.extensions.scripting.startup.SuppressExtValWarningStartupListener</system-event-listener-class>
+                        <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+                    </system-event-listener>
+                </application>
+                ]]></source>
+
+                Note the class already is provided by Ext-Scripting, all which has done is
+                to add this entry to bypass the error.
+                This class probably will be obsolete with Ext-Val versions higher than
+                2.0.3 (which was the latest stable at time of writing)
 
             </subsection>
 
@@ -500,7 +518,7 @@
 
 
             </subsection>
-            <subsection name="Multi Developer Scenarii">
+            <subsection name="Multi Developer Scenario's">
                 <p>One problem you might have noticed is, that if you do not work with the default configuration on your sources
                 (aka. WEB-INF/&lt;scripting-language&gt;, you have to rely on the corresponding configuration entries, which in itself take absolute paths.
                 One user of the system came up with the question, on how to deal with multiple developers. The answer is plain and simple, unfortunately the
