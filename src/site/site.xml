@@ -55,6 +55,7 @@
       <item name="Appendix A: Setup Checklist" href="setup_steps.html" />
       <item name="Appendix B: Configuration Entries" href="configentries.html" />
       <item name="Appendix C: Example Configurations" href="exampleconfig.html" />
+      <item name="Release Notes" href="relnotes.html"/> 
     </menu>
 
     <menu name="Foundation">
