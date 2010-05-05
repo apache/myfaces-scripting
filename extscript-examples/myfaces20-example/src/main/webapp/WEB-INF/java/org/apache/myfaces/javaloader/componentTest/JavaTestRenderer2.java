@@ -32,11 +32,12 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
 
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
-    private static final String MSG = "<h2> Hello world from Renderer 2 </h2>";
-    private static final String MSG2 = "<h3> hello world second var <h3>";
+    private static final String MSG = "<h2> Hello world ccc from Renderer 2 </h2>";
+    private static final String MSG2 = "<h3> hello world second var xxx<h3>";
 
 
     @Override
