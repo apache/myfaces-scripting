@@ -40,6 +40,7 @@ public class JavaTestComponent extends UIInput implements Markable {
     }
 
     public JavaTestComponent() {
+        
         setRendererType("at.irian.JavaTestRenderer");
     }
 
@@ -89,6 +90,7 @@ public class JavaTestComponent extends UIInput implements Markable {
      * <p/>
      * Note we are on jsf 2 level
      */
+
 
     public String getTestAttr4() {
         return (String) getStateHelper().eval(PropertyKeys.testAttr4, "");

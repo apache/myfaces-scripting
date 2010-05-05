@@ -41,8 +41,6 @@ import java.util.logging.Logger;
  * class to the other
  */
 
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-    
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());
@@ -60,17 +58,16 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
         writer.flush();
     }
-    
-    
+
     //uncomment for demo 1
-   
-   private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
+
+    private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {
         writer.write(MSG2);
         writer.write(myComponent.getMarker());
         writer.write("<h4 style='color: red;'>TestAttr: " + myComponent.getTestAttr() + " | " + myComponent.getTestAttr3() + "</h4>");
         writer.write("<h4>" + myComponent.getTestAttr4() + "</h4>");
     }
-    
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         log.info("JavaTestRenderer1.encodeEnd");
     }
