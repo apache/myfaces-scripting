@@ -19,12 +19,15 @@
     </parent>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples</developerConnection>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples
+        </developerConnection>
         <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples</url>
     </scm>
 
-    
+
     <build>
         <plugins>
             <plugin>
@@ -41,6 +44,14 @@
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                 </configuration>
             </plugin>
+            <!-- tomcat plugin as alternative testing ground -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.0</version>
+            </plugin>
+          
+
         </plugins>
     </build>
     <modules>
@@ -48,8 +59,6 @@
         <module>myfaces20-example</module>
         <module>spring-example</module>
     </modules>
-
-    
 
 
     <profiles>
@@ -64,6 +73,6 @@
                 <maven.war.webxml>${basedir}/src/main/conf/dev/web.xml</maven.war.webxml>
             </properties>
         </profile>
-    </profiles>    
+    </profiles>
 
 </project>

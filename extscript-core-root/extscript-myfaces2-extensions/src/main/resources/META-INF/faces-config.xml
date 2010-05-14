@@ -77,12 +77,7 @@
 
     </factory>
 
-    <application>
-         <resource-handler>
-            org.apache.myfaces.extensions.scripting.jsf2.resources.SourceResourceHandler
-        </resource-handler>
-    </application>
-
+ 
     <!--
     <application>
         <system-event-listener>

@@ -122,5 +122,8 @@
             <system-event-listener-class>org.apache.myfaces.javaloader.eventTest.TestListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
+        <!--
+        <resource-handler>org.apache.myfaces.groovyloader.test.TestResourceHandler</resource-handler>
+        -->
     </application>
 </faces-config>

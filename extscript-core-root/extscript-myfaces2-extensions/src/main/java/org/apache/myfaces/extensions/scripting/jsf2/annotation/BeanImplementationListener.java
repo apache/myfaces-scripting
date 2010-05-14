@@ -89,10 +89,13 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
             scope = "session";
         } else if (clazz.isAnnotationPresent(ApplicationScoped.class)) {
             scope = "application";
+        } else if (clazz.isAnnotationPresent(ViewScoped.class)) {
+            scope = "view";    
         } else if (clazz.isAnnotationPresent(NoneScoped.class)) {
             scope = "none";
         } else if (clazz.isAnnotationPresent(CustomScoped.class)) {
-            scope = "custom";
+            CustomScoped customScoped = (CustomScoped) clazz.getAnnotation(CustomScoped.class);
+            scope = (customScoped != null) ? customScoped.value() : "custom";
         }
         mbean.setScope(scope);
     }
