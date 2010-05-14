@@ -653,10 +653,14 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-        ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_RESOURCEHANDLER);
-        if (newHandler != retVal) {
-            return _delegate.getResourceHandler();
+        if(WeavingContext.isDynamic(retVal.getClass())) {
+            return new ResourceHandlerProxy(retVal);
         }
+
+        //ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_RESOURCEHANDLER);
+        //if (newHandler != retVal) {
+        //    return _delegate.getResourceHandler();
+        //}
         return retVal;
     }
 
