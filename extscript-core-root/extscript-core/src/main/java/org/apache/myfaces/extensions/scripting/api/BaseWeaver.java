@@ -30,6 +30,7 @@ import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
 import javax.faces.context.FacesContext;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -450,12 +451,20 @@ public abstract class BaseWeaver implements ScriptingWeaver {
          * at the next refresh the second step of the registration cycle should pick the new class up
          *
          */
-        if (_annotationScanner != null && FacesContext.getCurrentInstance() != null && retVal != null) {
-            _annotationScanner.scanClass(retVal);
+        try {
+            if (!scanAnnotation.containsKey(retVal.getName()) && _annotationScanner != null && FacesContext.getCurrentInstance() != null && retVal != null) {
+                scanAnnotation.put(retVal.getName(), "");
+                _annotationScanner.scanClass(retVal);
+            }
+        } finally {
+            scanAnnotation.remove(retVal.getName());
         }
 
         return retVal;
     }
+    //blocker to prevent recursive calls to the annotation scan which can be triggered by subsequent calls of scanAnnotation and loadClass
+    //a simple boolean check does not suffice here because scanClass might trigger subsequent calls to other classes
+    Map<String, String> scanAnnotation = new ConcurrentHashMap<String, String>();
 
     private void recompileRefresh() {
         synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
