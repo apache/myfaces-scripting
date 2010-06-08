@@ -49,18 +49,23 @@ import java.util.*;
 public class ApplicationProxy extends Application implements Decorated {
 
     volatile Application _delegate;
+    volatile static boolean elResolverAdded = false;
+    volatile static boolean varResolverAdded = false;
 
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
     }
 
-
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
-
-        //the same goes for the rest of the factory stuff
-        if (!(elResolver instanceof ELResolverProxy))
+        if (!elResolverAdded) {
+            //ordering hints are unsufficient here we make
+            //sure our proxy is added as second in the chain
+            //also this method works as well on
+            //jsf 1.2 while hints only work in jsf2
             elResolver = new ELResolverProxy(elResolver);
+            elResolverAdded = true;
+        }
         _delegate.addELResolver(elResolver);
     }
 
@@ -73,10 +78,7 @@ public class ApplicationProxy extends Application implements Decorated {
     public ELResolver getELResolver() {
         weaveDelegate();
         ELResolver retVal = _delegate.getELResolver();
-        if (!(retVal instanceof ELResolverProxy))
-            retVal = new ELResolverProxy(retVal);
         return retVal;
-
     }
 
     //TOD add a weaving for resource bundles
@@ -219,17 +221,16 @@ public class ApplicationProxy extends Application implements Decorated {
     public VariableResolver getVariableResolver() {
         weaveDelegate();
         VariableResolver variableResolver = _delegate.getVariableResolver();
-        if (!(variableResolver instanceof VariableResolverProxy))
-            variableResolver = new VariableResolverProxy(variableResolver);
         return variableResolver;
     }
 
     @SuppressWarnings("deprecation")
     public void setVariableResolver(VariableResolver variableResolver) {
         weaveDelegate();
-        if (!(variableResolver instanceof VariableResolverProxy))
+        if (!varResolverAdded) {
             variableResolver = new VariableResolverProxy(variableResolver);
-
+            varResolverAdded = true;
+        }
         _delegate.setVariableResolver(variableResolver);
     }
 
@@ -412,7 +413,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        Map<String,Object> reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        Map<String, Object> reqMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         if (reqMap.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
             reqMap.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
             return false;

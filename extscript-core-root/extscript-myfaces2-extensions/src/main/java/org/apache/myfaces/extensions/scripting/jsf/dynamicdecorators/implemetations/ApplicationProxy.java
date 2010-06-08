@@ -122,22 +122,24 @@ public class ApplicationProxy extends Application implements Decorated {
      */
     Map<EventHandlerProxyEntry, EventHandlerProxyEntry> _eventHandlerIdx = new ConcurrentHashMap<EventHandlerProxyEntry, EventHandlerProxyEntry>();
 
+    volatile static boolean elResolverAdded = false;
+    volatile static boolean varResolverAdded = false;
+
+
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
     }
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
-        //This can be problematic if several libraries add their own proxies
-        // that way then might get get a cyclic stack
-        //under normal circumstances this should not happen
-        //because addElResolver is called once and getElResolver
-        //does not change the stack afterwards in the worst case
-        //we might get 2 of our proxies in the delegate stack
-
-        //the same goes for the rest of the factory stuff
-        if (!(elResolver instanceof ELResolverProxy))
+        if(!elResolverAdded) {
+            //ordering hints are unsufficient here we make
+            //sure our proxy is added as second in the chain
+            //also this method works as well on
+            //jsf 1.2 while hints only work in jsf2
             elResolver = new ELResolverProxy(elResolver);
+            elResolverAdded = true;
+        }
         _delegate.addELResolver(elResolver);
     }
 
@@ -150,9 +152,6 @@ public class ApplicationProxy extends Application implements Decorated {
     public ELResolver getELResolver() {
         weaveDelegate();
         ELResolver retVal = _delegate.getELResolver();
-        if (!(retVal instanceof ELResolverProxy)) {
-            retVal = new ELResolverProxy(retVal);
-        }
         return retVal;
 
     }
@@ -265,8 +264,8 @@ public class ApplicationProxy extends Application implements Decorated {
         //defined in the setter to speed things up a little
         NavigationHandler retVal = _delegate.getNavigationHandler();
 
-        if (retVal != null && WeavingContext.isDynamic(retVal.getClass()))
-            retVal = new NavigationHandlerProxy(retVal);
+        //if (retVal != null && WeavingContext.isDynamic(retVal.getClass()))
+        //    retVal = new NavigationHandlerProxy(retVal);
         return retVal;
     }
 
@@ -293,18 +292,16 @@ public class ApplicationProxy extends Application implements Decorated {
     @SuppressWarnings("deprecation")
     public VariableResolver getVariableResolver() {
         weaveDelegate();
-        VariableResolver variableResolver = _delegate.getVariableResolver();
-        if (!(variableResolver instanceof VariableResolverProxy))
-            variableResolver = new VariableResolverProxy(variableResolver);
-        return variableResolver;
+        return _delegate.getVariableResolver();
     }
 
     @SuppressWarnings("deprecation")
     public void setVariableResolver(VariableResolver variableResolver) {
         weaveDelegate();
-        if (!(variableResolver instanceof VariableResolverProxy))
+        if(!varResolverAdded) {
             variableResolver = new VariableResolverProxy(variableResolver);
-
+            varResolverAdded = true;
+        }
         _delegate.setVariableResolver(variableResolver);
     }
 
@@ -653,14 +650,14 @@ public class ApplicationProxy extends Application implements Decorated {
     public ResourceHandler getResourceHandler() {
         weaveDelegate();
         ResourceHandler retVal = _delegate.getResourceHandler();
-        if(WeavingContext.isDynamic(retVal.getClass())) {
-            return new ResourceHandlerProxy(retVal);
-        }
 
-        //ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_RESOURCEHANDLER);
-        //if (newHandler != retVal) {
-        //    return _delegate.getResourceHandler();
-        //}
+        /*if (WeavingContext.isDynamic(retVal.getClass())) {
+           ResourceHandler newHandler = (ResourceHandler) reloadInstance(retVal, ScriptingConst.ARTIFACT_TYPE_RESOURCEHANDLER);
+           if (newHandler != retVal) {
+               _delegate.setResourceHandler(newHandler);
+               return newHandler;
+           }
+       } */
         return retVal;
     }
 
@@ -679,11 +676,16 @@ public class ApplicationProxy extends Application implements Decorated {
     @Override
     public void setResourceHandler(ResourceHandler resourceHandler) {
         weaveDelegate();
-        _delegate.setResourceHandler(resourceHandler);
-        ResourceHandler handler = _delegate.getResourceHandler();
-        if (handler instanceof PurgedResourceHandler) {
-            WeavingContext.getWeaver().fullClassScan();
+        if (WeavingContext.isDynamic(resourceHandler.getClass())) {
+            ResourceHandler proxy = new ResourceHandlerProxy(resourceHandler);
+            resourceHandler = proxy;
         }
+
+        _delegate.setResourceHandler(resourceHandler);
+        //ResourceHandler handler = _delegate.getResourceHandler();
+        //if (handler instanceof PurgedResourceHandler) {
+        //    WeavingContext.getWeaver().fullClassScan();
+        //}
     }
 
     @Override
