@@ -25,7 +25,10 @@ import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
  * EL Resolver which is scripting enabled
@@ -34,33 +37,30 @@ import java.util.Iterator;
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
 
+    Logger log = Logger.getLogger(ELResolverProxy.class.getName());
     ELResolver _delegate = null;
 
+    // static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
+
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, ELException {
-        //request, class is loaded anew hence we already have picked up the new code
 
         Object retVal = _delegate.getValue(elContext, base, property);
 
-        if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
-            //now here we have something special which is implicit
-            //if the bean is only request scoped we dont have to reload anything
-            //so just run through this code without having anything happening here
-            //reloadScriptingInstance will return the same object we already had before
-            //the reason is for request or none scoped beans we get a new
-            //freshly reloaded and compiled instance on every request
-            //the problem starts with session application or custom scoped beans
-            //There nothing is compiled and we have to do the further bean processing
+        Object newRetVal;
 
-            Object newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN); /*once it was tainted or loaded by
-                 our classloader we have to recreate all the time to avoid classloader issues*/
+        if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
+
+            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
+
             if (newRetVal != retVal) {
                 setValue(elContext, base, property, newRetVal);
             }
+
             return newRetVal;
+
         }
 
         return retVal;
-
     }
 
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
@@ -71,12 +71,12 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return retVal;
     }
 
-    public void setValue(ELContext elContext, Object base, Object property, Object newRetVal) throws NullPointerException, ELException {
+    public void setValue(ELContext elContext, Object base, Object property, Object value) throws NullPointerException, ELException {
         //now to more complex relations...
         if (base != null) {
-            WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), newRetVal.getClass().getName());
+            WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), value.getClass().getName());
         }
-        _delegate.setValue(elContext, base, property, newRetVal);
+        _delegate.setValue(elContext, base, property, value);
     }
 
     public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
@@ -97,6 +97,13 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        // our "pseudo-constructor"
+        in.defaultReadObject();
+        log = Logger.getLogger(ELResolverProxy.class.getName());
+
     }
 
 }
