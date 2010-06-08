@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.extensions.scripting.api.Decorated;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
@@ -26,10 +25,9 @@ import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
-import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -42,7 +40,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     Logger log = Logger.getLogger(ELResolverProxy.class.getName());
     ELResolver _delegate = null;
 
-    static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
+   // static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
 
     public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, ELException {
 
@@ -60,50 +58,13 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
             return newRetVal;
 
-        } /*else if (retVal == null) {
-            retVal = reloadAnnotatedBean(elContext, base, property, null);
-        }*/
+        } 
 
         return retVal;
     }
 
 
-    @Deprecated
-    //soon do be removed
-    private Object reloadAnnotatedBean(ELContext elContext, Object base, Object property, Object newRetVal) {
-        //Avoid recursive calls into ourselves here
 
-        try {
-            if (_getValue.get() != null && _getValue.get().equals(Boolean.TRUE)) {
-                return newRetVal;
-            }
-            _getValue.set(Boolean.TRUE);
-            //base == null means bean el
-
-            //TODO is this code still needed, the scan should have a proper
-            //information base at the time of the el consumption anyway
-            //since it is triggered already
-            //this looks like old code to me where we did the annotation scan two phased!
-            if (base == null) {
-                final FacesContext facesContext = FacesContext.getCurrentInstance();
-                RuntimeConfig config = RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
-                Map<String, org.apache.myfaces.config.element.ManagedBean> mbeans = config.getManagedBeans();
-                if (!((String)property).startsWith("javax_") && (!((String)property).startsWith("org_") && !mbeans.containsKey(property.toString()))) {
-                    if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE, "[EXT-SCRIPTING] ElResolverProxy.getValue old bean not existing we have to perform a full annotation scan");
-                    }
-                    setValue(elContext, base, property, null);
-
-                    //we only trigger this if the bean was deregistered, we now can reregister it again
-                    WeavingContext.getWeaver().fullClassScan();
-                    newRetVal = _delegate.getValue(elContext, base, property);
-                }
-            }
-        } finally {
-            _getValue.set(Boolean.FALSE);
-        }
-        return newRetVal;
-    }
 
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
@@ -133,12 +94,26 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return _delegate.getCommonPropertyType(elContext, o);
     }
 
+
     public ELResolverProxy(ELResolver delegate) {
         _delegate = delegate;
     }
 
+     public ELResolverProxy() {
+         
+     }
+
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
+   private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+   {
+     // our "pseudo-constructor"
+     in.defaultReadObject();
+     log = Logger.getLogger(ELResolverProxy.class.getName());
+
+   }
 
 }
