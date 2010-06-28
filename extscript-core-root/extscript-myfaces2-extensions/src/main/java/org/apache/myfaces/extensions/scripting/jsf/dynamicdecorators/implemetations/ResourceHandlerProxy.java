@@ -28,6 +28,16 @@ import javax.faces.context.FacesContext;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Problem the resource request is issued on servlet level before
+ * our compile triggers can trigger from the phase listener
+ * this is evil
+ *
+ * We probably have to reissue the compile from the resource handler
+ * directly upfront :-( or mark the resource handler as something like double tainted!
+ *
+ * This problem will resolve itself with async compile
+ *
  */
 
 public class ResourceHandlerProxy extends ResourceHandler {
@@ -67,6 +77,7 @@ public class ResourceHandlerProxy extends ResourceHandler {
     }
 
     public boolean libraryExists(String libraryName) {
+        weaveDelegate();
         return _delegate.libraryExists(libraryName);
     }
 

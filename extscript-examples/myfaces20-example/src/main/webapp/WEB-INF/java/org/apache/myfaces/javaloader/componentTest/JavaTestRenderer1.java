@@ -41,11 +41,13 @@ import java.util.logging.Logger;
  * class to the other
  */
 
+
+@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());
 
-    private static final String MSG2 = "Hello world from Renderer 1";
+    private static final String MSG2 = "Hello world from Renderer 1 ";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);

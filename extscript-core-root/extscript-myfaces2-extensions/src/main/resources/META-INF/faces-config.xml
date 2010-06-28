@@ -83,6 +83,7 @@
         </resource-handler>
     </application>
 
+
     <!--
     <application>
         <system-event-listener>
@@ -92,5 +93,6 @@
         </system-event-listener>
 
     </application>
-   -->
+    -->
+
 </faces-config>

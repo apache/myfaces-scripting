@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+
+<h:head>
+
+</h:head>
+
+<h:body>
+    <style type="text/css">
+        #clicable:hover {
+            background-color: yellow;
+        }
+    </style>
+    <h:form id="bla" prependId="false">
+        <div id="clicable" onclick="document.getElementById('editBtn').click();">
+            <h:panelGroup id="show1" styleClass="profilInfo">
+                <h:panelGroup rendered="#{!formBean.rendered}">
+                    <div class="profilInfo">
+                        <span class="profil_firmenname"><h:outputText value="#{formBean.company}"/></span>
+                        <span class="profil_content"><h:outputText value="#{formBean.branche}"/></span>
+                    </div>
+                    <div class="profilInfo">
+					<span id="profil_ansprechpartner">
+					<h:outputText value="#{formBean.name}"/>
+					</span>
+                        <span class="profil_content"><h:outputText value="#{formBean.position}"/></span><br/>
+                    </div>
+                    <div class="profilInfo">
+                        <span class="profil_content"><h:outputText value="#{formBean.street}"/></span>
+                        <span class="profil_content"><h:outputText value="#{formBean.city} "/></span>
+                        <span class="profil_content"><h:outputText value="#{formBean.country}"/></span>
+
+                    </div>
+                    <div class="profilInfo">
+                        <h:panelGrid columns="2" styleClass="short-profile short-profile-alignment">
+                            <h:outputText value="Tel:"/>
+                            <h:outputText value="#{formBean.phonenumber}"/>
+                            <h:outputText value="Fax:"/>
+                            <h:outputText value="#{formBean.faxnumber}"/>
+                            <h:outputText value="E-Mail:"/>
+                            <h:link value="info.dam@maritim.de">
+                            </h:link>
+                        </h:panelGrid>
+                    </div>
+                    <h:commandButton id="editBtn" style="display:none;" action="#{formBean.changeRendered}"
+                                     value="Edit">
+                        <f:ajax execute="@form" render="popupHolder show1"/>
+                    </h:commandButton>
+                </h:panelGroup>
+            </h:panelGroup>
+        </div>
+        <br/>
+        <h:panelGroup id="popupHolder">
+            <h:panelGroup id="editPanel" rendered="#{formBean.rendered}">
+                <div class="profilInfo">
+                    <span class="profil_firmenname"><h:outputLabel value="Firma: "/><h:inputText
+                            value="#{formBean.company}"/></span>
+                    <span class="profil_content"><h:outputLabel value="Branche: "/><h:inputText
+                            value="#{formBean.branche}"/></span>
+                </div>
+                <div class="profilInfo">
+					<span id="profil_ansprechpartner"><h:outputLabel value="Name, Vorname: "/>
+					<h:inputText value="#{formBean.name}" style="float:left;"/>
+					</span>
+                    <span class="profil_content"><h:outputLabel value="Position: "/><h:inputText
+                            value="#{formBean.position}"/></span><br/>
+                </div>
+                <div class="profilInfo">
+                    <span class="profil_content"><h:outputLabel value="Strasse: "/><h:inputText
+                            value="#{formBean.street}"/></span>
+                    <span class="profil_content"><h:outputLabel value="Ort: "/><h:inputText
+                            value="#{formBean.city}"/></span>
+                    <span class="profil_content"><h:outputLabel value="Land: "/><h:inputText
+                            value="#{formBean.country}"/></span>
+
+                </div>
+                <div class="profilInfo">
+                    <h:panelGrid columns="2" styleClass="short-profile short-profile-alignment">
+                        <h:outputLabel value="Tel:"/>
+                        <h:inputText value="#{formBean.phonenumber}"/>
+                        <h:outputLabel value="Fax: "/>
+                        <h:inputText value="#{formBean.faxnumber}"/>
+                        <h:outputLabel value="E-Mail:"/>
+                        <h:link value="info.dam@maritim.de">
+                        </h:link>
+                    </h:panelGrid>
+                </div>
+            </h:panelGroup>
+
+
+            <h:commandButton action="#{formBean.changeRendered}" value="Aktualisieren" rendered="#{formBean.rendered}">
+                <f:ajax execute="@form" render="popupHolder show1"/>
+            </h:commandButton>
+        </h:panelGroup>
+    </h:form>
+
+
+</h:body>
+</html>
