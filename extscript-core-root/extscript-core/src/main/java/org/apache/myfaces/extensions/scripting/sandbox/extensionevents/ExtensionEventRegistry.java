@@ -43,8 +43,8 @@ public class ExtensionEventRegistry {
 
     public void removeAllListeners(Class eventType) {
         Iterator<ExtensionEventListener> it = _listeners.iterator();
-        while(it.hasNext()) {
-            if(it.next().getClass() == eventType) {
+        while (it.hasNext()) {
+            if (it.next().getClass() == eventType) {
                 it.remove();
             }
         }
@@ -56,7 +56,9 @@ public class ExtensionEventRegistry {
 
     public void sendEvent(ExtensionEvent evt) {
         for (ExtensionEventListener listener : _listeners) {
-            listener.handleEvent(evt);
+            if (listener.isListenerFor(evt)) {
+                listener.handleEvent(evt);
+            }
         }
     }
 

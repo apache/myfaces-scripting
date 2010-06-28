@@ -1,6 +1,6 @@
 package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -19,11 +19,12 @@ public interface ExtensionEventListener {
     public void handleEvent(ExtensionEvent ev);
 
     /**
-     * returns the event idenitifiers this listener
+     * returns the event identifiers this listener
      * is a listener for (additional hints which will speed up the event handling)
      *
-     * @return
+     * @param evt the event to be triggered for
+     * @return true if the listener is a listener for the specific event
      */
-    public List<Integer> listenerFor();
+    public boolean isListenerFor(ExtensionEvent evt);
 
 }
