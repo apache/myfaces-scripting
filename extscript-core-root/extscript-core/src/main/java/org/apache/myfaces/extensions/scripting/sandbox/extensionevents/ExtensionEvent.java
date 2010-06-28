@@ -39,17 +39,7 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
 public class ExtensionEvent {
 
-    int eventIdentifier;
-
-    public ExtensionEvent(int eventIdentifier) {
-        this.eventIdentifier = eventIdentifier;
+    public ExtensionEvent() {
     }
 
-    public int getEventIdentifier() {
-        return eventIdentifier;
-    }
-
-    public void setEventIdentifier(int eventIdentifier) {
-        this.eventIdentifier = eventIdentifier;
-    }
 }

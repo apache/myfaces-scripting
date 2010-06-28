@@ -20,6 +20,7 @@
 package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -38,6 +39,15 @@ public class ExtensionEventRegistry {
 
     public void removeListener(ExtensionEvent listener) {
         _listeners.remove(listener);
+    }
+
+    public void removeAllListeners(Class eventType) {
+        Iterator<ExtensionEventListener> it = _listeners.iterator();
+        while(it.hasNext()) {
+            if(it.next().getClass() == eventType) {
+                it.remove();
+            }
+        }
     }
 
     public void clear() {

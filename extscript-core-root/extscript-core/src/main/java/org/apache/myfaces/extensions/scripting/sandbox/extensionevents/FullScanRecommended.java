@@ -24,11 +24,18 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
  * @version $Revision$ $Date$
  */
 
-public class ScanRecommended extends ExtensionEvent {
+public class FullScanRecommended extends ExtensionEvent {
 
-    public ScanRecommended() {
-        super(0);
+    int engineType;
+
+    public FullScanRecommended() {
     }
 
-    
+    public int getEngineType() {
+        return engineType;
+    }
+
+    public void setEngineType(int engineType) {
+        this.engineType = engineType;
+    }
 }

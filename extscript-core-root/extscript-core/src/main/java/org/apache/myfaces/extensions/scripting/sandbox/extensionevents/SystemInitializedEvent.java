@@ -26,6 +26,5 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
 public class SystemInitializedEvent extends ExtensionEvent {
     public SystemInitializedEvent(int eventIdentifier) {
-        super(5);
     }
 }

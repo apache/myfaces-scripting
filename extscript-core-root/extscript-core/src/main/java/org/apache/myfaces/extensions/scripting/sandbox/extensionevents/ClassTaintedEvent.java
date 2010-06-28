@@ -30,7 +30,6 @@ public class ClassTaintedEvent extends ExtensionEvent{
     ReloadingMetadata metaData;
 
     public ClassTaintedEvent( ReloadingMetadata metaData) {
-        super(4);
         this.metaData = metaData;
     }
 

@@ -24,8 +24,23 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
  * @version $Revision$ $Date$
  */
 
-public class RecompileRecommended extends ExtensionEvent {
-    public RecompileRecommended() {
-        super(1);
+public class ClassScanRecommended extends ExtensionEvent {
+    int engineType;
+    String className;
+
+    public int getEngineType() {
+        return engineType;
+    }
+
+    public void setEngineType(int engineType) {
+        this.engineType = engineType;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

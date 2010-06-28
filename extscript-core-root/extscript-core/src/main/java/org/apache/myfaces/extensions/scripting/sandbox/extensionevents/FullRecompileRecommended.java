@@ -24,8 +24,7 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
  * @version $Revision$ $Date$
  */
 
-public class UpdateConfigurationRecommended extends ExtensionEvent {
-    public UpdateConfigurationRecommended() {
+public class FullRecompileRecommended extends ExtensionEvent {
+    public FullRecompileRecommended() {
     }
 }
-
