@@ -28,7 +28,7 @@ import org.apache.myfaces.extensions.scripting.core.dependencyScan.filter.Whitel
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;

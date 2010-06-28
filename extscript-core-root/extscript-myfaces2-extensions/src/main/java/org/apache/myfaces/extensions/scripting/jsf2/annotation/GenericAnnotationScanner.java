@@ -21,7 +21,7 @@ package org.apache.myfaces.extensions.scripting.jsf2.annotation;
 import org.apache.myfaces.extensions.scripting.api.*;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.java.ScannerClassloader;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
 import java.util.*;

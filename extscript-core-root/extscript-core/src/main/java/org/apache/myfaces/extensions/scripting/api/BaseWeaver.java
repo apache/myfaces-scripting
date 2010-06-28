@@ -24,8 +24,8 @@ import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.FullRecompileRecommended;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.FullScanRecommended;
 
@@ -169,6 +169,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         if (!assertScriptingEngine(metadata)) {
             return null;
         }
+        
         if (!metadata.isTainted()) {
             //if not tainted then we can recycle the last class loaded
             return metadata.getAClass();

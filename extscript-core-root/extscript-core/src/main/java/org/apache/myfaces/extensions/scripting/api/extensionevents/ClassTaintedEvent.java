@@ -19,7 +19,7 @@
 
 package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

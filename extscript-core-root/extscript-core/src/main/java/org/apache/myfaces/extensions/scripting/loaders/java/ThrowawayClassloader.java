@@ -21,8 +21,8 @@ package org.apache.myfaces.extensions.scripting.loaders.java;
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 import java.io.*;
 import java.util.Collection;

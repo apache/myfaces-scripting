@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.refresh;
+package org.apache.myfaces.extensions.scripting.monitor;
 
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;

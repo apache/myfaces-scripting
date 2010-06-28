@@ -19,16 +19,11 @@
 
 package org.apache.myfaces.extensions.scripting.components;
 
-import org.apache.myfaces.extensions.scripting.components.TaintHistory;
-import org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer;
-import org.apache.myfaces.extensions.scripting.components.RendererConst;
 import org.apache.myfaces.renderkit.html.HtmlFormRenderer;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.support.ContextUtils;
-import org.apache.myfaces.extensions.scripting.core.support.MockServletContext;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContextInitializer;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 import org.apache.myfaces.test.base.AbstractJsfTestCase;
 import org.apache.myfaces.test.mock.MockRenderKitFactory;
 import org.apache.myfaces.test.mock.MockResponseWriter;

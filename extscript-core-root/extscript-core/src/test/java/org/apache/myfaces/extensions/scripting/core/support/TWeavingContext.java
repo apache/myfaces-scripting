@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.extensions.scripting.core.support;
 
-import org.apache.myfaces.extensions.scripting.refresh.FileChangedDaemon;
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 
 /**

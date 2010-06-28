@@ -19,7 +19,6 @@
 
 package org.apache.myfaces.extensions.scripting.core.reloading;
 
-import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.core.probes.Probe;
@@ -30,9 +29,8 @@ import org.apache.myfaces.extensions.scripting.core.support.TestingJavaScripting
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.ServletContext;

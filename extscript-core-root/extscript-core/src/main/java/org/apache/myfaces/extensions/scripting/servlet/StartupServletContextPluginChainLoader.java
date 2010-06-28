@@ -21,7 +21,7 @@ package org.apache.myfaces.extensions.scripting.servlet;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.SystemInitializedEvent;
 import org.apache.myfaces.webapp.StartupListener;
 

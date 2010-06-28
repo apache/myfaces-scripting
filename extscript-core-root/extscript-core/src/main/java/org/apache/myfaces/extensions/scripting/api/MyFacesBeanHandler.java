@@ -24,8 +24,8 @@ import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationTargetException;

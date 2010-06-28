@@ -20,7 +20,7 @@
 package org.apache.myfaces.extensions.scripting.components;
 
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

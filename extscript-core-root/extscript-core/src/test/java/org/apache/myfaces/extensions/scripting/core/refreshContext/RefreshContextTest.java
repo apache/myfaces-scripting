@@ -23,8 +23,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.extensions.scripting.api.Configuration;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
-import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
+import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 import org.junit.Test;
 
 import java.io.File;
