@@ -26,8 +26,8 @@ import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
 import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
-import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.FullRecompileRecommended;
-import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.FullScanRecommended;
+import org.apache.myfaces.extensions.scripting.api.extensionevents.FullRecompileRecommended;
+import org.apache.myfaces.extensions.scripting.api.extensionevents.FullScanRecommended;
 
 import javax.faces.context.FacesContext;
 import java.io.File;

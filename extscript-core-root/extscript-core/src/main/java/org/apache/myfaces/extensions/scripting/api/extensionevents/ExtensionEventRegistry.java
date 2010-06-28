@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
+package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**

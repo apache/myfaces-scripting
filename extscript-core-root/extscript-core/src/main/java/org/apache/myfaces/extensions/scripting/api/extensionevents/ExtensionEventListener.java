@@ -1,6 +1,4 @@
-package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
-
-import java.util.Set;
+package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

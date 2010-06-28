@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
+package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
 import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
 

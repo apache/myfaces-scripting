@@ -24,7 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.extensions.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.CompilationResult;
-import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.ExtensionEventRegistry;
+import org.apache.myfaces.extensions.scripting.api.extensionevents.ExtensionEventRegistry;
 
 import javax.servlet.ServletContext;
 import java.lang.reflect.InvocationHandler;

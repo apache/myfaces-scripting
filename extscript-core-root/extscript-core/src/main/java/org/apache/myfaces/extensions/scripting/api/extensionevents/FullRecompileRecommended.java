@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
+package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

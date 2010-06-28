@@ -29,7 +29,7 @@ import org.apache.myfaces.extensions.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.extensions.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
-import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.ExtensionEventRegistry;
+import org.apache.myfaces.extensions.scripting.api.extensionevents.ExtensionEventRegistry;
 import org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter;
 
 import javax.servlet.ServletContext;

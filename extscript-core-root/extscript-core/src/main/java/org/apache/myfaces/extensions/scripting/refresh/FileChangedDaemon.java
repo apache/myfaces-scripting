@@ -22,7 +22,7 @@ import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.ClassTaintedEvent;
+import org.apache.myfaces.extensions.scripting.api.extensionevents.ClassTaintedEvent;
 
 import javax.servlet.ServletContext;
 import java.io.File;

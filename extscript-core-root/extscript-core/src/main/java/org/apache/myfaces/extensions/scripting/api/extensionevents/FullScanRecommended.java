@@ -17,14 +17,25 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
+package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class SystemInitializedEvent extends ExtensionEvent {
-    public SystemInitializedEvent() {
+public class FullScanRecommended extends ExtensionEvent {
+
+    int engineType;
+
+    public FullScanRecommended() {
+    }
+
+    public int getEngineType() {
+        return engineType;
+    }
+
+    public void setEngineType(int engineType) {
+        this.engineType = engineType;
     }
 }
