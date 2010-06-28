@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.jsf2.annotation;
 import org.apache.myfaces.extensions.scripting.api.*;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.java.ScannerClassloader;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 
 import javax.faces.context.FacesContext;
@@ -154,8 +155,8 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
                     listener.register(clazz, ann);
 
                     _registeredAnnotations.put(clazz.getName(), ann.annotationType().getName());
-
-                    RefreshAttribute metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(clazz.getName());
+                    //TODO check if we still need this
+                    ClassResource metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(clazz.getName());
                     
                 }
             }

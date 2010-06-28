@@ -102,9 +102,9 @@ public class RefreshContext {
      */
     static class TaintingHistoryEntry {
         long _timestamp;
-        RefreshAttribute _data;
+        WatchedResource _data;
 
-        public TaintingHistoryEntry(RefreshAttribute data) {
+        public TaintingHistoryEntry(WatchedResource data) {
             _data = data.getClone();
             _timestamp = System.currentTimeMillis();
         }
@@ -113,7 +113,7 @@ public class RefreshContext {
             return _timestamp;
         }
 
-        public RefreshAttribute getData() {
+        public WatchedResource getData() {
             return _data;
         }
     }
@@ -125,7 +125,7 @@ public class RefreshContext {
      *
      * @param data the tainting data to be added
      */
-    public void addTaintLogEntry(RefreshAttribute data) {
+    public void addTaintLogEntry(WatchedResource data) {
         _taintLog.add(new TaintingHistoryEntry(data));
     }
 
@@ -155,9 +155,9 @@ public class RefreshContext {
      * @param noOfEntries the number of entries to be delivered
      * @return a collection of the last &lt;noOfEntries&gt; entries
      */
-    public Collection<RefreshAttribute> getLastTainted(int noOfEntries) {
+    public Collection<WatchedResource> getLastTainted(int noOfEntries) {
         Iterator<TaintingHistoryEntry> it = _taintLog.subList(Math.max(_taintLog.size() - noOfEntries, 0), _taintLog.size()).iterator();
-        List<RefreshAttribute> retVal = new LinkedList<RefreshAttribute>();
+        List<WatchedResource> retVal = new LinkedList<WatchedResource>();
         while (it.hasNext()) {
             TaintingHistoryEntry entry = it.next();
             retVal.add(entry.getData());
@@ -171,8 +171,8 @@ public class RefreshContext {
      * @param timestamp the point in time from which the tainting data has to be derived from
      * @return a set of entries which are a union of all points in time beginning from timestamp
      */
-    public Collection<RefreshAttribute> getTaintHistory(long timestamp) {
-        List<RefreshAttribute> retVal = new LinkedList<RefreshAttribute>();
+    public Collection<WatchedResource> getTaintHistory(long timestamp) {
+        List<WatchedResource> retVal = new LinkedList<WatchedResource>();
         Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
 
         while (it.hasNext()) {
@@ -197,7 +197,11 @@ public class RefreshContext {
         while (it.hasNext()) {
             TaintingHistoryEntry entry = it.next();
             if (entry.getTimestamp() >= timestamp) {
-                retVal.add(entry.getData().getAClass().getName());
+                if(entry.getData() instanceof ClassResource) {
+                    retVal.add(((ClassResource)entry.getData()).getAClass().getName());
+                } else {
+                    retVal.add(entry.getData().getFile().getAbsolutePath());
+                }
             }
         }
         return retVal;

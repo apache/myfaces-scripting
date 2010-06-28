@@ -49,15 +49,6 @@ public class RefreshAttribute implements Cloneable {
     //Resource facility which has to be watched over
     //TODO this will be moved into a separate resource facility
     
-    /*
-    * volatile due to the ram concurrency behavior
-    * of the instance vars jdk 5+
-    */
-    volatile String _fileName = "";
-    volatile String _sourcePath = "";
-    volatile Class _aClass = null;
-    volatile long _timestamp = 0l;
-    volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
 
 
@@ -113,48 +104,7 @@ public class RefreshAttribute implements Cloneable {
         return getExecutedRefreshDate() < getRequestedRefreshDate();
     }
 
-   //--- todo move this into a separate resource handling facility
-
-    public String getFileName() {
-        return _fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this._fileName = fileName;
-    }
-
-    public Class getAClass() {
-        return _aClass;
-    }
-
-    public void setAClass(Class aClass) {
-        this._aClass = aClass;
-    }
-
-    public long getTimestamp() {
-        return _timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this._timestamp = timestamp;
-    }
-
-    public int getScriptingEngine() {
-        return _scriptingEngine;
-    }
-
-    public void setScriptingEngine(int scriptingEngine) {
-        this._scriptingEngine = scriptingEngine;
-    }
-
-    public String getSourcePath() {
-        return _sourcePath;
-    }
-
-    public void setSourcePath(String sourcePath) {
-
-        this._sourcePath = sourcePath;
-    }
+   
    
     public RefreshAttribute getClone() {
         try {

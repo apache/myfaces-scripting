@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.extensions.scripting.components;
 
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.renderkit.html.HtmlFormRenderer;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
@@ -90,12 +91,12 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     }
 
     public void testTaintHistory() throws Exception {
-        RefreshAttribute historyEntry = new RefreshAttribute();
+        ClassResource historyEntry = new ClassResource();
         historyEntry.setAClass(this.getClass());
         historyEntry.setTimestamp(System.currentTimeMillis());
         historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         historyEntry.setFileName(BOOGA_JAVA);
-        historyEntry.requestRefresh();
+        historyEntry.getRefreshAttribute().requestRefresh();
         //historyEntry.setTaintedOnce(true);
         WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
 
@@ -123,7 +124,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     public void testNoEntries() throws Exception {
         int noEntries = 10;
         for (int cnt = 0; cnt < 100; cnt++) {
-            RefreshAttribute historyEntry = new RefreshAttribute();
+            ClassResource historyEntry = new ClassResource();
             historyEntry.setAClass(this.getClass());
             historyEntry.setTimestamp(System.currentTimeMillis());
             historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
@@ -131,7 +132,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
                 historyEntry.setFileName("0"+cnt + "_"+BOOGA_JAVA);
             else
                 historyEntry.setFileName(cnt + "_"+BOOGA_JAVA);
-            historyEntry.requestRefresh();
+            historyEntry.getRefreshAttribute().requestRefresh();
             //historyEntry.setTaintedOnce(true);
             WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
         }

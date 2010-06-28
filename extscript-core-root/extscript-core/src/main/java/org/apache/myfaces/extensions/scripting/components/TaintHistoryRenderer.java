@@ -20,7 +20,9 @@
 package org.apache.myfaces.extensions.scripting.components;
 
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
+import org.apache.myfaces.extensions.scripting.monitor.WatchedResource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -50,7 +52,7 @@ public class TaintHistoryRenderer extends Renderer {
         startDiv(component, responseWriter, "historyBox");
         int lastTainted = ((TaintHistory) component).getNoEntries();
 
-        Collection<RefreshAttribute> result = WeavingContext.getRefreshContext().getLastTainted(lastTainted);
+        Collection<WatchedResource> result = WeavingContext.getRefreshContext().getLastTainted(lastTainted);
         if (result == null || result.isEmpty()) {
             responseWriter.write(RendererConst.NO_TAINT_HISTORY_FOUND);
         } else {
@@ -62,12 +64,12 @@ public class TaintHistoryRenderer extends Renderer {
 
     }
 
-    private void writeHistory(UIComponent component, ResponseWriter responseWriter, Collection<RefreshAttribute> result) throws IOException {
+    private void writeHistory(UIComponent component, ResponseWriter responseWriter, Collection<WatchedResource> result) throws IOException {
         startDiv(component, responseWriter, "history");
-        for (RefreshAttribute entry : result) {
+        for (WatchedResource entry : result) {
             startDiv(component, responseWriter, RendererConst.LINE);
-            writeDiv(component, responseWriter, RendererConst.TIMESTAMP, DateFormat.getInstance().format(new Date(entry.getTimestamp())));
-            writeDiv(component, responseWriter, RendererConst.CHANGED_FILE, entry.getFileName());
+            writeDiv(component, responseWriter, RendererConst.TIMESTAMP, DateFormat.getInstance().format(entry.getFile().lastModified()));
+            writeDiv(component, responseWriter, RendererConst.CHANGED_FILE, entry.getFile().getAbsolutePath());
             endDiv(responseWriter);
         }
 

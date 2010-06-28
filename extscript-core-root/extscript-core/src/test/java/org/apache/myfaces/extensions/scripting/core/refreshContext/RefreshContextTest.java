@@ -23,8 +23,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.extensions.scripting.api.Configuration;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
+import org.apache.myfaces.extensions.scripting.monitor.WatchedResource;
 import org.junit.Test;
 
 import java.io.File;
@@ -82,9 +84,9 @@ public class RefreshContextTest {
         RefreshContext ctx = WeavingContext.getRefreshContext();
         ctx.setTaintLogTimeout(0);
 
-        RefreshAttribute data = new RefreshAttribute();
+        ClassResource data = new ClassResource();
         data.setAClass(this.getClass());
-        data.requestRefresh();
+        data.getRefreshAttribute().requestRefresh();
         data.setTimestamp(System.currentTimeMillis());
 
         ctx.addTaintLogEntry(data);
@@ -114,9 +116,9 @@ public class RefreshContextTest {
         RefreshContext ctx = WeavingContext.getRefreshContext();
         ctx.setTaintLogTimeout(3);
 
-        RefreshAttribute data = new RefreshAttribute();
+        ClassResource data = new ClassResource();
         data.setAClass(this.getClass());
-        data.requestRefresh();
+        data.getRefreshAttribute().requestRefresh();
         data.setTimestamp(System.currentTimeMillis());
 
         ctx.addTaintLogEntry(data);
@@ -134,16 +136,16 @@ public class RefreshContextTest {
         RefreshContext ctx = WeavingContext.getRefreshContext();
         ctx.setTaintLogTimeout(3);
 
-        RefreshAttribute data = new RefreshAttribute();
+        ClassResource data = new ClassResource();
         data.setAClass(this.getClass());
-        data.requestRefresh();
+        data.getRefreshAttribute().requestRefresh();
         data.setTimestamp(System.currentTimeMillis());
 
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
 
-        Collection<RefreshAttribute> result = ctx.getLastTainted(100);
+        Collection<WatchedResource> result = ctx.getLastTainted(100);
         assertTrue(TAINT_HISTORY_SIZE, result.size() == 3);
         result = ctx.getLastTainted(2);
         assertTrue(TAINT_HISTORY_SIZE, result.size() == 2);

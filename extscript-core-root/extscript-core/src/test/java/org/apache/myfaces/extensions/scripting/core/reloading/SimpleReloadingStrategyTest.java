@@ -29,6 +29,7 @@ import org.apache.myfaces.extensions.scripting.core.support.TestingJavaScripting
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +86,7 @@ public class SimpleReloadingStrategyTest {
     public void testReload() throws Exception {
         synchronized (ContextUtils.COMPILE_LOAD_MONITOR) {
             Object probe = _loader.loadClass("compiler.TestProbe1").newInstance();
-            RefreshAttribute metaData = getMetadata(probe);
+            ClassResource metaData = getResource(probe);
             WeavingContext.getRefreshContext().getDaemon().getClassMap().put("compiler.TestProbe1", metaData);
 
             ReflectUtil.executeMethod(probe, "setTestAttr", "hello");
@@ -100,16 +101,17 @@ public class SimpleReloadingStrategyTest {
         }
     }
 
-    private RefreshAttribute getMetadata(Object probe) {
-        RefreshAttribute metaData = new RefreshAttribute();
-        metaData.setAClass(probe.getClass());
-        metaData.setSourcePath(RESOURCES);
-        metaData.setFileName("compiler/TestProbe1.java");
-        metaData.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
-        metaData.requestRefresh();
-        metaData.setTimestamp(System.currentTimeMillis());
-        return metaData;
+    private ClassResource getResource(Object probe) {
+        ClassResource resource = new ClassResource();
+        resource.setAClass(probe.getClass());
+        resource.setSourcePath(RESOURCES);
+        resource.setFileName("compiler/TestProbe1.java");
+        resource.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
+        resource.getRefreshAttribute().requestRefresh();
+        resource.setTimestamp(System.currentTimeMillis());
+        return resource;
     }
+
 
     @Test
     public void testGetSetWeaver() throws Exception {

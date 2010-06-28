@@ -20,6 +20,7 @@ package org.apache.myfaces.extensions.scripting.loaders.java;
 
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 
@@ -78,8 +79,8 @@ public class ScannerClassloader extends ClassLoader {
             return super.loadClass(className);
         }
 
-        RefreshAttribute data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
-        if (data != null && !data.requiresRefresh()) {
+        ClassResource data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
+        if (data != null && !data.getRefreshAttribute().requiresRefresh()) {
             return data.getAClass();
         }
 

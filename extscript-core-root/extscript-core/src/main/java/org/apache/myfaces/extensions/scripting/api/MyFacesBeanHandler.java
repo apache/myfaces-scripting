@@ -24,6 +24,7 @@ import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
 import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 
@@ -183,8 +184,8 @@ public class MyFacesBeanHandler implements BeanHandler {
     private Set<String> getTaintedClasses() {
         Set<String> tainted = new HashSet<String>();
 
-        for (Map.Entry<String, RefreshAttribute> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
-            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().requiresRefresh()) {
+        for (Map.Entry<String, ClassResource> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
+            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().getRefreshAttribute().requiresRefresh()) {
                 tainted.add(it.getKey());
             }
         }

@@ -52,7 +52,7 @@ public class ResourceMonitor extends Thread {
 
     static ResourceMonitor _instance = null;
 
-    Map<String, RefreshAttribute> _classMap = new ConcurrentHashMap<String, RefreshAttribute>(8, 0.75f, 1);
+    Map<String, ClassResource> _classMap = new ConcurrentHashMap<String, ClassResource>(8, 0.75f, 1);
     ClassDependencies _dependencyMap = new ClassDependencies();
 
     /**
@@ -151,14 +151,14 @@ public class ResourceMonitor extends Thread {
         if (weaver == null) return;
         weaver.scanForAddedClasses();
 
-        for (Map.Entry<String, RefreshAttribute> it : this._classMap.entrySet()) {
+        for (Map.Entry<String, ClassResource> it : this._classMap.entrySet()) {
 
             File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
             if (isModified(it, proxyFile)) {
 
                 _systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
-                RefreshAttribute meta = it.getValue();
-                meta.requestRefresh();
+                ClassResource meta = it.getValue();
+                meta.getRefreshAttribute().requestRefresh();
                 printInfo(it, proxyFile);
                 meta.setTimestamp(proxyFile.lastModified());
                 dependencyTainted(meta.getAClass().getName());
@@ -185,12 +185,12 @@ public class ResourceMonitor extends Thread {
         Set<String> referrers = _dependencyMap.getReferringClasses(className);
         if (referrers == null) return;
         for (String referrer : referrers) {
-            RefreshAttribute metaData = _classMap.get(referrer);
+            ClassResource metaData = _classMap.get(referrer);
             if (metaData == null) continue;
-            if (metaData.requiresRefresh()) continue;
+            if (metaData.getRefreshAttribute().requiresRefresh()) continue;
             printInfo(metaData);
 
-            metaData.requestRefresh();
+            metaData.getRefreshAttribute().requestRefresh();
             
             dependencyTainted(metaData.getAClass().getName());
             WeavingContext.getRefreshContext().addTaintLogEntry(metaData);
@@ -198,17 +198,17 @@ public class ResourceMonitor extends Thread {
         }
     }
 
-    private final boolean isModified(Map.Entry<String, RefreshAttribute> it, File proxyFile) {
+    private final boolean isModified(Map.Entry<String, ClassResource> it, File proxyFile) {
         return proxyFile.lastModified() != it.getValue().getTimestamp();
     }
 
-    private void printInfo(RefreshAttribute it) {
+    private void printInfo(ClassResource it) {
         if (_log.isLoggable(Level.INFO)) {
             _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFileName());
         }
     }
 
-    private void printInfo(Map.Entry<String, RefreshAttribute> it, File proxyFile) {
+    private void printInfo(Map.Entry<String, ClassResource> it, File proxyFile) {
         if (_log.isLoggable(Level.INFO)) {
             _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getTimestamp())});
             _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
@@ -231,11 +231,11 @@ public class ResourceMonitor extends Thread {
         this._systemRecompileMap = systemRecompileMap;
     }
 
-    public Map<String, RefreshAttribute> getClassMap() {
+    public Map<String, ClassResource> getClassMap() {
         return _classMap;
     }
 
-    public void setClassMap(Map<String, RefreshAttribute> classMap) {
+    public void setClassMap(Map<String, ClassResource> classMap) {
         this._classMap = classMap;
     }
 

@@ -24,6 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.FullRecompileRecommended;
@@ -113,8 +114,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param reloadMeta the metadata to be investigated for reload candidacy
      * @return true if it is a reload candidate
      */
-    public boolean isReloadCandidate(RefreshAttribute reloadMeta) {
-        return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.getRequestedRefreshDate() != 0l;
+    public boolean isReloadCandidate(ClassResource reloadMeta) {
+        return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.getRefreshAttribute().getRequestedRefreshDate() != 0l;
     }
 
     /**
@@ -122,7 +123,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      *
      * @return a map with the class name as key and the reloading meta data as value
      */
-    protected Map<String, RefreshAttribute> getClassMap() {
+    protected Map<String, ClassResource> getClassMap() {
         return WeavingContext.getFileChangedDaemon().getClassMap();
     }
 
@@ -134,12 +135,12 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @return the reloaded object with all properties transferred or the original object if no reloading was needed
      */
     public Object reloadScriptingInstance(Object scriptingInstance, int artifactType) {
-        Map<String, RefreshAttribute> classMap = getClassMap();
+        Map<String, ClassResource> classMap = getClassMap();
         if (classMap.size() == 0) {
             return scriptingInstance;
         }
 
-        RefreshAttribute reloadMeta = classMap.get(scriptingInstance.getClass().getName());
+        ClassResource reloadMeta = classMap.get(scriptingInstance.getClass().getName());
 
         //This gives a minor speedup because we jump out as soon as possible
         //files never changed do not even have to be considered
@@ -161,7 +162,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * by reloading its file contents and then reweaving it
      */
     public Class reloadScriptingClass(Class aclass) {
-        RefreshAttribute metadata = getClassMap().get(aclass.getName());
+        ClassResource metadata = getClassMap().get(aclass.getName());
 
         if (metadata == null)
             return aclass;
@@ -170,14 +171,14 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             return null;
         }
         
-        if (!metadata.requiresRefresh()) {
+        if (!metadata.getRefreshAttribute().requiresRefresh()) {
             //if not tainted then we can recycle the last class loaded
             return metadata.getAClass();
         }
         synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
             //another chance just in case someone has reloaded between
             //the last if and synchronized, that way we can reduce the number of waiting threads
-            if (!metadata.requiresRefresh()) {
+            if (!metadata.getRefreshAttribute().requiresRefresh()) {
                 //if not tainted then we can recycle the last class loaded
                 return metadata.getAClass();
             }
@@ -193,8 +194,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     public Class loadScriptingClassFromName(String className) {
 
-        Map<String, RefreshAttribute> classMap = getClassMap();
-        RefreshAttribute metadata = classMap.get(className);
+        Map<String, ClassResource> classMap = getClassMap();
+        ClassResource metadata = classMap.get(className);
         if (metadata == null) {
             String separator = FileUtils.getFileSeparatorForRegex();
             String fileName = className.replaceAll("\\.", separator) + getFileEnding();
@@ -223,7 +224,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         return null;
     }
 
-    protected boolean assertScriptingEngine(RefreshAttribute reloadMeta) {
+    protected boolean assertScriptingEngine(ClassResource reloadMeta) {
         return reloadMeta.getScriptingEngine() == getScriptingEngine();
     }
 

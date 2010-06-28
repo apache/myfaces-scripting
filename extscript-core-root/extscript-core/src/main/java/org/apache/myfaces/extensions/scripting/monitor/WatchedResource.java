@@ -17,28 +17,47 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.api.extensionevents;
+package org.apache.myfaces.extensions.scripting.monitor;
 
-import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
-import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
+import java.io.File;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *          <p/>
+ *          An abstraction on our class watcher
+ *          we now deal with generic resources to simplify the access
  */
 
-public class ClassTaintedEvent extends ExtensionEvent {
-    ClassResource _metaData;
+public abstract class WatchedResource implements Cloneable {
 
-    public ClassTaintedEvent(ClassResource metaData) {
-        this._metaData = metaData;
+    RefreshAttribute _refreshAttribute = new RefreshAttribute();
+
+    /**
+     * Unique identifier on the resource
+     *
+     * @return
+     */
+    public abstract String identifier();
+
+    /**
+     * @return a file handle on the current resource
+     */
+    public abstract File getFile();
+
+    /**
+     * @return  additional refresh attribute metadata
+     */
+    public RefreshAttribute getRefreshAttribute() {
+        return _refreshAttribute;
     }
 
-    public ClassResource getResource() {
-        return _metaData;
+    public WatchedResource getClone()  {
+        try {
+            return (WatchedResource) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
-    public void setResource(ClassResource metaData) {
-        this._metaData = metaData;
-    }
 }
