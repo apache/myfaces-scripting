@@ -16,39 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces;
+
+package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
 /**
- * A typical simple backing bean, that is backed to <code>helloworld.jsp</code>
- *
- * @author <a href="mailto:matzew@apache.org">Matthias We�endorf</a>
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class HelloWorldBacking {
 
-    //properties
-    private String name;
-
-    /**
-     * default empty constructor
-     */
-    public HelloWorldBacking() {
-    }
-
-    //-------------------getter & setter
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Method that is backed to a submit button of a form.
-     */
-    public String send() {
-        //do real logic
-        return ("success");
+public class UpdateConfigurationRecommended extends ExtensionEvent {
+    public UpdateConfigurationRecommended() {
+        super(2);
     }
 }
+

@@ -29,6 +29,7 @@ import javax.faces.event.ComponentSystemEvent;
  * @version $Revision$ $Date$
  */
 
+
 public class JavaTestBeanReplacement {
 
 

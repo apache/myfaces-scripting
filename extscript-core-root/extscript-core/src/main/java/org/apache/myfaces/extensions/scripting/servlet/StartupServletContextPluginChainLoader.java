@@ -66,7 +66,8 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
     private void initCompileAndScan() {
         if (WeavingContext.isScriptingEnabled()) {
             _log.info("[EXT-SCRIPTING] Compiling all sources for the first time");
-            WeavingContext.getWeaver().postStartupActions();
+            //WeavingContext.getWeaver().postStartupActions();
+            WeavingContext.getWeaver().fullRecompile();
         }
     }
 
@@ -94,6 +95,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
 
     public void postInit(ServletContextEvent evt) {
         //tell the system that the startup phase is done
+        WeavingContext.getWeaver().fullClassScan();
         evt.getServletContext().setAttribute(ScriptingConst.CTX_ATTR_STARTUP, new AtomicBoolean(Boolean.FALSE));
     }
 

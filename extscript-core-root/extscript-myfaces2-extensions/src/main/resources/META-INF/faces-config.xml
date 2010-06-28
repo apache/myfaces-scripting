@@ -25,6 +25,7 @@
 
      <lifecycle>
         <phase-listener>org.apache.myfaces.extensions.scripting.jsf.RefreshPhaseListener</phase-listener>
+         
     </lifecycle>
 
     <component>
@@ -49,7 +50,6 @@
             <renderer-type>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-type>
             <renderer-class>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-class>
         </renderer>
-
     </render-kit>
 
 
@@ -58,25 +58,31 @@
           all these factories are replacements for the normal ones
           issue is we have to make a codeweaving for every bean created
         -->
+
         <application-factory>
             org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
         </application-factory>
+
         <faces-context-factory>
             org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
         </faces-context-factory>
+
+
         <lifecycle-factory>
             org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
         </lifecycle-factory>
+
         <render-kit-factory>
             org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
         </render-kit-factory>
+
         <tag-handler-delegate-factory>
             org.apache.myfaces.extensions.scripting.facelet.TagHandlerDelegateFactoryImpl
         </tag-handler-delegate-factory>
 
-
     </factory>
 
+  
  
     <!--
     <application>

@@ -380,18 +380,26 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     protected boolean isFullyRecompiled() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        return context != null && context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            return context != null && context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
+        } catch (UnsupportedOperationException ex) {
+            //still in startup
+            return false;
+        }
     }
 
     public void markAsFullyRecompiled() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context != null) {
-            //mark the request as tainted with recompile
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (context != null) {
+                //mark the request as tainted with recompile
+                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+                requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
+            }
+            WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
+        } catch (UnsupportedOperationException ex) {
         }
-        WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
     }
 
     /**
@@ -471,6 +479,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             fullRecompile();
             //we update our dependencies and annotation info prior to going
             //into the refresh cycle
+
+
             fullClassScan();
         }
 

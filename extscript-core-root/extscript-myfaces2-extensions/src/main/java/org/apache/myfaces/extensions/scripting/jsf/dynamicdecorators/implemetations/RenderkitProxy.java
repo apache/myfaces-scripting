@@ -56,7 +56,7 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-        
+
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_RENDERER);
 
         _delegate.addRenderer(componentFamily, rendererType, renderer);
@@ -77,7 +77,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         }
         return rendr;
     }
-
 
     private ClientBehaviorRenderer handleAnnotationChangeBehaviorRenderer(String s) {
         ClientBehaviorRenderer rendr2;
@@ -116,7 +115,6 @@ public class RenderkitProxy extends RenderKit implements Decorated {
         weaveDelegate();
         return (ResponseStream) reloadInstance(_delegate.createResponseStream(outputStream), ScriptingConst.ARTIFACT_TYPE_RESPONSESTREAM);
     }
-
 
     @Override
     public void addClientBehaviorRenderer(String s, ClientBehaviorRenderer renderer) {
@@ -182,13 +180,19 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     private boolean alreadyWovenInRequest(String clazz) {
-        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
-            req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
-            return false;
+        try {//portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+
+            //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+            Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+            if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+                req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
+                return false;
+            }
+            return true;
+        } catch (UnsupportedOperationException ex) {
+            //still in startup no additional weaving here
+            return true;
         }
-        return true;
     }
 
 }

@@ -99,10 +99,6 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         _delegate = delegate;
     }
 
-     public ELResolverProxy() {
-         
-     }
-
     public Object getDelegate() {
         return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
     }

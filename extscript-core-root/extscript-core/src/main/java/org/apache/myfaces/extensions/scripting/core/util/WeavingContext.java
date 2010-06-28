@@ -24,6 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.extensions.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.CompilationResult;
+import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.ExtensionEventRegistry;
 
 import javax.servlet.ServletContext;
 import java.lang.reflect.InvocationHandler;
@@ -62,6 +63,7 @@ public class WeavingContext {
     static final protected ThreadLocal<Object> _refreshContextHolder = new ThreadLocal<Object>();
     static final protected ThreadLocal<Object> _configuration = new ThreadLocal<Object>();
     static final protected ThreadLocal<Object> _externalContext = new ThreadLocal<Object>();
+    static final protected ThreadLocal<Object> _extensionEventSystem = new ThreadLocal<Object>();
 
     private static final String WARN_WEAVER_NOT_SET = "[EXT-SCRIPTING] Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
@@ -92,6 +94,7 @@ public class WeavingContext {
         WeavingContext.setWeaver(context.getAttribute(ScriptingConst.CTX_ATTR_SCRIPTING_WEAVER));
         WeavingContext.setRefreshContext((RefreshContext) context.getAttribute(ScriptingConst.CTX_ATTR_REFRESH_CONTEXT));
         WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION));
+        WeavingContext.setExtensionEventRegistry((ExtensionEventRegistry)context.getAttribute(ScriptingConst.CTX_ATTR_EXTENSION_EVENT_SYSTEM));
         WeavingContext.setExternalContext(context);
     }
 
@@ -132,6 +135,14 @@ public class WeavingContext {
 
     public static void setConfiguration(Configuration configuration) {
         _configuration.set(configuration);
+    }
+
+    public static void setExtensionEventRegistry(ExtensionEventRegistry reg) {
+        _extensionEventSystem.set(reg);
+    }
+
+    public static ExtensionEventRegistry getExtensionEventRegistry() {
+       return (ExtensionEventRegistry) _extensionEventSystem.get();
     }
 
     /**

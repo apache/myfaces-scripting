@@ -246,22 +246,31 @@ public class RefreshContext {
     }
 
     public boolean isDependencyScanned(int scriptingEngine) {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        if (ctx == null) {
+        try {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            if (ctx == null) {
+                return false;
+            }
+            Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
+            Boolean retVal = (Boolean) requestMap.get("isDependencyScanned_" + scriptingEngine);
+            return (retVal == null) ? false : retVal;
+        } catch (UnsupportedOperationException ex) {
+            //still in startup
             return false;
         }
-        Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
-        Boolean retVal = (Boolean) requestMap.get("isDependencyScanned_" + scriptingEngine);
-        return (retVal == null) ? false : retVal;
     }
 
     public void setDependencyScanned(int scriptingEngine, Boolean val) {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        if (ctx == null) {
-            return;
+        try {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            if (ctx == null) {
+                return;
+            }
+            Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
+            requestMap.put("isDependencyScanned_" + scriptingEngine, val);
+        } catch (UnsupportedOperationException ex) {
+            //still in startup
         }
-        Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
-        requestMap.put("isDependencyScanned_" + scriptingEngine, val);
     }
 
     public FileChangedDaemon getDaemon() {

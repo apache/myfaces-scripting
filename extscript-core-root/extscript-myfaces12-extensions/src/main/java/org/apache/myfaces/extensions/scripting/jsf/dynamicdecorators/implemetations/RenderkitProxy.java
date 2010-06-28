@@ -95,13 +95,17 @@ public class RenderkitProxy extends RenderKit implements Decorated {
     }
 
     private final boolean alreadyWovenInRequest(String clazz) {
-        //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
-            req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
-            return false;
+        try {//portlets now can be enabled thanks to the jsf2 indirections regarding the external context
+            ServletRequest req = (ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            if (req.getAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
+                req.setAttribute(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
+                return false;
+            }
+            return true;
+        } catch(UnsupportedOperationException ex) {
+            //still in startup no additional weaving here
+            return true;
         }
-        return true;
     }
 
 }

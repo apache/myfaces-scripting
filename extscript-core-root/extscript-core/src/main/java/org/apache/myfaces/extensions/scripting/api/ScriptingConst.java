@@ -90,6 +90,7 @@ public class ScriptingConst {
     public static final String CTX_ATTR_STARTUP = "ExtScriptingStartup";
     public static final String CTX_ATTR_SCRIPTING_WEAVER = "ScriptingWeaver";
     public static final String CTX_ATTR_REFRESH_CONTEXT = "RefreshContext";
+    public static final String CTX_ATTR_EXTENSION_EVENT_SYSTEM = "ExtEventSystem";
 
     public static final String FILE_EXTENSION_GROOVY = ".groovy";
     public static final String GROOVY_FILE_ENDING = ".groovy";

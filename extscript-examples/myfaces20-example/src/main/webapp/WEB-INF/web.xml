@@ -122,11 +122,12 @@
             /WEB-INF/facelets/groovy-taglib.xml;/WEB-INF/facelets/tomahawk.taglib.xml
         </param-value>
     </context-param>
+    <!--
     <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
         <param-value>/faces-config.xml</param-value>
     </context-param>
-
+    -->
 
     <filter>
         <filter-name>scriptingFilter</filter-name>

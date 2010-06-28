@@ -44,7 +44,7 @@ public class CustomChainLoader extends ClassLoaderExtension {
     public CustomChainLoader(ServletContext servletContext) {
         _scriptingWeaver = WeavingContext.getWeaver();
     }
-  
+
 
     public Class forName(String name) {
         if(_scriptingWeaver == null || name == null) {

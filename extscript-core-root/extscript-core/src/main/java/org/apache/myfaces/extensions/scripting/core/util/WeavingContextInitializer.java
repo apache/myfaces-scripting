@@ -29,6 +29,7 @@ import org.apache.myfaces.extensions.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
 import org.apache.myfaces.extensions.scripting.refresh.FileChangedDaemon;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
+import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.ExtensionEventRegistry;
 import org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter;
 
 import javax.servlet.ServletContext;
@@ -76,6 +77,7 @@ public class WeavingContextInitializer {
             WeavingContext.setScriptingEnabled(true);
             validateWebXml(servletContext);
             initConfiguration(servletContext);
+            initExtensionEventSystem(servletContext);
             validateSecurityConstraints();
             initWeavers(servletContext);
             validateSourcePaths();
@@ -129,6 +131,14 @@ public class WeavingContextInitializer {
         FileChangedDaemon.startup(servletContext);
         WeavingContext.getRefreshContext().setDaemon(FileChangedDaemon.getInstance());
     }
+
+    private static void initExtensionEventSystem(ServletContext servletContext) {
+        ExtensionEventRegistry registry = new ExtensionEventRegistry();
+        servletContext.setAttribute(ScriptingConst.CTX_ATTR_EXTENSION_EVENT_SYSTEM, registry);
+    }
+
+
+
 
     private static void initConfiguration(ServletContext servletContext) {
 

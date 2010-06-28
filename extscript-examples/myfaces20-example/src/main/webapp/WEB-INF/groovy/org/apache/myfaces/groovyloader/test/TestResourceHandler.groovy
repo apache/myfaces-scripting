@@ -11,7 +11,7 @@ import javax.faces.application.Resource
  */
 public class TestResourceHandler extends ResourceHandler {
 
-    TestResourceHandler _delegate
+    ResourceHandler _delegate
 
     public TestResourceHandler(delegate) {
         _delegate = delegate;
@@ -51,11 +51,11 @@ public class TestResourceHandler extends ResourceHandler {
 
     }
 
-    public TestResourceHandler getDelegate() {
+    public ResourceHandler getDelegate() {
         return _delegate
     }
 
-    public void setDelegate(TestResourceHandler delegate) {
+    public void setDelegate(ResourceHandler delegate) {
         _delegate = delegate
     }
 }

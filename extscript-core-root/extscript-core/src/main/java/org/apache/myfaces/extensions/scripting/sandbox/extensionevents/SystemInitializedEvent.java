@@ -16,24 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.test;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
-@ManagedBean(name = "javatestbean4")
-@SessionScoped
+/**
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 
-public class TestBean4 {
-    
-    private String hello = "Hello world from test Bean 4";
-
-    public String getHello() {
-        return hello;
+public class SystemInitializedEvent extends ExtensionEvent {
+    public SystemInitializedEvent(int eventIdentifier) {
+        super(5);
     }
-
-    public void setHello(String hello) {
-        this.hello = hello;
-    } 
 }
- 

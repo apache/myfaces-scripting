@@ -16,73 +16,81 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implemetations;
 
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
+package org.apache.myfaces.javaloader.test;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * Problem the resource request is issued on servlet level before
- * our compile triggers can trigger from the phase listener
- * this is evil
- *
- * We probably have to reissue the compile from the resource handler
- * directly upfront :-( or mark the resource handler as something like double tainted!
- *
- * This problem will resolve itself with async compile
- *
  */
 
-public class ResourceHandlerProxy extends ResourceHandler {
-    private ResourceHandler _delegate;
+public class TestResourceHandler extends ResourceHandler {
 
-    public ResourceHandlerProxy(ResourceHandler delegate) {
+    ResourceHandler _delegate;
+
+    Logger _logger = Logger.getLogger("TestResourceHandler");
+
+    public TestResourceHandler(ResourceHandler delegate) {
+        //bug in myfaces the resource handlers are attached twice
+        while(delegate instanceof TestResourceHandler) {
+            delegate = ((TestResourceHandler)delegate).getDelegate();
+        }
         _delegate = delegate;
     }
 
+    public TestResourceHandler() {
+    }
+
+    @Override
     public Resource createResource(String resourceName) {
-        weaveDelegate();
         return _delegate.createResource(resourceName);
     }
 
+    @Override
     public Resource createResource(String resourceName, String libraryName) {
-        weaveDelegate();
         return _delegate.createResource(resourceName, libraryName);
     }
 
+    @Override
     public Resource createResource(String resourceName, String libraryName, String contentType) {
-        weaveDelegate();
         return _delegate.createResource(resourceName, libraryName, contentType);
     }
 
+    @Override
     public String getRendererTypeForResourceName(String resourceName) {
-        weaveDelegate();
         return _delegate.getRendererTypeForResourceName(resourceName);
     }
 
-    public void handleResourceRequest(FacesContext context) throws java.io.IOException {
-        weaveDelegate();
+    @Override
+    public void handleResourceRequest(FacesContext context) throws IOException {
         _delegate.handleResourceRequest(context);
     }
-    
+
+    @Override
     public boolean isResourceRequest(FacesContext context) {
-        weaveDelegate();
+        _logger.info("TestResourceHandler.isResourceRequest");
+
         return _delegate.isResourceRequest(context);
     }
 
+    @Override
     public boolean libraryExists(String libraryName) {
-        weaveDelegate();
         return _delegate.libraryExists(libraryName);
     }
 
-    private final void weaveDelegate() {
-        _delegate = (ResourceHandler) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_RESOURCEHANDLER);
+    //we have to expose the internal delegate because we have
+    //to copy it
+    public ResourceHandler getDelegate() {
+        return _delegate;
+    }
+
+    public void setDelegate(ResourceHandler delegate) {
+        _delegate = delegate;
     }
 }

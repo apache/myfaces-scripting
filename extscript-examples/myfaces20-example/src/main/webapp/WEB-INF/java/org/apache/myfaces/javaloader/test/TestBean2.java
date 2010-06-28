@@ -27,6 +27,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.el.ELContext;
 
 
+
 @ManagedBean(name = "javatestbean")
 @RequestScoped
 public class TestBean2 {

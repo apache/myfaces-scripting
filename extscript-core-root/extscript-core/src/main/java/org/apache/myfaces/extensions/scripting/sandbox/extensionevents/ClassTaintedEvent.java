@@ -16,24 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.test;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 
-@ManagedBean(name = "javatestbean4")
-@SessionScoped
+import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
 
-public class TestBean4 {
-    
-    private String hello = "Hello world from test Bean 4";
+/**
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 
-    public String getHello() {
-        return hello;
+public class ClassTaintedEvent extends ExtensionEvent{
+    ReloadingMetadata metaData;
+
+    public ClassTaintedEvent( ReloadingMetadata metaData) {
+        super(4);
+        this.metaData = metaData;
     }
 
-    public void setHello(String hello) {
-        this.hello = hello;
-    } 
+    public ReloadingMetadata getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(ReloadingMetadata metaData) {
+        this.metaData = metaData;
+    }
 }
- 
