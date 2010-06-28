@@ -25,6 +25,17 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
  */
 
 public class FullRecompileRecommended extends ExtensionEvent {
-    public FullRecompileRecommended() {
+    int scriptingEngine;
+
+    public FullRecompileRecommended(int scriptingEngine) {
+        this.scriptingEngine = scriptingEngine;
+    }
+
+    public int getScriptingEngine() {
+        return scriptingEngine;
+    }
+
+    public void setScriptingEngine(int scriptingEngine) {
+        this.scriptingEngine = scriptingEngine;
     }
 }

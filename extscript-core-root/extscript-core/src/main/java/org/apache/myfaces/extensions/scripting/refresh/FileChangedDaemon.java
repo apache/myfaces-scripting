@@ -22,6 +22,7 @@ import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.ClassTaintedEvent;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -166,6 +167,7 @@ public class FileChangedDaemon extends Thread {
 
                 //we add our log entry for further reference
                 WeavingContext.getRefreshContext().addTaintLogEntry(meta);
+                WeavingContext.getExtensionEventRegistry().sendEvent(new ClassTaintedEvent(meta));
             }
             //}
         }
@@ -194,6 +196,7 @@ public class FileChangedDaemon extends Thread {
             metaData.setTaintedOnce(true);
             dependencyTainted(metaData.getAClass().getName());
             WeavingContext.getRefreshContext().addTaintLogEntry(metaData);
+            WeavingContext.getExtensionEventRegistry().sendEvent(new ClassTaintedEvent(metaData));
         }
     }
 

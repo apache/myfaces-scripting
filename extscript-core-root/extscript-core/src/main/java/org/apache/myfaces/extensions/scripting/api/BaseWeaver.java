@@ -26,6 +26,8 @@ import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
 import org.apache.myfaces.extensions.scripting.refresh.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.FullRecompileRecommended;
+import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.FullScanRecommended;
 
 import javax.faces.context.FacesContext;
 import java.io.File;
@@ -254,6 +256,10 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * full scan, scans for all artifacts in all files
      */
     public void fullClassScan() {
+
+        WeavingContext.getExtensionEventRegistry().sendEvent(new FullScanRecommended());
+
+        //now we scan the classes which are under our domain
         _dependencyScanner.scanPaths();
 
         if (_annotationScanner == null || FacesContext.getCurrentInstance() == null) {
@@ -352,9 +358,15 @@ public abstract class BaseWeaver implements ScriptingWeaver {
     }
 
     public void fullRecompile() {
+
         if (isFullyRecompiled() || !isRecompileRecommended()) {
             return;
         }
+
+        //we now issue the full recompile event here:
+        WeavingContext.getExtensionEventRegistry().sendEvent(new FullRecompileRecommended(getScriptingEngine()));
+
+        //we now issue the recompile for the resources under our domain, TODO it might be wise to move that to an event listener as well 
 
         if (_compiler == null) {
             _compiler = instantiateCompiler();//new ReflectCompilerFacade();

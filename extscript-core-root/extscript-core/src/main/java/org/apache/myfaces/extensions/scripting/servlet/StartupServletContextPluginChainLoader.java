@@ -22,6 +22,7 @@ import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.refresh.RefreshContext;
+import org.apache.myfaces.extensions.scripting.sandbox.extensionevents.SystemInitializedEvent;
 import org.apache.myfaces.webapp.StartupListener;
 
 import javax.servlet.ServletContext;
@@ -97,6 +98,8 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
         //tell the system that the startup phase is done
         WeavingContext.getWeaver().fullClassScan();
         evt.getServletContext().setAttribute(ScriptingConst.CTX_ATTR_STARTUP, new AtomicBoolean(Boolean.FALSE));
+
+        WeavingContext.getExtensionEventRegistry().sendEvent(new SystemInitializedEvent());
     }
 
     public void preDestroy(ServletContextEvent evt) {

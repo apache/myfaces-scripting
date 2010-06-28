@@ -22,25 +22,9 @@ package org.apache.myfaces.extensions.scripting.sandbox.extensionevents;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * TODO to be further specified once we have everything in place
  */
 
 public class ClassScanRecommended extends ExtensionEvent {
-    int engineType;
-    String className;
-
-    public int getEngineType() {
-        return engineType;
-    }
-
-    public void setEngineType(int engineType) {
-        this.engineType = engineType;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
 }
