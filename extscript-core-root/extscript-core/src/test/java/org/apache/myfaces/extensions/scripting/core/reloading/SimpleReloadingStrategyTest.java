@@ -29,7 +29,7 @@ import org.apache.myfaces.extensions.scripting.core.support.TestingJavaScripting
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -85,7 +85,7 @@ public class SimpleReloadingStrategyTest {
     public void testReload() throws Exception {
         synchronized (ContextUtils.COMPILE_LOAD_MONITOR) {
             Object probe = _loader.loadClass("compiler.TestProbe1").newInstance();
-            ReloadingMetadata metaData = getMetadata(probe);
+            RefreshAttribute metaData = getMetadata(probe);
             WeavingContext.getRefreshContext().getDaemon().getClassMap().put("compiler.TestProbe1", metaData);
 
             ReflectUtil.executeMethod(probe, "setTestAttr", "hello");
@@ -100,15 +100,13 @@ public class SimpleReloadingStrategyTest {
         }
     }
 
-    private ReloadingMetadata getMetadata(Object probe) {
-        ReloadingMetadata metaData = new ReloadingMetadata();
+    private RefreshAttribute getMetadata(Object probe) {
+        RefreshAttribute metaData = new RefreshAttribute();
         metaData.setAClass(probe.getClass());
-        metaData.setAnnotated(false);
         metaData.setSourcePath(RESOURCES);
         metaData.setFileName("compiler/TestProbe1.java");
         metaData.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
-        metaData.setTaintedOnce(true);
-        metaData.setTainted(true);
+        metaData.requestRefresh();
         metaData.setTimestamp(System.currentTimeMillis());
         return metaData;
     }

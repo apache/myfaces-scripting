@@ -46,13 +46,13 @@ import java.util.logging.Logger;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class FileChangedDaemon extends Thread {
+public class ResourceMonitor extends Thread {
 
     private static final String CONTEXT_KEY = "extscriptDaemon";
 
-    static FileChangedDaemon _instance = null;
+    static ResourceMonitor _instance = null;
 
-    Map<String, ReloadingMetadata> _classMap = new ConcurrentHashMap<String, ReloadingMetadata>(8, 0.75f, 1);
+    Map<String, RefreshAttribute> _classMap = new ConcurrentHashMap<String, RefreshAttribute>(8, 0.75f, 1);
     ClassDependencies _dependencyMap = new ClassDependencies();
 
     /**
@@ -69,7 +69,7 @@ public class FileChangedDaemon extends Thread {
 
     boolean _running = false;
     boolean _contextInitialized = false;
-    Logger _log = Logger.getLogger(FileChangedDaemon.class.getName());
+    Logger _log = Logger.getLogger(ResourceMonitor.class.getName());
     ScriptingWeaver _weavers = null;
     static WeakReference<ServletContext> _externalContext;
 
@@ -80,7 +80,7 @@ public class FileChangedDaemon extends Thread {
         //we currently keep it as singleton but in the long run we will move it into the context
         //like everything else singleton-wise
         if (WeavingContext.isScriptingEnabled() && _instance == null) {
-            _instance = new FileChangedDaemon();
+            _instance = new ResourceMonitor();
             externalContext.setAttribute(CONTEXT_KEY, _instance);
             /**
              * daemon thread to allow forced
@@ -98,15 +98,14 @@ public class FileChangedDaemon extends Thread {
 
     }
 
-    public static synchronized FileChangedDaemon getInstance() {
+    public static synchronized ResourceMonitor getInstance() {
         //we do it in this complicated manner because of find bugs
         //practically this cannot really happen except for shutdown were it is not important anymore
         ServletContext context = _externalContext.get();
         if (context != null) {
-           return (FileChangedDaemon) context.getAttribute(CONTEXT_KEY);
+           return (ResourceMonitor) context.getAttribute(CONTEXT_KEY);
         }
         return null;
-        //return (FileChangedDaemon) ((ServletContext) _externalContext.get()).getAttribute(CONTEXT_KEY);
     }
 
     /**
@@ -152,15 +151,14 @@ public class FileChangedDaemon extends Thread {
         if (weaver == null) return;
         weaver.scanForAddedClasses();
 
-        for (Map.Entry<String, ReloadingMetadata> it : this._classMap.entrySet()) {
+        for (Map.Entry<String, RefreshAttribute> it : this._classMap.entrySet()) {
 
             File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
             if (isModified(it, proxyFile)) {
 
                 _systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
-                ReloadingMetadata meta = it.getValue();
-                meta.setTainted(true);
-                meta.setTaintedOnce(true);
+                RefreshAttribute meta = it.getValue();
+                meta.requestRefresh();
                 printInfo(it, proxyFile);
                 meta.setTimestamp(proxyFile.lastModified());
                 dependencyTainted(meta.getAClass().getName());
@@ -187,30 +185,30 @@ public class FileChangedDaemon extends Thread {
         Set<String> referrers = _dependencyMap.getReferringClasses(className);
         if (referrers == null) return;
         for (String referrer : referrers) {
-            ReloadingMetadata metaData = _classMap.get(referrer);
+            RefreshAttribute metaData = _classMap.get(referrer);
             if (metaData == null) continue;
-            if (metaData.isTainted()) continue;
+            if (metaData.requiresRefresh()) continue;
             printInfo(metaData);
 
-            metaData.setTainted(true);
-            metaData.setTaintedOnce(true);
+            metaData.requestRefresh();
+            
             dependencyTainted(metaData.getAClass().getName());
             WeavingContext.getRefreshContext().addTaintLogEntry(metaData);
             WeavingContext.getExtensionEventRegistry().sendEvent(new ClassTaintedEvent(metaData));
         }
     }
 
-    private final boolean isModified(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
+    private final boolean isModified(Map.Entry<String, RefreshAttribute> it, File proxyFile) {
         return proxyFile.lastModified() != it.getValue().getTimestamp();
     }
 
-    private void printInfo(ReloadingMetadata it) {
+    private void printInfo(RefreshAttribute it) {
         if (_log.isLoggable(Level.INFO)) {
             _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFileName());
         }
     }
 
-    private void printInfo(Map.Entry<String, ReloadingMetadata> it, File proxyFile) {
+    private void printInfo(Map.Entry<String, RefreshAttribute> it, File proxyFile) {
         if (_log.isLoggable(Level.INFO)) {
             _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getTimestamp())});
             _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
@@ -233,11 +231,11 @@ public class FileChangedDaemon extends Thread {
         this._systemRecompileMap = systemRecompileMap;
     }
 
-    public Map<String, ReloadingMetadata> getClassMap() {
+    public Map<String, RefreshAttribute> getClassMap() {
         return _classMap;
     }
 
-    public void setClassMap(Map<String, ReloadingMetadata> classMap) {
+    public void setClassMap(Map<String, RefreshAttribute> classMap) {
         this._classMap = classMap;
     }
 

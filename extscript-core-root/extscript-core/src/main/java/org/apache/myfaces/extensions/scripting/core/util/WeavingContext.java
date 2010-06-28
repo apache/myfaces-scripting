@@ -21,7 +21,7 @@ package org.apache.myfaces.extensions.scripting.core.util;
 import org.apache.myfaces.extensions.scripting.api.*;
 import org.apache.myfaces.extensions.scripting.core.DummyWeaver;
 import org.apache.myfaces.extensions.scripting.core.MethodLevelReloadingHandler;
-import org.apache.myfaces.extensions.scripting.monitor.FileChangedDaemon;
+import org.apache.myfaces.extensions.scripting.monitor.ResourceMonitor;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.ExtensionEventRegistry;
@@ -267,8 +267,8 @@ public class WeavingContext {
                 new MethodLevelReloadingHandler(o, artifactType));
     }
 
-    public static FileChangedDaemon getFileChangedDaemon() {
-        FileChangedDaemon daemon = getRefreshContext().getDaemon();
+    public static ResourceMonitor getFileChangedDaemon() {
+        ResourceMonitor daemon = getRefreshContext().getDaemon();
         if (daemon.getWeavers() == null) {
             daemon.setWeavers(getWeaver());
         }

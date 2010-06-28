@@ -27,7 +27,7 @@ import org.apache.myfaces.extensions.scripting.core.util.stax.FilterClassDigeste
 import org.apache.myfaces.extensions.scripting.loaders.groovy.GroovyScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.loaders.java.JavaScriptingWeaver;
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
-import org.apache.myfaces.extensions.scripting.monitor.FileChangedDaemon;
+import org.apache.myfaces.extensions.scripting.monitor.ResourceMonitor;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.ExtensionEventRegistry;
 import org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter;
@@ -128,13 +128,14 @@ public class WeavingContextInitializer {
 
     private static void initFileChangeDaemon(ServletContext servletContext) {
 
-        org.apache.myfaces.extensions.scripting.monitor.FileChangedDaemon.startup(servletContext);
-        WeavingContext.getRefreshContext().setDaemon(FileChangedDaemon.getInstance());
+        ResourceMonitor.startup(servletContext);
+        WeavingContext.getRefreshContext().setDaemon(ResourceMonitor.getInstance());
     }
 
     private static void initExtensionEventSystem(ServletContext servletContext) {
         ExtensionEventRegistry registry = new ExtensionEventRegistry();
         servletContext.setAttribute(ScriptingConst.CTX_ATTR_EXTENSION_EVENT_SYSTEM, registry);
+        WeavingContext.setExtensionEventRegistry(registry);
     }
 
 

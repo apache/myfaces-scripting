@@ -21,8 +21,8 @@ package org.apache.myfaces.extensions.scripting.loaders.java;
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 
 import java.io.*;
 import java.util.Collection;
@@ -93,8 +93,8 @@ public class ThrowawayClassloader extends ClassLoader {
         if (target.exists()) {
             _logger.log(Level.FINE,"[EXT-SCRIPTING] target {0} exists", className);
 
-            ReloadingMetadata data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
-            if (data != null && !data.isTainted()) {
+            RefreshAttribute data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
+            if (data != null && !data.requiresRefresh()) {
                 _logger.log(Level.INFO,"[EXT-SCRIPTING] data from target {0} found but not tainted yet", className);
 
                 return data.getAClass();
@@ -121,7 +121,7 @@ public class ThrowawayClassloader extends ClassLoader {
                 //we have to do it here because just in case
                 //a dependent class is loaded as well we run into classcast exceptions
                 if (data != null) {
-                    data.setTainted(false);
+                    data.executedRefresh();
 
                     retVal = super.defineClass(className, fileContent, 0, fileLength);
 
@@ -155,7 +155,7 @@ public class ThrowawayClassloader extends ClassLoader {
     private Class<?> storeReloadableDefinitions(String className, int fileLength, byte[] fileContent) {
         Class retVal;
         retVal = super.defineClass(className, fileContent, 0, fileLength);
-        ReloadingMetadata reloadingMetaData = new ReloadingMetadata();
+        RefreshAttribute reloadingMetaData = new RefreshAttribute();
         reloadingMetaData.setAClass(retVal);
         //find the source for the given class and then
         //store the filename
@@ -182,8 +182,7 @@ public class ThrowawayClassloader extends ClassLoader {
         reloadingMetaData.setFileName(fileName);
         reloadingMetaData.setSourcePath(rootDir);
         reloadingMetaData.setTimestamp(sourceFile.lastModified());
-        reloadingMetaData.setTainted(false);
-        reloadingMetaData.setTaintedOnce(true);
+        reloadingMetaData.executedRefresh();
         reloadingMetaData.setScriptingEngine(_scriptingEngine);
 
         WeavingContext.getFileChangedDaemon().getClassMap().put(className, reloadingMetaData);

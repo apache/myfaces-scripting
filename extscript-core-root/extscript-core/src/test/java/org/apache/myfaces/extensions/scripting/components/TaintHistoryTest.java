@@ -19,11 +19,11 @@
 
 package org.apache.myfaces.extensions.scripting.components;
 
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.renderkit.html.HtmlFormRenderer;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.support.ContextUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 import org.apache.myfaces.test.base.AbstractJsfTestCase;
 import org.apache.myfaces.test.mock.MockRenderKitFactory;
 import org.apache.myfaces.test.mock.MockResponseWriter;
@@ -90,13 +90,13 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     }
 
     public void testTaintHistory() throws Exception {
-        ReloadingMetadata historyEntry = new ReloadingMetadata();
+        RefreshAttribute historyEntry = new RefreshAttribute();
         historyEntry.setAClass(this.getClass());
         historyEntry.setTimestamp(System.currentTimeMillis());
         historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         historyEntry.setFileName(BOOGA_JAVA);
-        historyEntry.setTainted(true);
-        historyEntry.setTaintedOnce(true);
+        historyEntry.requestRefresh();
+        //historyEntry.setTaintedOnce(true);
         WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
 
         _taintHistory.encodeAll(facesContext);
@@ -123,7 +123,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     public void testNoEntries() throws Exception {
         int noEntries = 10;
         for (int cnt = 0; cnt < 100; cnt++) {
-            ReloadingMetadata historyEntry = new ReloadingMetadata();
+            RefreshAttribute historyEntry = new RefreshAttribute();
             historyEntry.setAClass(this.getClass());
             historyEntry.setTimestamp(System.currentTimeMillis());
             historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
@@ -131,8 +131,8 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
                 historyEntry.setFileName("0"+cnt + "_"+BOOGA_JAVA);
             else
                 historyEntry.setFileName(cnt + "_"+BOOGA_JAVA);
-            historyEntry.setTainted(true);
-            historyEntry.setTaintedOnce(true);
+            historyEntry.requestRefresh();
+            //historyEntry.setTaintedOnce(true);
             WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
         }
 

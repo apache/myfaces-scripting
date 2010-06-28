@@ -95,16 +95,16 @@ public class RefreshContext {
      * depending on the state, changed => tainted == true, not changed
      * tainted == false!
      */
-    volatile FileChangedDaemon _daemon = null;
+    volatile ResourceMonitor _daemon = null;
 
     /**
      * internal class used by our own history log
      */
     static class TaintingHistoryEntry {
         long _timestamp;
-        ReloadingMetadata _data;
+        RefreshAttribute _data;
 
-        public TaintingHistoryEntry(ReloadingMetadata data) {
+        public TaintingHistoryEntry(RefreshAttribute data) {
             _data = data.getClone();
             _timestamp = System.currentTimeMillis();
         }
@@ -113,7 +113,7 @@ public class RefreshContext {
             return _timestamp;
         }
 
-        public ReloadingMetadata getData() {
+        public RefreshAttribute getData() {
             return _data;
         }
     }
@@ -125,7 +125,7 @@ public class RefreshContext {
      *
      * @param data the tainting data to be added
      */
-    public void addTaintLogEntry(ReloadingMetadata data) {
+    public void addTaintLogEntry(RefreshAttribute data) {
         _taintLog.add(new TaintingHistoryEntry(data));
     }
 
@@ -155,9 +155,9 @@ public class RefreshContext {
      * @param noOfEntries the number of entries to be delivered
      * @return a collection of the last &lt;noOfEntries&gt; entries
      */
-    public Collection<ReloadingMetadata> getLastTainted(int noOfEntries) {
+    public Collection<RefreshAttribute> getLastTainted(int noOfEntries) {
         Iterator<TaintingHistoryEntry> it = _taintLog.subList(Math.max(_taintLog.size() - noOfEntries, 0), _taintLog.size()).iterator();
-        List<ReloadingMetadata> retVal = new LinkedList<ReloadingMetadata>();
+        List<RefreshAttribute> retVal = new LinkedList<RefreshAttribute>();
         while (it.hasNext()) {
             TaintingHistoryEntry entry = it.next();
             retVal.add(entry.getData());
@@ -171,8 +171,8 @@ public class RefreshContext {
      * @param timestamp the point in time from which the tainting data has to be derived from
      * @return a set of entries which are a union of all points in time beginning from timestamp
      */
-    public Collection<ReloadingMetadata> getTaintHistory(long timestamp) {
-        List<ReloadingMetadata> retVal = new LinkedList<ReloadingMetadata>();
+    public Collection<RefreshAttribute> getTaintHistory(long timestamp) {
+        List<RefreshAttribute> retVal = new LinkedList<RefreshAttribute>();
         Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
 
         while (it.hasNext()) {
@@ -273,11 +273,11 @@ public class RefreshContext {
         }
     }
 
-    public FileChangedDaemon getDaemon() {
+    public ResourceMonitor getDaemon() {
         return _daemon;
     }
 
-    public void setDaemon(FileChangedDaemon daemon) {
+    public void setDaemon(ResourceMonitor daemon) {
         this._daemon = daemon;
     }
 

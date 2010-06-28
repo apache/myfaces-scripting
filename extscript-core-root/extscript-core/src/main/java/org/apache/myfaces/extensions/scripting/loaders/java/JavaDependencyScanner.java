@@ -28,7 +28,7 @@ import org.apache.myfaces.extensions.scripting.core.dependencyScan.filter.Whitel
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.registry.DependencyRegistryImpl;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.registry.ExternalFilterDependencyRegistry;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
@@ -136,7 +136,7 @@ public class JavaDependencyScanner implements ClassScanner {
 
         final Set<String> possibleDynamicClasses = new HashSet<String>(_weaver.loadPossibleDynamicClasses());
         Map<Integer, Boolean> recompileMap = WeavingContext.getRefreshContext().getDaemon().getSystemRecompileMap();
-        Map<String, ReloadingMetadata> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
+        Map<String, RefreshAttribute> classMap = WeavingContext.getRefreshContext().getDaemon().getClassMap();
         Boolean alreadyTainted = recompileMap.get(getEngineType());
         if (alreadyTainted != null && alreadyTainted) {
             return;

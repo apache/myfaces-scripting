@@ -23,8 +23,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.extensions.scripting.api.Configuration;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
 import org.junit.Test;
 
 import java.io.File;
@@ -82,9 +82,9 @@ public class RefreshContextTest {
         RefreshContext ctx = WeavingContext.getRefreshContext();
         ctx.setTaintLogTimeout(0);
 
-        ReloadingMetadata data = new ReloadingMetadata();
+        RefreshAttribute data = new RefreshAttribute();
         data.setAClass(this.getClass());
-        data.setTainted(true);
+        data.requestRefresh();
         data.setTimestamp(System.currentTimeMillis());
 
         ctx.addTaintLogEntry(data);
@@ -114,9 +114,9 @@ public class RefreshContextTest {
         RefreshContext ctx = WeavingContext.getRefreshContext();
         ctx.setTaintLogTimeout(3);
 
-        ReloadingMetadata data = new ReloadingMetadata();
+        RefreshAttribute data = new RefreshAttribute();
         data.setAClass(this.getClass());
-        data.setTainted(true);
+        data.requestRefresh();
         data.setTimestamp(System.currentTimeMillis());
 
         ctx.addTaintLogEntry(data);
@@ -134,16 +134,16 @@ public class RefreshContextTest {
         RefreshContext ctx = WeavingContext.getRefreshContext();
         ctx.setTaintLogTimeout(3);
 
-        ReloadingMetadata data = new ReloadingMetadata();
+        RefreshAttribute data = new RefreshAttribute();
         data.setAClass(this.getClass());
-        data.setTainted(true);
+        data.requestRefresh();
         data.setTimestamp(System.currentTimeMillis());
 
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
 
-        Collection<ReloadingMetadata> result = ctx.getLastTainted(100);
+        Collection<RefreshAttribute> result = ctx.getLastTainted(100);
         assertTrue(TAINT_HISTORY_SIZE, result.size() == 3);
         result = ctx.getLastTainted(2);
         assertTrue(TAINT_HISTORY_SIZE, result.size() == 2);

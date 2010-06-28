@@ -25,7 +25,7 @@ import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 
 import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationTargetException;
@@ -149,9 +149,9 @@ public class MyFacesBeanHandler implements BeanHandler {
             //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
             //exceptions
             /*getLog().info("[EXT-SCRIPTING] Tainting ");
-            ReloadingMetadata metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
+            RefreshAttribute metaData = WeavingContext.getFileChangedDaemon().getClassMap().get(managedBeanClass.getName());
             if (metaData != null) {
-                metaData.setTainted(true);
+                metaData.requestRefresh();
             }*/
         }
     }
@@ -183,8 +183,8 @@ public class MyFacesBeanHandler implements BeanHandler {
     private Set<String> getTaintedClasses() {
         Set<String> tainted = new HashSet<String>();
 
-        for (Map.Entry<String, ReloadingMetadata> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
-            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().isTainted()) {
+        for (Map.Entry<String, RefreshAttribute> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
+            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().requiresRefresh()) {
                 tainted.add(it.getKey());
             }
         }

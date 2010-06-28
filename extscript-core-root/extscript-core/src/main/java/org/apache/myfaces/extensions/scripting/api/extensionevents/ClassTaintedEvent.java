@@ -19,7 +19,7 @@
 
 package org.apache.myfaces.extensions.scripting.api.extensionevents;
 
-import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
+import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -27,17 +27,17 @@ import org.apache.myfaces.extensions.scripting.monitor.ReloadingMetadata;
  */
 
 public class ClassTaintedEvent extends ExtensionEvent{
-    ReloadingMetadata metaData;
+    RefreshAttribute _metaData;
 
-    public ClassTaintedEvent( ReloadingMetadata metaData) {
-        this.metaData = metaData;
+    public ClassTaintedEvent( RefreshAttribute metaData) {
+        this._metaData = metaData;
     }
 
-    public ReloadingMetadata getMetaData() {
-        return metaData;
+    public RefreshAttribute getMetaData() {
+        return _metaData;
     }
 
-    public void setMetaData(ReloadingMetadata metaData) {
-        this.metaData = metaData;
+    public void setMetaData(RefreshAttribute metaData) {
+        this._metaData = metaData;
     }
 }

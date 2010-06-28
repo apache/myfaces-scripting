@@ -30,8 +30,8 @@ import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 public class TWeavingContext extends WeavingContext {
     public static void setWeaverForTesting(Object weaver) {
         _weaverHolder.set(weaver);
-        //if (FileChangedDaemon.getInstance().getWeavers() == null) {
-        //    FileChangedDaemon.getInstance().setWeavers((ScriptingWeaver) weaver);
+        //if (ResourceMonitor.getInstance().getWeavers() == null) {
+        //    ResourceMonitor.getInstance().setWeavers((ScriptingWeaver) weaver);
         //}
     }
 
