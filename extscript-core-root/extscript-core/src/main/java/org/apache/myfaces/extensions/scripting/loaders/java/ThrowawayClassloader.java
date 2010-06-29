@@ -182,7 +182,7 @@ public class ThrowawayClassloader extends ClassLoader {
 
         reloadingMetaData.setFileName(fileName);
         reloadingMetaData.setSourcePath(rootDir);
-        reloadingMetaData.setTimestamp(sourceFile.lastModified());
+        reloadingMetaData.getRefreshAttribute().requestRefresh();
         reloadingMetaData.getRefreshAttribute().executedRefresh();
         reloadingMetaData.setScriptingEngine(_scriptingEngine);
 

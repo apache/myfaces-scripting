@@ -108,7 +108,7 @@ public class SimpleReloadingStrategyTest {
         resource.setFileName("compiler/TestProbe1.java");
         resource.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         resource.getRefreshAttribute().requestRefresh();
-        resource.setTimestamp(System.currentTimeMillis());
+     
         return resource;
     }
 

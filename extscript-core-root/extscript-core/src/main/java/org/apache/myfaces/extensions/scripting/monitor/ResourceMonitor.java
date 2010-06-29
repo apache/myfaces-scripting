@@ -160,7 +160,7 @@ public class ResourceMonitor extends Thread {
                 ClassResource meta = it.getValue();
                 meta.getRefreshAttribute().requestRefresh();
                 printInfo(it, proxyFile);
-                meta.setTimestamp(proxyFile.lastModified());
+
                 dependencyTainted(meta.getAClass().getName());
 
                 //we add our log entry for further reference
@@ -199,7 +199,7 @@ public class ResourceMonitor extends Thread {
     }
 
     private final boolean isModified(Map.Entry<String, ClassResource> it, File proxyFile) {
-        return proxyFile.lastModified() != it.getValue().getTimestamp();
+        return proxyFile.lastModified() > it.getValue().getRefreshAttribute().getRequestedRefreshDate() ;
     }
 
     private void printInfo(ClassResource it) {
@@ -210,7 +210,7 @@ public class ResourceMonitor extends Thread {
 
     private void printInfo(Map.Entry<String, ClassResource> it, File proxyFile) {
         if (_log.isLoggable(Level.INFO)) {
-            _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getTimestamp())});
+            _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getRefreshAttribute().getExecutedRefreshDate())});
             _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
         }
     }

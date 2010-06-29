@@ -33,10 +33,14 @@ public class ClassResource extends WatchedResource {
     * volatile due to the ram concurrency behavior
     * of the instance vars jdk 5+
     */
+
+    //TODO we probably can drop the file definitions
+    //the class has all meta data internally via findResource
+    //on its corresponding classloader
+    //caching the info however probably is faster
     volatile String _fileName = "";
     volatile String _sourcePath = "";
     volatile Class _aClass = null;
-    volatile long _timestamp = 0l;
     volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
 
@@ -53,6 +57,7 @@ public class ClassResource extends WatchedResource {
 
     @Override
     public File getFile() {
+        //todo get the resource file from the given class definition and its resource loader
         return new File(_sourcePath+File.separator+_fileName);
     }
 
@@ -70,14 +75,6 @@ public class ClassResource extends WatchedResource {
 
     public void setAClass(Class aClass) {
         this._aClass = aClass;
-    }
-
-    public long getTimestamp() {
-        return _timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this._timestamp = timestamp;
     }
 
     public int getScriptingEngine() {

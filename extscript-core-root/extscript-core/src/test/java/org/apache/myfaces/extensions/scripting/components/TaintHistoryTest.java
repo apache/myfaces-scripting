@@ -93,7 +93,8 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
     public void testTaintHistory() throws Exception {
         ClassResource historyEntry = new ClassResource();
         historyEntry.setAClass(this.getClass());
-        historyEntry.setTimestamp(System.currentTimeMillis());
+        historyEntry.getRefreshAttribute().requestRefresh();
+        historyEntry.getRefreshAttribute().executedRefresh();
         historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         historyEntry.setFileName(BOOGA_JAVA);
         historyEntry.getRefreshAttribute().requestRefresh();
@@ -126,7 +127,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
         for (int cnt = 0; cnt < 100; cnt++) {
             ClassResource historyEntry = new ClassResource();
             historyEntry.setAClass(this.getClass());
-            historyEntry.setTimestamp(System.currentTimeMillis());
+            historyEntry.getRefreshAttribute().executedRefresh();
             historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
             if(cnt < 10)
                 historyEntry.setFileName("0"+cnt + "_"+BOOGA_JAVA);

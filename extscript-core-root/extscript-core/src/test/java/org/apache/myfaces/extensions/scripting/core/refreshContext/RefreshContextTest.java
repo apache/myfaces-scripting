@@ -87,7 +87,7 @@ public class RefreshContextTest {
         ClassResource data = new ClassResource();
         data.setAClass(this.getClass());
         data.getRefreshAttribute().requestRefresh();
-        data.setTimestamp(System.currentTimeMillis());
+        data.getRefreshAttribute().executedRefresh();
 
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
@@ -119,7 +119,7 @@ public class RefreshContextTest {
         ClassResource data = new ClassResource();
         data.setAClass(this.getClass());
         data.getRefreshAttribute().requestRefresh();
-        data.setTimestamp(System.currentTimeMillis());
+        data.getRefreshAttribute().executedRefresh();
 
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
@@ -139,7 +139,7 @@ public class RefreshContextTest {
         ClassResource data = new ClassResource();
         data.setAClass(this.getClass());
         data.getRefreshAttribute().requestRefresh();
-        data.setTimestamp(System.currentTimeMillis());
+        data.getRefreshAttribute().executedRefresh();
 
         ctx.addTaintLogEntry(data);
         ctx.addTaintLogEntry(data);
