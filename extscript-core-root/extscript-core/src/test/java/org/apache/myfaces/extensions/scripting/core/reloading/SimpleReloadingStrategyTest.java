@@ -56,7 +56,7 @@ public class SimpleReloadingStrategyTest {
 
     ServletContext _context;
     RecompiledClassLoader _loader;
-    File _root = new File(RESOURCES + File.separator + "compiler/");
+    File _root = new File(RESOURCES );
 
     SimpleReloadingStrategy _strategy;
 
@@ -104,8 +104,7 @@ public class SimpleReloadingStrategyTest {
     private ClassResource getResource(Object probe) {
         ClassResource resource = new ClassResource();
         resource.setAClass(probe.getClass());
-        resource.setSourcePath(RESOURCES);
-        resource.setFileName("compiler/TestProbe1.java");
+        resource.setFile(new File(RESOURCES+File.separator+"compiler/TestProbe1.java"));
         resource.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
         resource.getRefreshAttribute().requestRefresh();
      

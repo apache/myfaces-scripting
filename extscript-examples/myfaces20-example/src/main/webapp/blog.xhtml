@@ -5,7 +5,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:grv="http://myfaces.apache.org/groovy">
+      xmlns:grv="http://myfaces.apache.org/groovy"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
     <title>Hello World</title>
 </head>
@@ -37,11 +38,12 @@
                     </h:panelGrid>
                     <hr/>
                     <h:commandButton styleClass="btn" action="#{blogView.addEntry}" value="Add Blog Entry">
+                        <f:ajax execute="@form" render="content" />
                     </h:commandButton>
                 </h:panelGrid>
             </div>
             <h:panelGrid id="content" columns="1" styleClass="right">
-                <ui:repeat value="#{blogService.blogEntries}" var="item">
+                <c:forEach items="#{blogService.blogEntries}" var="item">
                     <h:panelGrid columns="1" styleClass="messageBox">
                         <h:panelGroup styleClass="topic">
                             <h:outputLabel styleClass="label" value="Topic"/>
@@ -53,7 +55,7 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <br/>
-                </ui:repeat>
+                </c:forEach>
             </h:panelGrid>
         </h:form>
     </ui:define>

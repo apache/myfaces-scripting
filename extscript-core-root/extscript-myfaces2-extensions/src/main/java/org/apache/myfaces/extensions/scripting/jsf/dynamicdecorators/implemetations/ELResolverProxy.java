@@ -25,6 +25,7 @@ import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Iterator;
@@ -34,6 +35,12 @@ import java.util.logging.Logger;
  * EL Resolver which is scripting enabled
  *
  * @author Werner Punz
+ *
+ * TODO not needed anymore because we drop the beans at request start directly which are tainted...
+ * they get reloaded because they are dropped entirely from the scope
+ * 
+ * The compile and load happens on classloader level
+ * @deprecated
  */
 public class ELResolverProxy extends ELResolver implements Decorated {
 
@@ -46,8 +53,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
         Object retVal = _delegate.getValue(elContext, base, property);
 
-        Object newRetVal;
-
+      /*  Object newRetVal;
         if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
 
             newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
@@ -58,7 +64,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
             return newRetVal;
 
-        } 
+        }*/
 
         return retVal;
     }
@@ -76,7 +82,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
 
     public void setValue(ELContext elContext, Object base, Object property, Object value) throws NullPointerException, ELException {
         //now to more complex relations...
-        if (base != null) {
+        if (base != null && WeavingContext.isDynamic(base.getClass()) && WeavingContext.isDynamic(value.getClass())) {
             WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), value.getClass().getName());
         }
         _delegate.setValue(elContext, base, property, value);
@@ -94,6 +100,10 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return _delegate.getCommonPropertyType(elContext, o);
     }
 
+
+    public ELResolverProxy() {
+        _delegate = FacesContext.getCurrentInstance().getELContext().getELResolver();
+    }
 
     public ELResolverProxy(ELResolver delegate) {
         _delegate = delegate;

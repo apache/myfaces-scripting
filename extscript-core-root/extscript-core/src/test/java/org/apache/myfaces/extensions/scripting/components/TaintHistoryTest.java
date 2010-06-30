@@ -31,6 +31,7 @@ import org.apache.myfaces.test.mock.MockResponseWriter;
 
 import javax.faces.component.html.HtmlForm;
 import javax.servlet.ServletContext;
+import java.io.File;
 import java.io.StringWriter;
 
 /**
@@ -96,7 +97,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
         historyEntry.getRefreshAttribute().requestRefresh();
         historyEntry.getRefreshAttribute().executedRefresh();
         historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
-        historyEntry.setFileName(BOOGA_JAVA);
+        historyEntry.setFile(new File(BOOGA_JAVA));
         historyEntry.getRefreshAttribute().requestRefresh();
         //historyEntry.setTaintedOnce(true);
         WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);
@@ -130,9 +131,9 @@ public class TaintHistoryTest extends AbstractJsfTestCase {
             historyEntry.getRefreshAttribute().executedRefresh();
             historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
             if(cnt < 10)
-                historyEntry.setFileName("0"+cnt + "_"+BOOGA_JAVA);
+                historyEntry.setFile(new File("0"+cnt + "_"+BOOGA_JAVA));
             else
-                historyEntry.setFileName(cnt + "_"+BOOGA_JAVA);
+                historyEntry.setFile(new File(cnt + "_"+BOOGA_JAVA));
             historyEntry.getRefreshAttribute().requestRefresh();
             //historyEntry.setTaintedOnce(true);
             WeavingContext.getRefreshContext().addTaintLogEntry(historyEntry);

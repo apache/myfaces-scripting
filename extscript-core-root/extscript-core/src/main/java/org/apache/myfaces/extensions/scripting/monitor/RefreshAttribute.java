@@ -45,13 +45,6 @@ public class RefreshAttribute implements Cloneable {
      */
     private long refreshExecuted;
 
-
-    //Resource facility which has to be watched over
-    //TODO this will be moved into a separate resource facility
-    
-
-
-
     /**
      * <p>By calling this method the user is able to request another refresh. Note that
      * this doesn't cause the bean factory to refresh the bean definition immediately,

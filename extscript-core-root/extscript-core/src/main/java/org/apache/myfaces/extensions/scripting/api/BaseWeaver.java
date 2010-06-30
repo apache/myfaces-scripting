@@ -25,7 +25,6 @@ import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
-import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.FullRecompileRecommended;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.FullScanRecommended;
@@ -56,6 +55,10 @@ import java.util.logging.Logger;
  * Since all weavers are application scoped we can handle the mutexes properly *
  *
  * @author Werner Punz
+ *         <p/>
+ *         <p/>
+ *         TODO once we have moved over to asynchronous compilation
+ *         we can drop a load of the local code
  */
 public abstract class BaseWeaver implements ScriptingWeaver {
 
@@ -114,7 +117,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @param reloadMeta the metadata to be investigated for reload candidacy
      * @return true if it is a reload candidate
      */
-    public boolean isReloadCandidate(ClassResource reloadMeta) {
+    private boolean isReloadCandidate(ClassResource reloadMeta) {
         return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.getRefreshAttribute().getRequestedRefreshDate() != 0l;
     }
 
@@ -140,20 +143,32 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             return scriptingInstance;
         }
 
+        //TODO reload candidate does not necessarily need to
+        //parse the meta data we also can work
+        //over the class information
+
+        //the main problem is we need the meta data
+        //for the graph refreshing, so we probably
+        //have to keep it that way
         ClassResource reloadMeta = classMap.get(scriptingInstance.getClass().getName());
+        try {
+            //This gives a minor speedup because we jump out as soon as possible
+            //files never changed do not even have to be considered
+            //not tainted even once == not even considered to be reloaded
+            if (isReloadCandidate(reloadMeta)) {
 
-        //This gives a minor speedup because we jump out as soon as possible
-        //files never changed do not even have to be considered
-        //not tainted even once == not even considered to be reloaded
-        if (isReloadCandidate(reloadMeta)) {
+                Object reloaded = _reloadingStrategy.reload(scriptingInstance, artifactType);
+                if (reloaded != null) {
+                    return reloaded;
+                }
 
-            Object reloaded = _reloadingStrategy.reload(scriptingInstance, artifactType);
-            if (reloaded != null) {
-                return reloaded;
             }
-
+            return scriptingInstance;
+        } finally {
+            //just in case the executed refresh is not triggered by
+            //the classloader we issue another timestamp here
+            reloadMeta.getRefreshAttribute().executedRefresh();
         }
-        return scriptingInstance;
 
     }
 
@@ -162,6 +177,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * by reloading its file contents and then reweaving it
      */
     public Class reloadScriptingClass(Class aclass) {
+
         ClassResource metadata = getClassMap().get(aclass.getName());
 
         if (metadata == null)
@@ -170,7 +186,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         if (!assertScriptingEngine(metadata)) {
             return null;
         }
-        
+
         if (!metadata.getRefreshAttribute().requiresRefresh()) {
             //if not tainted then we can recycle the last class loaded
             return metadata.getAClass();
@@ -182,7 +198,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 //if not tainted then we can recycle the last class loaded
                 return metadata.getAClass();
             }
-            return loadScriptingClassFromFile(metadata.getSourcePath(), metadata.getFileName());
+
+            return loadScriptingClassFromFile(metadata.getSourceDir(), metadata.getSourceFile());
         }
     }
 
@@ -411,9 +428,9 @@ public abstract class BaseWeaver implements ScriptingWeaver {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 requestMap.put(this.getClass().getName() + "_recompiled", Boolean.TRUE);
             }
-            WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
         } catch (UnsupportedOperationException ex) {
         }
+        WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
     }
 
     /**
@@ -428,9 +445,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      */
     protected Class loadScriptingClassFromFile(String sourceRoot, String file) {
         //we load the scripting class from the given className
-
-        File currentClassFile = new File(sourceRoot + File.separator + file);
-        if (!currentClassFile.exists()) {
+        File currentSourceFile = new File(sourceRoot + File.separator + file);
+        if (!currentSourceFile.exists()) {
             return null;
         }
 
@@ -484,6 +500,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
         return retVal;
     }
+
     //blocker to prevent recursive calls to the annotation scan which can be triggered by subsequent calls of scanAnnotation and loadClass
     //a simple boolean check does not suffice here because scanClass might trigger subsequent calls to other classes
     Map<String, String> scanAnnotation = new ConcurrentHashMap<String, String>();
@@ -493,7 +510,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             fullRecompile();
             //we update our dependencies and annotation info prior to going
             //into the refresh cycle
-
 
             fullClassScan();
         }

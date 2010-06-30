@@ -26,6 +26,8 @@ import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -180,8 +182,7 @@ public class ThrowawayClassloader extends ClassLoader {
             return retVal;
         }
 
-        reloadingMetaData.setFileName(fileName);
-        reloadingMetaData.setSourcePath(rootDir);
+        reloadingMetaData.setFile(new File(rootDir+File.separator+fileName));
         reloadingMetaData.getRefreshAttribute().requestRefresh();
         reloadingMetaData.getRefreshAttribute().executedRefresh();
         reloadingMetaData.setScriptingEngine(_scriptingEngine);
@@ -197,6 +198,28 @@ public class ThrowawayClassloader extends ClassLoader {
     protected Class<?> findClassExposed(String name) throws ClassNotFoundException {
         return super.findClass(name);
     }
+
+    //some classloaders fail to resolve the resource properly, we have
+    //to drag our local paths in to keep track of the compiled resources
+    //for different scripting languages
+    public URL getResource(String resource) {
+       URL res = super.getResource(resource);
+       if(res != null) return res;
+       //if we do get a null value we try to remap to our custom paths
+       if(!resource.endsWith(".class")) return null;
+       resource = resource.substring(0, resource.length() - 6);
+       resource = resource.replaceAll("\\/",".");
+
+       File clsFile = getClassFile(resource);
+       if(!clsFile.exists()) return null;
+        try {
+            return clsFile.toURI().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public File getClassFile(String className) {
         return ClassUtils.classNameToFile(WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), className);

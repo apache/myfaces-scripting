@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implemetations;
 
+import org.apache.myfaces.el.unified.resolver.FacesCompositeELResolver;
 import org.apache.myfaces.extensions.scripting.api.Decorated;
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
@@ -122,9 +123,9 @@ public class ApplicationProxy extends Application implements Decorated {
      */
     Map<EventHandlerProxyEntry, EventHandlerProxyEntry> _eventHandlerIdx = new ConcurrentHashMap<EventHandlerProxyEntry, EventHandlerProxyEntry>();
 
-    volatile static boolean elResolverAdded = false;
     volatile static boolean varResolverAdded = false;
 
+    ELResolverProxy finalResolver = null;
 
     public ApplicationProxy(Application delegate) {
         _delegate = delegate;
@@ -132,14 +133,8 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
-        if(!elResolverAdded) {
-            //ordering hints are unsufficient here we make
-            //sure our proxy is added as second in the chain
-            //also this method works as well on
-            //jsf 1.2 while hints only work in jsf2
-            elResolver = new ELResolverProxy(elResolver);
-            elResolverAdded = true;
-        }
+        //we do not need a proxy here anymore because
+        //we drop the beans directly
         _delegate.addELResolver(elResolver);
     }
 
@@ -151,9 +146,9 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public ELResolver getELResolver() {
         weaveDelegate();
+
         ELResolver retVal = _delegate.getELResolver();
         return retVal;
-
     }
 
     //TOD add a weaving for resource bundles

@@ -22,6 +22,7 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
               version="2.0">
 
+     
 
     <!-- managed beans of the simple hello world app -->
     <managed-bean>
@@ -60,8 +61,6 @@
         <navigation-handler>
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
         </navigation-handler>
- 
-
     </application>
 
 

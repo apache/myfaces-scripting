@@ -40,39 +40,20 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     Logger log = Logger.getLogger(ELResolverProxy.class.getName());
     ELResolver _delegate = null;
 
-    // static ThreadLocal<Boolean> _getValue = new ThreadLocal<Boolean>();
-
-    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, ELException {
-
-        Object retVal = _delegate.getValue(elContext, base, property);
-
-        Object newRetVal;
-
-        if (retVal != null && WeavingContext.isDynamic(retVal.getClass())) {
-
-            newRetVal = WeavingContext.getWeaver().reloadScriptingInstance(retVal, ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN);
-
-            if (newRetVal != retVal) {
-                setValue(elContext, base, property, newRetVal);
-            }
-
-            return newRetVal;
-
-        }
-
-        return retVal;
+    public ELResolverProxy(ELResolver delegate) {
+        _delegate = delegate;
     }
 
-    public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
-        Class<?> retVal = _delegate.getType(elContext, o, o1);
-        if (retVal != null && WeavingContext.isDynamic(retVal)) {
-            return WeavingContext.getWeaver().reloadScriptingClass(retVal);
-        }
-        return retVal;
+
+    public Object getValue(ELContext elContext, final Object base, final Object property) throws NullPointerException, ELException {
+        return _delegate.getValue(elContext, base, property);
+    }
+
+    public Class<?> getType(ELContext elContext, Object base, Object property) throws NullPointerException, ELException {
+        return _delegate.getType(elContext, base, property);
     }
 
     public void setValue(ELContext elContext, Object base, Object property, Object value) throws NullPointerException, ELException {
-        //now to more complex relations...
         if (base != null) {
             WeavingContext.getRefreshContext().getDependencyRegistry().addDependency(ScriptingConst.ENGINE_TYPE_JSF_ALL, base.getClass().getName(), base.getClass().getName(), value.getClass().getName());
         }
@@ -80,7 +61,7 @@ public class ELResolverProxy extends ELResolver implements Decorated {
     }
 
     public boolean isReadOnly(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
-        return _delegate.isReadOnly(elContext, o, o1);
+        return  _delegate.isReadOnly(elContext, o, o1);
     }
 
     public Iterator getFeatureDescriptors(ELContext elContext, Object o) {
@@ -91,19 +72,8 @@ public class ELResolverProxy extends ELResolver implements Decorated {
         return _delegate.getCommonPropertyType(elContext, o);
     }
 
-    public ELResolverProxy(ELResolver delegate) {
-        _delegate = delegate;
-    }
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;  
     }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        // our "pseudo-constructor"
-        in.defaultReadObject();
-        log = Logger.getLogger(ELResolverProxy.class.getName());
-
-    }
-
 }

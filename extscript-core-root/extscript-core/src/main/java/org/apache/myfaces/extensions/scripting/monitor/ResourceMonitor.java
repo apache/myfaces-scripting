@@ -153,7 +153,7 @@ public class ResourceMonitor extends Thread {
 
         for (Map.Entry<String, ClassResource> it : this._classMap.entrySet()) {
 
-            File proxyFile = new File(it.getValue().getSourcePath() + File.separator + it.getValue().getFileName());
+            File proxyFile = it.getValue().getFile();
             if (isModified(it, proxyFile)) {
 
                 _systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
@@ -204,14 +204,14 @@ public class ResourceMonitor extends Thread {
 
     private void printInfo(ClassResource it) {
         if (_log.isLoggable(Level.INFO)) {
-            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFileName());
+            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFile().getAbsolutePath());
         }
     }
 
     private void printInfo(Map.Entry<String, ClassResource> it, File proxyFile) {
         if (_log.isLoggable(Level.INFO)) {
             _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getRefreshAttribute().getExecutedRefreshDate())});
-            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFileName());
+            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFile().getAbsolutePath());
         }
     }
 

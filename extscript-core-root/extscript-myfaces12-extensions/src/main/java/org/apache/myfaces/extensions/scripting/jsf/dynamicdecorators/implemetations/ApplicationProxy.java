@@ -58,14 +58,14 @@ public class ApplicationProxy extends Application implements Decorated {
 
     public void addELResolver(ELResolver elResolver) {
         weaveDelegate();
-        if (!elResolverAdded) {
+        /*if (!elResolverAdded) {
             //ordering hints are unsufficient here we make
             //sure our proxy is added as second in the chain
             //also this method works as well on
             //jsf 1.2 while hints only work in jsf2
             elResolver = new ELResolverProxy(elResolver);
             elResolverAdded = true;
-        }
+        }*/
         _delegate.addELResolver(elResolver);
     }
 

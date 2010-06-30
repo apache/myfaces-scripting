@@ -20,8 +20,10 @@
 package org.apache.myfaces.extensions.scripting.monitor;
 
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 
 import java.io.File;
+import java.util.Collection;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -38,16 +40,12 @@ public class ClassResource extends WatchedResource {
     //the class has all meta data internally via findResource
     //on its corresponding classloader
     //caching the info however probably is faster
-    volatile String _fileName = "";
-    volatile String _sourcePath = "";
     volatile Class _aClass = null;
+    volatile File  _sourceFile;
     volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
-
-    
-
     //todo clean up the sourcepath and filename
-    
+
     //--- todo move this into a separate resource handling facility
 
     @Override
@@ -56,19 +54,21 @@ public class ClassResource extends WatchedResource {
     }
 
     @Override
+    /**
+     * returns the source file in this case
+     */
     public File getFile() {
-        //todo get the resource file from the given class definition and its resource loader
-        return new File(_sourcePath+File.separator+_fileName);
+        try {
+            return _sourceFile;
+        } catch (NullPointerException ex) {
+            return null;
+        }
     }
 
-    public String getFileName() {
-        return _fileName;
+    public void setFile(File sourceFile) {
+        _sourceFile = sourceFile;
     }
-
-    public void setFileName(String fileName) {
-        this._fileName = fileName;
-    }
-
+  
     public Class getAClass() {
         return _aClass;
     }
@@ -85,15 +85,6 @@ public class ClassResource extends WatchedResource {
         this._scriptingEngine = scriptingEngine;
     }
 
-    public String getSourcePath() {
-        return _sourcePath;
-    }
-
-    public void setSourcePath(String sourcePath) {
-        this._sourcePath = sourcePath;
-    }
-
-
 
     public void setRefreshAttribute(RefreshAttribute attr) {
         _refreshAttribute = attr;
@@ -102,7 +93,26 @@ public class ClassResource extends WatchedResource {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         ClassResource retVal = (ClassResource) super.clone();
-        retVal.setRefreshAttribute(_refreshAttribute.getClone());        
+        retVal.setRefreshAttribute(_refreshAttribute.getClone());
         return retVal;
     }
+
+
+    public String getSourceFile() {
+        return _sourceFile.getAbsolutePath().substring(getSourceDir().length()+1);
+    }
+
+    public String getSourceDir() {
+        Collection<String> sourceRoots = WeavingContext.getConfiguration().getSourceDirs(_scriptingEngine);
+        String fileDir = _sourceFile.getAbsolutePath();
+        fileDir = fileDir.replaceAll("\\\\","/");
+        for(String sourceRoot: sourceRoots) {
+            sourceRoot = sourceRoot.replaceAll("\\\\","/");
+            if(fileDir.startsWith(sourceRoot)) {
+                return sourceRoot;
+            }
+        }
+        return null;
+    }
+
 }
