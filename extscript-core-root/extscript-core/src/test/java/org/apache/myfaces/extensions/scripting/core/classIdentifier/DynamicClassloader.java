@@ -46,6 +46,10 @@ public class DynamicClassloader extends ClassLoader implements ThrowAwayClassLoa
 
     public Class loadClass(String className, boolean resolve) throws ClassNotFoundException {
 
+        if(className.contains("rg/apache/myfaces/javaloader/componentTest/JavaTestComponent$PropertyKeys")) {
+            System.out.println("Debuginfo found");
+        }
+
         if (className.contains(Consts.JAVA_LANG)) {
             return super.loadClass(className, resolve);
         }

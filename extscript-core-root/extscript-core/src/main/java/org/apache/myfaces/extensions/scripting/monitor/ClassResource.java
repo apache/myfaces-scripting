@@ -24,6 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -42,6 +43,7 @@ public class ClassResource extends WatchedResource {
     //caching the info however probably is faster
     volatile Class _aClass = null;
     volatile File  _sourceFile;
+    volatile long  _lastLoaded = -1l;
     volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
     //todo clean up the sourcepath and filename
@@ -102,6 +104,7 @@ public class ClassResource extends WatchedResource {
         return _sourceFile.getAbsolutePath().substring(getSourceDir().length()+1);
     }
 
+    
     public String getSourceDir() {
         Collection<String> sourceRoots = WeavingContext.getConfiguration().getSourceDirs(_scriptingEngine);
         String fileDir = _sourceFile.getAbsolutePath();
@@ -114,5 +117,28 @@ public class ClassResource extends WatchedResource {
         }
         return null;
     }
+
+    public void executeLastLoaded() {
+        _lastLoaded = System.currentTimeMillis();
+    }
+
+    public long getLastLoaded() {
+        return _lastLoaded;
+    }
+
+    /**
+     *
+     * @return true if the class file has been recompiled since the last request for recompilation
+     */
+    public boolean isRecompiled() {
+        File classFile = WeavingContext.getConfiguration().resolveClassFile(_aClass.getName());
+        if(!classFile.exists()) {
+            return false;
+        }
+        Logger log = Logger.getLogger(this.getClass().getName());
+        log.info(this.getAClass().getName() + (classFile.lastModified() - _lastLoaded));
+        return _sourceFile.lastModified() > _lastLoaded;
+    }
+
 
 }

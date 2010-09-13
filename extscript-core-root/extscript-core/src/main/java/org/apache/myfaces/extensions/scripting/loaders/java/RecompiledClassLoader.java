@@ -18,6 +18,9 @@
  */
 package org.apache.myfaces.extensions.scripting.loaders.java;
 
+import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
+
 import java.io.InputStream;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
@@ -111,17 +114,31 @@ public class RecompiledClassLoader extends ClassLoader {
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
         final ClassLoader _parent = getParent();
+        if(className.contains("JavaTestComponent")) {
+            System.out.println("Debugpoint found");
+        }
+        ClassResource resource = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
+        
+        //preemptive check if the resource either is not loaded or requires a refresh
+        //if yes we generated a new classloader to load the class anew
+        if(resource == null || resource.getAClass() == null || resource.isRecompiled())  {
+            return _loadClass(className, _parent);
+        }
+        return resource.getAClass();
+    }
+
+    private Class<?> _loadClass(String className, ClassLoader _parent) throws ClassNotFoundException {
         try {
             _throwAwayLoader = AccessController.doPrivileged(
                     new _Action(_parent, _scriptingEngine, _engineExtension, _unTaintClasses)
             );
-            //_throwAwayLoader.setSourceRoot(getSourceRoot());
             return _throwAwayLoader.loadClass(className);
         } catch (PrivilegedActionException e) {
             logSevere(e);
+            return null;
         }
-        return null;
     }
+
 
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         return _throwAwayLoader.findClassExposed(name);

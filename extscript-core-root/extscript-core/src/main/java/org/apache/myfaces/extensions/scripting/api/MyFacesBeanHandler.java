@@ -22,18 +22,19 @@ import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.annotation.LifecycleProvider;
 import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
 import org.apache.myfaces.config.element.ManagedBean;
+import org.apache.myfaces.config.element.ManagedProperty;
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
+import org.apache.myfaces.util.ContainerUtils;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,6 +77,41 @@ public class MyFacesBeanHandler implements BeanHandler {
     }
 
     /**
+     * scans the dependencies on el level
+     * Not working out for now
+     */
+  /*  public void scanElDependencies() {
+        Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+        for(Map.Entry<String, ManagedBean> entry: mbeans.entrySet()) {
+            Object bean = entry.getValue();
+            if(bean instanceof org.apache.myfaces.config.impl.digester.elements.ManagedBean) {
+                org.apache.myfaces.config.impl.digester.elements.ManagedBean workBean = (org.apache.myfaces.config.impl.digester.elements.ManagedBean) bean;
+
+                Object props = ReflectUtil.executeMethod(workBean,"getManagedProperties");
+                if(props instanceof Iterator) {
+                    //myfaces 1.2
+                } else {
+                    for(ManagedProperty prop: ((Collection<ManagedProperty>) props)) {
+                          ExpressionFactory expFactory = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+                          ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+                           expFactory.coerceToType("#{myFactory['booga']}");   
+                          //if(ContainerUtils.isValueReference((String) prop.getV))
+                          elContext.getELResolver().getType(elContext,"myFactory","booga");
+                    }
+                }
+
+
+            }
+            //Iterator<ManagedProperty> it = bean.getManagedProperties();
+            //we rescan all managed props to cover pure object
+            //references as well as class references
+            //while(it.hasNext()) {
+            //    ManagedProperty prop = it.next();
+            //}
+        }
+    } */
+
+    /**
      * Refreshes all managed beans
      * session, and personal scoped ones
      * <p/>
@@ -91,6 +127,8 @@ public class MyFacesBeanHandler implements BeanHandler {
         }
 
         Set<String> tainted = getTaintedClasses();
+
+        //scanElDependencies();
 
         if (tainted.size() > 0) {
             //We now have to check if the tainted classes belong to the managed beans

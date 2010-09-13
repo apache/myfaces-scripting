@@ -26,11 +26,13 @@ import javax.faces.bean.SessionScoped;
 
 public class TestBean4 {
     
-    private String hello = "Hello world from test Bean 4";
+    private String hello = "Hello world from test Bean 4 xxx";
 
+    
     public String getHello() {
         return hello;
     }
+    
 
     public void setHello(String hello) {
         this.hello = hello;

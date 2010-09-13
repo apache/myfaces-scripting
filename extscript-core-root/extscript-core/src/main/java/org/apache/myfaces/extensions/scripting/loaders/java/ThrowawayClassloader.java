@@ -46,7 +46,6 @@ public class ThrowawayClassloader extends ClassLoader {
     int _scriptingEngine;
     String _engineExtension;
 
-
     public ThrowawayClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension) {
         super(classLoader);
 
@@ -89,25 +88,36 @@ public class ThrowawayClassloader extends ClassLoader {
     }
 
     @Override
+    /**
+     * load called either if the class is not loaded at all
+     * or if the class has been recompiled (check upfront)
+     */
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
 
-        File target = getClassFile(className);
+        if(className.contains("JavaTestComponent")) {
+            System.out.println("Debuginfo found");
+        }
+
+        //TODO handle the $ case which should not revert to a new classloader
+
+        File target = WeavingContext.getConfiguration().resolveClassFile(className);
         if (target.exists()) {
-            _logger.log(Level.FINE,"[EXT-SCRIPTING] target {0} exists", className);
+                       
+            _logger.log(Level.FINE, "[EXT-SCRIPTING] target {0} exists", className);
 
             ClassResource data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
-            if (data != null && !data.getRefreshAttribute().requiresRefresh()) {
-                _logger.log(Level.INFO,"[EXT-SCRIPTING] data from target {0} found but not tainted yet", className);
 
+            //this check must be present because
+            //the vm recycles old classloaders to load classes a anew
+            //if we dont do it we get an exception
+            if(data != null && !data.isRecompiled()) {
                 return data.getAClass();
             }
-             _logger.log(Level.FINER,"[EXT-SCRIPTING] loading class {0} from filesystem", className);
-
-            FileInputStream iStream = null;
-
+            //a load must happen anyway because the target was recompiled
             int fileLength;
             byte[] fileContent;
+            FileInputStream iStream = null;
             try {
                 //we cannot load while a compile is in progress
                 //we have to wait until it is one
@@ -117,23 +127,6 @@ public class ThrowawayClassloader extends ClassLoader {
                     iStream = new FileInputStream(target);
                     int result = iStream.read(fileContent);
                     _logger.log(Level.FINER, "read {0} bytes", String.valueOf(result));
-                }
-
-                Class retVal;
-
-                //we have to do it here because just in case
-                //a dependent class is loaded as well we run into classcast exceptions
-                if (data != null) {
-                    data.getRefreshAttribute().executedRefresh();
-
-                    retVal = super.defineClass(className, fileContent, 0, fileLength);
-
-                    data.setAClass(retVal);
-                    return retVal;
-                } else {
-                    //we store the initial reloading meta data information so that it is refreshed
-                    //later on, this we we cover dependent classes on the initial load
-                    return storeReloadableDefinitions(className, fileLength, fileContent);
                 }
 
             } catch (FileNotFoundException e) {
@@ -150,8 +143,32 @@ public class ThrowawayClassloader extends ClassLoader {
                     }
                 }
             }
+
+            if (data != null) {
+                File sourceFile = data.getFile();
+
+                _logger.log(Level.FINER, "[EXT-SCRIPTING] loading class {0} from filesystem", className);
+
+                Class retVal;
+
+                //we have to do it here because just in case
+                //a dependent class is loaded as well we run into classcast exceptions
+                //we only store the class the weaver has to trigger the refresh time trigger
+                retVal = super.defineClass(className, fileContent, 0, fileLength);
+                data.setAClass(retVal);
+                data.executeLastLoaded();
+                return retVal;
+
+            } else {
+                //we store the initial reloading meta data information so that it is refreshed
+                //later on, this we we cover dependent classes on the initial load
+                if(className.contains("JavaTestComponen")) {
+                    System.out.println("Debuginfo found");
+                }
+                return storeReloadableDefinitions(className, fileLength, fileContent);
+            }
         }
-         _logger.log(Level.FINER,"[EXT-SCRIPTING] target {0} does not exist", target.getAbsolutePath());
+        _logger.log(Level.FINER, "[EXT-SCRIPTING] target {0} does not exist", target.getAbsolutePath());
         return super.loadClass(className);
     }
 
@@ -163,7 +180,10 @@ public class ThrowawayClassloader extends ClassLoader {
         //find the source for the given class and then
         //store the filename
         String separator = FileUtils.getFileSeparatorForRegex();
-        String fileName = className.replaceAll("\\.", separator) + getStandardFileExtension();
+        String fileName = className.replaceAll("\\.", separator);
+        fileName = (fileName.indexOf("$") != -1)?  fileName.substring(0,fileName.indexOf("$")): fileName;
+
+        fileName = fileName.replaceAll("\\.", separator) + getStandardFileExtension();
         Collection<String> sourceDirs = WeavingContext.getConfiguration().getSourceDirs(_scriptingEngine);
         String rootDir = null;
         File sourceFile = null;
@@ -182,12 +202,14 @@ public class ThrowawayClassloader extends ClassLoader {
             return retVal;
         }
 
-        reloadingMetaData.setFile(new File(rootDir+File.separator+fileName));
+        reloadingMetaData.setFile(new File(rootDir + File.separator + fileName));
         reloadingMetaData.getRefreshAttribute().requestRefresh();
         reloadingMetaData.getRefreshAttribute().executedRefresh();
+
         reloadingMetaData.setScriptingEngine(_scriptingEngine);
 
         WeavingContext.getFileChangedDaemon().getClassMap().put(className, reloadingMetaData);
+         reloadingMetaData.executeLastLoaded();
         return retVal;
     }
 
@@ -202,16 +224,17 @@ public class ThrowawayClassloader extends ClassLoader {
     //some classloaders fail to resolve the resource properly, we have
     //to drag our local paths in to keep track of the compiled resources
     //for different scripting languages
-    public URL getResource(String resource) {
-       URL res = super.getResource(resource);
-       if(res != null) return res;
-       //if we do get a null value we try to remap to our custom paths
-       if(!resource.endsWith(".class")) return null;
-       resource = resource.substring(0, resource.length() - 6);
-       resource = resource.replaceAll("\\/",".");
 
-       File clsFile = getClassFile(resource);
-       if(!clsFile.exists()) return null;
+    public URL getResource(String resource) {
+        URL res = super.getResource(resource);
+        if (res != null) return res;
+        //if we do get a null value we try to remap to our custom paths
+        if (!resource.endsWith(".class")) return null;
+        resource = resource.substring(0, resource.length() - 6);
+        resource = resource.replaceAll("\\/", ".");
+
+        File clsFile = WeavingContext.getConfiguration().resolveClassFile(resource);
+        if (!clsFile.exists()) return null;
         try {
             return clsFile.toURI().toURL();
         } catch (MalformedURLException e) {
@@ -220,10 +243,4 @@ public class ThrowawayClassloader extends ClassLoader {
         }
     }
 
-
-    public File getClassFile(String className) {
-        return ClassUtils.classNameToFile(WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), className);
-    }
-
-   
 }

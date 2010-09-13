@@ -144,6 +144,29 @@ public class Configuration {
         dirs.add(sourceDir);
     }
 
+    /**
+     * <p>Resolves and returns a File handle that represents the class file of
+     * the given class on the file system. However, note that this method only
+     * returns <code>null</code> if an error occured while resolving the class
+     * file. A non-null valuee doesn't necessarily mean that the class file
+     * actually exists. In oder to check the existence call the according
+     * method on the returned object.</p>
+     *
+     * @param className the name of the class that you want to resolve
+     * @return a File handle that represents the class file of the given class
+     *         on the file system
+     * @see java.io.File#exists()
+     */
+    public File resolveClassFile(String className) {
+        //if(className.contains("rg/apache/myfaces/javaloader/componentTest/JavaTestComponent$PropertyKeys")) {
+        //    System.out.println("Debuginfo found");
+        //}
+        //int subClassPos = className.indexOf("$");
+        //className = (subClassPos != -1)? className.substring(0, subClassPos) :className;
+        return new File(getCompileTarget(),
+                className.replaceAll("\\.", "/").concat(".class"));
+    }
+
     public File getCompileTarget() {
         return _compileTarget;
     }

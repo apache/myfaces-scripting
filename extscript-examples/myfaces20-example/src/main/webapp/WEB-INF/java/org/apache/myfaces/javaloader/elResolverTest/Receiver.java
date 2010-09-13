@@ -37,7 +37,7 @@ public class Receiver {
 
     public Object getMyBean() {
         return myBean;
-    }
+    }         
 
     public void setMyBean(Object myBean) {
         this.myBean = myBean;
