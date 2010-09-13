@@ -33,6 +33,7 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
  * @version $Revision$ $Date$
  */
 
+
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "<h2> Hello world ccc from Renderer 2 </h2>";

@@ -36,6 +36,12 @@ import static java.util.logging.Level.*;
 
 /**
  * we move the throw away mechanism into our classloader for cleaner code coverage
+ * the idea is to throw away classloaders on demand if a class is reloaded
+ * we throw it away at two stages
+ * 
+ * first at call stage from outside if we manually load a class
+ * and secondly internally if a class is reloaded by the system
+ * or if something calls loadClass directly
  */
 @JavaThrowAwayClassloader
 @SuppressWarnings("unused")
@@ -63,16 +69,7 @@ public class ThrowawayClassloader extends ClassLoader {
     ThrowawayClassloader() {
     }
 
-    /*
-    * TODO the classcast exception is caused by a loadClassInternal triggered
-    * at the time the referencing class is loaded and then by another classload
-    * at the time the bean is refreshed
-    *
-    * we have to check if a class is loaded by loadClassInternal then
-    * no other refresh should happen but the loaded class should be issued again)
-    *
-    * Dont know how to resolve that for now
-    */
+ 
 
     @Override
     public InputStream getResourceAsStream(String name) {
@@ -143,6 +140,7 @@ public class ThrowawayClassloader extends ClassLoader {
                     }
                 }
             }
+            
 
             if (data != null) {
                 File sourceFile = data.getFile();
@@ -151,10 +149,9 @@ public class ThrowawayClassloader extends ClassLoader {
 
                 Class retVal;
 
-                //we have to do it here because just in case
-                //a dependent class is loaded as well we run into classcast exceptions
-                //we only store the class the weaver has to trigger the refresh time trigger
-                retVal = super.defineClass(className, fileContent, 0, fileLength);
+                //sometimes the classloader is recycled between requests due to being bound to the old class, we have to open a new classloader here just for the sake
+                //to avoid conflicts
+                retVal = (new ThrowawayClassloader(getParent() ,_scriptingEngine, _engineExtension)).defineClass(className, fileContent, 0, fileLength);
                 data.setAClass(retVal);
                 data.executeLastLoaded();
                 return retVal;
@@ -162,9 +159,6 @@ public class ThrowawayClassloader extends ClassLoader {
             } else {
                 //we store the initial reloading meta data information so that it is refreshed
                 //later on, this we we cover dependent classes on the initial load
-                if(className.contains("JavaTestComponen")) {
-                    System.out.println("Debuginfo found");
-                }
                 return storeReloadableDefinitions(className, fileLength, fileContent);
             }
         }

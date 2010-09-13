@@ -218,16 +218,11 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             String fileName = className.replaceAll("\\.", separator) + getFileEnding();
 
             for (String pathEntry : WeavingContext.getConfiguration().getSourceDirs(getScriptingEngine())) {
-
                 /**
                  * the reload has to be performed synchronized
                  * hence there is no chance to do it unsynchronized
                  */
                 synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
-                    metadata = classMap.get(className);
-                    if (metadata != null) {
-                        return reloadScriptingClass(metadata.getAClass());
-                    }
                     Class retVal = loadScriptingClassFromFile(pathEntry, fileName);
                     if (retVal != null) {
                         return retVal;
