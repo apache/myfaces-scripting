@@ -38,7 +38,7 @@ import static java.util.logging.Level.*;
  * we move the throw away mechanism into our classloader for cleaner code coverage
  * the idea is to throw away classloaders on demand if a class is reloaded
  * we throw it away at two stages
- * 
+ * <p/>
  * first at call stage from outside if we manually load a class
  * and secondly internally if a class is reloaded by the system
  * or if something calls loadClass directly
@@ -69,7 +69,6 @@ public class ThrowawayClassloader extends ClassLoader {
     ThrowawayClassloader() {
     }
 
- 
 
     @Override
     public InputStream getResourceAsStream(String name) {
@@ -91,14 +90,13 @@ public class ThrowawayClassloader extends ClassLoader {
      */
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
+        //we have to register ourselves temporarily because the trhow away classloader
+        //can be called implicitely
 
-      
-
-        //TODO handle the $ case which should not revert to a new classloader
 
         File target = WeavingContext.getConfiguration().resolveClassFile(className);
         if (target.exists()) {
-                       
+
             _logger.log(Level.FINE, "[EXT-SCRIPTING] target {0} exists", className);
 
             ClassResource data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
@@ -106,7 +104,11 @@ public class ThrowawayClassloader extends ClassLoader {
             //this check must be present because
             //the vm recycles old classloaders to load classes a anew
             //if we dont do it we get an exception
-            if(data != null && !data.isRecompiled()) {
+            //we cannot check here for the file timestamps because if we have import dependencies
+            //it can happen that the compiler refreshes the forward dependend file as well
+            //and then we reload the class in one file but reference it from an artifact
+            //in another, it is better to check for the taint state instead
+            if (data != null && !data.getRefreshAttribute().requiresRefresh()) {
 
                 return data.getAClass();
             }
@@ -139,7 +141,7 @@ public class ThrowawayClassloader extends ClassLoader {
                     }
                 }
             }
-            
+
 
             if (data != null) {
                 File sourceFile = data.getFile();
@@ -150,7 +152,7 @@ public class ThrowawayClassloader extends ClassLoader {
 
                 //sometimes the classloader is recycled between requests due to being bound to the old class, we have to open a new classloader here just for the sake
                 //to avoid conflicts
-                retVal = (new ThrowawayClassloader(getParent() ,_scriptingEngine, _engineExtension)).defineClass(className, fileContent, 0, fileLength);
+                retVal = (new ThrowawayClassloader(getParent(), _scriptingEngine, _engineExtension)).defineClass(className, fileContent, 0, fileLength);
                 data.setAClass(retVal);
                 data.getRefreshAttribute().executedRefresh();
                 data.executeLastLoaded();
@@ -166,6 +168,8 @@ public class ThrowawayClassloader extends ClassLoader {
         return super.loadClass(className);
     }
 
+
+
     private Class<?> storeReloadableDefinitions(String className, int fileLength, byte[] fileContent) {
         Class retVal;
         retVal = super.defineClass(className, fileContent, 0, fileLength);
@@ -175,7 +179,7 @@ public class ThrowawayClassloader extends ClassLoader {
         //store the filename
         String separator = FileUtils.getFileSeparatorForRegex();
         String fileName = className.replaceAll("\\.", separator);
-        fileName = (fileName.indexOf("$") != -1)?  fileName.substring(0,fileName.indexOf("$")): fileName;
+        fileName = (fileName.indexOf("$") != -1) ? fileName.substring(0, fileName.indexOf("$")) : fileName;
 
         fileName = fileName.replaceAll("\\.", separator) + getStandardFileExtension();
         Collection<String> sourceDirs = WeavingContext.getConfiguration().getSourceDirs(_scriptingEngine);
@@ -203,7 +207,7 @@ public class ThrowawayClassloader extends ClassLoader {
         reloadingMetaData.setScriptingEngine(_scriptingEngine);
 
         WeavingContext.getFileChangedDaemon().getClassMap().put(className, reloadingMetaData);
-         reloadingMetaData.executeLastLoaded();
+        reloadingMetaData.executeLastLoaded();
         return retVal;
     }
 
