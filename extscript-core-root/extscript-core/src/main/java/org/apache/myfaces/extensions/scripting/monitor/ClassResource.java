@@ -139,7 +139,7 @@ public class ClassResource extends WatchedResource {
         log.info(this.getAClass().getName() + (classFile.lastModified() - _lastLoaded));
 
         
-        return _sourceFile.lastModified() > _lastLoaded;
+        return classFile.lastModified() > _lastLoaded;
     }
 
 

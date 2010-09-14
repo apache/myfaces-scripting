@@ -453,8 +453,25 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             }
         } catch (UnsupportedOperationException ex) {
         }
+
+        touchTaintedClasses();
+        
         WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
     }
+
+    /**
+     * helper which returns all tainted classes
+     *
+     * @return the tainted classes
+     */
+    private void touchTaintedClasses() {
+        for (Map.Entry<String, ClassResource> it : WeavingContext.getFileChangedDaemon().getClassMap().entrySet()) {
+            if (it.getValue().getScriptingEngine() == getScriptingEngine() && it.getValue().getRefreshAttribute().requiresRefresh()) {
+                FileUtils.touch(ClassUtils.classNameToFile(WeavingContext.getConfiguration().getCompileTarget().getAbsolutePath(), it.getValue().getAClass().getName()));
+            }
+        }
+    }
+
 
     /**
      * loads a class from a given sourceroot and filename

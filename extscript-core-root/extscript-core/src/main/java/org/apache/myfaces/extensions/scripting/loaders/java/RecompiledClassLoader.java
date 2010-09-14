@@ -119,7 +119,7 @@ public class RecompiledClassLoader extends ClassLoader {
         
         //preemptive check if the resource either is not loaded or requires a refresh
         //if yes we generated a new classloader to load the class anew
-        if(resource == null || resource.getAClass() == null || resource.getRefreshAttribute().requiresRefresh() || resource.isRecompiled())  {
+        if(resource == null || resource.getAClass() == null || resource.isRecompiled())  {
             return _loadClass(className, _parent);
         }
         return resource.getAClass();

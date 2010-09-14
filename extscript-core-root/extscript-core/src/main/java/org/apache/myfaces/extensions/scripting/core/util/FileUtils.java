@@ -40,6 +40,21 @@ public class FileUtils {
     }
 
     /**
+     * touch functionality to mark
+     * compiles and dependencies as changed
+     * to get a clean reloading state
+     * <p/>
+     * the touch is basically just the same as unix touch
+     *
+     * @param fileToTouch
+     */
+    public static void touch(File fileToTouch) {
+        //we change our lastMofied to the current system time
+        if (!fileToTouch.exists()) return;
+        fileToTouch.setLastModified(System.currentTimeMillis());
+    }
+
+    /**
      * Get the file separator for this platform, properly escaped for usage in a regular expression.
      * workaround for http://bugs.sun.com/view_bug.do?bug_id=4626653 another workaround would be
      * to use the Matcher.quoteReplacement as of http://bugs.sun.com/view_bug.do?bug_id=5024613  instead

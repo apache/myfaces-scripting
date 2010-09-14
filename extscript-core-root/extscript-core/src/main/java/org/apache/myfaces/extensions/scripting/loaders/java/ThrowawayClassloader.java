@@ -106,7 +106,7 @@ public class ThrowawayClassloader extends ClassLoader {
             //this check must be present because
             //the vm recycles old classloaders to load classes a anew
             //if we dont do it we get an exception
-            if(data != null && !data.getRefreshAttribute().requiresRefresh()) {
+            if(data != null && !data.isRecompiled()) {
 
                 return data.getAClass();
             }
