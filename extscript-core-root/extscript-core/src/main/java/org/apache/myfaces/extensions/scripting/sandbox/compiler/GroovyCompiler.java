@@ -115,7 +115,7 @@ public class GroovyCompiler implements Compiler {
      * @return the compilation result
      */
     public CompilationResult compile(File sourcePath, File targetPath, File file, ClassLoader classLoader)
-            throws CompilationException {
+             {
         StringWriter compilerOutput = new StringWriter();
 
         CompilationUnit compilationUnit = new CompilationUnit(

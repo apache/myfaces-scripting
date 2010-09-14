@@ -92,9 +92,7 @@ public class ThrowawayClassloader extends ClassLoader {
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
 
-        if(className.contains("JavaTestComponent")) {
-            System.out.println("Debuginfo found");
-        }
+      
 
         //TODO handle the $ case which should not revert to a new classloader
 
@@ -108,7 +106,8 @@ public class ThrowawayClassloader extends ClassLoader {
             //this check must be present because
             //the vm recycles old classloaders to load classes a anew
             //if we dont do it we get an exception
-            if(data != null && !data.isRecompiled()) {
+            if(data != null && !data.getRefreshAttribute().requiresRefresh()) {
+
                 return data.getAClass();
             }
             //a load must happen anyway because the target was recompiled
@@ -153,6 +152,7 @@ public class ThrowawayClassloader extends ClassLoader {
                 //to avoid conflicts
                 retVal = (new ThrowawayClassloader(getParent() ,_scriptingEngine, _engineExtension)).defineClass(className, fileContent, 0, fileLength);
                 data.setAClass(retVal);
+                data.getRefreshAttribute().executedRefresh();
                 data.executeLastLoaded();
                 return retVal;
 

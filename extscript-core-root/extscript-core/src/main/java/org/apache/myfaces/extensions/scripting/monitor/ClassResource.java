@@ -138,9 +138,7 @@ public class ClassResource extends WatchedResource {
         Logger log = Logger.getLogger(this.getClass().getName());
         log.info(this.getAClass().getName() + (classFile.lastModified() - _lastLoaded));
 
-        if(_aClass.getName().contains("JavaTestComponent")) {
-            System.out.println("Debugpoint found"+(classFile.lastModified() - _lastLoaded));
-        }
+        
         return _sourceFile.lastModified() > _lastLoaded;
     }
 

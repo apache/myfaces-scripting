@@ -114,14 +114,12 @@ public class RecompiledClassLoader extends ClassLoader {
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         //check if our class exists in the tempDir
         final ClassLoader _parent = getParent();
-        if(className.contains("JavaTestComponent")) {
-            System.out.println("Debugpoint found");
-        }
+        
         ClassResource resource = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
         
         //preemptive check if the resource either is not loaded or requires a refresh
         //if yes we generated a new classloader to load the class anew
-        if(resource == null || resource.getAClass() == null || resource.isRecompiled())  {
+        if(resource == null || resource.getAClass() == null || resource.getRefreshAttribute().requiresRefresh() || resource.isRecompiled())  {
             return _loadClass(className, _parent);
         }
         return resource.getAClass();

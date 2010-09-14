@@ -102,6 +102,11 @@ public class MockupScriptingWeaver implements ScriptingWeaver {
         _lastOp = "requestRefresh";
     }
 
+    @Override
+    public void jsfRequestRefresh() {
+       _lastOp = "jsfRequestRefresh";
+    }
+
     public Collection<String> loadPossibleDynamicClasses() {
         _lastOp = "loadPossibleDynamicClasses";
         return null;

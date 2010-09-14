@@ -749,7 +749,7 @@ public class ApplicationProxy extends Application implements Decorated {
 
     private boolean alreadyWovenInRequest(String clazz) {
         //portlets now can be enabled thanks to the jsf2 indirections regarding the external context
-        Map<String, Object> req = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        Map<String, Object> req = WeavingContext.getRequestMap();
         if (req.get(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz) == null) {
             req.put(ScriptingConst.SCRIPTING_REQUSINGLETON + clazz, "");
             return false;

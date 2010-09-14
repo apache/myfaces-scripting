@@ -130,6 +130,13 @@ public interface ScriptingWeaver {
      */
     public void requestRefresh();
 
+
+    /**
+     * refreshes which only can be done under a fully initialized jsf
+     * request
+     */
+    public void jsfRequestRefresh();
+
     /**
      * loads a list of possible dynamic classes
      * for the current given state of the source dirs

@@ -255,7 +255,7 @@ public class RefreshContext {
             if (ctx == null) {
                 return false;
             }
-            Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
+            Map<String, Object> requestMap = (Map<String, Object>) WeavingContext.getRequestMap();
             Boolean retVal = (Boolean) requestMap.get("isDependencyScanned_" + scriptingEngine);
             return (retVal == null) ? false : retVal;
         } catch (UnsupportedOperationException ex) {
@@ -270,7 +270,7 @@ public class RefreshContext {
             if (ctx == null) {
                 return;
             }
-            Map<String, Object> requestMap = (Map<String, Object>) ctx.getExternalContext().getRequestMap();
+            Map<String, Object> requestMap = (Map<String, Object>) WeavingContext.getRequestMap();
             requestMap.put("isDependencyScanned_" + scriptingEngine, val);
         } catch (UnsupportedOperationException ex) {
             //still in startup

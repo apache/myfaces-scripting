@@ -109,7 +109,34 @@ public class CompilerFacade implements DynamicCompiler {
         return null;
     }
 
-    public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
+
+    public File compileFile(String sourceRoot, String classPath, String filePath)  {
+        try {
+            //TODO do a full compile and block the compile for the rest of the request
+            //so that we do not run into endless compile cycles
+
+            /*
+            * privilege block to allow custom classloading only
+            * in case of having the privileges,
+            * this was proposed by the checkstyle plugin
+            */
+            RecompiledClassLoader classLoader = getRecompiledClassLoader();
+
+            classLoader.setSourceRoot(sourceRoot);
+            CompilationResult result = _compiler.compile(new File(sourceRoot),  WeavingContext.getConfiguration().getCompileTarget(), new File(sourceRoot+ File.separator+ filePath), classLoader);
+            displayMessages(result);
+            if (result.hasErrors()) {
+                _log.log(Level.WARNING, "Compiler output:{0}", result.getCompilerOutput());
+            }
+
+            return new File(WeavingContext.getConfiguration().getCompileTarget()+File.separator+ filePath.substring(0, filePath.lastIndexOf('.'))+".class" );
+        } catch (org.apache.myfaces.extensions.scripting.api.CompilationException e) {
+            _log.log(Level.SEVERE, "CompilationException : ", e);
+        }
+        return null;
+    }
+
+    public Class loadClass(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
 
         String separator = FileUtils.getFileSeparatorForRegex();
         String className = filePath.replaceAll(separator, ".");

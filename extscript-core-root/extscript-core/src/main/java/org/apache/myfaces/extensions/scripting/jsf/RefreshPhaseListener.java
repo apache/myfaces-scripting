@@ -50,7 +50,7 @@ public class RefreshPhaseListener implements PhaseListener {
      */
     static Runnable _action = new Runnable() {
         public void run() {
-              WeavingContext.doRequestRefreshes();
+              WeavingContext.jsfRequestRefresh();
         }
     };
 

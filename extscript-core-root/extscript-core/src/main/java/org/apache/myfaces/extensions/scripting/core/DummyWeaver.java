@@ -82,6 +82,10 @@ public class DummyWeaver implements Serializable, ScriptingWeaver {
     public void requestRefresh() {
     }
 
+    @Override
+    public void jsfRequestRefresh() {
+    }
+
     public Collection<String> loadPossibleDynamicClasses() {
         return null;
     }

@@ -25,7 +25,6 @@ import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.loaders.groovy.GroovyRecompiledClassloader;
-import org.apache.myfaces.extensions.scripting.loaders.java.ThrowawayClassloader;
 import org.apache.myfaces.extensions.scripting.sandbox.compiler.GroovyCompiler;
 
 import java.io.File;
@@ -45,8 +44,6 @@ import java.util.logging.Logger;
 
 public class GroovyCompilerFacade implements DynamicCompiler {
 
-    //ContainerFileManager fileManager = null;
-
     Logger _log = Logger.getLogger(this.getClass().getName());
     GroovyCompiler compiler;
 
@@ -60,22 +57,14 @@ public class GroovyCompilerFacade implements DynamicCompiler {
         super();
 
         compiler = new GroovyCompiler();
-        //fileManager = new GroovyContainerFileManager();
     }
 
-    public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
+    public Class loadClass(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException {
 
         String separator = FileUtils.getFileSeparatorForRegex();
         String className = filePath.replaceAll(separator, ".");
         className = ClassUtils.relativeFileToClassName(className);
 
-        // try {
-        //no need we do a full recompile at the beginning
-        //CompilationResult result = compiler.compile(new File(sourceRoot), fileManager.getTempDir(), filePath, fileManager.getClassLoader());
-
-        //displayMessages(result);
-
-        //if (!result.hasErrors()) {
         GroovyRecompiledClassloader classLoader;
         try {
             classLoader = AccessController.doPrivileged(LOADER_ACTION);
@@ -84,37 +73,45 @@ public class GroovyCompilerFacade implements DynamicCompiler {
             return null;
         }
 
-        //fileManager.refreshClassloader();
         ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        //we now quickly check for the groovy classloader being, set we cannot deal with instances here
-
-        //if (!(oldClassLoader.equals(fileManager.getClassLoader()))) {
         try {
-            //RecompiledClassLoader classLoader = (RecompiledClassLoader) fileManager.getClassLoader();
             classLoader.setSourceRoot(sourceRoot);
             Thread.currentThread().setContextClassLoader(classLoader);
-
-            //Not needed anymore due to change in the dynamic class detection system
-            //ClassUtils.markAsDynamicJava(fileManager.getTempDir().getAbsolutePath(), className);
-            if (className.startsWith("groovy.")) {
-                _log.finer("debugpoint found");
-            }
 
             return classLoader.loadClass(className);
         } finally {
             Thread.currentThread().setContextClassLoader(oldClassLoader);
         }
-        //}
-        //} else {
-        //    log.error("Compiler errors");
-        //    displayMessages(result);
-        //}
-
-        //} catch (CompilationException e) {
-        //    log.error(e);
-        //}
-        //return null;
     }
+
+
+    public File compileFile(String sourceRoot, String classPath, String filePath)  {
+        //TODO do a full compile and block the compile for the rest of the request
+        //so that we do not run into endless compile cycles
+
+        /*
+        * privilege block to allow custom classloading only
+        * in case of having the privileges,
+        * this was proposed by the checkstyle plugin
+        */
+        GroovyRecompiledClassloader classLoader;
+        try {
+            classLoader = AccessController.doPrivileged(LOADER_ACTION);
+        } catch (PrivilegedActionException e) {
+            _log.log(Level.SEVERE, "", e);
+            return null;
+        }
+
+
+        classLoader.setSourceRoot(sourceRoot);
+        CompilationResult result = compiler.compile(new File(sourceRoot), WeavingContext.getConfiguration().getCompileTarget(), new File(sourceRoot + File.separator + filePath), classLoader);
+
+        displayMessages(result);
+
+        return new File(WeavingContext.getConfiguration().getCompileTarget() + File.separator + filePath.substring(0, filePath.lastIndexOf('.')) + ".class");
+    }
+
+    
 
     /**
      * compiles all files
@@ -123,9 +120,8 @@ public class GroovyCompilerFacade implements DynamicCompiler {
      * @param classPath  the class path
      * @return the root target path for the classes which are compiled
      *         so that they later can be picked up by the classloader
-     * @throws ClassNotFoundException
      */
-    public File compileAllFiles(String sourceRoot, String classPath) throws ClassNotFoundException {
+    public File compileAllFiles(String sourceRoot, String classPath) {
         GroovyRecompiledClassloader classLoader;
         try {
             classLoader = AccessController.doPrivileged(LOADER_ACTION);

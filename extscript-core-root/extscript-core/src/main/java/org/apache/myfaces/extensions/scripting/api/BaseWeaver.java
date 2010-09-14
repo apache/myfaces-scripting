@@ -276,10 +276,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         //now we scan the classes which are under our domain
         _dependencyScanner.scanPaths();
 
-        if (_annotationScanner == null || FacesContext.getCurrentInstance() == null) {
-            return;
-        }
-        _annotationScanner.scanPaths();
 
     }
 
@@ -304,25 +300,58 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 if (WeavingContext.getRefreshContext().isRecompileRecommended(getScriptingEngine())) {
                     //TODO move this over to application events once they are in place
-                    clearExtvalCache();
+                    WeavingContext.getRequestMap().put("REFRESH_JSF_PHASE", Boolean.TRUE);
+                    //
+
                     recompileRefresh();
                     return;
                 }
             }
         }
 
-        _beanHandler.personalScopeRefresh();
 
+    }
+
+    public void jsfRequestRefresh() {
+        if (WeavingContext.getRequestMap().get("REFRESH_JSF_PHASE") != null) {
+            clearExtvalCache();
+
+            /*
+            * we scan all intra bean dependencies
+            * which are not covered by our
+            * class dependency scan
+            */
+            _beanHandler.scanDependencies();
+
+            /*
+            * Now it is time to refresh the tainted managed beans
+            * by now we should have a good grasp about which beans
+            * need to to be refreshed (note we cannot cover all corner cases
+            * but our extended dependency scan should be able to cover
+            * most refreshing cases.
+            */
+            _beanHandler.refreshAllManagedBeans();
+        }
+        _annotationScanner.scanPaths();
+
+
+        _beanHandler.personalScopeRefresh();
     }
 
     /**
      * this clears the attached EXT-VAL cache in case of a refresh,
      * note this is a temporarily hack once our application
      * event system is in place this will be moved over to a specialized event handler
+     * <p/>
+     * TODO move this call into a phase listener
      */
     private void clearExtvalCache() {
-        Map requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        if (requestMap.containsKey(ScriptingConst.EXT_VAL_REQ_KEY)) {
+
+        Map fcRequestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        //TODO do this for the faces context in a phase listener
+
+
+        if (fcRequestMap.containsKey(ScriptingConst.EXT_VAL_REQ_KEY)) {
             return;
         }
         //we have to remove the Validator Factory to clear its cache
@@ -330,18 +359,18 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         //but in case of a normal bean validation impl this has to be done
         //this is somewhat brute force, but it will be tested it it works out
 
-        requestMap.put(ScriptingConst.EXT_VAL_REQ_KEY, Boolean.TRUE);
-        Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-        Set<String> keySet = applicationMap.keySet();
+        fcRequestMap.put(ScriptingConst.EXT_VAL_REQ_KEY, Boolean.TRUE);
+
+        Set<String> keySet = WeavingContext.getApplicationMap().keySet();
         boolean extValPresent = false;
         for (String key : keySet) {
             if (key.startsWith(ScriptingConst.EXT_VAL_MARKER)) {
-                applicationMap.remove(key);
+                WeavingContext.getApplicationMap().remove(key);
                 extValPresent = true;
             }
         }
         if (!extValPresent) {
-            requestMap.remove("javax.faces.validator.beanValidator.ValidatorFactory");
+            fcRequestMap.remove("javax.faces.validator.beanValidator.ValidatorFactory");
         }
     }
 
@@ -407,8 +436,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
 
     protected boolean isFullyRecompiled() {
         try {
-            FacesContext context = FacesContext.getCurrentInstance();
-            return context != null && context.getExternalContext().getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
+            return WeavingContext.getRequestMap() != null && WeavingContext.getRequestMap().containsKey(this.getClass().getName() + "_recompiled");
         } catch (UnsupportedOperationException ex) {
             //still in startup
             return false;
@@ -457,7 +485,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             if (_compiler == null) {
                 _compiler = instantiateCompiler();//new ReflectCompilerFacade();
             }
-            retVal = _compiler.compileFile(sourceRoot, _classPath, file);
+            retVal = _compiler.loadClass(sourceRoot, _classPath, file);
 
             if (retVal == null) {
                 return retVal;
@@ -509,21 +537,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             fullClassScan();
         }
 
-        /*
-         * we scan all intra bean dependencies
-         * which are not covered by our
-         * class dependency scan
-         */
-        _beanHandler.scanDependencies();
 
-        /*
-         * Now it is time to refresh the tainted managed beans
-         * by now we should have a good grasp about which beans
-         * need to to be refreshed (note we cannot cover all corner cases
-         * but our extended dependency scan should be able to cover
-         * most refreshing cases.
-         */
-        _beanHandler.refreshAllManagedBeans();
     }
 
     protected abstract DynamicCompiler instantiateCompiler();

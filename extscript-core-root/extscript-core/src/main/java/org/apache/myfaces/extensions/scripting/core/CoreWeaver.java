@@ -136,8 +136,15 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public void requestRefresh() {
-    for (ScriptingWeaver weaver : _weavers) {
+        for (ScriptingWeaver weaver : _weavers) {
             weaver.requestRefresh();
+        }
+    }
+
+    @Override
+    public void jsfRequestRefresh() {
+        for (ScriptingWeaver weaver : _weavers) {
+            weaver.jsfRequestRefresh();
         }
     }
 

@@ -33,8 +33,10 @@ import java.io.File;
  *         the windows file locking issues
  */
 public interface DynamicCompiler {
+
     /**
-     * compiles a single file into a class
+     * compiles a single file
+     *
      *
      * @param sourceRoot the source search path (root of our source)
      * @param classPath  the classpath for the compiler
@@ -43,7 +45,20 @@ public interface DynamicCompiler {
      * @throws ClassNotFoundException in case of the class neither could be found
      *                                in our sources nor could be referenced in binary form from the classloader
      */
-    public Class compileFile(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException;
+    public File compileFile(String sourceRoot, String classPath, String filePath);
+
+    /**
+     * loads a single class in its newest version
+     * //TODO we probably move this code over
+     *
+     * @param sourceRoot the source search path (root of our source)
+     * @param classPath  the classpath for the compiler
+     * @param filePath   the relative path of our file
+     * @return a valid java class of our file
+     * @throws ClassNotFoundException in case of the class neither could be found
+     *                                in our sources nor could be referenced in binary form from the classloader
+     */
+    public Class loadClass(String sourceRoot, String classPath, String filePath) throws ClassNotFoundException;
 
     /**
      * compile all files from a given source root

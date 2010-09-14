@@ -20,6 +20,7 @@ package org.apache.myfaces.extensions.scripting.servlet;
 
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import org.apache.myfaces.extensions.scripting.jsf.RefreshPhaseListener;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -56,7 +57,12 @@ public class ScriptingServletFilter implements Filter {
         }
         markRequestStart();
         WeavingContext.initThread(_context);
+
+        WeavingContext.setRequest(servletRequest);
+
         WeavingContext.getRefreshContext().setCurrentlyRunningRequests(getRequestCnt());
+
+        ScriptingServletFilter._action.run();
 
         try {
             filterChain.doFilter(servletRequest, servletResponse);
@@ -64,6 +70,12 @@ public class ScriptingServletFilter implements Filter {
             markRequestEnd();
         }
     }
+
+    static Runnable _action = new Runnable() {
+        public void run() {
+            WeavingContext.doRequestRefreshes();
+        }
+    };
 
     /**
      * Checks for an initialized system and if not the filter will be deactivated

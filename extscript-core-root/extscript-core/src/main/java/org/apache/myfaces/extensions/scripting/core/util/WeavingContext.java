@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.core.util;
 
+import org.apache.myfaces.context.servlet.ApplicationMap;
 import org.apache.myfaces.extensions.scripting.api.*;
 import org.apache.myfaces.extensions.scripting.core.DummyWeaver;
 import org.apache.myfaces.extensions.scripting.core.MethodLevelReloadingHandler;
@@ -25,10 +26,13 @@ import org.apache.myfaces.extensions.scripting.monitor.ResourceMonitor;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.ExtensionEventRegistry;
+import org.apache.myfaces.extensions.scripting.jsf.*;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -65,6 +69,9 @@ public class WeavingContext {
     static final protected ThreadLocal<Object> _externalContext = new ThreadLocal<Object>();
     static final protected ThreadLocal<Object> _extensionEventSystem = new ThreadLocal<Object>();
 
+    static final protected ThreadLocal<ServletRequest> _request = new ThreadLocal();
+    static final protected ThreadLocal<Map<String, Object>> _requestMap = new ThreadLocal();
+
     private static final String WARN_WEAVER_NOT_SET = "[EXT-SCRIPTING] Scripting Weaver is not set. Disabling script reloading subsystem. Make sure you have the scripting servlet filter enabled in your web.xml";
 
     private static final Map<Integer, CompilationResult> _compilationResults = new ConcurrentHashMap<Integer, CompilationResult>();
@@ -94,9 +101,10 @@ public class WeavingContext {
         WeavingContext.setWeaver(context.getAttribute(ScriptingConst.CTX_ATTR_SCRIPTING_WEAVER));
         WeavingContext.setRefreshContext((RefreshContext) context.getAttribute(ScriptingConst.CTX_ATTR_REFRESH_CONTEXT));
         WeavingContext.setConfiguration((Configuration) context.getAttribute(ScriptingConst.CTX_ATTR_CONFIGURATION));
-        WeavingContext.setExtensionEventRegistry((ExtensionEventRegistry)context.getAttribute(ScriptingConst.CTX_ATTR_EXTENSION_EVENT_SYSTEM));
+        WeavingContext.setExtensionEventRegistry((ExtensionEventRegistry) context.getAttribute(ScriptingConst.CTX_ATTR_EXTENSION_EVENT_SYSTEM));
         WeavingContext.setExternalContext(context);
     }
+
 
     public static CompilationResult getCompilationResult(Integer scriptingEngine) {
         return _compilationResults.get(scriptingEngine);
@@ -142,7 +150,27 @@ public class WeavingContext {
     }
 
     public static ExtensionEventRegistry getExtensionEventRegistry() {
-       return (ExtensionEventRegistry) _extensionEventSystem.get();
+        return (ExtensionEventRegistry) _extensionEventSystem.get();
+    }
+
+    public static void setRequest(ServletRequest req) {
+        _request.set(req);
+        _requestMap.set(new RequestMap(req));
+    }
+
+    public static ServletRequest getRequest() {
+        return (ServletRequest) _request.get();
+    }
+
+
+    public static Map getRequestMap() {
+        Map ret = (Map) _requestMap.get();
+        if (ret == null) {
+            //for startup we need a simulation
+            _requestMap.set(new HashMap<String, Object>());
+            ret = (Map) _requestMap.get();
+        }
+        return ret;
     }
 
     /**
@@ -167,6 +195,11 @@ public class WeavingContext {
             getWeaver().requestRefresh();
     }
 
+    public static void jsfRequestRefresh() {
+        if (isScriptingEnabled())
+            getWeaver().jsfRequestRefresh();
+    }
+
     /**
      * checks whether the system
      * has scripting enabled or not
@@ -174,7 +207,7 @@ public class WeavingContext {
      * @return true in case of being scriptable
      */
     public static boolean isScriptingEnabled() {
-        return  _enabled != null && _enabled.get();
+        return _enabled != null && _enabled.get();
     }
 
     public static void setScriptingEnabled(boolean enabled) {
@@ -201,7 +234,7 @@ public class WeavingContext {
      */
     @SuppressWarnings("unused")
     public static boolean isFilterEnabled() {
-        return _filterEnabled!= null && _filterEnabled.get();
+        return _filterEnabled != null && _filterEnabled.get();
     }
 
     /**
@@ -305,6 +338,10 @@ public class WeavingContext {
      */
     public static boolean isDynamic(Class clazz) {
         return isScriptingEnabled() && getWeaver().isDynamic(clazz);
+    }
+
+    public static AbstractThreadSafeAttributeMap<Object> getApplicationMap() {
+        return new ServletApplicationMap((ServletContext) getExternalContext());
     }
 
 }
