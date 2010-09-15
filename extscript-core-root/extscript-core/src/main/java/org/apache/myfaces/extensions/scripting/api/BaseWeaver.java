@@ -455,7 +455,6 @@ public abstract class BaseWeaver implements ScriptingWeaver {
         }
 
         touchTaintedClasses();
-        
         WeavingContext.getRefreshContext().setRecompileRecommended(getScriptingEngine(), Boolean.FALSE);
     }
 

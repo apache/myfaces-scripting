@@ -19,10 +19,10 @@
 package org.apache.myfaces.extensions.scripting.jsf2.resources;
 
 import org.apache.myfaces.application.DefaultResourceHandlerSupport;
-import org.apache.myfaces.application.ResourceHandlerSupport;
-import org.apache.myfaces.resource.ClassLoaderResourceLoader;
-import org.apache.myfaces.resource.ExternalContextResourceLoader;
-import org.apache.myfaces.resource.ResourceLoader;
+import org.apache.myfaces.shared_impl.resource.ResourceHandlerSupport;
+import org.apache.myfaces.shared_impl.resource.ClassLoaderResourceLoader;
+import org.apache.myfaces.shared_impl.resource.ExternalContextResourceLoader;
+import org.apache.myfaces.shared_impl.resource.ResourceLoader;
 
 import javax.faces.context.FacesContext;
 
@@ -36,7 +36,7 @@ import javax.faces.context.FacesContext;
  * in this case it simply makes sense to avoid any internal sideeffects
  * between getResourceLoaders and the other methods
  */
-public class SourceResourceHandlerSupport implements ResourceHandlerSupport {
+public class SourceResourceHandlerSupport extends ResourceHandlerSupport {
 
     private ResourceLoader[] _supportResourceLoaders;
     private ResourceHandlerSupport _defaultSupport = new DefaultResourceHandlerSupport();
