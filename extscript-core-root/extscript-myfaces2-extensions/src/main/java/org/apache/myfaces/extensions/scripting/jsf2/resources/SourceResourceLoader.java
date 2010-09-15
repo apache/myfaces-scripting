@@ -70,7 +70,7 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
             }
 
             for (String resourceRoot : resourceRoots) {
-                File resourceFile = new File(resourceRoot + getPrefix() + "/" + resourceMeta.toString());
+                File resourceFile = new File(resourceRoot + getPrefix() + "/" + resourceMeta.getLibraryName() + "/"+ resourceMeta.getResourceName());
                 if (resourceFile.exists()) {
                     return resourceFile.toURI().toURL();
                 }
@@ -92,7 +92,7 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
             }
 
             for (String resourceRoot : resourceRoots) {
-                File resourceFile = new File(resourceRoot + getPrefix() + "/" + resourceMeta.toString());
+                File resourceFile = new File(resourceRoot + getPrefix() + "/" +resourceMeta.getLibraryName() + "/"+ resourceMeta.getResourceName());
                 if (resourceFile.exists()) {
                     return new FileInputStream(resourceFile);
                 }
