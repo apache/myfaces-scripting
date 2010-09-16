@@ -32,11 +32,10 @@ import static org.apache.myfaces.javaloader.blog.JSFUtilJava.resolveVariable;
 @DependencyTestAnnotation
 public class Blog {
 
+    
     String title = "<h3>Hello to the MyFaces Dynamic Blogging Example</h3>";
     String title1 = "You can alter the code for this small blogging application on the fly, " +
             "you even can add new classes on the fly and Java will pick it up";
-
-
 
     String firstName = "";
     String lastName = "";
@@ -84,6 +83,7 @@ public class Blog {
 
             //include for presentation 3
             //entry.setTopic(debuggingTest());
+              
             service.addEntry(entry);
         }
 

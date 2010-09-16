@@ -261,3 +261,8 @@ input.btn {
     width: 100px;
     margin-left: 263px;
 }
+
+
+.celltop {
+    vertical-align:top;
+}

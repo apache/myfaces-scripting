@@ -22,9 +22,7 @@ package org.apache.myfaces.javaloader.blog;
  * Test for indirect dependency over interfaces
  */
 public interface BlogServiceInterface extends BaseInterface {
-    
+
     public void addEntry(BlogEntry entry);
-
-
     
 }

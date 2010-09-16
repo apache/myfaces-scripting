@@ -32,7 +32,7 @@ import javax.faces.component.UIComponent;
 public class MyBean {
     String test;
     UIComponent bindingMyTest;
-    String hello = "hello world from mybean";
+    String hello = "hello world from mybean xxx";
 
     @ManagedProperty(value = "#{secondaryBean}")
     Object secondaryBean;

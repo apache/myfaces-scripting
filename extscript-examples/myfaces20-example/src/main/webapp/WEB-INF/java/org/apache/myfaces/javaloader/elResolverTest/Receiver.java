@@ -40,6 +40,6 @@ public class Receiver {
     }         
 
     public void setMyBean(Object myBean) {
-        this.myBean = myBean;
+        this.myBean = (MyBean ) myBean;
     }
 }

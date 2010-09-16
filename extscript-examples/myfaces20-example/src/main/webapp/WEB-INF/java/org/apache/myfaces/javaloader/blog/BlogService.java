@@ -40,7 +40,7 @@ public class BlogService implements BlogServiceInterface {
      */
     @DependencyTestAnnotation
     public void addEntry(BlogEntry entry) {
-        if (entry != null) {
+       if (entry != null) {
             blogEntries.add(entry);
         }
     }
@@ -53,5 +53,6 @@ public class BlogService implements BlogServiceInterface {
         this.blogEntries = blogEntries;
     }
 
+    
 
 }

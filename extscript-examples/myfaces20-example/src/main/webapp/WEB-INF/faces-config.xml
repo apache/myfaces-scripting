@@ -22,7 +22,6 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
               version="2.0">
 
-     
 
     <!-- managed beans of the simple hello world app -->
     <managed-bean>
@@ -38,11 +37,11 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-        <managed-bean>
-            <managed-bean-name>javatestbean</managed-bean-name>
-            <managed-bean-class>org.apache.myfaces.javaloader.test.TestBean2</managed-bean-class>
-            <managed-bean-scope>request</managed-bean-scope>
-        </managed-bean>
+    <managed-bean>
+        <managed-bean-name>javatestbean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.javaloader.test.TestBean2</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
 
     <managed-bean>
@@ -62,8 +61,6 @@
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
         </navigation-handler>
     </application>
-
-
 
 
     <lifecycle>
@@ -114,15 +111,19 @@
     <application>
         <!-- disable an Ext-Val warning which is triggered falsely by the latest version -->
         <system-event-listener>
-            <system-event-listener-class>org.apache.myfaces.extensions.scripting.startup.SuppressExtValWarningStartupListener</system-event-listener-class>
+            <system-event-listener-class>
+                org.apache.myfaces.extensions.scripting.startup.SuppressExtValWarningStartupListener
+            </system-event-listener-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.apache.myfaces.javaloader.eventTest.TestListener</system-event-listener-class>
+            <system-event-listener-class>org.apache.myfaces.javaloader.eventTest.TestListener
+            </system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
 
         <resource-handler>org.apache.myfaces.javaloader.test.TestResourceHandler</resource-handler>
-       
+
+
     </application>
 </faces-config>

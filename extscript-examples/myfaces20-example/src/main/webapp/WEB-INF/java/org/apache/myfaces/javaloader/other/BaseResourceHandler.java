@@ -31,6 +31,9 @@ public class BaseResourceHandler extends ResourceHandler {
 
     ResourceHandler _delegate;
 
+    public BaseResourceHandler() {
+    }
+
     public BaseResourceHandler(ResourceHandler delegate) {
         _delegate = delegate;
     }
@@ -61,5 +64,13 @@ public class BaseResourceHandler extends ResourceHandler {
 
     public boolean libraryExists(String libraryName) {
         return _delegate.libraryExists(libraryName);
+    }
+
+    public Object getDelegate() {
+        return _delegate;
+    }
+
+    public void setDelegate(Object _delegate) {
+        this._delegate = (ResourceHandler)  _delegate;
     }
 }
