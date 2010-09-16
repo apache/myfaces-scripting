@@ -18,10 +18,6 @@
 */
 package org.apache.myfaces.extensions.scripting.jsf2.resources;
 
-import org.apache.myfaces.application.ResourceHandlerImpl;
-import org.apache.myfaces.shared_impl.resource.ResourceHandlerSupport;
-import org.apache.myfaces.shared_impl.resource.ResourceLoader;
-import org.apache.myfaces.shared_impl.resource.ResourceMeta;
 import org.apache.myfaces.extensions.scripting.api.Decorated;
 
 import javax.faces.application.Resource;

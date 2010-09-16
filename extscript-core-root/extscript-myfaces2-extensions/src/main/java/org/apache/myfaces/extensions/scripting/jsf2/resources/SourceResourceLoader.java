@@ -18,12 +18,8 @@
 */
 package org.apache.myfaces.extensions.scripting.jsf2.resources;
 
-import org.apache.myfaces.shared_impl.resource.ExternalContextResourceLoader;
-import org.apache.myfaces.shared_impl.resource.ResourceLoader;
-import org.apache.myfaces.shared_impl.resource.ResourceMeta;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 
-import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

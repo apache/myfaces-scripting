@@ -42,7 +42,7 @@
     <parent>
         <groupId>org.apache.myfaces</groupId>
         <artifactId>myfaces</artifactId>
-        <version>7</version>
+        <version>9</version>
     </parent>
 
     <modules>

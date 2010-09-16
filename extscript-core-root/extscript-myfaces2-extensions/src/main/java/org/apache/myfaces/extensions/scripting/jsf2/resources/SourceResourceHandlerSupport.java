@@ -18,12 +18,6 @@
 */
 package org.apache.myfaces.extensions.scripting.jsf2.resources;
 
-import org.apache.myfaces.application.DefaultResourceHandlerSupport;
-import org.apache.myfaces.shared_impl.resource.ResourceHandlerSupport;
-import org.apache.myfaces.shared_impl.resource.ClassLoaderResourceLoader;
-import org.apache.myfaces.shared_impl.resource.ExternalContextResourceLoader;
-import org.apache.myfaces.shared_impl.resource.ResourceLoader;
-
 import javax.faces.context.FacesContext;
 
 /**
@@ -39,7 +33,7 @@ import javax.faces.context.FacesContext;
 public class SourceResourceHandlerSupport extends ResourceHandlerSupport {
 
     private ResourceLoader[] _supportResourceLoaders;
-    private ResourceHandlerSupport _defaultSupport = new DefaultResourceHandlerSupport();
+    private BaseResourceHandlerSupport _defaultSupport = new BaseResourceHandlerSupport();
 
     @Override
     /**
