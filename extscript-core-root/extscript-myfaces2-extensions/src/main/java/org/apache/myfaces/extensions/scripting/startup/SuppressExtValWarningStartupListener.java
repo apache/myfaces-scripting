@@ -35,7 +35,7 @@ import javax.faces.event.SystemEventListener;
  */
 public class SuppressExtValWarningStartupListener implements SystemEventListener {
     public boolean isListenerForSource(Object source) {
-        return source instanceof Application;  //To change body of implemented methods use File | Settings | File Templates.
+        return source instanceof Application;
     }
 
     public void processEvent(SystemEvent event) {

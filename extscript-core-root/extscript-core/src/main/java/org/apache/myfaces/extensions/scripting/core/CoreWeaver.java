@@ -92,7 +92,7 @@ public class CoreWeaver implements Serializable, ScriptingWeaver {
     }
 
     public int getScriptingEngine() {
-        return ScriptingConst.ENGINE_TYPE_JSF_ALL;  //To change body of implemented methods use File | Settings | File Templates.
+        return ScriptingConst.ENGINE_TYPE_JSF_ALL;
     }
 
     public boolean isDynamic(Class clazz) {

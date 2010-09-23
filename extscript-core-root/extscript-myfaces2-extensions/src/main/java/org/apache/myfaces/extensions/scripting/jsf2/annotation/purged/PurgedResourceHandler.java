@@ -71,7 +71,7 @@ public class PurgedResourceHandler extends ResourceHandler implements Decorated 
 
     @Override
     public boolean libraryExists(String libraryName) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public ResourceHandler getDelegate() {

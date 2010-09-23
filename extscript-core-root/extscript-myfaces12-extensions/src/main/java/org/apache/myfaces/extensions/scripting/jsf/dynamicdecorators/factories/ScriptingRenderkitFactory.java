@@ -66,6 +66,6 @@ public class ScriptingRenderkitFactory extends RenderKitFactory implements Decor
     RenderKitFactory _delegate = null;
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;
     }
 }

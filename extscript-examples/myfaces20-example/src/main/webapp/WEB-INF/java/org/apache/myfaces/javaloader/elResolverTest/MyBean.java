@@ -24,7 +24,14 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 
 /**
- * component testcase for bug
+ * Testcase for intra bean dependency detection
+ * The theory is that if you change something in the referenced bean
+ * secondaryBean also this bean myBean should be reloaded
+ * this mechanism only works if you have some intra code dependencies
+ * if you only have object references than the bean cannot be refreshed for now
+ * due to limitations within the runtime system.
+ *
+ * This limitation will be lifted in the long run
  * 
  */
 @ManagedBean(name = "myBean")
@@ -32,7 +39,7 @@ import javax.faces.component.UIComponent;
 public class MyBean {
     String test;
     UIComponent bindingMyTest;
-    String hello = "hello world from mybean xxx";
+    String hello = "This is a teststring from the managed bean myBean";
 
     @ManagedProperty(value = "#{secondaryBean}")
     Object secondaryBean;
@@ -68,6 +75,8 @@ public class MyBean {
     }
 
     public void setSecondaryBean(Object secondaryBean) {
-        this.secondaryBean = secondaryBean;
+        //note this pointless cast establises a code level
+        //dependency which can be detected
+        this.secondaryBean = (SecondaryBean) secondaryBean;
     }
 }

@@ -38,7 +38,8 @@ public class ResourceHandler1 extends BaseResourceHandler implements Decorated {
     @Override
     public Resource createResource(String resourceName) {
         if (resourceName.equals("testResource")) {
-            Resource retVal = new StringResource("hello world from resource handler1");
+            Resource retVal = new StringResource("hello world from resource handler1, you can change me on the fly, " +
+                    "but you must activate me first in the faces-config.xml file");
             return retVal;
         }
         return super.createResource(resourceName);

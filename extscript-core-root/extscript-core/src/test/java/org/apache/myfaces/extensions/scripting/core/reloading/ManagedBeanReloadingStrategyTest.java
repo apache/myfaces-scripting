@@ -43,21 +43,21 @@ public class ManagedBeanReloadingStrategyTest {
 
         @Override
         public boolean isDynamic(Class clazz) {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
+            return false;
         }
 
         public void scanForAddedClasses() {
-            //To change body of implemented methods use File | Settings | File Templates.
+
         }
 
         @Override
         protected DynamicCompiler instantiateCompiler() {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return null;
         }
 
         @Override
         protected String getLoadingInfo(String file) {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return null;
         }
     }
 

@@ -27,15 +27,17 @@ import javax.faces.component.UIComponent;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ * 
+ * A simple test converter which can be changed on the fly
  */
 @FacesConverter(value = "at.irian.CustomConverter")
 public class TestConverter1 implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-        return value;  //To change body of implemented methods use File | Settings | File Templates.
+        return value;  
     }
 
     
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-        return (String)value;  //To change body of implemented methods use File | Settings | File Templates.
+        return (String)value;  
     }
 }

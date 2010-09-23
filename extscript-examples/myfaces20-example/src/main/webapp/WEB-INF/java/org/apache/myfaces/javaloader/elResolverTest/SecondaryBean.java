@@ -30,7 +30,7 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean(name = "secondaryBean")
 @RequestScoped
 public class SecondaryBean {
-    String hello = "hello world from secondary bean";
+    String hello = "This is a teststring from the secondary bean";
 
     public String getHello() {
         return hello;

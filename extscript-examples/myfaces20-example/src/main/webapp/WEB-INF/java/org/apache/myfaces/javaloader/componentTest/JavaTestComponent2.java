@@ -25,6 +25,9 @@ import javax.faces.component.UIInput;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Second component which can act as a drop target for
+ * dragging and dropping the annotations from JavaTestComponent
  */
 
 public class JavaTestComponent2 extends UIInput implements Markable {

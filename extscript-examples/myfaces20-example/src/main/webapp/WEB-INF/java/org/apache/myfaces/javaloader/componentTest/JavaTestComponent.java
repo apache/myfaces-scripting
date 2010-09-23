@@ -26,8 +26,11 @@ import javax.faces.component.FacesComponent;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
- *          Simple component to be picked up by
+ *
+ * A simple test component which utilizes the jsf2 annotation API
+ * for and can be reprogrammed on the fly, after a refresh the changes
+ * within the component can be picked up
+ *
  */
 
 @FacesComponent("at.irian.JavaTestComponent")

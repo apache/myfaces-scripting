@@ -46,7 +46,7 @@ public class ScriptingFacesContextFactory extends javax.faces.context.FacesConte
     }
 
     public FacesContext getFacesContext(Object o, Object o1, Object o2, Lifecycle lifecycle) throws FacesException {
-        FacesContext retVal = _delegate.getFacesContext(o, o1, o2, lifecycle);  //To change body of implemented methods use File | Settings | File Templates.
+        FacesContext retVal = _delegate.getFacesContext(o, o1, o2, lifecycle);
 
         if (WeavingContext.isScriptingEnabled()  && !(retVal instanceof FacesContextProxy))
             return new FacesContextProxy(retVal);
@@ -59,6 +59,6 @@ public class ScriptingFacesContextFactory extends javax.faces.context.FacesConte
     }
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;
     }
 }

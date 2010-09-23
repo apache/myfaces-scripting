@@ -26,6 +26,13 @@ import javax.faces.bean.SessionScoped;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Testcase for intra dependency detection, now if you use the bean generated
+ * from the bean factory the Receiver bean will not be refreshed
+ * because we do not have any intra class dependencies
+ * This dependency mismatch will be lifted in the long run but for now
+ * we have to live with it
+ *
  */
 
 @ManagedBean (name="receiver")

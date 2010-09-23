@@ -37,11 +37,11 @@ public class ComponentImplementationListener extends SingleEntityAnnotationListe
     }
 
     public boolean supportsAnnotation(String annotation) {
-        return annotation.equals(FacesComponent.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesComponent.class.getName());
     }
 
     public boolean supportsAnnotation(Class annotation) {
-        return annotation.equals(FacesComponent.class);  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesComponent.class);
     }
 
 

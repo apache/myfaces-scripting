@@ -20,6 +20,10 @@ package org.apache.myfaces.javaloader.cyclic;
 
 /**
  * cyclic dependency class test for our class scanner
+ *
+ * This is merely a testcase for the system internal dependency scanner
+ * to prove that cyclic class dependencies can be resolved properly
+ * you can safely ignore this class
  */
 public class Cyclic2 {
 

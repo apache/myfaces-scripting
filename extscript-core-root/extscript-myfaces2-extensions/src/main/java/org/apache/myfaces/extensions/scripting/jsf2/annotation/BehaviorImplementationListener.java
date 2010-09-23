@@ -37,11 +37,11 @@ public class BehaviorImplementationListener extends SingleEntityAnnotationListen
     }
 
     public boolean supportsAnnotation(String annotation) {
-        return annotation.equals(FacesBehavior.class.getName());  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesBehavior.class.getName());
     }
 
     public boolean supportsAnnotation(Class annotation) {
-        return annotation.equals(FacesBehavior.class);  //To change body of implemented methods use File | Settings | File Templates.
+        return annotation.equals(FacesBehavior.class);
     }
 
 

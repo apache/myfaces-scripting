@@ -28,6 +28,8 @@ import java.util.logging.Logger;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * A testcase for dynamic system event listeners which can be changed on the fly
  */
 
 public class TestListener implements SystemEventListener {

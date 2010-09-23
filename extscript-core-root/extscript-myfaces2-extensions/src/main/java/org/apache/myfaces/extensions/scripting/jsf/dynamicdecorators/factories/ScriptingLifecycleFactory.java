@@ -69,6 +69,6 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
     }
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;
     }
 }

@@ -28,6 +28,8 @@ import java.util.HashMap;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * A testcase which tried
  */
 
 @ManagedBean (name="myFactory")

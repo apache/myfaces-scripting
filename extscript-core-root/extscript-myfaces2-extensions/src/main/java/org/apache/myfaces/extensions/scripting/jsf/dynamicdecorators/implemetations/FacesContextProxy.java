@@ -213,6 +213,6 @@ public class FacesContextProxy extends FacesContext implements Decorated {
     }
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;
     }
 }

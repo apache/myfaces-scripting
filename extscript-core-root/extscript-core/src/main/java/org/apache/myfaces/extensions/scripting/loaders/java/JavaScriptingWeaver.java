@@ -92,7 +92,7 @@ public class JavaScriptingWeaver extends BaseWeaver implements Serializable {
     }
 
     public boolean isDynamic(Class clazz) {
-        return _identifier.isDynamic(clazz);  //To change body of implemented methods use File | Settings | File Templates.
+        return _identifier.isDynamic(clazz);
     }
 
     /**

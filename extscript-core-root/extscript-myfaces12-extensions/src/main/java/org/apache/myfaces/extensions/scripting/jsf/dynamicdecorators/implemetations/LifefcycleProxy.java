@@ -75,6 +75,6 @@ public class LifefcycleProxy extends Lifecycle implements Decorated {
     Lifecycle _delegate = null;
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;
     }
 }

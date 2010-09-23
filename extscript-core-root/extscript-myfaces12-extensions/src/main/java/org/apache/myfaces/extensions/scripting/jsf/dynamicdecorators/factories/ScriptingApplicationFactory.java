@@ -50,7 +50,7 @@ public class ScriptingApplicationFactory extends ApplicationFactory implements D
     }
 
     public Application getApplication() {
-        Application retVal = _delegate.getApplication();  //To change body of implemented methods use File | Settings | File Templates.
+        Application retVal = _delegate.getApplication();
 
         if (WeavingContext.isScriptingEnabled() && !(retVal instanceof ApplicationProxy))
             retVal = new ApplicationProxy(retVal);
@@ -66,6 +66,6 @@ public class ScriptingApplicationFactory extends ApplicationFactory implements D
     }
 
     public Object getDelegate() {
-        return _delegate;  //To change body of implemented methods use File | Settings | File Templates.
+        return _delegate;
     }
 }
