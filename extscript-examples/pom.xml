@@ -56,6 +56,9 @@
     </build>
     <modules>
         <module>myfaces12-example</module>
+        <module>myfaces20-example</module>
+        <module>myfaces20-extscript-helloworld</module>
+
         <module>spring-example</module>
     </modules>
 

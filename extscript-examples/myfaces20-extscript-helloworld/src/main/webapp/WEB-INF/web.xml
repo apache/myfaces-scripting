@@ -23,7 +23,13 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 
-    <description>MyProject web.xml</description>
+    <description>Webproject.xml</description>
+
+
+    <!--
+    Note this entry is vital it plugs the ext-scripting system into
+    a myfaces extension point
+    -->
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -41,7 +47,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
+            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -52,7 +58,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
+            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
 
@@ -60,7 +66,7 @@
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp
+            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp
         </param-value>
     </context-param>
 
@@ -89,7 +95,7 @@
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy</param-value>
+        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy</param-value>
     </context-param>
 
 
@@ -98,7 +104,7 @@
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
-        <param-value>D:/dev/work/ideaprojects/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/java</param-value>
+        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/java</param-value>
     </context-param>
 
 
@@ -118,19 +124,12 @@
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
     </context-param>
-    <context-param>
-        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-        <param-value>
-            /WEB-INF/facelets/groovy-taglib.xml;/WEB-INF/facelets/tomahawk.taglib.xml
-        </param-value>
-    </context-param>
-    <!--
-    <context-param>
-        <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>/faces-config.xml</param-value>
-    </context-param>
-    -->
 
+
+    <!--
+    Note, this servlet filter is vital without it Ext-Scripting will not work,
+    if you do not set it you will get an appropriate warning in the command line
+    -->
     <filter>
         <filter-name>scriptingFilter</filter-name>
         <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
