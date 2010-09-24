@@ -332,7 +332,8 @@ public abstract class BaseWeaver implements ScriptingWeaver {
             */
             _beanHandler.refreshAllManagedBeans();
         }
-        _annotationScanner.scanPaths();
+        if(_annotationScanner != null)
+            _annotationScanner.scanPaths();
 
 
         _beanHandler.personalScopeRefresh();
