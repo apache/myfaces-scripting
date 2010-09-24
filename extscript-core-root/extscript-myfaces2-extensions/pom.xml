@@ -60,13 +60,14 @@
             <version>1.8.0</version>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
             <artifactId>myfaces-extval-bean-validation</artifactId>
             <version>${extval.version}</version>
             <scope>provided</scope>
         </dependency>
-
+        -->
     </dependencies>
 
     <build>

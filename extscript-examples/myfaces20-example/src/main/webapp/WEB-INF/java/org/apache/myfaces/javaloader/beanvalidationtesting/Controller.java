@@ -19,11 +19,9 @@
 
 package org.apache.myfaces.javaloader.beanvalidationtesting;
 
-import org.apache.myfaces.extensions.validator.beanval.annotation.BeanValidation;
-import org.apache.myfaces.extensions.validator.beanval.annotation.ModelValidation;
-import org.apache.myfaces.javaloader.beanvalidationtesting.group.Admin;
-import org.apache.myfaces.javaloader.beanvalidationtesting.group.Name;
-import org.apache.myfaces.javaloader.beanvalidationtesting.group.User;
+//import org.apache.myfaces.extensions.validator.beanval.annotation.BeanValidation;
+//import org.apache.myfaces.extensions.validator.beanval.annotation.ModelValidation;
+import org.apache.myfaces.javaloader.beanvalidationtesting.group.*;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -44,12 +42,13 @@ import javax.validation.groups.Default;
 @RequestScoped
 public class Controller {
 
-    
+    //to enable it use ext-val 2.0.4 (snapshot)
+    /*
     @BeanValidation.List({
             @BeanValidation(useGroups = Default.class),
             @BeanValidation(viewIds = "/beanValidation.xhtml", useGroups = User.class)
             
-    })
+    })*/
     private Person person = new Person();
 
 

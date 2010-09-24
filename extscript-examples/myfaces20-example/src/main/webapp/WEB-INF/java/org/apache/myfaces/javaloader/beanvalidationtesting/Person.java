@@ -22,7 +22,7 @@ package org.apache.myfaces.javaloader.beanvalidationtesting;
 import org.apache.myfaces.javaloader.beanvalidationtesting.group.Admin;
 import org.apache.myfaces.javaloader.beanvalidationtesting.group.Name;
 import org.apache.myfaces.javaloader.beanvalidationtesting.group.User;
-import org.hibernate.validator.constraints.NotEmpty;
+//import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * A small testcase of ext-scripting in combination
@@ -32,22 +32,27 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @version $Revision$ $Date$
  */
 
-import org.apache.myfaces.extensions.validator.beanval.payload.ViolationSeverity;
+//import org.apache.myfaces.extensions.validator.beanval.payload.ViolationSeverity;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+//import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.Size;
 
-@NameConstraint(groups = Name.class)
+
+/**
+ * to enable it use ext-val 2.0.4-SNAPSHOT+
+ */
+//@NameConstraint(groups = Name.class)
+
 public class Person {
-    @NotNull(payload = ViolationSeverity.Warn.class)
+    //@NotNull(payload = ViolationSeverity.Warn.class)
     private String firstName;
 
     //demo for bean validation based validation support
-    @NotNull
+   /* @NotNull
     @Size.List({
             @Size(min = 3, max = 8, groups = User.class),
             @Size(min = 3, max = 12, groups = Admin.class)
-    })
+    })*/
     private String lastName;
 
     public String getFirstName() {

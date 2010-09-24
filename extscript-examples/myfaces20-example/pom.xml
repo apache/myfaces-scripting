@@ -100,12 +100,13 @@
              and/or MyFaces ext-val
          -->
 
-        
+        <!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator</groupId>
             <artifactId>myfaces-extval-core</artifactId>
             <version>${extval.version}</version>
         </dependency>
+        -->
 
         <!--
         <dependency>
@@ -114,14 +115,15 @@
             <version>${extval.version}</version>
         </dependency>
         -->
-        
+
+<!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
             <artifactId>myfaces-extval-bean-validation</artifactId>
             <version>${extval.version}</version>
         </dependency>
+-->
 
-        
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
