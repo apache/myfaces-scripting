@@ -23,7 +23,7 @@
     <artifactId>extscript-root</artifactId>
     <packaging>pom</packaging>
     <name>Myfaces Extension Scripting Project</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
 
     <properties>
@@ -51,10 +51,10 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0
         </developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk</url>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0</url>
     </scm>
 
     <repositories>
