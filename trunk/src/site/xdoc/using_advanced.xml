@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <properties>
+        <title>Advanced Users Guide</title>
+    </properties>
+
+    <body>
+        <section name="Navigation Top">
+            <a href="using_general.html">&lt;&lt;Back to the General Users Guide</a>
+            or
+
+            <a href="using_eclipse_.html">On to the Eclipse Users Guide&gt;&gt;</a>
+        </section>
+
+
+        <section name="Introduction">
+            <p>Congratulations by the time you have reached this section, you probably have mastered the basics
+                of Ext-Scripting, you probably already can edit your local files and have them refreshed on the fly
+            </p>
+            <p>
+                Under normal circumstances you, should be set up by now and you can start coding happily.
+                However since this is a framework based reloading mechanism it is wise to dig a little bit deeper
+                and to know what is happening under the hood and why things behave like they do.
+                If you are interested then read on.
+            </p>
+        </section>
+
+        <section name="Helper Components">
+            <subsection name="Overview">
+                <p>Additionally to the standard reloading feature, Ext-Scripting provides two components
+                    which hopefully will make the life of every programmer easier.
+                </p>
+                <br/>
+                <ul>
+                    <li>The Compiler Output Component</li>
+                    <li>The Change History Component</li>
+                </ul>
+                <p>
+                    Note currently and for the foreseeable future only Facelets as page description language
+                    will be supported by the components.
+                </p>
+            </subsection>
+
+            <subsection name="Setup">
+                <p>To use the components following namespace has to be included</p>
+                <p>
+                    <source><![CDATA[xmlns:exs="http://myfaces.apache.org/ext-scripting"]]></source>
+                </p>
+                <p>Example</p>
+                <p>
+                    <source><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:exs="http://myfaces.apache.org/ext-scripting"
+      xmlns:h="http://java.sun.com/jsf/html">
+<h:head>]]></source>
+                </p>
+            </subsection>
+
+            <subsection name="The Compiler Output Component">
+                <p>One of the cornerstones of Ext-Scripting is the dynamic recompilation.
+                    Every file changed, is reloaded, while you hit refresh on the browser.
+                </p>
+                <p>
+                    Now, under normal circumstances, the compiler errors and warnings are written to the console log
+                    as following:
+                    <source><![CDATA[
+            Java Compiler, Error on line:
+            org/apache/myfaces/javaloader/blog/Blog.java:30:
+            class, interface, or enum expected30]]></source>
+                </p>
+                <p>
+                    Now, trying to catch those errors within the log is "mildly spoken" annoying
+                    and time consuming.
+                    Exactly for bypassing this problem a compiler output component
+                    can be used either in your page or preferably in a second page.
+
+                </p>
+                <p>The following Video shows the compiler output component in action</p>
+                <p>
+                    <center>
+                        <object width="640px" height="505px">
+                            <param name="movie"
+                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1" />
+                            <param name="allowFullScreen" value="true" />
+                            <param name="allowscriptaccess" value="always" />
+                            <embed src="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
+                                   type="application/x-shockwave-flash" allowscriptaccess="always"
+                                   allowfullscreen="true"
+                                   width="640px" height="505px" />
+                        </object>
+                    </center>
+                    <div class="objectAnnotation">Video: Compiler Component in Action</div>
+
+                </p>
+                <p>
+                    <h4>Usage of the Compiler Output Component</h4>
+                </p>
+                <p>The compiler output component currently is presented as Facelets only component as follows</p>
+                <source>
+                    <![CDATA[<exs:compilerOutput errorsLabel="Errors:" warningsLabel="Warnings:" scriptingLanguage=""/>]]></source>
+
+                <p>Following attributes can be used</p>
+                <p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Attribute Name</td>
+                                <td>Possible Values</td>
+                                <td>Description</td>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>errorsLabel</td>
+                            <td>All values are allowed</td>
+                            <td>A Label which is displayed in above all errors to notify the user that the error section
+                                starts here
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>WarningsLabel</td>
+                            <td>All values are allowed</td>
+                            <td>A Label which is displayed in above all errors to notify the user that the warning
+                                section
+                                starts here
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>scriptingLanguage</td>
+                            <td>Java, Groovy or an empty String</td>
+                            <td>Scripting language filter, here you can set which scripting engines
+                                compile errors should be displayed, currently Java or Groovy are supported as values
+                                if you leave the attribute empty or set nothing then everything is displayed
+                            </td>
+                        </tr>
+
+                    </table>
+                </p>
+
+                <img src="images/compiler_output.png" width="600px" height="270px" alt="Image Compiler Output"
+                     title="Image Compiler Output"/>
+                <div class="objectAnnotation">Image: Compiler Output Component</div>
+            </subsection>
+            <subsection name="The Change History Component">
+                <p>The second cornerstone of Ext-Scripting is change tracking and dependency detection.
+                    Now if you have changed a file, Ext-Scripting tracks the changes and also marks
+                    most classes which have a dependency to your class as changed.
+                </p>
+                <p>
+                    Again usually the output is pushed into the log as following:
+                </p>
+                <p>
+                    <source>
+                        <![CDATA[INFO: [EXT-SCRIPTING] Tainting: org/apache/myfaces/javaloader/componentTest/MyComponentTag.java]]></source>
+                </p>
+                <p>
+                    Again, to get a quick overview within your running page, or preferably an extra page, you can use
+                    a specialized component which gives you a quick overview over the change history of the system.
+                </p>
+                <p>
+                    Here our change history component comes into play. With it you can track a certain number of changes
+                    done over time including their marked dependencies.
+                </p>
+                <p>
+                    <center>
+                        <img src="images/change_history.jpg" width="550px" height="45px" alt="change history component"
+                                />
+                        <div class="objectAnnotation">Image: Change History Component in Action</div>
+                    </center>
+                </p>
+            </subsection>
+
+            <p>
+                <h4>Usage</h4>
+            </p>
+            <p>The change history component can be currently used in Facelets only as follows</p>
+            <source><![CDATA[<exs:taintHistory noEntries="5" />]]></source>
+
+
+            <p>Following attributes can be used</p>
+            <p>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Attribute Name</td>
+                            <td>Possible Values</td>
+                            <td>Description</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>noEntries</td>
+                        <td>The &lt;Integer Value&gt; number of entries of the current history</td>
+                        <td>A positive Integer value which shows the last N entries of your history
+                            beginning with the latest change marker on top
+                        </td>
+                    </tr>
+
+                </table>
+            </p>
+
+        </section>
+
+        <section name="Debugging">
+            <p>Ext-Scripting automatically compiles with the debug flags on. Debugging against a running configuration
+                should be no problem. If the debugger can be pointed towards the sources, debugging should work without
+                any sideeffects.
+            </p>
+            <p>
+                Due to the fact that the debugger can pick up the debug info from the newly compiled class
+                files. (Note - the class files are not altered in any way so in any case you just deal with normal Java
+                classes)
+            </p>
+            TODO add video here
+        </section>
+
+        <section name="Page and Resource Reloading">
+            <subsection name="Introduction">
+                <p>One of the goals of Ext-Scripting is to prevent unnecessary restarts and redeploys during
+                    development. To
+                    enable this it provides custom functionality outside of the scope of providing scripting
+                    capabilities.
+                    One of those features is the page and resource reloading from your source directories.
+                </p>
+            </subsection>
+            <subsection name="Basic Functionality">
+                <p>Pages and web-resources like CSS files or images are loaded from your resource directory without
+                    having to redeploy the web
+                    application,
+                    changes on them can be watched on the fly simple by a browser reload. There is no need to adjust
+                    your web application server or your IDE for auto deployment mechanisms. Unnecessary web application
+                    restarts for changed resources can be avoided that way.
+                    <b>Note while page reloading works on the fly for both JSF 1.2 and JSF 2.x+, resource reloading
+                    only works for JSF2.x+, if you need similar functionality for JSF 1.x  you can use
+                    a third party resource loading library like <a href="weblets.dev.java.net">Weblets</a>. </b>
+                </p>
+                <center>
+                    <img src="images/source-resource.jpg" width="557px" height="470px" alt="Page and Resource Reloading"
+                         title="Page and Resource Reloading"/>
+                </center>
+            </subsection>
+            <subsection name="Setup and Usage">
+                <p> The central point of setting up your resource reloading are two configuration parameters</p>
+                <ul>
+                    <li>org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS</li>
+                    <li>facelets.RESOURCE_RESOLVER</li>
+                </ul>
+                <p>
+                The first parameter <b>org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS</b> defines
+                the root path for your resources (aka everything web related, like xhtml facelet templates css files etc..).
+                Note, despite being called resource LOADER_PATH in most cases this path will just be pointed
+                to the your <b>source web application root directory</b>.
+                (ie: src/main/webapp in a standard Maven2 structure or &lt;project-root&gt;/webapp for a standard
+                    Eclipse project structure.
+                The name resource just refers to the fact that for Ext-Scripting every web related file is seen as resource
+                </p>
+                <p>
+                    The second parameter <b>facelets.RESOURCE_RESOLVER</b> is responsible for enabling the resouce loading
+                    of facelet templates and pages, since Facelets does not have an auto plugging mechanism this has to be
+                    set to a standard value which is <b>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</b>
+                </p>
+                <p>
+                    For further reference please also visit out <a href="configentries.html">Appendix: Configuration Entries Overview</a>
+                    page.
+                </p>
+            </subsection>
+
+
+        </section>
+
+
+
+        <section name="Advanced Dependency Detection">
+            <p>
+                Ext-Scripting tries to avoid as many server restarts as possible. To enable this it needs to unload
+                recompile and load artifacts and the those which reference our changed ones. To enable this,
+                Ext-Scripting
+                does dependency detection on bytecode level as well as on artifact level. This functionality is enabled
+                automatically you wont have anything further to do. You can see it working by watching the output log,
+                if
+                you change a class, you automatically will see that the system marks the classes which reference your
+                changed class as tainted as well.
+            </p>
+            <p>
+                You have to have in mind that data currently in ram cannot be recovered by the unloading and reloading
+                happening, so everything stored for instance in application or session scope is lost that way.
+            </p>
+            <p>
+                Following video shows the mechanism working:
+            </p>
+            <p />
+            <center>
+
+                <object width="660" height="405">
+                    <param name="movie"
+                           value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="allowscriptaccess" value="always" />
+                    <embed src="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1&#38;?&#38;border=1"
+                           type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
+                           width="660" height="405" />
+                </object>
+
+
+            </center>
+            <p>
+                This dependency detection works over all dynamic classes, no matter being it classes, interfaces,
+                annotations, and it works over static and dynamic imports.
+            </p>
+            <p>
+                Javabean dependencies also are detected on artifact level so that if the JSF IOC mechanism is used those
+                bound over neutral Object classes also will reload the dependencies correctly.
+            </p>
+
+        </section>
+
+
+        <section name="Dynamic Annotations">
+
+            <p>One of the main features which Ext-Scripting provides over standard JSF is dynamic annotations.
+                Dynamic annotations basically introduces a mechanism so that your standard JSF annotations like
+                @ManagedBean or @FacesComponent or @ManagedProperty or even the scopes like @RequestScoped or
+                @SessionScoped
+                can be changed on the fly in a dynamic way.
+            </p>
+            <p>To enable this mechanism you don't have to do anything, it comes out of the box in a MyFaces 2.0
+                environment.
+                Following video demonstrates the mechanism
+            </p>
+
+            <center>
+                <object width="640" height="505">
+                    <param name="movie"
+                           value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="allowscriptaccess" value="always" />
+                    <embed src="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
+                           type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
+                           width="640" height="505" />
+                </object>
+            </center>
+        </section>
+
+        <section name="Supported Artifacts">
+            <subsection name="JSF 1.2">
+                <p>Ext-Scripting supports following JSF 1.2 artifact reloading:</p>
+                <ul>
+                    <li>ApplicationFactory reloading on method call level</li>
+                    <li>FacesContextFactory reloading on method call level</li>
+                    <li>LifecycleFactory reloading on method call level</li>
+                    <li>RenderkitFactory reloading on method call level</li>
+                    <li>ElResolver</li>
+                    <li>Converter (on JSF level alone)</li>
+                    <li>Validator (on JSF level alone)</li>
+                    <li>Component reloading on component tree creation level (on JSF level alone)</li>
+                    <li>ViewHandler</li>
+                    <li>Lifecycle</li>
+                    <li>Renderer</li>
+                    <li>PhaseListener</li>
+                    <li>ManagedBeans reloading for all managed beans even session and application scoped ones on request
+                        level
+                    </li>
+                    <li>Support for either JavaC or JSR 199 depending on your JDK Version</li>
+                    <li>Support for Groovy and Java</li>
+                </ul>
+            </subsection>
+            <subsection name="JSF 2.0">
+                <p>Ext-Scripting supports following JSF 2.0 artifact reloading: Additionally to what is present for JSF
+                    1.2
+                </p>
+                <ul>
+                    <li>Component limitations have been lifted for Facelets as rendering language</li>
+                    <li>All major JSF 2 annotations can be used in a dynamic way, annotations can be moved removed or
+                        added on the fly
+                    </li>
+                    <li>Support for Reloading on ComponentTagHandler, ConverterTagHandler, BehaviorTagHandler,
+                        ValidatorTagHandler
+                    </li>
+                    <li>ResourceHandler</li>
+                    <li>Behavior</li>
+                    <li>BehaviorRenderer</li>
+                    <li>ComponentSystemEvent Support via dynamic Annotations</li>
+                    <li>Application System Event Support</li>
+                </ul>
+            </subsection>
+
+
+            <subsection name="Visual Overview">
+                <img src="images/ext-scripting-structure-fine.jpg"/>
+            </subsection>
+        </section>
+
+        <section name="Extension Frameworks">
+
+            <subsection name="EXT-SCRIPTING and EXT-VAL">
+                <p>While the target of supporting extension frameworks will be post 1.0 Ext-Scripting already
+                    supports dynamic bean validation and Ext-Val
+                </p>
+
+                <p>To setup Ext-Val simply add the needed dependencies and you can start to use it instantly</p>
+                <p>The MyFaces 2.0 demo has a simple example ported over from the Ext-Val distribution which
+                    shows the dynamic aspects of using Ext-Val and Ext-Scripting combined
+                </p>
+
+                <p>The same what applies to Ext-Val also applies to straight bean validation.</p>
+
+                <p>Note at the time of release, the current stable version of Ext-Val has a bug
+                which enforces one manual configuration entry!</p>
+
+                <source><![CDATA[
+                <application>
+                    <!-- disable an Ext-Val warning which is triggered falsely by the latest version -->
+                    <system-event-listener>
+                        <system-event-listener-class>org.apache.myfaces.extensions.scripting.startup.SuppressExtValWarningStartupListener</system-event-listener-class>
+                        <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+                    </system-event-listener>
+                </application>
+                ]]></source>
+
+                Note the class already is provided by Ext-Scripting, all which has done is
+                to add this entry to bypass the error.
+                This class probably will be obsolete with Ext-Val versions higher than
+                2.0.3 (which was the latest stable at time of writing)
+
+            </subsection>
+
+            <subsection name="EXT-SCRIPTING and Spring">
+                <p>Currently there is no direct Spring support for Ext-Scripting, it however is in the works
+                    and will be delivered in a release post 1.0
+                </p>
+            </subsection>
+
+            <subsection name="EXT-SCRIPTING and CDI">
+                <p>Currently there is no direct CDI support for Ext-Scripting, it however the
+                    work on it will be started post 1.0
+                </p>
+            </subsection>
+        </section>
+
+        
+
+        <section name="Build Process and Multiuser Environments">
+            <p>While Ext-Scripting itself is only used for rapid prototyping following two szenarii will probably occur in a typical
+            user development environment</p>
+            <subsection name="Compiling the Groovy classes for the final build">
+                <p>while it makes sense to have the Groovy sources for editing, for the final deployment, it makes sense
+                to just deliver the classes instead of the source files.
+                While doing that for your ide is out of scope of this documentation (currently). The documentation can provide you the information on how
+                to do it in Apache Maven:</p>
+                <p> The trick is to combine two things. Apache Maven 2 profiles and the Apache Maven2 groovy plugin</p>
+                <p> For a short explanation on Apache Maven 2 profiles please follow this link: <a href="http://maven.apache.org/guides/introduction/introduction-to-profiles.html">Apache Maven 2 Profiles</a> </p>
+                <p> The idea is, to define a deployment profile which triggers the Maven 2 groovy plugin which then will compile your classes, here is an example
+                configuration of such a profile, which can be copy pasted into your build file</p>
+            
+                  <source><![CDATA[
+                     <profiles>
+                         <profile>
+                             <id>deployment</id>
+                             <plugins>
+                                 <plugin>
+                                    <groupId>org.codehaus.gmaven</groupId>
+                                    <artifactId>gmaven-plugin</artifactId>
+                                    <version>1.2</version>
+                                    <configuration>
+                                        <providerSelection>1.7</providerSelection>
+                                    </configuration>
+                                    <executions>
+                                        <execution>
+                                            <goals>
+                                                <goal>generateStubs</goal>
+                                                <goal>compile</goal>
+                                                <goal>generateTestStubs</goal>
+                                                <goal>testCompile</goal>
+                                            </goals>
+                                        </execution>
+                                    </executions>
+                                    <dependencies>
+                                        <dependency>
+                                            <groupId>org.codehaus.groovy</groupId>
+                                            <artifactId>groovy-all</artifactId>
+                                            <version>1.7.1</version>
+                                        </dependency>
+                                    </dependencies>
+                                </plugin>
+                            </profile>
+                        </plugins>
+                    </profiles>
+                ]]></source>
+                
+                <p>The standard settings of the groovy maven plugin is that it will use your src/main/groovy directory as the path to pickup the sources.
+                You either can use that one and adjust the corresponding org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS setting for editing.
+                Or you can readjust the corresponding plugin settings of the Groovy Maven plugin. Follow this <a href="http://groovy.codehaus.org/GMaven">link</a> for further information.
+                </p>
+                <p> A call to maven clean install -P deployment now triggers the groovy compile task. You also can use the extended features
+                of the maven profiles to automate the switch if you use maven also for deployment of your project.</p>
+
+
+
+
+            </subsection>
+            <subsection name="Multi Developer Scenario's">
+                <p>One problem you might have noticed is, that if you do not work with the default configuration on your sources
+                (aka. WEB-INF/&lt;scripting-language&gt;, you have to rely on the corresponding configuration entries, which in itself take absolute paths.
+                One user of the system came up with the question, on how to deal with multiple developers. The answer is plain and simple, unfortunately the
+                    support of such a use case could be better for 1.0, all you can do is either to rely on the default paths, or use your build system to handle
+                    the configuration parts per user, or standardize on the same file structure for every user.
+                    Additional support for this scenario will be added post 1.0 to ease this usecase but for now it is a known but not entirely solved problem.
+                </p>
+            </subsection>
+        </section>
+
+        <section name="Navigation Bottom">
+            <a href="using_general.html">&lt;&lt;Back to the General Users Guide</a>
+            or
+
+            <a href="using_eclipse_.html">On to the Eclipse Users Guide&gt;&gt;</a>
+        </section>
+
+
+    </body>
+</document>

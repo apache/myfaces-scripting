@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+    <title>Hello World</title>
+</h:head>
+<h:body>
+    <h1><h:outputFormat value="This example tests complex bean relationships for refreshing"/></h1>
+    <h:form id="myForm">
+        <h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+        <h:inputText value="#{myBean.test}">
+            <f:ajax render="#{myBean.bindingMyTest.clientId}" event="keyup"/>
+        </h:inputText>
+        <h:inputText id="myText" value="#{myBean.test}" binding="#{myBean.bindingMyTest}"/>
+        <h:outputText value="#{receiver.myBean.hello}"/>
+        <h:outputText value="#{receiver.myBean.secondaryBean.hello}"/>
+    </h:form>
+</h:body>
+</html>

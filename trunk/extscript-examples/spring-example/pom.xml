@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <parent>
+        <artifactId>extscript-examples</artifactId>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
+    <artifactId>spring-example</artifactId>
+    <packaging>war</packaging>
+    <name>A custom project using myfaces and spring</name>
+    <version>1.0-SNAPSHOT</version>
+    <url>http://www.apache.org</url>
+
+    <properties>
+          <spring.version>3.0.2.RELEASE</spring.version>
+    </properties>
+
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/spring-example</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/spring-example</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples/spring-example</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.scripting</groupId>
+            <artifactId>extscript-myfaces20-bundle</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
+            <version>${myfaces2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-impl</artifactId>
+            <version>${myfaces2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+    </dependencies>
+</project>
