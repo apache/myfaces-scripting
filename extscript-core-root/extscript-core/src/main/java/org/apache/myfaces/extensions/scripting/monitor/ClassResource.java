@@ -43,7 +43,7 @@ public class ClassResource extends WatchedResource {
     //caching the info however probably is faster
     volatile Class _aClass = null;
     volatile File  _sourceFile;
-    volatile long  _lastLoaded = -1l;
+    volatile long  _lastLoaded = -1L;
     volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
 
     //todo clean up the sourcepath and filename

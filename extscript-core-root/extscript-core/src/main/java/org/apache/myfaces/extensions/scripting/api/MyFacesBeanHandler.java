@@ -160,7 +160,7 @@ public class MyFacesBeanHandler implements BeanHandler {
     public void personalScopeRefresh() {
         //shortcut to avoid heavier operations in the beginning
         long globalBeanRefreshTimeout = WeavingContext.getRefreshContext().getPersonalScopedBeanRefresh();
-        if (globalBeanRefreshTimeout == -1l) return;
+        if (globalBeanRefreshTimeout == -1L) return;
 
         Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         Long timeOut = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
@@ -243,7 +243,7 @@ public class MyFacesBeanHandler implements BeanHandler {
         Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         Long taintingPeriod = (Long) sessionMap.get(ScriptingConst.SESS_BEAN_REFRESH_TIMER);
         if (taintingPeriod == null) {
-            taintingPeriod = -1l;
+            taintingPeriod = -1L;
         }
         Set<String> taintedInTime = WeavingContext.getRefreshContext().getTaintHistoryClasses(taintingPeriod);
 
