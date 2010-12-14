@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>extscript-examples</artifactId>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces12-example</artifactId>
     <packaging>war</packaging>
     <name>A custom project using myfaces 1.2</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <url>http://www.apache.org</url>
 
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0/extscript-examples/myfaces12-example
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0/extscript-examples/myfaces12-example
         </developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples/myfaces12-example</url>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0/extscript-examples/myfaces12-example</url>
     </scm>
 
     <dependencies>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces12-bundle</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
