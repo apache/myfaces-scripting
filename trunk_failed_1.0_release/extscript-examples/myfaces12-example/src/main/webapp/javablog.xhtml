@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:grv="http://myfaces.apache.org/groovy">
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="body">
+
+        <h1>
+            <ui:insert name="title">Ext-Scripting Javablog Example</ui:insert>
+        </h1>
+
+        <h:form id="form">
+
+            <div class="left" style="margin-top: 3px;">
+                <h:panelGrid id="grid" columns="1" styleClass="stdBox">
+                    <h:outputText id="title1" styleClass="title" value="#{javaBlogView.title}"/>
+                    <h:outputText id="title11" styleClass="title1" value="#{javaBlogView.title1}"/>
+
+                    <hr/>
+
+                    <h:panelGrid columns="2" columnClasses="label, input">
+                        <h:outputText value="First Name"/>
+                        <h:inputText value="#{javaBlogView.firstName}"/>
+                        <h:outputText value="Last Name"/>
+                        <h:inputText value="#{javaBlogView.lastName}"/>
+                        <h:outputText value="Topic of entry"/>
+                        <h:inputText value="#{javaBlogView.topic}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" columnClasses="label, input">
+                        <h:outputText styleClass="label" value="Content"/>
+                        <h:inputTextarea value="#{javaBlogView.content}"/>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:commandButton styleClass="btn" action="#{javaBlogView.addEntry2}" value="Add Blog Entry"/>
+                </h:panelGrid>
+            </div>
+
+            <h:panelGrid columns="1" styleClass="right">
+                <ui:repeat value="#{javaBlogService.blogEntries}" var="item">
+                    <h:panelGrid columns="1" styleClass="messageBox">
+                        <h:panelGroup styleClass="topic">
+                            <h:outputLabel styleClass="label" value="Topic"/>
+                            <h:outputText value="#{item.topic}"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="content">
+                            <h:outputLabel styleClass="label" value="Content"/>
+                            <h:outputFormat escape="false" value="#{item.content}"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <br/>
+                </ui:repeat>
+            </h:panelGrid>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

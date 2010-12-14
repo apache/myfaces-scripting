@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <properties>
+        <title>Users Guide</title>
+    </properties>
+
+    <body>
+        <section name="Navigation Top">
+            <a href="installation.html">&lt;&lt;Back to the Setup Guide</a> or
+            <a href="using_general.html">On to the General Users Guide&gt;&gt;</a>
+        </section>
+
+
+        <section name="Users Guide">
+            <p>
+                After having set up MyFaces Ext-Scripting (if you do not have done so please go to our<a
+                    href="installation.html">Installation Page</a>), you basically can start editing, and be done with
+                the users
+                guide.
+            </p>
+            <p>
+                Well theoretically anyway, there are some things every user of Extension-Scripting has to take into
+                consideration.
+            </p>
+            <p>
+                First of all Ext-Scripting in its current incarnation tries to help the programmers every day life. That
+                means, it tries to reduce the number of needed server restarts to the lowest possible minimum which is
+                achievable within the boundaries of Java and JSF.
+            </p>
+            <p>
+                You won't get a zero restart configuration, Extension-Scripting tries not to be perfect in this regard,
+                but
+                what you can achieve is a significant reduction on restarts by applying scripting languages and dynamic
+                compilation.
+            </p>
+            <p>
+                Secondly, we do not try to support every scripting language under the earth, the basic goal is first to
+                get
+                the basics right and then in subsequent releases to add additional scripting languages support.
+            </p>
+            <p>
+                As is, every scripting language which can compile against the JVM can be supported, currently there is
+                no
+                support for the scripting language API of Java 6. The reason simply is that the API is too limiting for
+                now
+                in what Ext-Scripting tries to achieve. But future extensions like JSR 292 once available might be used
+                to
+                reduce the number of restarts needed.
+            </p>
+            <p>
+                For now we cannot recommend to use Ext-Scripting in a production environment for live patches, although
+                it
+                theoretically would be possible, and we spent a lot of blood sweat and tears into making the system
+                stable
+                under multithreaded conditions. For now, however, we simply only can recommend to use Ext-Scripting for
+                development and development only scenarios if you need to hot patch code (deployment without any changes
+                however should be fine). So if you want to hot patch a running installations, we assume it should work
+                fine,
+                but you are on your own.
+            </p>
+        </section>
+        <section name="Chapters">
+            <p>The Following Chapters should help you to guide you through the usage of Ext-Scripting</p>
+            <ul>
+                <li>
+                    <a href="using_general.html">General users guide</a>
+                </li>
+                <li>
+                    <a href="using_advanced.html">Advanced usage</a>
+                </li>
+                <li>
+                    <a href="using_eclipse_.html">Ext-Scripting in Eclipse</a>
+                </li>
+                <li>
+                    <a href="using_intellij.html">Ext-Scripting in Intellij</a>
+                </li>
+                <li>
+                    <a href="using_intellij.html">Ext-Scripting in Netbeans</a>
+                </li>
+            </ul>
+        </section>
+
+        <section name="Navigation Bottom">
+            <a href="installation.html">&lt;&lt;Back to the Setup Guide</a>  or 
+
+            <a href="using_general.html">On to the General Users Guide&gt;&gt;</a>
+        </section>
+
+    </body>
+</document>
+        

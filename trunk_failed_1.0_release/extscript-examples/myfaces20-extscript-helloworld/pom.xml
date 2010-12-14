@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <artifactId>extscript-examples</artifactId>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
+    <artifactId>myfaces20-extscript-helloworld</artifactId>
+    <packaging>war</packaging>
+    <name>A simple project for MyFaces 2.0 and Ext-Scripting 1.0</name>
+    <version>1.1-SNAPSHOT</version>
+    <url>http://www.apache.org</url>
+
+    <scm>
+        <connection>
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-extscript-helloworld
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-extscript-helloworld
+        </developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples/myfaces20-extscript-helloworld</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
+
+    </repositories>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!--
+             optional Groovy include,
+             if we leave it out, Groovy support is disabled
+             and only java support will work
+         -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <!--
+             Note this is the only dependency we need
+             for ext-scripting, the include is a so called
+             meta bundle, which includes the entire
+             ext-scripting core+java6 support + myfaces 2 support
+         -->
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.scripting</groupId>
+            <artifactId>extscript-myfaces20-bundle</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
+            <version>${myfaces2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-impl</artifactId>
+            <version>${myfaces2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+
+    </dependencies>
+</project>
