@@ -48,7 +48,7 @@ public class RefreshContext {
      * application scoped beans are refreshed at the first refresh cycle
      * by the calling request issuing the compile
      */
-    private volatile long _personalScopedBeanRefresh = -1l;
+    private volatile long _personalScopedBeanRefresh = -1L;
 
     /**
      * the bean synchronisation has to be dealt with

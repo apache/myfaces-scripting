@@ -118,7 +118,7 @@ public abstract class BaseWeaver implements ScriptingWeaver {
      * @return true if it is a reload candidate
      */
     private boolean isReloadCandidate(ClassResource reloadMeta) {
-        return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.getRefreshAttribute().getRequestedRefreshDate() != 0l;
+        return reloadMeta != null && assertScriptingEngine(reloadMeta) && reloadMeta.getRefreshAttribute().getRequestedRefreshDate() != 0L;
     }
 
     /**
