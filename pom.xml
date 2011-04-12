@@ -23,11 +23,11 @@
     <artifactId>extscript-root</artifactId>
     <packaging>pom</packaging>
     <name>Myfaces Extension Scripting Project</name>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
-        <myfaces2.version>2.0.2</myfaces2.version>
+        <myfaces2.version>2.0.4</myfaces2.version>
         <groovy.version>1.7.1</groovy.version>
         <extval.version>2.0.4</extval.version>
     </properties>
@@ -120,6 +120,7 @@
             <version>4.7</version>
             <scope>test</scope>
         </dependency>
+
 
         <dependency>
             <groupId>org.apache.myfaces.test</groupId>

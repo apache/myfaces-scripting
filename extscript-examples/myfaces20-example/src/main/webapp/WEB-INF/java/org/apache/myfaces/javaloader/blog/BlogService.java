@@ -38,9 +38,11 @@ public class BlogService implements BlogServiceInterface {
      *
      * @param entry the entry to be added
      */
+
     @DependencyTestAnnotation
     public void addEntry(BlogEntry entry) {
        if (entry != null) {
+			entry.setContent("hello world dlskjfgls kdj");
             blogEntries.add(entry);
         }
     }

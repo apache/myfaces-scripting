@@ -66,8 +66,8 @@ public class CustomChainLoader extends ClassLoaderExtension {
         else if (name.startsWith("org.apache") && !name.startsWith("org.apache.myfaces")) {
             return null;
         }
-        if(name.contains("JavaTestComponent")){
-            System.out.println("Debugpoint found");    
+        else if (name.startsWith("org.apache") && name.startsWith("org.apache.myfaces.config")) {
+            return null;
         }
         return _scriptingWeaver.loadScriptingClassFromName(name);
     }

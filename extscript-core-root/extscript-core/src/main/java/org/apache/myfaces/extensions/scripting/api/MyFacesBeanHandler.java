@@ -21,8 +21,6 @@ package org.apache.myfaces.extensions.scripting.api;
 import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.annotation.LifecycleProvider;
 import org.apache.myfaces.config.annotation.LifecycleProviderFactory;
-import org.apache.myfaces.config.element.ManagedBean;
-import org.apache.myfaces.config.element.ManagedProperty;
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.monitor.ClassResource;
@@ -134,14 +132,17 @@ public class MyFacesBeanHandler implements BeanHandler {
             //We now have to check if the tainted classes belong to the managed beans
             Set<String> managedBeanClasses = new HashSet<String>();
 
-            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
-            Map<String, ManagedBean> mbeansSnapshotView;
+            Map mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+            Map mbeansSnapshotView;
 
             synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
                 mbeansSnapshotView = makeSnapshot(mbeans);
             }
-            for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
-                managedBeanClasses.add(entry.getValue().getManagedBeanClassName());
+
+            for (Object entry :  mbeansSnapshotView.entrySet()) {
+                Object bean = (Object)  ((Map.Entry)entry).getValue();
+
+                managedBeanClasses.add((String)ReflectUtil.executeMethod(bean, "getManagedBeanClassName"));//bean.getManagedBeanClassName());
             }
 
             boolean managedBeanTainted = isAnyManagedBeanTainted(tainted, managedBeanClasses);
@@ -176,14 +177,15 @@ public class MyFacesBeanHandler implements BeanHandler {
      *
      * @param workCopy the managed beam snapshot view
      */
-    private void globalManagedBeanRefresh(Map<String, ManagedBean> workCopy) {
+    private void globalManagedBeanRefresh(Map workCopy) {
         Set<String> tainted = getTaintedClasses();
 
-        for (Map.Entry<String, ManagedBean> entry : workCopy.entrySet()) {
-            Class managedBeanClass = entry.getValue().getManagedBeanClass();
+        for (Object entry : workCopy.entrySet()) {
+            Object bean = ((Map.Entry) entry).getValue();
+            Class managedBeanClass =  (Class) ReflectUtil.executeMethod(bean, "getManagedBeanClass");
             if (hasToBeRefreshed(tainted, managedBeanClass)) {
                 //managed bean class found we drop the class from our session
-                removeBeanReferences(entry.getValue());
+                removeBeanReferences(bean);
             }
             //one bean tainted we have to taint all dynamic beans otherwise we will get classcast
             //exceptions
@@ -248,19 +250,20 @@ public class MyFacesBeanHandler implements BeanHandler {
         Set<String> taintedInTime = WeavingContext.getRefreshContext().getTaintHistoryClasses(taintingPeriod);
 
         synchronized (RefreshContext.BEAN_SYNC_MONITOR) {
-            Map<String, ManagedBean> mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
+            Map mbeans = RuntimeConfig.getCurrentInstance(FacesContext.getCurrentInstance().getExternalContext()).getManagedBeans();
             //the map is immutable but in between scanning might change it so we make a full copy of the map
 
             //We can synchronized the refresh, but if someone alters
             //the bean map from outside we still get race conditions
             //But for most cases this mutex should be enough
-            Map<String, ManagedBean> mbeansSnapshotView = makeSnapshot(mbeans);
+            Map mbeansSnapshotView = makeSnapshot(mbeans);
 
-            for (Map.Entry<String, ManagedBean> entry : mbeansSnapshotView.entrySet()) {
-                Class managedBeanClass = entry.getValue().getManagedBeanClass();
+            for (Object entry : mbeansSnapshotView.entrySet()) {
+                Object value = ((Map.Entry) entry).getValue();
+                Class managedBeanClass = (Class) ReflectUtil.executeMethod(value,"getManagedBeanClass");
                 if (hasToBeRefreshed(taintedInTime, managedBeanClass)) {
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(entry.getValue().getManagedBeanName());
-                    removeCustomScopedBean(entry.getValue());
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(ReflectUtil.executeMethod(value,"getManagedBeanName"));
+                    removeCustomScopedBean( value );
                 }
             }
             updateBeanRefreshTime();
@@ -275,12 +278,15 @@ public class MyFacesBeanHandler implements BeanHandler {
      * @param bean the managed bean which all references have to be removed from
      */
 
-    private void removeBeanReferences(ManagedBean bean) {
+    private void removeBeanReferences(Object bean) {
+        String managedBeanName = (String) ReflectUtil.executeMethod(bean, "getManagedBeanName");
+
         if (getLog().isLoggable(Level.FINE)) {
-            getLog().log(Level.FINE, "[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences({0})", bean.getManagedBeanName());
+            getLog().log(Level.FINE, "[EXT-SCRIPTING] JavaScriptingWeaver.removeBeanReferences({0})", managedBeanName);
         }
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(bean.getManagedBeanName());
-        FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(bean.getManagedBeanName());
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(managedBeanName);
+        FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(managedBeanName);
         removeCustomScopedBean(bean);
     }
 
@@ -291,18 +297,20 @@ public class MyFacesBeanHandler implements BeanHandler {
         return Logger.getLogger(this.getClass().getName());
     }
 
+
+
     /**
      * jsf2 helper to remove custom scoped beans
      *
      * @param bean the managed bean which has to be removed from the custom scope from
      */
-    private void removeCustomScopedBean(ManagedBean bean) {
-        Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(bean.getManagedBeanScope());
+    private void removeCustomScopedBean(Object bean) {
+        Object scopeImpl = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(ReflectUtil.executeMethod(bean,"getManagedBeanScope"));
         if (scopeImpl == null) return; //scope not implemented
         //we now have to revert to introspection here because scopes are a pure jsf2 construct
         //so we use a messaging pattern here to cope with it
 
-        Object beanInstance = ReflectUtil.executeMethod(scopeImpl, "get", bean.getManagedBeanName());
+        Object beanInstance = ReflectUtil.executeMethod(scopeImpl, "get", ReflectUtil.executeMethod(bean, "getManagedBeanName"));
         LifecycleProvider lifecycleProvider =
                 LifecycleProviderFactory.getLifecycleProviderFactory().getLifecycleProvider(FacesContext.getCurrentInstance().getExternalContext());
         try {
@@ -324,11 +332,12 @@ public class MyFacesBeanHandler implements BeanHandler {
      * @return a map with the class name as key and the managed bean info
      *         as value of the current state of the internal runtime config bean map
      */
-    private Map<String, ManagedBean> makeSnapshot(Map<String, ManagedBean> mbeans) {
-        Map<String, ManagedBean> workCopy;
+    private Map makeSnapshot(Map mbeans) {
+        Map workCopy;
 
-        workCopy = new HashMap<String, ManagedBean>(mbeans.size());
-        for (Map.Entry<String, ManagedBean> entry : mbeans.entrySet()) {
+        workCopy = new HashMap(mbeans.size());
+        for (Object elem: mbeans.entrySet()) {
+            Map.Entry entry = (Map.Entry) elem;
             workCopy.put(entry.getKey(), entry.getValue());
         }
 

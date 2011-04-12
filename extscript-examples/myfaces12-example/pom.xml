@@ -3,14 +3,14 @@
     <parent>
         <artifactId>extscript-examples</artifactId>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces12-example</artifactId>
     <packaging>war</packaging>
     <name>A custom project using myfaces 1.2</name>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <url>http://www.apache.org</url>
 
     <scm>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces12-bundle</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

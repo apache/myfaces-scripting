@@ -35,7 +35,7 @@ import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
  *          This renderer can act as a drag and drop target for the annotation
  *          set in JavaTestRenderer1
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
+
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "<h2> Hello world ccc from Renderer 2 </h2>";

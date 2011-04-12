@@ -44,6 +44,7 @@ public class BlogService {
     
     Logger log = Logger.getLogger(BlogService.class.getName())
     log.info("Adding entry, topic: " + entry.topic)
+    entry.topic = "bla bla"
     blogEntries.add(entry)
 
     log.info("blogentries size" + blogEntries.size())

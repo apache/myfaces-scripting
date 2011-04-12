@@ -36,6 +36,7 @@ import java.util.logging.Logger;
  *          renderer artifact to the other
  */
 @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
+
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());

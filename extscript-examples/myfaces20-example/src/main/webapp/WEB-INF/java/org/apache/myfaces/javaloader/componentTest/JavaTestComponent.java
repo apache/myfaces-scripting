@@ -38,9 +38,9 @@ public class JavaTestComponent extends UIInput implements Markable {
 
     String _testAttr;
 
-    enum PropertyKeys {
-        inc, testAttr, testAttr2, testAttr3, testAttr4
-    }
+    //enum PropertyKeys {
+    //    inc, testAttr, testAttr2, testAttr3, testAttr4
+    //}
 
     public JavaTestComponent() {
         setRendererType("at.irian.JavaTestRenderer");
@@ -55,35 +55,35 @@ public class JavaTestComponent extends UIInput implements Markable {
     }
 
     public int getInc() {
-        return (Integer) getStateHelper().eval(PropertyKeys.inc, 1);
+        return (Integer) getStateHelper().eval("inc", 1);
     }
 
     public void setInc(int inc) {
-        getStateHelper().put(PropertyKeys.inc, inc);
+        getStateHelper().put("inc", inc);
     }
 
     public String getTestAttr() {
-        return (String) getStateHelper().eval(PropertyKeys.testAttr, "");
+        return (String) getStateHelper().eval("testAttr", "");
     }
 
     public void setTestAttr(String testAttr) {
-        getStateHelper().put(PropertyKeys.testAttr, testAttr);
+        getStateHelper().put("testAttr", testAttr);
     }
 
     public String getTestAttr2x() {
-        return (String) getStateHelper().eval(PropertyKeys.testAttr2, "");
+        return (String) getStateHelper().eval("testAttr2x", "");
     }
 
     public void setTestAttr2x(String testAttr) {
-        getStateHelper().put(PropertyKeys.testAttr2, testAttr);
+        getStateHelper().put("testAttr2x", testAttr);
     }
 
     public String getTestAttr3() {
-        return (String) getStateHelper().eval(PropertyKeys.testAttr3, "");
+        return (String) getStateHelper().eval("testAttr3x", "");
     }
 
     public void setTestAttr3(String testAttr) {
-        getStateHelper().put(PropertyKeys.testAttr3, testAttr);
+        getStateHelper().put("testAttr3x", testAttr);
     }
 
     /**
@@ -94,11 +94,11 @@ public class JavaTestComponent extends UIInput implements Markable {
      */
 
     public String getTestAttr4() {
-        return (String) getStateHelper().eval(PropertyKeys.testAttr4, "");
+        return (String) getStateHelper().eval("testAttr4x", "");
     }
 
     public void setTestAttr4(String testAttr) {
-        getStateHelper().put(PropertyKeys.testAttr4, testAttr);
+        getStateHelper().put("testAttr4x", testAttr);
     }
 
     

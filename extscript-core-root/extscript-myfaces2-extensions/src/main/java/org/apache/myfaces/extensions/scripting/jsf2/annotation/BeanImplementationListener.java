@@ -22,6 +22,8 @@ import org.apache.myfaces.config.RuntimeConfig;
 import org.apache.myfaces.config.element.NavigationRule;
 import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
 import org.apache.myfaces.extensions.scripting.api.AnnotationScanListener;
+import org.apache.myfaces.extensions.scripting.core.util.Cast;
+import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
 
 import javax.faces.bean.*;
@@ -124,7 +126,8 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
                 mpc.setPropertyName(name);
                 mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
                 mpc.setValue(property.value());
-                mbean.addProperty(mpc);
+
+                ReflectUtil.executeMethod(mbean,"addProperty", mpc);
             }
         }
     }
@@ -175,7 +178,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         //us to do the same for the nav rules after purge
         //we cannot purge the managed beans and nav rules separately
         Collection<NavigationRule> navigationRules = new ArrayList<NavigationRule>();
-        Map<String, org.apache.myfaces.config.element.ManagedBean> managedBeans = new HashMap<String, org.apache.myfaces.config.element.ManagedBean>();
+        Map managedBeans = new HashMap<String, org.apache.myfaces.config.element.ManagedBean>();
 
         navigationRules.addAll(config.getNavigationRules());
         managedBeans.putAll(config.getManagedBeans());
@@ -191,13 +194,17 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         org.apache.myfaces.config.element.ManagedBean mbeanFound = null;
         List<String> mbeanKey = new LinkedList<String>();
 
-        for (Map.Entry mbean : managedBeans.entrySet()) {
-            org.apache.myfaces.config.element.ManagedBean bean = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();
-            if (!bean.getManagedBeanClass().getName().equals(className)) {
+        for (Object entry : managedBeans.entrySet()) {
+            Map.Entry mbean = (Map.Entry) entry;
+
+            Object bean =  mbean.getValue();
+
+
+            if (!((Class)ReflectUtil.executeMethod( bean, "getManagedBeanClass")).getName().equals(className)) {
                 config.addManagedBean((String) mbean.getKey(), (org.apache.myfaces.config.element.ManagedBean) mbean.getValue());
             } else {
-                mbeanFound = (org.apache.myfaces.config.element.ManagedBean) mbean.getValue();
-                mbeanKey.add(mbeanFound.getManagedBeanName());
+                Object mbeanf = mbean.getValue();
+                mbeanKey.add((String)ReflectUtil.executeMethod(mbeanf, "getManagedBeanName"));
             }
         }
         if (mbeanFound != null) {
