@@ -32,16 +32,14 @@
         </section>
 
         <section name="General information">
-            This section applies to setting up Ext-Scripting from the latest codebase if you want
-            to set it up from one of the beta or alpha builds please follow following instructions:
-            <ul>
-                <li>
-                    <a href="install_beta_1.html">Installation Instructions for Beta-1</a>
-                </li>
-                <li>
-                    <a href="install_alpha_1.html">Installation Instructions for Alpha-1</a>
-                </li>
-            </ul>
+            This page covers the general installation and integration process, it does not
+            go into the details of the configuration.
+
+
+            The section covers the setup via download or custom build. If you need configuration detail info
+            or info on how to setup your ide correctly please follow the links in the navigation to
+            the correct section.
+
         </section>
 
 
@@ -72,6 +70,21 @@
             </p>
         </section>
 
+
+        <section name="Download">
+            <p>
+                With version 1.0 Ext-Scripting provides all necessary artifacts
+                as download artifacts to get quickly started.
+                A kickstart project is provided which can be used as shell for your own
+                projects.
+            </p>
+            <p>
+                For Download information please visit the <a href="download.html"> download  page</a>.
+            </p>
+            <p>
+                Once you downloaded the necessary artifacts please check the <a href="#Manual_Setup">manual setup section</a> of this document.
+            </p>
+        </section>
 
         <section name="Checkout and Build">
             <p>

@@ -45,6 +45,8 @@
                 First of all Ext-Scripting in its current incarnation tries to help the programmers every day life. That
                 means, it tries to reduce the number of needed server restarts to the lowest possible minimum which is
                 achievable within the boundaries of Java and JSF.
+                Also it is not yet fully integrated into the bigger application servers, testing only currently is
+                done for Apache Tomcat and Jetty.
             </p>
             <p>
                 You won't get a zero restart configuration, Extension-Scripting tries not to be perfect in this regard,

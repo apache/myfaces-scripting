@@ -65,6 +65,7 @@
                     <ul>
                         <li>Check if your installation environment is setup</li>
                         <li>Download the appropriate meta bundle and add it to your dependency and deployment settings
+                        (for the download location check the <a href="./download.html">download page</a>)
                         </li>
                         <li>Download groovy-all.jar and add it to your dependency and deployment settings</li>
                         <li>Prepare your script paths</li>
