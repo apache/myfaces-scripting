@@ -19,6 +19,8 @@
 package org.apache.myfaces.groovyloader.blog
 
 import java.util.logging.Logger
+import javax.faces.bean.ManagedBean
+import javax.faces.bean.ApplicationScoped
 
 public class BlogService2 {
   List blogEntries = new ArrayList()

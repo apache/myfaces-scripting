@@ -22,8 +22,11 @@ import java.util.logging.Logger
 import javax.faces.bean.ApplicationScoped
 import javax.faces.bean.ManagedBean
 
+
+
 @ManagedBean(name = "blogService")
 @ApplicationScoped
+
 public class BlogService {
   List blogEntries = new ArrayList()
 
@@ -44,7 +47,7 @@ public class BlogService {
     
     Logger log = Logger.getLogger(BlogService.class.getName())
     log.info("Adding entry, topic: " + entry.topic)
-    entry.topic = "bla bla"
+    entry.topic = "bla bla2"
     blogEntries.add(entry)
 
     log.info("blogentries size" + blogEntries.size())
