@@ -19,6 +19,33 @@ Download Apache MyFaces Extension Scripting
 
 Download Apache MyFaces Extension Scripting
 
+ Apache MyFaces Extension Scripting now has a 1.0.1 bugfix release which reenables compatibility with newer MyFaces versions:
+ Apache MyFaces is distributed as jar archives for inclusion and as war archives for the
+ examples.
+
+
+ Use the links below to download
+
+
+  Release notes can be found {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310964&version=12316367}here}}
+
+*-------------------------+---------+----------+-----------+
+|                         | Server | Checksum | Signature |
+*-------------------------+---------+----------+-----------+
+| Ext-Script MyFaces 1.2 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.1/extscript-myfaces12-bundle-1.0.1.jar} extscript-myfaces12-bundle-1.0.1.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.1/extscript-myfaces12-bundle-1.0.1.jar.asc.md5} extscript-myfaces12-bundle-1.0.1.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.1/extscript-myfaces12-bundle-1.0.1.jar.asc}extscript-myfaces12-bundle-1.0.1.jar.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script MyFaces 2.0 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.1/extscript-myfaces20-bundle-1.0.1.jar} extscript-myfaces20-bundle-1.0.1.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.1/extscript-myfaces20-bundle-1.0.1.jar.asc.md5} extscript-myfaces20-bundle-1.0.1.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.1/extscript-myfaces20-bundle-1.0.1.jar.asc}extscript-myfaces20-bundle-1.0.1.jar.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Demo Application MyFaces 1.2 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.1/myfaces12-example-1.0.1.war} myfaces12-example-1.0.1.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.1/myfaces12-example-1.0.1.war.asc.md5} myfaces12-example-1.0.1.war.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.1/myfaces12-example-1.0.1.war.asc}myfaces12-example-1.0.1.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Demo Application MyFaces 2.0 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.1/myfaces20-example-1.0.1.war} myfaces20-example-1.0.1.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.1/myfaces20-example-1.0.1.war.asc.md5} myfaces20-example-1.0.1.war.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.1/myfaces20-example-1.0.1.war.asc}myfaces20-example-1.0.1.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Blank Application JSF2 (war)      | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.1/myfaces20-extscript-helloworld-1.0.1.war} myfaces20-extscript-helloworld-1.0.1.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.1/myfaces20-extscript-helloworld-1.0.1.war.md5} myfaces20-extscript-helloworld-1.0.1.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.1/myfaces20-extscript-helloworld-1.0.1.war.asc} myfaces20-extscript-helloworld-1.0.1.war.asc}} |
+*-------------------------+---------+----------+-----------+
+
+
+Older Versions
+
  As of now the project has an initial 1.0 release.
  The initial release will only run with Apache MyFaces up to 2.0.2.
  A subsequent release will follow soon which will support later versions
