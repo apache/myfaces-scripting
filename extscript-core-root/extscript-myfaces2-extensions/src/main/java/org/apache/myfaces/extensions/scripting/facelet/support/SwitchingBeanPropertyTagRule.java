@@ -36,7 +36,7 @@ import javax.faces.view.facelets.TagAttribute;
 public class SwitchingBeanPropertyTagRule extends MetaRule {
 
     InvokeDynamicBeanPropertyTagRule _invokeDynamic = InvokeDynamicBeanPropertyTagRule.Instance;
-    BeanPropertyTagRule _invokeStatic = BeanPropertyTagRule.Instance;
+    BeanPropertyTagRule _invokeStatic = BeanPropertyTagRule.INSTANCE;
 
     public static volatile SwitchingBeanPropertyTagRule Instance = new SwitchingBeanPropertyTagRule();
 

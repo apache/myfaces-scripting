@@ -18,7 +18,9 @@
  */
 package org.apache.myfaces.extensions.scripting.core.util;
 
-import org.apache.myfaces.shared_impl.util.ClassLoaderExtension;
+//TODO this needs to be moved into the JSF 2.0 and 1.2 packages
+//reason due to the changes caused by the shade plugin it the ClassLoader
+//Extensions is in shared_impl in 1.2 and in shared in 2.x
 
 import java.io.File;
 
@@ -29,48 +31,86 @@ import java.io.File;
  * @author werpu
  *         <p/>
  */
-public class ClassUtils {
+public class ClassUtils
+{
 
-    public static Class forName(String name) {
-        try {
+    public static Class forName(String name)
+    {
+        try
+        {
             return Class.forName(name);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    public static boolean isPresent(String clazz) {
-        try {
+    public static boolean isPresent(String clazz)
+    {
+        try
+        {
             getContextClassLoader().loadClass(clazz);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e)
+        {
             return false;
         }
         return true;
     }
 
-    public static File classNameToFile(String classPath, String className) {
+    public static File classNameToFile(String classPath, String className)
+    {
         String classFileName = classNameToRelativeFileName(className);
         return new File(classPath + File.separator + classFileName);
     }
 
-    private static String classNameToRelativeFileName(String className) {
+    private static String classNameToRelativeFileName(String className)
+    {
         String separator = FileUtils.getFileSeparatorForRegex();
 
         return className.replaceAll("\\.", separator) + ".class";
     }
 
-    public static String relativeFileToClassName(String relativeFileName) {
+    public static String relativeFileToClassName(String relativeFileName)
+    {
         String className = relativeFileName.replaceAll("\\\\", ".").replaceAll("\\/", ".");
         className = className.substring(0, className.lastIndexOf("."));
         return className;
     }
 
-    public static ClassLoader getContextClassLoader() {
-        return org.apache.myfaces.shared_impl.util.ClassUtils.getContextClassLoader();
+    public static void addClassLoadingExtension(Object extension, boolean top)
+    {
+        try
+        {
+            ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.shared_impl.util.ClassUtils"),
+                    "addClassLoadingExtension");
+        }
+        catch (Exception e)
+        {
+            ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.shared.util.ClassUtils"),
+                    "addClassLoadingExtension", extension, top);
+        }
+
+        //ClassUtils.addClassLoadingExtension(extension, top);
     }
 
-    public static void addClassLoadingExtension(ClassLoaderExtension extension, boolean top) {
-        org.apache.myfaces.shared_impl.util.ClassUtils.addClassLoadingExtension(extension, top);
+    public static ClassLoader getContextClassLoader()
+    {
+        try
+        {
+            return (ClassLoader) ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.shared_impl.util.ClassUtils"),
+                    "getContextClassLoader");
+        }
+        catch (Exception e)
+        {
+            return (ClassLoader) ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.shared.util.ClassUtils"),
+                    "getContextClassLoader");
+        }
+
+        //return (ClassLoader) ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.extensions.scripting.util" +
+        //        ".ClassUtils"),
+        //        "getContextClassLoader");
     }
 
 }

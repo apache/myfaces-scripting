@@ -81,18 +81,18 @@ public class ReloadingComponentTagHandlerDelegate extends TagHandlerDelegate {
 
         // if it's an ActionSource
         if (ActionSource.class.isAssignableFrom(type)) {
-            m.addRule(ActionSourceRule.Instance);
+            m.addRule(ActionSourceRule.INSTANCE);
         }
 
         // if it's a ValueHolder
         if (ValueHolder.class.isAssignableFrom(type)) {
-            m.addRule(ValueHolderRule.Instance);
+            m.addRule(ValueHolderRule.INSTANCE);
 
             // if it's an EditableValueHolder
             if (EditableValueHolder.class.isAssignableFrom(type)) {
                 m.ignore("submittedValue");
                 m.ignore("valid");
-                m.addRule(EditableValueHolderRule.Instance);
+                m.addRule(EditableValueHolderRule.INSTANCE);
             }
         }
 

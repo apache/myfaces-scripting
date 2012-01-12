@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.javaloader.componentTest;
 
-import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextRendererBase;
+import org.apache.myfaces.shared.renderkit.html.HtmlTextRendererBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

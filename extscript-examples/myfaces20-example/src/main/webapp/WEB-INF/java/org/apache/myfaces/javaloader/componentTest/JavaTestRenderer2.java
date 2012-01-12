@@ -26,7 +26,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.shared_impl.renderkit.html.HtmlTextareaRendererBase;
+import org.apache.myfaces.shared.renderkit.html.HtmlTextareaRendererBase;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

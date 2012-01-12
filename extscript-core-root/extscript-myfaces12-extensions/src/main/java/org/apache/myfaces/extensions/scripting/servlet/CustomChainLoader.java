@@ -71,7 +71,4 @@ public class CustomChainLoader extends ClassLoaderExtension {
         }
         return _scriptingWeaver.loadScriptingClassFromName(name);
     }
-
-   
-
 }

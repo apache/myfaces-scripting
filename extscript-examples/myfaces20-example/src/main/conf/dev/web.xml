@@ -39,7 +39,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extscript5/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -50,7 +50,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extscript5/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
 
@@ -58,7 +58,7 @@
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /Users/werpu2/development/workspace/extscript5/extscript-examples/myfaces20-example/src/main/webapp
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-example/src/main/webapp
         </param-value>
     </context-param>
 

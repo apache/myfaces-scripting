@@ -19,7 +19,9 @@
 package org.apache.myfaces.extensions.scripting.servlet;
 
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.util.Cast;
 import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
+import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import org.apache.myfaces.extensions.scripting.api.extensionevents.SystemInitializedEvent;
@@ -79,10 +81,10 @@ public class StartupServletContextPluginChainLoader implements StartupListener {
      * @param servletContext the servlet context to be passed down
      * @return the custom chain loader for loading our classes over our classloaders
      */
-    private CustomChainLoader initChainLoader(ServletContext servletContext) {
-        CustomChainLoader loader = new CustomChainLoader(servletContext);
+    private void initChainLoader(ServletContext servletContext) {
+        Object loader = ReflectUtil.instantiate("org.apache.myfaces.extensions.scripting.servlet.CustomChainLoader", 
+                new Cast(ServletContext.class, servletContext));
         ClassUtils.addClassLoadingExtension(loader, true);
-        return loader;
     }
 
     /**
