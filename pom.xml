@@ -28,8 +28,8 @@
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
         <myfaces2.version>2.1.6</myfaces2.version>
-        <groovy.version>1.7.2</groovy.version>
         <extval.version>2.0.5</extval.version>
+        <groovy.version>1.7.2</groovy.version>
     </properties>
 
 
