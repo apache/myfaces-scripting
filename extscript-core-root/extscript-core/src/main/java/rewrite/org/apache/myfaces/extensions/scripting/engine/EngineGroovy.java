@@ -44,13 +44,7 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
     @Override
     public void init(ServletContext context)
     {
-        initPaths(INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS, GROOVY_SOURCE_ROOT);
-    }
-
-    @Override
-    protected void initPaths(String initParam, String defaultValue)
-    {
-        super.initPaths(initParam, defaultValue);
+        initPaths(context, INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS, GROOVY_SOURCE_ROOT);
     }
 
     @Override
@@ -63,12 +57,6 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
     public String getFileEnding()
     {
         return "groovy";
-    }
-
-    @Override
-    public void scanForAddedDeleted()
-    {
-        super.scanForAddedDeleted();
     }
 
     @Override
@@ -90,5 +78,11 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
     {
         log.info("[EXT-SCRIPTING] starting dependency scan");
         log.info("[EXT-SCRIPTING] ending dependency scan");
+    }
+
+    @Override
+    public void markTaintedDependencies()
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

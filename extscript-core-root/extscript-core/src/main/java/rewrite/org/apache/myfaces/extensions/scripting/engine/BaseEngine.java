@@ -26,11 +26,13 @@ import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.cor
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.DependencyRegistryImpl;
 import rewrite.org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 import static rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst.JAVA_SOURCE_ROOT;
 
@@ -48,6 +50,8 @@ public abstract class BaseEngine
     ClassDependencies _dependencyMap = new ClassDependencies();
     DependencyRegistry _dependencyRegistry = new DependencyRegistryImpl(getEngineType(), _dependencyMap);
 
+    Logger log = Logger.getLogger(this.getClass().getName());
+    
     public Map<String, ClassResource> getWatchedResources()
     {
         return _watchedResources;
@@ -128,7 +132,7 @@ public abstract class BaseEngine
         return false;
     }
 
-    protected void initPaths(String initParam, String defaultValue)
+    protected void initPaths(ServletContext context, String initParam, String defaultValue)
     {
         String pathSeparatedList = context.getInitParameter(initParam);
         pathSeparatedList = (pathSeparatedList != null) ? pathSeparatedList : defaultValue;
@@ -162,5 +166,45 @@ public abstract class BaseEngine
     public void setDependencyMap(ClassDependencies dependencyMap)
     {
         _dependencyMap = dependencyMap;
+    }
+
+    /**
+     * marks all the dependencies of the tainted objects
+     * also as tainted to allow proper refreshing.
+     */
+    public void markTaintedDependencies()
+    {
+        //basic tainted set by the full scall
+        Set<String> _processedClasses = new HashSet<String>();
+        for (Map.Entry<String, ClassResource> entry : _watchedResources.entrySet())
+        {
+
+            ClassResource resource = entry.getValue();
+            if (!resource.needsRecompile() && !resource.isTainted()) continue;
+
+            //classname
+            String identifier = resource.getIdentifier();
+            if (_processedClasses.contains(identifier)) continue;
+            markDependencies(_processedClasses, identifier);
+        }
+
+    }
+
+    /*marks all backward dependencies of the existing class*/
+    private void markDependencies(Set<String> _processedClasses, String identifier)
+    {
+        Set<String> referringClasses = _dependencyMap.getReferringClasses(identifier);
+        if(referringClasses == null) return;
+        for (String referringClass : referringClasses)
+        {
+            if (_processedClasses.contains(referringClass)) continue;
+            ClassResource toTaint = _watchedResources.get(referringClass);
+            if(toTaint == null) continue;
+            toTaint.setTainted(true);
+            log.info("[EXT-SCRIPTING] tainting dependency "+toTaint.getIdentifier());
+            _processedClasses.add(toTaint.getIdentifier());
+            markDependencies(_processedClasses, toTaint.getIdentifier());
+        }
+
     }
 }

@@ -25,16 +25,14 @@ import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationException;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.compiler.JSR199Compiler;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassDependencies;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.DependencyRegistryImpl;
 import rewrite.org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst.*;
@@ -52,7 +50,7 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
     @Override
     public void init(ServletContext context)
     {
-        initPaths(INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS, JAVA_SOURCE_ROOT);
+        initPaths(context, INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS, JAVA_SOURCE_ROOT);
     }
 
     /**
@@ -80,27 +78,15 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
         }
     }
 
-    public void scanDependencies() {
+    public void scanDependencies()
+    {
         log.info("[EXT-SCRIPTING] starting dependency scan");
         JavaDependencyScanner scanner = new JavaDependencyScanner();
         scanner.scanPaths();
         log.info("[EXT-SCRIPTING] ending dependency scan");
     }
 
-    /**
-     * marks all the dependencies of the tainted objects
-     * also as tainted to allow proper refreshing.
-     */
-    public void markTaintedDependencies() {
-        //    val _dependencyMap = new ClassDependencies();
-        //    val _dependencyRegistry = new DependencyRegistryImpl(getEngineType(), _dependencyMap);
-
-    }
-
     //-------------------------------------------------------------------------------------
-
-
-
 
     @Override
     public int getEngineType()

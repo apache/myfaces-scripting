@@ -99,22 +99,29 @@ public class WeavingContext
         }
     }
 
-    public void compile()
+    public boolean compile()
     {
+        boolean compile = false;
         for (ScriptingEngine engine : getEngines())
         {
             if (!engine.needsRecompile()) continue;
+            compile = true;
             log.info("[EXT-SCRIPTING] compiling " + engine.getEngineType() + " files");
             engine.compile();
             log.info("[EXT-SCRIPTING] compiling " + engine.getEngineType() + " files done");
         }
+        return compile;
     }
 
     public void scanDependencies()
     {
         for (ScriptingEngine engine : getEngines())
         {
-            engine.scanDependencies();
+            if(engine.isTainted())  {
+                log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " dependencies");
+                engine.scanDependencies();
+                log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " dependencies end");
+            }
         }
     }
 

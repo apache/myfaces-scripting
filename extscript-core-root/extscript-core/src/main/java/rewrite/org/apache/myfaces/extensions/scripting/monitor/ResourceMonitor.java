@@ -113,15 +113,19 @@ public class ResourceMonitor extends Thread {
      * which performs the entire scanning process
      */
     public void run() {
+        WeavingContext context = WeavingContext.getInstance();
         while(_running) {
             sleep();
             //we run the full scan on the classes to bring our data structures up to the task
-            WeavingContext.getInstance().initialFullScan();
+            context.initialFullScan();
             //we compile wherever needed, taints are now in place due to our scan already being performed
-            WeavingContext.getInstance().compile();
-            //we now have to perform a full dependency scan to bring our dependency map to the latest state
-            WeavingContext.getInstance().scanDependencies();
-            //we next retaint all classes according to our dependency graph
+            if(context.compile()) {
+                //we now have to perform a full dependency scan to bring our dependency map to the latest state
+                context.scanDependencies();
+                context.markTaintedDependends();
+                //we next retaint all classes according to our dependency graph
+            }
+
 
         }
         if (_log.isLoggable(Level.INFO)) {
