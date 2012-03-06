@@ -73,6 +73,7 @@ public class ResourceMonitor extends Thread {
     static WeakReference<ServletContext> _externalContext;
 
     public static synchronized void startup(ServletContext externalContext) {
+
         if (_externalContext == null) return;
         _externalContext = new WeakReference<ServletContext>(externalContext);
         if(getInstance() != null) return;
@@ -113,23 +114,29 @@ public class ResourceMonitor extends Thread {
      * which performs the entire scanning process
      */
     public void run() {
-        WeavingContext context = WeavingContext.getInstance();
+
         while(_running) {
-            sleep();
+            if(!_running) break;
             //we run the full scan on the classes to bring our data structures up to the task
-            context.initialFullScan();
-            //we compile wherever needed, taints are now in place due to our scan already being performed
-            if(context.compile()) {
-                //we now have to perform a full dependency scan to bring our dependency map to the latest state
-                context.scanDependencies();
-                context.markTaintedDependends();
-                //we next retaint all classes according to our dependency graph
-            }
-
-
+            performMonitoringTask();
+            sleep();
         }
+
         if (_log.isLoggable(Level.INFO)) {
             _log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
+        }
+    }
+
+    public void performMonitoringTask()
+    {
+        WeavingContext context = WeavingContext.getInstance();
+        context.initialFullScan();
+        //we compile wherever needed, taints are now in place due to our scan already being performed
+        if(context.compile()) {
+            //we now have to perform a full dependency scan to bring our dependency map to the latest state
+            context.scanDependencies();
+            //we next retaint all classes according to our dependency graph
+            context.markTaintedDependends();
         }
     }
 
@@ -150,30 +157,7 @@ public class ResourceMonitor extends Thread {
      * as marks the engine as having to do a full recompile
      */
     private final void checkForChanges() {
-    /*    ScriptingWeaver weaver = WeavingContext.getWeaver();
-        if (weaver == null) return;
-        weaver.scanForAddedClasses();
-
-        for (Map.Entry<String, ClassResource> it : this._classMap.entrySet()) {
-
-            File proxyFile = it.getValue().getFile();
-            if (isModified(it, proxyFile)) {
-
-                _systemRecompileMap.put(it.getValue().getScriptingEngine(), Boolean.TRUE);
-                ClassResource meta = it.getValue();
-                meta.getRefreshAttribute().requestRefresh();
-                printInfo(it, proxyFile);
-
-                dependencyTainted(meta.getAClass().getName());
-
-                //we add our log entry for further reference
-                WeavingContext.getRefreshContext().addTaintLogEntry(meta);
-                WeavingContext.getExtensionEventRegistry().sendEvent(new ClassTaintedEvent(meta));
-            }
-            //}
-        }
-        //we clean up the taint log
-        WeavingContext.getRefreshContext().gcTaintLog();*/
+   
     }
 
     /**
@@ -185,51 +169,9 @@ public class ResourceMonitor extends Thread {
      * @param className the origin classname which needs to be walked recursively
      */
     private void dependencyTainted(String className) {
-        /*Set<String> referrers = _dependencyMap.getReferringClasses(className);
-        if (referrers == null) return;
-        for (String referrer : referrers) {
-            ClassResource metaData = _classMap.get(referrer);
-            if (metaData == null) continue;
-            if (metaData.getRefreshAttribute().requiresRefresh()) continue;
-            printInfo(metaData);
-
-            metaData.getRefreshAttribute().requestRefresh();
-            
-            dependencyTainted(metaData.getAClass().getName());
-            WeavingContext.getRefreshContext().addTaintLogEntry(metaData);
-            WeavingContext.getExtensionEventRegistry().sendEvent(new ClassTaintedEvent(metaData));
-        } */
+    
     }
 
-    /*private final boolean isModified(Map.Entry<String, ClassResource> it, File proxyFile) {
-        return proxyFile.lastModified() > it.getValue().getRefreshAttribute().getRequestedRefreshDate() ;
-    }
-
-    private void printInfo(ClassResource it) {
-        if (_log.isLoggable(Level.INFO)) {
-            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting Dependency: {0}", it.getFile().getAbsolutePath());
-        }
-    }
-
-    private void printInfo(Map.Entry<String, ClassResource> it, File proxyFile) {
-        if (_log.isLoggable(Level.INFO)) {
-            _log.log(Level.INFO, "[EXT-SCRIPTING] comparing {0} Dates: {1} {2} ", new String[]{it.getKey(), Long.toString(proxyFile.lastModified()), Long.toString(it.getValue().getRefreshAttribute().getExecutedRefreshDate())});
-            _log.log(Level.INFO, "[EXT-SCRIPTING] Tainting: {0}", it.getValue().getFile().getAbsolutePath());
-        }
-    }
-
-    public boolean isRunning() {
-        return _running;
-    }
-
-
-    public Map<Integer, Boolean> getSystemRecompileMap() {
-        return _systemRecompileMap;
-    }
-
-    public void setSystemRecompileMap(Map<Integer, Boolean> systemRecompileMap) {
-        this._systemRecompileMap = systemRecompileMap;
-    } */
 
 
     public void setRunning(boolean running) {

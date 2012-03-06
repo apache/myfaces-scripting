@@ -25,6 +25,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.FactoryEngines;
+import rewrite.org.apache.myfaces.extensions.scripting.monitor.ResourceMonitor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -57,16 +58,13 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             context.getConfiguration().init(servletContext);
             _log.info("[EXT-SCRIPTING] Loading Scripting end");
 
-            _log.info("[EXT-SCRIPTING] Initial Scan");
-            context.initialFullScan();
-            _log.info("[EXT-SCRIPTING] Initial Compile");
-            //we can rely on the compiler picking the files
-            context.compile();
-            _log.info("[EXT-SCRIPTING] init the chain loader");
-            initChainLoader(servletContext);
+            _log.info("[EXT-SCRIPTING] Initial Scan and compile");
+            ResourceMonitor.getInstance().performMonitoringTask();
             _log.info("[EXT-SCRIPTING] Starting Change Monitor");
-            //TODO code the initial watchdog daemon start here
+            ResourceMonitor.getInstance().start();
             _log.info("[EXT-SCRIPTING] Startup done");
+            _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
+            initChainLoader(servletContext);
 
         }
         catch (IOException e)
@@ -111,11 +109,6 @@ public class StartupServletContextPluginChainLoader implements StartupListener
     {
         //context is destroyed we have to shut down our daemon as well, by giving it
         //a hint to shutdown
-
-        //TODO this is probably not needed because we run in a daemon thread anyway
-        //so the servlet should not have a problem to shut it down externally
-        /*  RefreshContext rContext = (RefreshContext) evt.getServletContext().getAttribute("RefreshContext");
-        rContext.getDaemon().setRunning(false);
-        */
+        ResourceMonitor.getInstance().setRunning(false);
     }
 }
