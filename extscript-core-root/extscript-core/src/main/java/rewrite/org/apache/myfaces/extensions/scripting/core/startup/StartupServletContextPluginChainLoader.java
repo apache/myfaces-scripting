@@ -24,7 +24,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.common.util.Cast;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.monitor.ResourceMonitor;
+import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

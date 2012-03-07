@@ -22,7 +22,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.context;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
-import rewrite.org.apache.myfaces.extensions.scripting.monitor.ClassResource;
+import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import java.io.IOException;
 import java.util.Collection;

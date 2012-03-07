@@ -25,14 +25,10 @@ import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationException;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.compiler.JSR199Compiler;
-import rewrite.org.apache.myfaces.extensions.scripting.monitor.ClassResource;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import static rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst.*;

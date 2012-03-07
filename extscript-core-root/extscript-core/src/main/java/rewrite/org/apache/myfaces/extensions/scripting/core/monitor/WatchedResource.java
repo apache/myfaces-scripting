@@ -17,9 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.monitor;
-
-import org.apache.myfaces.extensions.scripting.monitor.RefreshAttribute;
+package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
 import java.io.File;
 

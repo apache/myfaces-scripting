@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.monitor;
+package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
 import rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;

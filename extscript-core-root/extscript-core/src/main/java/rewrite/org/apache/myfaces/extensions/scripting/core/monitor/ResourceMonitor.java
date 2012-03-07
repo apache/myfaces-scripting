@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.monitor;
+package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
 
 
@@ -24,10 +24,8 @@ import rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
 
 import javax.servlet.ServletContext;
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;

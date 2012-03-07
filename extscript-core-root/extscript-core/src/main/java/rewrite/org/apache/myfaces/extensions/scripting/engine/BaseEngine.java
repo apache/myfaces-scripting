@@ -24,7 +24,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.DependencyRegistryImpl;
-import rewrite.org.apache.myfaces.extensions.scripting.monitor.ClassResource;
+import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import javax.servlet.ServletContext;
 import java.io.File;
