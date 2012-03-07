@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.core.startup;
+package rewrite.org.apache.myfaces.extensions.scripting.jsf.startup;
 
 import org.apache.myfaces.webapp.StartupListener;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
