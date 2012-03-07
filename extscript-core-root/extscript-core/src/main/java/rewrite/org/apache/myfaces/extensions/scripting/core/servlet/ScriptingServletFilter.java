@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.servlet;
+package rewrite.org.apache.myfaces.extensions.scripting.core.servlet;
 
 import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
 
