@@ -17,14 +17,13 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.startup;
+package rewrite.org.apache.myfaces.extensions.scripting.core.startup;
 
 import org.apache.myfaces.webapp.StartupListener;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.Cast;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.monitor.ResourceMonitor;
 
 import javax.servlet.ServletContext;
