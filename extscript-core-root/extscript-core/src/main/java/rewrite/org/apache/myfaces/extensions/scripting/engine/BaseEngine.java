@@ -20,7 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.DependencyRegistryImpl;
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst.JAVA_SOURCE_ROOT;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.JAVA_SOURCE_ROOT;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

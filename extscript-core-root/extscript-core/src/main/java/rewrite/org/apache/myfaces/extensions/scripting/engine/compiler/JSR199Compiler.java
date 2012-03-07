@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.engine.compiler;
 
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.FileUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.context.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationException;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationResult;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.Compiler;
@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
 import static rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilerConst.*;
 
 /**

@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.common.util;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
 /**
- * @Author Werner Punz
- * Null representation for easier introspection calls
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class Null extends Cast
+@SuppressWarnings("unused")
+public class Array extends Cast
 {
+    public Array(Class clazz, Object... value) {
 
-    public Null(Class clazz) {
-        super(clazz, null);
+        super(java.lang.reflect.Array.newInstance(clazz, 0).getClass(), value);
     }
-
 }

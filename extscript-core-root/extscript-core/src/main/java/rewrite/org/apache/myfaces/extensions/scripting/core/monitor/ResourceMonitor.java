@@ -20,8 +20,8 @@ package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
 
 
-import rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.servlet.ServletContext;
 import java.lang.ref.WeakReference;

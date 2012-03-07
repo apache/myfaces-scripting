@@ -18,7 +18,7 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.servlet;
 
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.servlet.*;
 import java.io.IOException;

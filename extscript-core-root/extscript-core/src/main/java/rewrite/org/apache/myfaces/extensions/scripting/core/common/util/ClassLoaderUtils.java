@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.common.util;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
 
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import java.io.File;
 import java.net.MalformedURLException;

@@ -21,8 +21,8 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine;
 
 import org.apache.myfaces.extensions.scripting.api.ClassScanListener;
 import org.apache.myfaces.extensions.scripting.api.ClassScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.StandardDependencyScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyScanner;

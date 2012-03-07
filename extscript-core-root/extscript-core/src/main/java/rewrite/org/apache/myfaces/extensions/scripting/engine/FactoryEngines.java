@@ -18,10 +18,10 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.engine;
 
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.FileStrategy;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.FileUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ReflectUtil;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileStrategy;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
 
 import java.io.File;

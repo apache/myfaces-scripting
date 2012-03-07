@@ -16,34 +16,56 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.common.util;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *          <p/>
+ *          Java file strategy pattern to filter out all java files which are possible sources
+ *          so that we can recompile them
  */
 
-public class DirStrategy implements Strategy
+public class FileStrategy implements Strategy
 {
+    Pattern _rePattern;
+
+    public FileStrategy(String pattern) {
+        pattern = pattern.trim().replaceAll("\\.", "\\\\.");
+        pattern = "." + pattern;
+
+        _rePattern = Pattern.compile(pattern);
+
+    }
+
+    public FileStrategy(Pattern pattern) {
+
+
+            _rePattern = pattern;
+
+        }
+
+
     List<File> _foundFiles = new LinkedList<File>();
 
     public void apply(Object element) {
         File foundFile = (File) element;
-        if (foundFile.isDirectory()) {
-            _foundFiles.add(foundFile);
-        }
+        String fileName = foundFile.getName().toLowerCase(Locale.getDefault());
+        Matcher matcher = _rePattern.matcher(fileName);
+
+        if (!matcher.matches()) return;
+        _foundFiles.add(foundFile);
     }
 
     public List<File> getFoundFiles() {
         return _foundFiles;
     }
 
-    public void setFoundFiles(List<File> foundFiles) {
-        _foundFiles = foundFiles;
-    }
 }
-

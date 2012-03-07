@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.context;
+package rewrite.org.apache.myfaces.extensions.scripting.core.context;
 
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.FactoryEngines;

@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
-import rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import java.io.File;
 import java.util.Collection;

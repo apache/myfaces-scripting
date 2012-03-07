@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.common;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

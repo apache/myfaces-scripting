@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.common.util;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
 import java.io.File;
 import java.util.Collection;

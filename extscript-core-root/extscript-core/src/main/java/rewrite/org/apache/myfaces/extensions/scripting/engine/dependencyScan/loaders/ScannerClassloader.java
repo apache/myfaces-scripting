@@ -22,7 +22,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.lo
 
 
 import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 
 import java.io.*;
 import java.util.HashMap;

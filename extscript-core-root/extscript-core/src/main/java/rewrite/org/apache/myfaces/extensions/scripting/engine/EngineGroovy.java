@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.engine;
 
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.context.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.compiler.GroovyCompiler;
 
@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.common.ScriptingConst.*;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

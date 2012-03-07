@@ -20,10 +20,10 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.startup;
 
 import org.apache.myfaces.webapp.StartupListener;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.Cast;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ReflectUtil;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
 
 import javax.servlet.ServletContext;

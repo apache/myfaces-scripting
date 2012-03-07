@@ -16,17 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.common.util;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@SuppressWarnings("unused")
-public class Array extends Cast
-{
-    public Array(Class clazz, Object... value) {
 
-        super(java.lang.reflect.Array.newInstance(clazz, 0).getClass(), value);
+public class DirStrategy implements Strategy
+{
+    List<File> _foundFiles = new LinkedList<File>();
+
+    public void apply(Object element) {
+        File foundFile = (File) element;
+        if (foundFile.isDirectory()) {
+            _foundFiles.add(foundFile);
+        }
+    }
+
+    public List<File> getFoundFiles() {
+        return _foundFiles;
+    }
+
+    public void setFoundFiles(List<File> foundFiles) {
+        _foundFiles = foundFiles;
     }
 }
+

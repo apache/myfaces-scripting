@@ -20,8 +20,8 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine.compiler;
 
 
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
-import rewrite.org.apache.myfaces.extensions.scripting.common.util.ClassLoaderUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;

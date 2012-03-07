@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.common.util;
+package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
 //TODO this needs to be moved into the JSF 2.0 and 1.2 packages
 //reason due to the changes caused by the shade plugin it the ClassLoader
