@@ -85,19 +85,22 @@ public abstract class BaseEngine
            Collection<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourcePath), "*."+ getFileEnding());
            
             for(File sourceFile: sourceFiles) {
-               ClassResource uncompiledClass = new ClassResource();
-               uncompiledClass.setFile(sourceFile);
-               uncompiledClass.setLastLoaded(-1);
-               uncompiledClass.setScriptingEngine(getEngineType());
-               if(!_watchedResources.containsKey(uncompiledClass.getIdentifier())) {
-                    _watchedResources.put(uncompiledClass.getIdentifier(), uncompiledClass);
+               ClassResource classToProcess = new ClassResource();
+                classToProcess.setFile(sourceFile);
+                classToProcess.setLastLoaded(-1);
+                classToProcess.setScriptingEngine(getEngineType());
+                if(!_watchedResources.containsKey(classToProcess.getIdentifier())) {
+                    _watchedResources.put(classToProcess.getIdentifier(), classToProcess);
                } else {
-                   processedClasses.remove(uncompiledClass.getIdentifier());
+                   processedClasses.remove(classToProcess.getIdentifier());
                    
-                   uncompiledClass = _watchedResources.get(uncompiledClass.getIdentifier());
+                   classToProcess = _watchedResources.get(classToProcess.getIdentifier());
                }
-               if(uncompiledClass.needsRecompile()) {
-                   uncompiledClass.setTainted(true);
+               if(classToProcess.needsRecompile()) {
+                   //TODO add entry for logging component here
+                   log.info("[EXT-SCRIPTING] tainting "+classToProcess.getIdentifier());
+                   classToProcess.setTainted(true);
+                   classToProcess.setChangedForCompile(true);
                }
            }
         }
@@ -178,14 +181,17 @@ public abstract class BaseEngine
         Set<String> _processedClasses = new HashSet<String>();
         for (Map.Entry<String, ClassResource> entry : _watchedResources.entrySet())
         {
-
+            //TODO add entry for logging component here
             ClassResource resource = entry.getValue();
-            if (!resource.needsRecompile()) continue;
-
+            if (!resource.isChangedForCompile()) continue;
+            resource.setChangedForCompile(false);
+            log.info("[EXT-SCRIPTING] tainting dependency "+resource.getIdentifier());
+            resource.setTainted(true);
             //classname
             String identifier = resource.getIdentifier();
             if (_processedClasses.contains(identifier)) continue;
             markDependencies(_processedClasses, identifier);
+
         }
 
     }
@@ -200,7 +206,14 @@ public abstract class BaseEngine
             if (_processedClasses.contains(referringClass)) continue;
             ClassResource toTaint = _watchedResources.get(referringClass);
             if(toTaint == null) continue;
+            //TODO add entry for logging component here
+            if(toTaint.isTainted()) {
+                log.info("[EXT-SCRIPTING] dependency already tainted:"+toTaint.getIdentifier());
+                _processedClasses.add(toTaint.getIdentifier());
+                continue;
+            }
             toTaint.setTainted(true);
+            toTaint.setChangedForCompile(false);
             log.info("[EXT-SCRIPTING] tainting dependency "+toTaint.getIdentifier());
             _processedClasses.add(toTaint.getIdentifier());
             markDependencies(_processedClasses, toTaint.getIdentifier());

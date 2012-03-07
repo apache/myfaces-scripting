@@ -89,6 +89,16 @@ public class WeavingContext
         this.configuration = configuration;
     }
 
+    public boolean needsRecompile() {
+        for (ScriptingEngine engine : getEngines())
+        {
+            //log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files");
+            if(engine.needsRecompile()) return true;
+            //log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files done");
+        }
+        return false;
+    }
+    
     public void initialFullScan()
     {
         for (ScriptingEngine engine : getEngines())
