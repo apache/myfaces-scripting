@@ -20,7 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.co
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureReader;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
 
 import java.util.logging.Level;

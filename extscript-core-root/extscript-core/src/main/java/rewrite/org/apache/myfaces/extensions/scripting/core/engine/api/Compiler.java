@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.api;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.api;
 
 import java.io.File;
 
@@ -37,7 +37,7 @@ public interface Compiler {
      * @param targetPath  the path to the target directory
      * @param classLoader the class loader for dependent classes
      * @return the compilation result, i.e. the compiler output, a list of errors and a list of warnings
-     * @throws rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationException
+     * @throws CompilationException
      *          if a severe error occurred while trying to compile a file
      */
     public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader)

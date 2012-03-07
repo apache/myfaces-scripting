@@ -22,9 +22,9 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationException;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.compiler.JSR199Compiler;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
 
 import javax.servlet.ServletContext;
 import java.io.File;

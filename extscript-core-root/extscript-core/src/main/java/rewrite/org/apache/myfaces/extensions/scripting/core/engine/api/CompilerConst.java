@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.api;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.api;
 
 /**
  * Various constants shared over the various compiler implementations

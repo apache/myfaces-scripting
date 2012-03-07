@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.compiler;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
@@ -30,8 +30,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassLoa
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationResult;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.Compiler;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -43,7 +42,8 @@ import java.util.logging.Logger;
 /**
  * <p>A compiler implementation that can be used to compile Groovy source files.</p>
  */
-public class GroovyCompiler implements Compiler {
+public class GroovyCompiler implements rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.Compiler
+{
 
     /**
      * The logger instance for this class.

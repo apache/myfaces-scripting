@@ -20,7 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.re
 
 import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.ClassFilter;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.ClassFilter;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter.ScanIdentifierFilter;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter.StandardNamespaceFilter;

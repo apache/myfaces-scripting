@@ -19,8 +19,8 @@
 package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan;
 
 import org.objectweb.asm.ClassReader;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyScanner;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassScanUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassScanVisitor;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ExtendedClassReader;

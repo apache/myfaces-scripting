@@ -16,22 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api;
 
 /**
- * Standard dependency scanner interface
- *
- * @author Werner Punz (latest modification by $Author$)
- * @version $Revision$ $Date$
+ * Generic filter pattern interface
+ * used by our dependency registry to pre-filter the classes
  */
-public interface DependencyScanner {
+public interface ClassFilter {
+
     /**
-     * main method every dependency scanner has to implement
+     * checks whether the class is allowed to be processed by the filter or not
      *
-     * @param loader     the classloader which is able to serve the requested class resources
-     * @param engineType integer value of the scanning triggering engine type
-     * @param className  of the class to be scanned
-     * @param registry   the registry which should receive the results of the scan
+     * @param engineType integer value of the engine type of the class
+     * @param clazz      the class itself to be processed by the filter
+     * @return true if it is allowed to be processed false otherwise
      */
-    public void fetchDependencies(ClassLoader loader, Integer engineType, String className, DependencyRegistry registry);
+    public boolean isAllowed(Integer engineType, String clazz);
 }

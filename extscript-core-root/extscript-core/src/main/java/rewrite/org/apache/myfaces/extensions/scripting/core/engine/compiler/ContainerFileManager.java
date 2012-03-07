@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.compiler;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 
 import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;

@@ -18,7 +18,7 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter;
 
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.ClassFilter;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.ClassFilter;
 
 import java.util.Arrays;
 

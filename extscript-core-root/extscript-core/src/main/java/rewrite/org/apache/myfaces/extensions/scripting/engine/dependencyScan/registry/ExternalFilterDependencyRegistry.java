@@ -18,8 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry;
 
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.ClassFilter;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.ClassFilter;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 
 /**
  * General contractual interface for a dependency registry with external filters

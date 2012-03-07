@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.api;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.api;
 
 /**
  * <p>This exception will usually be thrown if an error occurred while compiling a

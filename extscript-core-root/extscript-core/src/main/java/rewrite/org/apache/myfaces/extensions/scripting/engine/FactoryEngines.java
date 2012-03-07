@@ -22,7 +22,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUti
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.ScriptingEngine;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 
 import java.io.File;
 import java.io.IOException;

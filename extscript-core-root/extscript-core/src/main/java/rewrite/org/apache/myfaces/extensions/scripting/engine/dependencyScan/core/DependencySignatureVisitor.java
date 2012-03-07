@@ -21,7 +21,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.co
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.api.DependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

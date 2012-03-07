@@ -17,14 +17,13 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.engine.compiler;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationException;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilationResult;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.api.Compiler;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
@@ -38,7 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
-import static rewrite.org.apache.myfaces.extensions.scripting.engine.api.CompilerConst.*;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilerConst.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -47,7 +46,7 @@ import static rewrite.org.apache.myfaces.extensions.scripting.engine.api.Compile
  *          a JSR 199 based compiler which implements
  *          our simplified compiler interface
  */
-public class JSR199Compiler implements Compiler
+public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.Compiler
 {
 
     javax.tools.JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
