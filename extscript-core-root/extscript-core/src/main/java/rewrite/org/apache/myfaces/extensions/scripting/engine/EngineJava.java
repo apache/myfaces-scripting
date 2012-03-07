@@ -93,6 +93,10 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
     {
         return ENGINE_TYPE_JSF_JAVA;
     }
+    
+    public String getEngineTypeAsStr() {
+        return "Java";
+    }
 
     @Override
     public String getFileEnding()

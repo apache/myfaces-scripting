@@ -25,6 +25,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.cor
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter.ScanIdentifierFilter;
 import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter.StandardNamespaceFilter;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,8 +59,10 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry
      * Clears the entire filter map
      */
     public void clearFilters() {
-        _filters.clear();
-        _filters.add(new ScanIdentifierFilter(_engineType, ScriptingConst.ENGINE_TYPE_JSF_ALL, ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE));
+        _filters = new LinkedList<ClassFilter>();
+
+        _filters.add(new ScanIdentifierFilter(_engineType, ScriptingConst.ENGINE_TYPE_JSF_ALL,
+                ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE));
         _filters.add(new StandardNamespaceFilter());
     }
 
@@ -80,7 +83,9 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry
      * @return true if a filter triggers false if not
      */
     public boolean isAllowed(Integer engineType, String className) {
-        for (ClassFilter filter : _filters) {
+        Iterator<ClassFilter> it = _filters.iterator();
+        while(it.hasNext()) {
+            ClassFilter filter = it.next();
             if (!filter.isAllowed(_engineType, className)) {
                 return false;
             }

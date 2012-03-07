@@ -57,7 +57,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             _log.info("[EXT-SCRIPTING] Loading configuration");
             context.getConfiguration().init(servletContext);
             _log.info("[EXT-SCRIPTING] Loading Scripting end");
-
+            _log.info("[EXT-SCRIPTING] initializing startup daemon");
+            ResourceMonitor.startup(servletContext);
+            _log.info("[EXT-SCRIPTING] initializing startup daemon end");
             _log.info("[EXT-SCRIPTING] Initial Scan and compile");
             ResourceMonitor.getInstance().performMonitoringTask();
             _log.info("[EXT-SCRIPTING] Starting Change Monitor");
@@ -65,7 +67,6 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             _log.info("[EXT-SCRIPTING] Startup done");
             _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
             initChainLoader(servletContext);
-
         }
         catch (IOException e)
         {

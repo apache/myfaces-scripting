@@ -93,9 +93,9 @@ public class WeavingContext
     {
         for (ScriptingEngine engine : getEngines())
         {
-            log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files");
+            //log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files");
             engine.scanForAddedDeleted();
-            log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files done");
+            //log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files done");
         }
     }
 
@@ -106,9 +106,9 @@ public class WeavingContext
         {
             if (!engine.needsRecompile()) continue;
             compile = true;
-            log.info("[EXT-SCRIPTING] compiling " + engine.getEngineType() + " files");
+            log.info("[EXT-SCRIPTING] compiling " + engine.getEngineTypeAsStr() + " files");
             engine.compile();
-            log.info("[EXT-SCRIPTING] compiling " + engine.getEngineType() + " files done");
+            log.info("[EXT-SCRIPTING] compiling " + engine.getEngineTypeAsStr() + " files done");
         }
         return compile;
     }
@@ -118,9 +118,9 @@ public class WeavingContext
         for (ScriptingEngine engine : getEngines())
         {
             if(engine.isTainted())  {
-                log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " dependencies");
+                log.info("[EXT-SCRIPTING] scanning " + engine.getEngineTypeAsStr() + " dependencies");
                 engine.scanDependencies();
-                log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " dependencies end");
+                log.info("[EXT-SCRIPTING] scanning " + engine.getEngineTypeAsStr() + " dependencies end");
             }
         }
     }

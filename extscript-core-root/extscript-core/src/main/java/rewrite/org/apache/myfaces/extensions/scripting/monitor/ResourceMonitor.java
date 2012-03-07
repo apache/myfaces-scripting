@@ -74,13 +74,13 @@ public class ResourceMonitor extends Thread {
 
     public static synchronized void startup(ServletContext externalContext) {
 
-        if (_externalContext == null) return;
+        if (_externalContext != null) return;
         _externalContext = new WeakReference<ServletContext>(externalContext);
         if(getInstance() != null) return;
 
         //we currently keep it as singleton but in the long run we will move it into the context
         //like everything else singleton-wise
-        if (_instance == null) {
+
             _instance = new ResourceMonitor();
 
             /**
@@ -89,9 +89,9 @@ public class ResourceMonitor extends Thread {
              */
             _instance.setDaemon(true);
             _instance.setRunning(true);
-            _instance.start();
+            //_instance.start();
             _externalContext.get().setAttribute(CONTEXT_KEY, _instance);
-        }
+
 
     }
 

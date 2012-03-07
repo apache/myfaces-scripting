@@ -103,4 +103,11 @@ public interface ScriptingEngine
      * as tainted.
      */
     public void markTaintedDependencies();
+
+    /**
+     *
+     * @return a string representation
+     * of the corresponding engine
+     */
+    public String getEngineTypeAsStr();
 }

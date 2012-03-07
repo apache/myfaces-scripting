@@ -53,6 +53,10 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
         return ENGINE_TYPE_JSF_GROOVY;
     }
 
+    public String getEngineTypeAsStr() {
+        return "Groovy";
+    }
+
     @Override
     public String getFileEnding()
     {
