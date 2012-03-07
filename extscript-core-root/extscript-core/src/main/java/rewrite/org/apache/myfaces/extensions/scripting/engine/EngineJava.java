@@ -80,10 +80,10 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
 
     public void scanDependencies()
     {
-        log.info("[EXT-SCRIPTING] starting dependency scan");
+        log.info("[EXT-SCRIPTING] starting dependency scan "+getEngineTypeAsStr());
         JavaDependencyScanner scanner = new JavaDependencyScanner();
         scanner.scanPaths();
-        log.info("[EXT-SCRIPTING] ending dependency scan");
+        log.info("[EXT-SCRIPTING] ending dependency scan" + getEngineTypeAsStr());
     }
 
     //-------------------------------------------------------------------------------------

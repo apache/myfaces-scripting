@@ -50,6 +50,7 @@ public class ClassResource extends WatchedResource
     volatile File _sourceFile;
 
     volatile int _scriptingEngine = ScriptingConst.ENGINE_TYPE_JSF_NO_ENGINE;
+
     volatile long _lastLoaded = -1L;
 
     //todo clean up the sourcepath and filename

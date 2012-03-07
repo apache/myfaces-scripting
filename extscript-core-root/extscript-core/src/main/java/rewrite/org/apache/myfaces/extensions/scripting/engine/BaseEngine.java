@@ -180,7 +180,7 @@ public abstract class BaseEngine
         {
 
             ClassResource resource = entry.getValue();
-            if (!resource.needsRecompile() && !resource.isTainted()) continue;
+            if (!resource.needsRecompile()) continue;
 
             //classname
             String identifier = resource.getIdentifier();
