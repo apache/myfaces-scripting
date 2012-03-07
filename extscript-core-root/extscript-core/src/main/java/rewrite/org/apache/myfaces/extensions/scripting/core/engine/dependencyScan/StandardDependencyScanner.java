@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan;
 
 import org.objectweb.asm.ClassReader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassScanUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassScanVisitor;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ExtendedClassReader;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassScanUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassScanVisitor;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ExtendedClassReader;
 
 import java.io.IOException;
 import java.util.logging.Level;

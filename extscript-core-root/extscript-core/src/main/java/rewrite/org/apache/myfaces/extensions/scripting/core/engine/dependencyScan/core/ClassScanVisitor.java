@@ -16,12 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureReader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

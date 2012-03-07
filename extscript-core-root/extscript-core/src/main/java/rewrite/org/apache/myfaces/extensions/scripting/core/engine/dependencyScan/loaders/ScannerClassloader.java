@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.loaders;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders;
 
 
 

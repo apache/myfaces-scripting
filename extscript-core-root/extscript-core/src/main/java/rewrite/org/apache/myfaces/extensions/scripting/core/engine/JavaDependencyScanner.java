@@ -17,18 +17,18 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.engine;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
 import org.apache.myfaces.extensions.scripting.api.ClassScanListener;
 import org.apache.myfaces.extensions.scripting.api.ClassScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.StandardDependencyScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.StandardDependencyScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter.WhitelistFilter;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.loaders.ScannerClassloader;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.filter.WhitelistFilter;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders.ScannerClassloader;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;

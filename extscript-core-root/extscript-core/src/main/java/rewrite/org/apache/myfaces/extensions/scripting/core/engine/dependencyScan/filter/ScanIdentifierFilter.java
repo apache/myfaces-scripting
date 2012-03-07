@@ -16,25 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.filter;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.filter;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.ClassFilter;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassScanUtils;
+
+import java.util.Arrays;
 
 /**
- * Filter facade for our standard namespace check
+ * a filter which works on the scan identifiers
+ * only classes which trigger on the same identifier
+ * are allowed to be passed through
  */
-public class StandardNamespaceFilter implements ClassFilter
+public class ScanIdentifierFilter implements ClassFilter
 {
 
-    /**
-     * is allowed implementation for our standard namespace filter
-     *
-     * @param engineType integer value of the engine type of the class
-     * @param clazz      the class itself to be processed by the filter
-     * @return true if it is not in the standard namespaces false otherwise
-     */
-    public final boolean isAllowed(Integer engineType, String clazz) {
-        return !ClassScanUtils.isStandardNamespace(clazz);
+    private final int [] _engineType;
+
+    public ScanIdentifierFilter(int ... engineType) {
+        _engineType = Arrays.copyOf(engineType, engineType.length);
+    }
+
+    public boolean isAllowed(Integer identifier, String clazz) {
+        int id = identifier;
+        for(int engineType: _engineType) {
+            boolean allowed = engineType == id;
+            if(allowed) return true;
+        }
+        return false;
     }
 }

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 

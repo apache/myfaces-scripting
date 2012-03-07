@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;

@@ -16,14 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.engine;
+package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.core.ClassDependencies;
-import rewrite.org.apache.myfaces.extensions.scripting.engine.dependencyScan.registry.DependencyRegistryImpl;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.DependencyRegistryImpl;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.DependencyRegistryImpl;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import javax.servlet.ServletContext;
