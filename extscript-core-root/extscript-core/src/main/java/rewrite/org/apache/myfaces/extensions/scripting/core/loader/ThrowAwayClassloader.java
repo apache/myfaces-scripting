@@ -19,6 +19,7 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.loader;
 
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
@@ -131,8 +132,10 @@ public class ThrowAwayClassloader extends ClassLoader
 
     private File resolveClassFile(String name)
     {
-        return new File(WeavingContext.getInstance().getConfiguration().getCompileTarget().getAbsolutePath() + File
-                .separator + name);
+        return ClassUtils.classNameToFile(WeavingContext.getInstance().getConfiguration().getCompileTarget()
+                .getAbsolutePath
+                (), name);
+
     }
 
 }

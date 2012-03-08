@@ -22,8 +22,8 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters;
 import org.apache.myfaces.shared.util.ClassLoaderExtension;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
+import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -34,11 +34,11 @@ import java.security.PrivilegedExceptionAction;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * The chainloader docks onto the forName handler
- * in the myfaces classutils which load the
- * artifacting classes, we dock onto this extension point
- * neutrally by indirection over the MyFacesSPI
+ *          <p/>
+ *          The chainloader docks onto the forName handler
+ *          in the myfaces classutils which load the
+ *          artifacting classes, we dock onto this extension point
+ *          neutrally by indirection over the MyFacesSPI
  */
 
 public class CustomChainLoader extends ClassLoaderExtension
@@ -96,7 +96,14 @@ public class CustomChainLoader extends ClassLoaderExtension
         } else if (name.startsWith("org.apache") && name.startsWith("org.apache.myfaces.config"))
         {
             return null;
+        } else if (name.startsWith("org.apache") && name.startsWith("org.apache.myfaces.spi"))
+        {
+            return null;
+        } else if (name.startsWith("org.apache") && name.startsWith("org.apache.myfaces.application"))
+        {
+            return null;
         }
+        //
         try
         {
             return loadClass(name);
@@ -113,7 +120,8 @@ public class CustomChainLoader extends ClassLoaderExtension
         File target = ClassUtils.classNameToFile(targetDirectory.getAbsolutePath(), name);
         if (!target.exists()) return null;
         //otherwise check if tainted and if not simply return the class stored
-        if(name.contains("TestNavigationHandler")) {
+        if (name.contains("TestNavigationHandler"))
+        {
             System.out.println("debugpoint found");
         }
         ClassResource resource = (ClassResource) WeavingContext.getInstance().getResource(name);
