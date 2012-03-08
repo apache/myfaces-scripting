@@ -63,25 +63,15 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             ResourceMonitor.getInstance().start();
             _log.info("[EXT-SCRIPTING] Startup done");
             _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
-            initChainLoader(servletContext);
+            MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
+            _log.info("[EXT-SCRIPTING] registering the JSF Implementation");
+            WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
         }
         catch (IOException e)
         {
             _log.severe("[EXT-SCRIPTING] Engine startup failed terminating ext-scripting");
         }
 
-    }
-
-    /**
-     * initializes our custom chain loader which gets plugged into
-     * the MyFaces loading part for classes!
-     *
-     * @param servletContext the servlet context to be passed down
-     * @return the custom chain loader for loading our classes over our classloaders
-     */
-    private void initChainLoader(ServletContext servletContext)
-    {
-        MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
     }
 
     public void postInit(ServletContextEvent evt)
