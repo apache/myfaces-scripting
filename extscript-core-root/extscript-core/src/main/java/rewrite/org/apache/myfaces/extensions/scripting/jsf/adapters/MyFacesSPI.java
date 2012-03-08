@@ -30,17 +30,23 @@ import javax.servlet.ServletContext;
  *
  * SPI for various myfaces related tasks
  */
-public class MyFacesSPI
+public class MyFacesSPI implements ImplementationSPI
 {
-
+    CustomChainLoader _loader = null;
+    
     public void registerClassloadingExtension(ServletContext context) {
-        Object loader = new CustomChainLoader(context); //ReflectUtil.instantiate("extras.org.apache.myfaces.extensions
+        CustomChainLoader loader = new CustomChainLoader(context); //ReflectUtil.instantiate("extras.org.apache.myfaces.extensions
         // .scripting.servlet" +
                 //".CustomChainLoader",
                 //new Cast(ServletContext.class, context));
         ClassUtils.addClassLoadingExtension(loader, true);
+        _loader = loader;
     }
 
+    public Class forName(String clazz) {
+        return _loader.forName(clazz);
+    }
+    
 
     private static MyFacesSPI ourInstance = new MyFacesSPI();
 
