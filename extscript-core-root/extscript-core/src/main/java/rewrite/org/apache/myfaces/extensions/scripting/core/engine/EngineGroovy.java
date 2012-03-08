@@ -81,6 +81,8 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
     public void scanDependencies()
     {
         log.info("[EXT-SCRIPTING] starting dependency scan");
+        GroovyDependencyScanner scanner = new GroovyDependencyScanner();
+        scanner.scanPaths();
         log.info("[EXT-SCRIPTING] ending dependency scan");
     }
 
