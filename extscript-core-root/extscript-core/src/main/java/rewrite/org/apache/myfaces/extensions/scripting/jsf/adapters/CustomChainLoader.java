@@ -111,7 +111,7 @@ public class CustomChainLoader extends ClassLoaderExtension
     {
         File targetDirectory = WeavingContext.getInstance().getConfiguration().getCompileTarget();
         File target = ClassUtils.classNameToFile(targetDirectory.getAbsolutePath(), name);
-        if (!target.exists()) ClassUtils.getContextClassLoader().loadClass(name);
+        if (!target.exists()) return null;
         //otherwise check if tainted and if not simply return the class stored
         if(name.contains("TestNavigationHandler")) {
             System.out.println("debugpoint found");
