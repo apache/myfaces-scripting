@@ -137,21 +137,7 @@ public abstract class BaseEngine
         return false;
     }
 
-    protected void initPaths(ServletContext context, String initParam, String defaultValue)
-    {
-        String pathSeparatedList = context.getInitParameter(initParam);
-        pathSeparatedList = (pathSeparatedList != null) ? pathSeparatedList : defaultValue;
-        if (pathSeparatedList.equals(JAVA_SOURCE_ROOT))
-        {
-            URL resource = ClassUtils.getContextClassLoader().getResource("./");
-            pathSeparatedList = FilenameUtils.normalize(resource.getPath() + "../.." + defaultValue);
-        }
-        String[] paths = pathSeparatedList.split(",");
-        for (String path : paths)
-        {
-            getSourcePaths().add(path);
-        }
-    }
+
 
     public DependencyRegistry getDependencyRegistry()
     {
@@ -224,4 +210,20 @@ public abstract class BaseEngine
         }
 
     }
+
+    protected void initPaths(ServletContext context, String initParam, String defaultValue)
+        {
+            String pathSeparatedList = context.getInitParameter(initParam);
+            pathSeparatedList = (pathSeparatedList != null) ? pathSeparatedList : defaultValue;
+            if (pathSeparatedList.equals(defaultValue))
+            {
+                URL resource = ClassUtils.getContextClassLoader().getResource("./");
+                pathSeparatedList = FilenameUtils.normalize(resource.getPath() + "../.." + defaultValue);
+            }
+            String[] paths = pathSeparatedList.split(",");
+            for (String path : paths)
+            {
+                getSourcePaths().add(path);
+            }
+        }
 }
