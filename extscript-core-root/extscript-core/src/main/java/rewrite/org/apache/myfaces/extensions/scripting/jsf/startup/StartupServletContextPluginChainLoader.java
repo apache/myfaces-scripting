@@ -20,11 +20,10 @@
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.startup;
 
 import org.apache.myfaces.webapp.StartupListener;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.CustomChainLoader;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -83,11 +82,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener
      */
     private void initChainLoader(ServletContext servletContext)
     {
-        Object loader = ReflectUtil.instantiate("org.apache.myfaces.extensions.scripting.servlet" +
-                ".CustomChainLoader",
-                new Cast(ServletContext.class, servletContext));
-        ClassUtils.addClassLoadingExtension(loader, true);
-
+        MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
     }
 
     public void postInit(ServletContextEvent evt)

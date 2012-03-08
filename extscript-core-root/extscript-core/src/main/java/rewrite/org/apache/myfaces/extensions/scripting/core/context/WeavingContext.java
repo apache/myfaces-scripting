@@ -23,6 +23,7 @@ import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDep
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
+import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -143,6 +144,15 @@ public class WeavingContext
         }
     }
 
+    public WatchedResource getResource(String className) {
+        WatchedResource ret = null;
+        for(ScriptingEngine engine: getEngines()) {
+            ret = engine.getWatchedResources().get(className);
+            if(ret != null) return ret;
+        }
+        return ret;
+    }
+    
     //----------------------------------------------------------------------
     public ClassDependencies getDependencyMap()
     {

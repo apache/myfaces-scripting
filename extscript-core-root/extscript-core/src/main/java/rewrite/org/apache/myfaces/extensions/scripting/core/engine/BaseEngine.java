@@ -20,6 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
+import org.apache.myfaces.extensions.scripting.monitor.WatchedResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
@@ -172,6 +173,8 @@ public abstract class BaseEngine
         _dependencyMap = dependencyMap;
     }
 
+
+    
     /**
      * marks all the dependencies of the tainted objects
      * also as tainted to allow proper refreshing.

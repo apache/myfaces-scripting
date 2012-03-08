@@ -39,14 +39,14 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
-            <version>${myfaces12.version}</version>
+            <version>${myfaces2.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
-            <version>${myfaces12.version}</version>
+            <version>${myfaces2.version}</version>
             <scope>provided</scope>
         </dependency>
 

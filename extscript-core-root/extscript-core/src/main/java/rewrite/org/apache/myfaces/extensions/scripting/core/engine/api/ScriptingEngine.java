@@ -21,6 +21,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.core.engine.api;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
+import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 
 import javax.servlet.ServletContext;
 import java.util.Collection;
@@ -110,4 +111,6 @@ public interface ScriptingEngine
      * of the corresponding engine
      */
     public String getEngineTypeAsStr();
+
+
 }
