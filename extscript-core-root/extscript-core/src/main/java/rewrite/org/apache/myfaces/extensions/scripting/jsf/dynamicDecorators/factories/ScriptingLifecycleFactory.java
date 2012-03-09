@@ -18,8 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations.LifefcycleProxy;
 
 import javax.faces.lifecycle.Lifecycle;
@@ -32,7 +32,8 @@ import java.util.Iterator;
  *
  * @author Werner Punz
  */
-public class ScriptingLifecycleFactory extends LifecycleFactory implements Decorated {
+public class ScriptingLifecycleFactory extends LifecycleFactory implements Decorated
+{
 
     LifecycleFactory _delegate;
 
@@ -42,14 +43,14 @@ public class ScriptingLifecycleFactory extends LifecycleFactory implements Decor
     }
 
     public void addLifecycle(String s, Lifecycle lifecycle) {
-        if (WeavingContext.isScriptingEnabled()  && !(lifecycle instanceof LifefcycleProxy))
+        if (WeavingContext.getInstance().isScriptingEnabled()  && !(lifecycle instanceof LifefcycleProxy))
             lifecycle = new LifefcycleProxy(lifecycle);
         _delegate.addLifecycle(s, lifecycle);
     }
 
     public Lifecycle getLifecycle(String s) {
         Lifecycle retVal = _delegate.getLifecycle(s);
-        if (WeavingContext.isScriptingEnabled()  && !(retVal instanceof LifefcycleProxy))
+        if (WeavingContext.getInstance().isScriptingEnabled()  && !(retVal instanceof LifefcycleProxy))
             retVal = new LifefcycleProxy(retVal);
 
         return retVal;
