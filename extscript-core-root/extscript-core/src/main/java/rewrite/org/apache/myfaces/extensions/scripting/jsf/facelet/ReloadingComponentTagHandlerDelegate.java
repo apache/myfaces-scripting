@@ -19,10 +19,14 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
-import org.apache.myfaces.extensions.scripting.facelet.support.SwitchingMetarulesetImpl;
-import org.apache.myfaces.view.facelets.tag.jsf.*;
+import org.apache.myfaces.view.facelets.tag.jsf.ActionSourceRule;
+import org.apache.myfaces.view.facelets.tag.jsf.ComponentTagHandlerDelegate;
+import org.apache.myfaces.view.facelets.tag.jsf.EditableValueHolderRule;
+import org.apache.myfaces.view.facelets.tag.jsf.ValueHolderRule;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support.ComponentRule;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support.SwitchingMetarulesetImpl;
 
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
@@ -56,8 +60,9 @@ public class ReloadingComponentTagHandlerDelegate extends TagHandlerDelegate {
 
     @Override
     public void apply(FaceletContext ctx, UIComponent comp) throws IOException {
-        if (WeavingContext.isDynamic(_owner.getClass())) {
-            ComponentHandler newOwner = (ComponentHandler) WeavingContext.getWeaver().reloadScriptingInstance(_owner, ScriptingConst.ARTIFACT_TYPE_COMPONENT_HANDLER);
+        if (WeavingContext.getInstance().isDynamic(_owner.getClass())) {
+            ComponentHandler newOwner = (ComponentHandler) WeavingContext.getInstance().reload(_owner,
+                    ScriptingConst.ARTIFACT_TYPE_COMPONENT_HANDLER);
             if (!newOwner.getClass().equals(_owner.getClass())) {
                 applyOwner(newOwner);
             }

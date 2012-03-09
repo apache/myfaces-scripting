@@ -18,8 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support;
 
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
 import org.apache.myfaces.view.facelets.tag.BeanPropertyTagRule;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.Metadata;
@@ -42,7 +42,7 @@ public class SwitchingBeanPropertyTagRule extends MetaRule {
 
     @Override
     public Metadata applyRule(String name, TagAttribute attribute, MetadataTarget meta) {
-        if (WeavingContext.isDynamic(meta.getTargetClass())) {
+        if (WeavingContext.getInstance().isDynamic(meta.getTargetClass())) {
             return _invokeDynamic.applyRule(name, attribute, meta);
         } else {
             return _invokeStatic.applyRule(name, attribute, meta);

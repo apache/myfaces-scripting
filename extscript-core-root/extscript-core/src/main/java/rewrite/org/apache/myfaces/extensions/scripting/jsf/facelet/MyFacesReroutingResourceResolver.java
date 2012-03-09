@@ -18,8 +18,9 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+
 import org.apache.myfaces.view.facelets.impl.DefaultResourceResolver;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -32,7 +33,8 @@ import java.util.logging.Logger;
  * decorated Facelet resource resolver to reroute
  * the resource requests to our source path if possible
  */
-public class ReroutingResourceResolver extends DefaultResourceResolver {
+public class MyFacesReroutingResourceResolver extends DefaultResourceResolver
+{
 
     DefaultResourceResolver _delegate = new DefaultResourceResolver();
     volatile boolean _initiated = false;
@@ -44,7 +46,7 @@ public class ReroutingResourceResolver extends DefaultResourceResolver {
     public URL resolveUrl(String path) {
 
         if (!_initiated) {
-            _resourceDirs = WeavingContext.getConfiguration().getResourceDirs();
+            _resourceDirs = WeavingContext.getInstance().getConfiguration().getResourceDirs();
             _initiated = true;
         }
 

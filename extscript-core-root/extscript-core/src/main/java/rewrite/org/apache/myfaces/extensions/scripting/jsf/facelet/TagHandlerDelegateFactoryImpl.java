@@ -19,10 +19,11 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+
 import org.apache.myfaces.view.facelets.tag.jsf.BehaviorTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.ConverterTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.faces.view.facelets.*;
 
@@ -35,7 +36,7 @@ public class TagHandlerDelegateFactoryImpl extends TagHandlerDelegateFactory {
     @Override
     public TagHandlerDelegate createBehaviorHandlerDelegate(
             BehaviorHandler owner) {
-        if (WeavingContext.isDynamic(owner.getClass())) {
+        if (WeavingContext.getInstance().isDynamic(owner.getClass())) {
             return new ReloadingBehaviorTagHandlerDelegate(owner);
         } else {
             return new BehaviorTagHandlerDelegate(owner);
@@ -51,7 +52,7 @@ public class TagHandlerDelegateFactoryImpl extends TagHandlerDelegateFactory {
     @Override
     public TagHandlerDelegate createConverterHandlerDelegate(
             ConverterHandler owner) {
-        if (WeavingContext.isDynamic(owner.getClass())) {
+        if (WeavingContext.getInstance().isDynamic(owner.getClass())) {
             return new ReloadingConverterTagHandlerDelegate(owner);
         } else {
             return new ConverterTagHandlerDelegate(owner);
@@ -61,7 +62,7 @@ public class TagHandlerDelegateFactoryImpl extends TagHandlerDelegateFactory {
     @Override
     public TagHandlerDelegate createValidatorHandlerDelegate(
             ValidatorHandler owner) {
-        if (WeavingContext.isDynamic(owner.getClass())) {
+        if (WeavingContext.getInstance().isDynamic(owner.getClass())) {
             return new ReloadingValidatorTagHandlerDelegate(owner);
         } else {
             return new ValidatorTagHandlerDelegate(owner);

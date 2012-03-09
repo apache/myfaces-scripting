@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support;
 
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.Metadata;

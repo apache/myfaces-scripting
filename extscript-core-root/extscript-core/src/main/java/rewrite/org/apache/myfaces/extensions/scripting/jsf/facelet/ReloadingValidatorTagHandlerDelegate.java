@@ -19,9 +19,10 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+
 import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.FaceletContext;
@@ -51,8 +52,9 @@ public class ReloadingValidatorTagHandlerDelegate extends TagHandlerDelegate {
 
     @Override
     public void apply(FaceletContext ctx, UIComponent comp) throws IOException {
-        if (WeavingContext.isDynamic(_owner.getClass())) {
-            ValidatorHandler newOwner = (ValidatorHandler) WeavingContext.getWeaver().reloadScriptingInstance(_owner, ScriptingConst.ARTIFACT_TYPE_VALIDATOR_HANDLER);
+        if (WeavingContext.getInstance().isDynamic(_owner.getClass())) {
+            ValidatorHandler newOwner = (ValidatorHandler) WeavingContext.getInstance().reload(_owner,
+                    ScriptingConst.ARTIFACT_TYPE_VALIDATOR_HANDLER);
             if (!newOwner.getClass().equals(_owner.getClass())) {
                 applyOwner(newOwner);
             }

@@ -19,10 +19,11 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
-import org.apache.myfaces.extensions.scripting.core.util.Cast;
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.ValidatorConfig;
@@ -33,16 +34,17 @@ import javax.faces.view.facelets.ValidatorHandler;
  * @version $Revision$ $Date$
  */
 
-public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy {
+public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
+{
 
-    public ValidatorHandlerReloadingStrategy(ScriptingWeaver weaver) {
-        super(weaver);
+    public ValidatorHandlerReloadingStrategy() {
+        super();
     }
 
     @Override
     public Object reload(Object scriptingInstance, int artifactType) {
         if (!(scriptingInstance instanceof ComponentHandler)) return scriptingInstance;
-        Class aclass = _weaver.reloadScriptingClass(scriptingInstance.getClass());
+        Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
         if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
             //class of this object has not changed although
             // reload is enabled we can skip the rest now
