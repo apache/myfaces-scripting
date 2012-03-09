@@ -77,7 +77,7 @@ public class ELResolverProxy extends ELResolver implements Decorated
     public Class<?> getType(ELContext elContext, Object o, Object o1) throws NullPointerException, ELException {
         Class<?> retVal = _delegate.getType(elContext, o, o1);
         if (retVal != null && WeavingContext.getInstance().isDynamic(retVal)) {
-            return WeavingContext.getInstance().reloadClass(retVal);
+            return WeavingContext.getInstance().reload(retVal);
         }
         return retVal;
     }

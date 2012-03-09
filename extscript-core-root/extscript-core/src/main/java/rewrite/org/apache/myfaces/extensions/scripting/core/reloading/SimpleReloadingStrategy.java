@@ -61,7 +61,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
     public Object reload(Object scriptingInstance, int artifactType) {
 
         //reload the class to get new static content if needed
-        Class aclass = WeavingContext.getInstance().reloadClass(scriptingInstance.getClass());
+        Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
         if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
             //class of this object has not changed although
             // reload is enabled we can skip the rest now

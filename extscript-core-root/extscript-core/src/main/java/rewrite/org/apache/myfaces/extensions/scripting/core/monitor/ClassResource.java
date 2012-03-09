@@ -140,6 +140,7 @@ public class ClassResource extends WatchedResource
     {
         String targetDir = WeavingContext.getInstance().getConfiguration().getCompileTarget().getAbsolutePath();
         String className = ClassUtils.relativeFileToClassName(getSourceFile());
+
         return className;
     }
 

@@ -85,7 +85,7 @@ public class MethodLevelReloadingHandler extends ReloadingInvocationHandler impl
 
         if (_delegate == null) {
             //stateless or lost state due to a lifecycle iteration we trigger anew
-            _delegate = (WeavingContext.getInstance().reloadClass(_loadedClass)).newInstance();
+            _delegate = (WeavingContext.getInstance().reload(_loadedClass)).newInstance();
         } else {
             //if we are stateful only a tainted artifact is reloaded
             _delegate = WeavingContext.getInstance().reload(_delegate, _artifactType);

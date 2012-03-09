@@ -201,7 +201,7 @@ public class WeavingContext
     /**
      * reload the class dynamically
      */
-    public Class reloadClass(Class clazz)
+    public Class reload(Class clazz)
     {
         if (!isDynamic(clazz)) return clazz;
         ClassResource resource = (ClassResource) getResource(clazz.getName());

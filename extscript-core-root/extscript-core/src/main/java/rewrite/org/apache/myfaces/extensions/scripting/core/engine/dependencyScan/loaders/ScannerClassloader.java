@@ -80,6 +80,7 @@ public class ScannerClassloader extends ClassLoader {
             return super.loadClass(className);
         }
 
+
         //ClassResource data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
         //if (data != null && !data.getRefreshAttribute().requiresRefresh()) {
         //    return data.getAClass();
@@ -98,10 +99,13 @@ public class ScannerClassloader extends ClassLoader {
                 iStream = new FileInputStream(target);
                 int len = iStream.read(fileContent);
                 if (_logger.isLoggable(Level.FINER)) {
-                    _logger.log(Level.FINER, "class read {0}� bytes read", String.valueOf(len));
+                    _logger.log(Level.FINER, "class read {0} bytes read", String.valueOf(len));
                 }
             }
 
+            if(className.contains("TestResourceHandler")){
+                System.out.println("debugpoint found");
+            }
             //we have to do it here because just in case
             //a dependent class is loaded as well we run into classcast exceptions
             Class retVal = super.defineClass(className, fileContent, 0, fileLength);

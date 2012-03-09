@@ -76,6 +76,9 @@ public class ClassUtils
     {
         String className = relativeFileName.replaceAll("\\\\", ".").replaceAll("\\/", ".");
         className = className.substring(0, className.lastIndexOf("."));
+        if(className.startsWith(".")) {
+            className = className.substring(1);
+        }
         return className;
     }
 
