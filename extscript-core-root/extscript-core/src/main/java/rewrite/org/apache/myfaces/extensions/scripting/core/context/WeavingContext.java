@@ -19,12 +19,10 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.context;
 
-import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
-import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
-
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
+import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.GlobalReloadingStrategy;
@@ -37,6 +35,7 @@ import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -54,9 +53,9 @@ public class WeavingContext
      */
     public AtomicBoolean recompileLock = new AtomicBoolean(false);
     protected Configuration configuration = new Configuration();
-    
+
     //ClassDependencies _dependencyMap = new ClassDependencies();
-    
+
     ImplementationSPI _implementation = null;
     GlobalReloadingStrategy _reloadingStrategy = new GlobalReloadingStrategy();
 
@@ -91,6 +90,41 @@ public class WeavingContext
             ret.put(engine.getEngineType(), engine.getWatchedResources());
         }
         return ret;
+    }
+
+    public Map<String, ClassResource> getAllWatchedResources()
+    {
+        Map<String, ClassResource> ret = new HashMap<String, ClassResource>();
+        for (ScriptingEngine engine : getEngines())
+        {
+            Map<String, ClassResource> watchedResourceMap = engine.getWatchedResources();
+            for (Map.Entry<String, ClassResource> entry : watchedResourceMap.entrySet())
+            {
+                ret.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return ret;
+    }
+
+    public ClassResource getWatchedResource(String key)
+    {
+        for (ScriptingEngine engine : getEngines())
+        {
+            if(!engine.getWatchedResources().containsKey(key)) continue;
+            return engine.getWatchedResources().get(key);
+        }
+        return null;
+    }
+    
+    public boolean isTainted(String key) {
+        ClassResource res = getWatchedResource(key);
+        if(res == null) return false;
+        return res.isTainted();
+    }
+
+    public Set<String> loadPossibleDynamicClasses()
+    {
+        return getAllWatchedResources().keySet();
     }
 
     public Configuration getConfiguration()
@@ -266,10 +300,11 @@ public class WeavingContext
         return o;
     }
 
-    public void addDependency(int engineType, String fromClass, String toClass) {
+    public void addDependency(int engineType, String fromClass, String toClass)
+    {
         //TODO implement this tomorrow
     }
-    
+
     //----------------------------------------------------------------------
     /*public ClassDependencies getDependencyMap()
     {
