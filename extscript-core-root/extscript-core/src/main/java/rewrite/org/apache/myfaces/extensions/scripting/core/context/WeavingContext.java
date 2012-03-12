@@ -210,9 +210,10 @@ public class WeavingContext
         if (resource.isTainted() || resource.getAClass() == null)
         {
             clazz = _implementation.forName(clazz.getName());
+            //TODO not needed anymore, done by the forName now
             resource.setAClass(clazz);
         }
-        return null;
+        return clazz;
     }
 
     public Object reload(Object instance, int strategyType)
