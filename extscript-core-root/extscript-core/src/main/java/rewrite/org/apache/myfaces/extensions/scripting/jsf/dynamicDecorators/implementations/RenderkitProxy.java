@@ -19,11 +19,10 @@
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations;
 
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
-import javax.faces.FacesException;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.ClientBehaviorRenderer;
@@ -33,7 +32,6 @@ import javax.faces.render.ResponseStateManager;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Weaving renderkit which

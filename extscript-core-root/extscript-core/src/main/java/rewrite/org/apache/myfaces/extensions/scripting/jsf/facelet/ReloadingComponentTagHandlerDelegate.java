@@ -23,7 +23,7 @@ import org.apache.myfaces.view.facelets.tag.jsf.ActionSourceRule;
 import org.apache.myfaces.view.facelets.tag.jsf.ComponentTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.EditableValueHolderRule;
 import org.apache.myfaces.view.facelets.tag.jsf.ValueHolderRule;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support.ComponentRule;
 import rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support.SwitchingMetarulesetImpl;

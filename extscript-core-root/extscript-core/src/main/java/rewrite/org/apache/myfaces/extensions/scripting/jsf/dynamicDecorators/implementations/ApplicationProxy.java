@@ -18,7 +18,7 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.el.*;
@@ -36,7 +36,7 @@ import javax.faces.validator.Validator;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.*;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
 /**
  * @author Werner Punz

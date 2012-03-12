@@ -19,7 +19,7 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.context;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;

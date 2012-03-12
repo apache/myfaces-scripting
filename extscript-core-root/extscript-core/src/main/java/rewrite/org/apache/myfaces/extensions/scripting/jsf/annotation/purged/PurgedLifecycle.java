@@ -18,7 +18,9 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation.purged;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -30,7 +32,8 @@ import javax.faces.lifecycle.Lifecycle;
  * @version $Revision$ $Date$
  */
 
-public class PurgedLifecycle extends Lifecycle implements Decorated {
+public class PurgedLifecycle extends Lifecycle implements Decorated
+{
 
     private static final String DOES_NOT_EXIST = "Lifecycle does not exist";
 

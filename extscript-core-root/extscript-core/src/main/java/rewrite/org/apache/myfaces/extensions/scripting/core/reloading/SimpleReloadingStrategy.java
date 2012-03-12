@@ -19,7 +19,7 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.reloading;
 
 import org.apache.commons.beanutils.BeanUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.api.ReloadingStrategy;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import java.lang.reflect.InvocationTargetException;

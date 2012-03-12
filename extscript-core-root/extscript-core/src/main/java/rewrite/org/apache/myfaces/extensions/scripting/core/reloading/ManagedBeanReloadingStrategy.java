@@ -18,7 +18,7 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.reloading;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.api.ReloadingStrategy;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 
 /**
  * The managed beans have a different reloading

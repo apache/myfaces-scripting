@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation.purged;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
@@ -33,7 +34,8 @@ import java.io.Writer;
  * @version $Revision$ $Date$
  */
 
-public class PurgedRenderkit extends RenderKit implements Decorated {
+public class PurgedRenderkit extends RenderKit implements Decorated
+{
 
     private static final String DOES_NOT_EXIST = "Renderkit does not exist";
 

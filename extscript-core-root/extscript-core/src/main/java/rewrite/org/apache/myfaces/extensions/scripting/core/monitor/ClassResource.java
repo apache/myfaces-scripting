@@ -19,7 +19,7 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 

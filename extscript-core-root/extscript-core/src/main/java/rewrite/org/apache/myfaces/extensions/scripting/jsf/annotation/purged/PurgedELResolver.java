@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation.purged;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -29,7 +30,8 @@ import java.util.Iterator;
  * @version $Revision$ $Date$
  */
 
-public class PurgedELResolver extends ELResolver implements Decorated {
+public class PurgedELResolver extends ELResolver implements Decorated
+{
 
     private final String DOES_NOT_EXIST = "EL Resolver does not exist";
 

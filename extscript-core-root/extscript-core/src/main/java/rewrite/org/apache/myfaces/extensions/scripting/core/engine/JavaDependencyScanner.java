@@ -19,26 +19,8 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
-import org.apache.myfaces.extensions.scripting.api.ClassScanListener;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.StandardDependencyScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.filter.WhitelistFilter;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders.ScannerClassloader;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
-
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

@@ -21,7 +21,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
 
 import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.faces.component.UIComponent;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.core.common;
+package rewrite.org.apache.myfaces.extensions.scripting.core.api;
 
 /**
  * General decoration interface

@@ -36,7 +36,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
 import static rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilerConst.*;
 
 /**

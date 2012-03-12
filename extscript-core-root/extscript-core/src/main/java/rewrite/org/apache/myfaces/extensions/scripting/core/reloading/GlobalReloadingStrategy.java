@@ -18,14 +18,14 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.reloading;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.api.ReloadingStrategy;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst.*;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

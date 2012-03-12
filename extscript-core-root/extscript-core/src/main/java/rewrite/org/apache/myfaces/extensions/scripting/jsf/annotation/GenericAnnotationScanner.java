@@ -20,7 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.AnnotationScanListener;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ClassScanListener;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders.ScannerClassloader;

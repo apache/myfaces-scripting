@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation.purged;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
@@ -28,7 +29,8 @@ import javax.faces.context.FacesContext;
  * @version $Revision$ $Date$
  */
 
-public class PurgedNavigationHandler extends NavigationHandler implements Decorated {
+public class PurgedNavigationHandler extends NavigationHandler implements Decorated
+{
 
     NavigationHandler _delegate;
 

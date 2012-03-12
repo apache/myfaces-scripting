@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation.purged;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -29,7 +30,8 @@ import javax.faces.context.FacesContext;
  * @version $Revision$ $Date$
  */
 
-public class PurgedResourceHandler extends ResourceHandler implements Decorated {
+public class PurgedResourceHandler extends ResourceHandler implements Decorated
+{
 
     private static final String DOES_NOT_EXIST = "Resource Handler does not exist";
 
