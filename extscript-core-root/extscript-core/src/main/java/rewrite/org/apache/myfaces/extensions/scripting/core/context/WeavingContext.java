@@ -19,7 +19,6 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.context;
 
-import org.apache.myfaces.extensions.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 
@@ -29,6 +28,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.Scripting
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.GlobalReloadingStrategy;
+import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.MethodLevelReloadingHandler;
 import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.ImplementationSPI;
 
 import java.io.IOException;
