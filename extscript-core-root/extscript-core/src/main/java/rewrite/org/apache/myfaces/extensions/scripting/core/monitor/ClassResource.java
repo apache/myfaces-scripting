@@ -146,13 +146,13 @@ public class ClassResource extends WatchedResource
 
     public void setTainted(boolean value)
     {
-        if (isTainted()) return;
-        if (value)
+        //if (isTainted()) return;
+        if (value && !tainted)
         {
             //TODO add logging event here
             logger.info("[EXT-SCRIPTING] tainting " + getSourceFile());
         }
-        tainted = true;
+        tainted = value;
     }
 
     /**

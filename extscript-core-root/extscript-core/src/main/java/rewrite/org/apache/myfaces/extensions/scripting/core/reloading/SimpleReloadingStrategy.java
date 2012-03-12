@@ -59,10 +59,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
      * @return either the same object or a new instance utilizing the changed code
      */
     public Object reload(Object scriptingInstance, int artifactType) {
-        if(scriptingInstance.getClass().getName().contains("TestResourceHandler")) {
-            System.out.println("debugpoint found");
-        }
-        //reload the class to get new static content if needed
+       //reload the class to get new static content if needed
         Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
 
         if (aclass == null || aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
