@@ -21,7 +21,8 @@ package rewrite.org.apache.myfaces.extensions.scripting.core.context;
 
 import org.apache.myfaces.extensions.scripting.core.MethodLevelReloadingHandler;
 import org.apache.myfaces.extensions.scripting.core.dependencyScan.core.ClassDependencies;
-import org.apache.myfaces.extensions.scripting.sandbox.loader.support.ThrowAwayClassLoader;
+import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
+
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
@@ -171,7 +172,7 @@ public class WeavingContext
 
     public boolean isDynamic(Class clazz)
     {
-        return clazz.getClassLoader() instanceof ThrowAwayClassLoader;
+        return clazz.getClassLoader() instanceof ThrowAwayClassloader;
     }
 
     /**

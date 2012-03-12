@@ -19,9 +19,10 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
@@ -62,7 +63,8 @@ public class SystemEventListenerProxy implements Decorated, SystemEventListener 
     private void weaveDelegate() {
         //TODO (1.1) add a speed optimization here by pushing something in the request map
         if (_delegate != null) {
-            _delegate = (SystemEventListener) WeavingContext.getWeaver().reloadScriptingInstance(_delegate, ScriptingConst.ARTIFACT_TYPE_SYSTEMEVENTLISTENER);
+            _delegate = (SystemEventListener) WeavingContext.getInstance().reload(_delegate,
+                    ScriptingConst.ARTIFACT_TYPE_SYSTEMEVENTLISTENER);
         }
     }
 }
