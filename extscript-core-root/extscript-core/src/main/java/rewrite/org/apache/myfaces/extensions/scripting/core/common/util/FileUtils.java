@@ -76,10 +76,10 @@ public class FileUtils {
         File tempDir;
 
         String baseTempPath = System.getProperty("java.io.tmpdir");
-        String tempDirName = "myfaces_compilation_" + _tempMarker;
+        String tempDirName = "myfaces_compilation_"; //+ _tempMarker;
 
         tempDir = new File(baseTempPath + File.separator + tempDirName);
-        while (tempDir.exists()) {
+        /*while (tempDir.exists()) {
             tempDirName = "myfaces_compilation_" + System.currentTimeMillis() + Math.random();
             tempDir = new File(baseTempPath + File.separator + tempDirName);
         }
@@ -91,7 +91,7 @@ public class FileUtils {
             if (tempDir.mkdirs()) {
                 tempDir.deleteOnExit();
             }
-        }
+        } */
         return tempDir;
     }
 

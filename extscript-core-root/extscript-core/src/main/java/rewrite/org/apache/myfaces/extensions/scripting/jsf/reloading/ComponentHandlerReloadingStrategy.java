@@ -17,27 +17,25 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
-
+package rewrite.org.apache.myfaces.extensions.scripting.jsf.reloading;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
+import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.ValidatorConfig;
-import javax.faces.view.facelets.ValidatorHandler;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
+public class ComponentHandlerReloadingStrategy extends SimpleReloadingStrategy
 {
 
-    public ValidatorHandlerReloadingStrategy() {
+    public ComponentHandlerReloadingStrategy() {
         super();
     }
 
@@ -50,9 +48,9 @@ public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
             // reload is enabled we can skip the rest now
             return scriptingInstance;
         }
-        ValidatorHandler oldHandler = (ValidatorHandler) scriptingInstance;
-        ValidatorConfig config = oldHandler.getValidatorConfig();
-        ValidatorHandler newHandler = (ValidatorHandler) ReflectUtil.instantiate(aclass, new Cast(ValidatorConfig.class, config));
+        ComponentHandler oldHandler = (ComponentHandler) scriptingInstance;
+        ComponentConfig config = oldHandler.getComponentConfig();
+        ComponentHandler newHandler = (ComponentHandler) ReflectUtil.instantiate(aclass, new Cast(ComponentConfig.class, config));
 
         //save all pending non config related properties wherever possible
         super.mapProperties(newHandler, oldHandler);
@@ -61,4 +59,3 @@ public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
     }
 
 }
-

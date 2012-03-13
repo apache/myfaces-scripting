@@ -41,6 +41,7 @@ import static rewrite.org.apache.myfaces.extensions.scripting.core.api.Scripting
 public class GlobalReloadingStrategy implements ReloadingStrategy
 {
 
+    private static final String STRATEGY_PKG = "rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet";
     final Logger _logger = Logger.getLogger(GlobalReloadingStrategy.class.getName());
 
     protected ReloadingStrategy _beanStrategy;
@@ -62,14 +63,10 @@ public class GlobalReloadingStrategy implements ReloadingStrategy
         /*
          * external handlers coming from various submodules
          */
-        // _componentHandlerStrategy = dynaload("org.apache.myfaces.extensions.scripting.facelet" +
-        //          ".ComponentHandlerReloadingStrategy");
-        //  _validatorHandlerStrategy = dynaload("org.apache.myfaces.extensions.scripting.facelet" +
-        //          ".ValidatorHandlerReloadingStrategy");
-        //  _converterHandlerStrategy = dynaload("org.apache.myfaces.extensions.scripting.facelet" +
-        //          ".ConverterHandlerReloadingStrategy");
-        //  _behaviorHandlerStrategy = dynaload("org.apache.myfaces.extensions.scripting.facelet" +
-        //          ".BehaviorHandlerReloadingStrategy");
+        _componentHandlerStrategy = dynaload(STRATEGY_PKG +".ComponentHandlerReloadingStrategy");
+        _validatorHandlerStrategy = dynaload(STRATEGY_PKG +".ValidatorHandlerReloadingStrategy");
+        _converterHandlerStrategy = dynaload(STRATEGY_PKG +".ConverterHandlerReloadingStrategy");
+        _behaviorHandlerStrategy = dynaload(STRATEGY_PKG +".BehaviorHandlerReloadingStrategy");
     }
 
     /**
@@ -99,14 +96,14 @@ public class GlobalReloadingStrategy implements ReloadingStrategy
             case ARTIFACT_TYPE_VALIDATOR:
                 return _noMappingStrategy.reload(toReload, artifactType);
 
-            //    case ARTIFACT_TYPE_COMPONENT_HANDLER:
-            //        return dynaReload(toReload, _componentHandlerStrategy, artifactType);
-            //    case ARTIFACT_TYPE_CONVERTER_HANDLER:
-            //        return dynaReload(toReload, _converterHandlerStrategy, artifactType);
-            //    case ARTIFACT_TYPE_VALIDATOR_HANDLER:
-            //        return dynaReload(toReload, _validatorHandlerStrategy, artifactType);
-            //    case ARTIFACT_TYPE_BEHAVIOR_HANDLER:
-            //        return dynaReload(toReload, _behaviorHandlerStrategy, artifactType);
+            case ARTIFACT_TYPE_COMPONENT_HANDLER:
+                return dynaReload(toReload, _componentHandlerStrategy, artifactType);
+            case ARTIFACT_TYPE_CONVERTER_HANDLER:
+                return dynaReload(toReload, _converterHandlerStrategy, artifactType);
+            case ARTIFACT_TYPE_VALIDATOR_HANDLER:
+                return dynaReload(toReload, _validatorHandlerStrategy, artifactType);
+            case ARTIFACT_TYPE_BEHAVIOR_HANDLER:
+                return dynaReload(toReload, _behaviorHandlerStrategy, artifactType);
 
             default:
                 return _allOthers.reload(toReload, artifactType);

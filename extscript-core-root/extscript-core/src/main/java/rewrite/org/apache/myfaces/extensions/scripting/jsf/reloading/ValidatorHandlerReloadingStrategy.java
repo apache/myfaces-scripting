@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
+package rewrite.org.apache.myfaces.extensions.scripting.jsf.reloading;
 
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
@@ -25,23 +25,19 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectU
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
-import javax.faces.view.facelets.BehaviorConfig;
-import javax.faces.view.facelets.BehaviorHandler;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.ValidatorConfig;
+import javax.faces.view.facelets.ValidatorHandler;
 
 /**
- * The reloading strategy for our behavior tag handlers
- * note since we do not have an official api we must
- * enforce a getConverterConfig() method to allow
- * the reloading of converter tag handlers
- *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class BehaviorHandlerReloadingStrategy extends SimpleReloadingStrategy
+public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
 {
-    public BehaviorHandlerReloadingStrategy() {
+
+    public ValidatorHandlerReloadingStrategy() {
         super();
     }
 
@@ -54,12 +50,9 @@ public class BehaviorHandlerReloadingStrategy extends SimpleReloadingStrategy
             // reload is enabled we can skip the rest now
             return scriptingInstance;
         }
-        BehaviorHandler oldHandler = (BehaviorHandler) scriptingInstance;
-        /**
-         *
-         */
-        BehaviorConfig config = (BehaviorConfig) ReflectUtil.executeMethod(oldHandler, "getBehaviorConfig");
-        BehaviorHandler newHandler = (BehaviorHandler) ReflectUtil.instantiate(aclass, new Cast(BehaviorConfig.class, config));
+        ValidatorHandler oldHandler = (ValidatorHandler) scriptingInstance;
+        ValidatorConfig config = oldHandler.getValidatorConfig();
+        ValidatorHandler newHandler = (ValidatorHandler) ReflectUtil.instantiate(aclass, new Cast(ValidatorConfig.class, config));
 
         //save all pending non config related properties wherever possible
         super.mapProperties(newHandler, oldHandler);
@@ -68,3 +61,4 @@ public class BehaviorHandlerReloadingStrategy extends SimpleReloadingStrategy
     }
 
 }
+

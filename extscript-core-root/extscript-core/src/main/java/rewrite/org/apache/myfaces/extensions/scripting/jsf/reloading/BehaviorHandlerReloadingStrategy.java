@@ -17,19 +17,20 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
+package rewrite.org.apache.myfaces.extensions.scripting.jsf.reloading;
+
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
+import javax.faces.view.facelets.BehaviorConfig;
+import javax.faces.view.facelets.BehaviorHandler;
 import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.ConverterConfig;
-import javax.faces.view.facelets.ConverterHandler;
 
 /**
- * The reloading strategy for our converter tag handlers
+ * The reloading strategy for our behavior tag handlers
  * note since we do not have an official api we must
  * enforce a getConverterConfig() method to allow
  * the reloading of converter tag handlers
@@ -37,11 +38,10 @@ import javax.faces.view.facelets.ConverterHandler;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-@SuppressWarnings("unused")//used dynamically
-public class ConverterHandlerReloadingStrategy extends SimpleReloadingStrategy
-{
 
-    public ConverterHandlerReloadingStrategy() {
+public class BehaviorHandlerReloadingStrategy extends SimpleReloadingStrategy
+{
+    public BehaviorHandlerReloadingStrategy() {
         super();
     }
 
@@ -54,12 +54,12 @@ public class ConverterHandlerReloadingStrategy extends SimpleReloadingStrategy
             // reload is enabled we can skip the rest now
             return scriptingInstance;
         }
-        ConverterHandler oldHandler = (ConverterHandler) scriptingInstance;
+        BehaviorHandler oldHandler = (BehaviorHandler) scriptingInstance;
         /**
          *
          */
-        ConverterConfig config = (ConverterConfig) ReflectUtil.executeMethod(oldHandler, "getConverterConfig");
-        ConverterHandler newHandler = (ConverterHandler) ReflectUtil.instantiate(aclass, new Cast(ConverterConfig.class, config));
+        BehaviorConfig config = (BehaviorConfig) ReflectUtil.executeMethod(oldHandler, "getBehaviorConfig");
+        BehaviorHandler newHandler = (BehaviorHandler) ReflectUtil.instantiate(aclass, new Cast(BehaviorConfig.class, config));
 
         //save all pending non config related properties wherever possible
         super.mapProperties(newHandler, oldHandler);

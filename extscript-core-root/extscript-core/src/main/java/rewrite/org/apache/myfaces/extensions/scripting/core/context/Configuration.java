@@ -182,7 +182,8 @@ public class Configuration
      */
     public void addSourceDir(int scriptingEngine, String sourceDir)
     {
-        WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths().add(sourceDir);
+        if(!WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths().contains(sourceDir))
+            WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths().add(sourceDir);
     }
 
 

@@ -50,7 +50,6 @@ public class JavaCompilerTest
     File probe2;
     File root;
 
-    JSR199Compiler compiler = new JSR199Compiler();
     private static final String RESULT_HAS_NO_ERRORS = "result has no errors";
     private static final String TARGET_DIR_EXISTS = "targetDir exists files are compiled into the targetDir";
     private static final String CLASSFILE1_IS_COMPILED = "Classfile1 is compiled into the targetDir";
@@ -88,11 +87,14 @@ public class JavaCompilerTest
         WeavingContext.getInstance().setConfiguration(new Configuration());
         WeavingContext.getInstance().getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JAVA,
                 root.getAbsolutePath());
+
     }
 
     @Test
     public void testFullCompileWhitelist()
     {
+        JSR199Compiler compiler = new JSR199Compiler();
+
         File targetDir = null;
 
         File target = WeavingContext.getInstance().getConfiguration().getCompileTarget();
@@ -122,16 +124,19 @@ public class JavaCompilerTest
         assertTrue(CLASSFILE1_IS_COMPILED1, !classFile1.exists());
         assertTrue(CLASSFILE2_IS_COMPILED, !classFile2.exists());
         assertTrue(CLASSFILE2_IS_COMPILED, classFile3.exists());
-
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().delete();
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().mkdirs();
     }
 
     @Test
     public void testFullCompile()
     {
+        JSR199Compiler compiler = new JSR199Compiler();
         File targetDir = null;
 
         File target = FileUtils.getTempDir();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
         target.mkdirs();
         target.deleteOnExit();
 
@@ -153,7 +158,9 @@ public class JavaCompilerTest
 
         assertTrue(CLASSFILE1_IS_COMPILED1, classFile1.exists());
         assertTrue(CLASSFILE2_IS_COMPILED, classFile2.exists());
-
+        //WeavingContext.getInstance().getConfiguration().getCompileTarget().delete();
+        //WeavingContext.getInstance().getConfiguration().getCompileTarget().mkdirs();
+        //testFullCompileWhitelist();
     }
 
 }

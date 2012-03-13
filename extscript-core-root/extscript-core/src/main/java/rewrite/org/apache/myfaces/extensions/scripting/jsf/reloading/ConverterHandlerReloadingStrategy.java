@@ -17,25 +17,31 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
+package rewrite.org.apache.myfaces.extensions.scripting.jsf.reloading;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
-import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.ConverterConfig;
+import javax.faces.view.facelets.ConverterHandler;
 
 /**
+ * The reloading strategy for our converter tag handlers
+ * note since we do not have an official api we must
+ * enforce a getConverterConfig() method to allow
+ * the reloading of converter tag handlers
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
-public class ComponentHandlerReloadingStrategy extends SimpleReloadingStrategy
+@SuppressWarnings("unused")//used dynamically
+public class ConverterHandlerReloadingStrategy extends SimpleReloadingStrategy
 {
 
-    public ComponentHandlerReloadingStrategy() {
+    public ConverterHandlerReloadingStrategy() {
         super();
     }
 
@@ -48,9 +54,12 @@ public class ComponentHandlerReloadingStrategy extends SimpleReloadingStrategy
             // reload is enabled we can skip the rest now
             return scriptingInstance;
         }
-        ComponentHandler oldHandler = (ComponentHandler) scriptingInstance;
-        ComponentConfig config = oldHandler.getComponentConfig();
-        ComponentHandler newHandler = (ComponentHandler) ReflectUtil.instantiate(aclass, new Cast(ComponentConfig.class, config));
+        ConverterHandler oldHandler = (ConverterHandler) scriptingInstance;
+        /**
+         *
+         */
+        ConverterConfig config = (ConverterConfig) ReflectUtil.executeMethod(oldHandler, "getConverterConfig");
+        ConverterHandler newHandler = (ConverterHandler) ReflectUtil.instantiate(aclass, new Cast(ConverterConfig.class, config));
 
         //save all pending non config related properties wherever possible
         super.mapProperties(newHandler, oldHandler);
