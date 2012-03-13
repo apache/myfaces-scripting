@@ -238,7 +238,8 @@ public class ApplicationProxy extends Application implements Decorated
         weaveDelegate();
         ActionListener retVal = _delegate.getActionListener();
         if (WeavingContext.getInstance().isDynamic(retVal.getClass()))
-            retVal = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(retVal, ActionListener.class, ARTIFACT_TYPE_ACTIONLISTENER);
+            retVal = (ActionListener) WeavingContext.getInstance().createMethodReloadingProxyFromObject(retVal,
+            ActionListener.class, ARTIFACT_TYPE_ACTIONLISTENER);
         return retVal;
     }
 
@@ -246,7 +247,8 @@ public class ApplicationProxy extends Application implements Decorated
     {
         weaveDelegate();
         if (WeavingContext.getInstance().isDynamic(actionListener.getClass()))
-            actionListener = (ActionListener) WeavingContext.createMethodReloadingProxyFromObject(actionListener, ActionListener.class, ARTIFACT_TYPE_ACTIONLISTENER);
+            actionListener = (ActionListener) WeavingContext.getInstance().createMethodReloadingProxyFromObject(actionListener,
+            ActionListener.class, ARTIFACT_TYPE_ACTIONLISTENER);
         _delegate.setActionListener(actionListener);
     }
 

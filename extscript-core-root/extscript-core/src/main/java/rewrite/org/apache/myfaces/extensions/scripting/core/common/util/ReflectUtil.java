@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -160,7 +161,7 @@ public class ReflectUtil {
         if (obj instanceof InvocationHandler) {
             InvocationHandler objToInvoke = (InvocationHandler) obj;
 
-            Object realTarget = WeavingContext.getDelegateFromProxy(objToInvoke);
+            Object realTarget = WeavingContext.getInstance().getDelegateFromProxy(objToInvoke);
 
             //first we try only the public because they are the most likely ones
             //to be accessed

@@ -52,7 +52,8 @@ public class LifefcycleProxy extends Lifecycle implements Decorated
         weaveDelegate();
         /*we can put our object weaving code into the add here*/
         if (WeavingContext.getInstance().isDynamic(phaseListener.getClass()))
-            phaseListener = (PhaseListener) WeavingContext.createMethodReloadingProxyFromObject(phaseListener, PhaseListener.class, ScriptingConst.ARTIFACT_TYPE_PHASELISTENER);
+            phaseListener = (PhaseListener) WeavingContext.getInstance().createMethodReloadingProxyFromObject(phaseListener,
+                PhaseListener.class, ScriptingConst.ARTIFACT_TYPE_PHASELISTENER);
 
         _delegate.addPhaseListener(phaseListener);
     }

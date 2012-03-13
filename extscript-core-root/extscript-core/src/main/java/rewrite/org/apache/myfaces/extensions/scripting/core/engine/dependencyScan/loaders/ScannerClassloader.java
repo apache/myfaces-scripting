@@ -19,9 +19,6 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders;
 
-
-
-import org.apache.myfaces.extensions.scripting.monitor.RefreshContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 
 import java.io.*;
@@ -35,7 +32,8 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 
-public class ScannerClassloader extends ClassLoader {
+public class ScannerClassloader extends ClassLoader
+{
 
     File _tempDir = null;
 
@@ -43,43 +41,51 @@ public class ScannerClassloader extends ClassLoader {
 
     final Logger _logger = Logger.getLogger(ScannerClassloader.class.getName());
 
-
-    public ScannerClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, File tempDir) {
+    public ScannerClassloader(ClassLoader classLoader, int scriptingEngine, String engineExtension, File tempDir)
+    {
         super(classLoader);
 
         this._tempDir = tempDir;
     }
 
     @Override
-    public InputStream getResourceAsStream(String name) {
+    public InputStream getResourceAsStream(String name)
+    {
         File resource = new File(_tempDir.getAbsolutePath() + File.separator + name);
-        if (resource.exists()) {
-            try {
+        if (resource.exists())
+        {
+            try
+            {
                 return new FileInputStream(resource);
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e)
+            {
                 return super.getResourceAsStream(name);
             }
         }
         return super.getResourceAsStream(name);
     }
 
-    public File getClassFile(String className) {
+    public File getClassFile(String className)
+    {
         return ClassUtils.classNameToFile(_tempDir.getAbsolutePath(), className);
     }
 
     @Override
-    public Class<?> loadClass(String className) throws ClassNotFoundException {
+    public Class<?> loadClass(String className) throws ClassNotFoundException
+    {
         //check if our class exists in the tempDir
 
-        if (_alreadyScanned.containsKey(className)) {
+        if (_alreadyScanned.containsKey(className))
+        {
             return _alreadyScanned.get(className);
         }
 
         File target = getClassFile(className);
-        if (!target.exists()) {
+        if (!target.exists())
+        {
             return super.loadClass(className);
         }
-
 
         //ClassResource data = WeavingContext.getFileChangedDaemon().getClassMap().get(className);
         //if (data != null && !data.getRefreshAttribute().requiresRefresh()) {
@@ -90,20 +96,19 @@ public class ScannerClassloader extends ClassLoader {
 
         int fileLength;
         byte[] fileContent;
-        try {
-            //we cannot load while a compile is in progress
-            //we have to wait until it is one
-            synchronized (RefreshContext.COMPILE_SYNC_MONITOR) {
-                fileLength = (int) target.length();
-                fileContent = new byte[fileLength];
-                iStream = new FileInputStream(target);
-                int len = iStream.read(fileContent);
-                if (_logger.isLoggable(Level.FINER)) {
-                    _logger.log(Level.FINER, "class read {0} bytes read", String.valueOf(len));
-                }
+        try
+        {
+            fileLength = (int) target.length();
+            fileContent = new byte[fileLength];
+            iStream = new FileInputStream(target);
+            int len = iStream.read(fileContent);
+            if (_logger.isLoggable(Level.FINER))
+            {
+                _logger.log(Level.FINER, "class read {0} bytes read", String.valueOf(len));
             }
 
-            if(className.contains("TestResourceHandler")){
+            if (className.contains("TestResourceHandler"))
+            {
                 System.out.println("debugpoint found");
             }
             //we have to do it here because just in case
@@ -112,15 +117,25 @@ public class ScannerClassloader extends ClassLoader {
             _alreadyScanned.put(className, retVal);
             return retVal;
 
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
             throw new ClassNotFoundException(e.toString());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new ClassNotFoundException(e.toString());
-        } finally {
-            if (iStream != null) {
-                try {
+        }
+        finally
+        {
+            if (iStream != null)
+            {
+                try
+                {
                     iStream.close();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     _logger.log(Level.SEVERE, "", e);
                 }
             }

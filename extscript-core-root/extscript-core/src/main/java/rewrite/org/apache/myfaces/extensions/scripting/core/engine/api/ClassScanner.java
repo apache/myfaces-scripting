@@ -18,8 +18,6 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.api;
 
-import org.apache.myfaces.extensions.scripting.api.ClassScanListener;
-
 /**
  * Generic class scanner interface
  * which is a helper to plug in external  scanners

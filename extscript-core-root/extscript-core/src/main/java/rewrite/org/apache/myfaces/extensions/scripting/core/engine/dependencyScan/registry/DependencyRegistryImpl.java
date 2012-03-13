@@ -18,8 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry;
 
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.util.StringUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.ClassFilter;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.filter.ScanIdentifierFilter;

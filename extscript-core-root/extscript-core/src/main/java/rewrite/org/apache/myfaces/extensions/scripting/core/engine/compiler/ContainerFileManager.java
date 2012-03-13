@@ -18,8 +18,6 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
-
-import org.apache.myfaces.extensions.scripting.loaders.java.RecompiledClassLoader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 
@@ -42,7 +40,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
 
     StandardJavaFileManager _delegate = null;
     String _classPath = null;
-    RecompiledClassLoader classLoader = null;
+
 
     public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
@@ -60,7 +58,7 @@ public class ContainerFileManager extends ForwardingJavaFileManager<StandardJava
     }
 
     public ClassLoader getClassLoader() {
-        return classLoader;
+        return Thread.currentThread().getContextClassLoader();
     }
 
     public Iterable<? extends JavaFileObject> getJavaFileObjects(File... files) {

@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.resources;
 
-import org.apache.myfaces.extensions.scripting.core.util.WeavingContext;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +47,7 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
 
     @Override
     protected Set<String> getResourcePaths(String path) {
-        List<String> resourceRoots = WeavingContext.getConfiguration().getResourceDirs();
+        List<String> resourceRoots = WeavingContext.getInstance().getConfiguration().getResourceDirs();
         if (resourceRoots == null || resourceRoots.isEmpty()) {
             return Collections.EMPTY_SET;
         }
@@ -60,7 +61,7 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
     @Override
     public URL getResourceURL(ResourceMeta resourceMeta) {
         try {
-            List<String> resourceRoots = WeavingContext.getConfiguration().getResourceDirs();
+            List<String> resourceRoots = WeavingContext.getInstance().getConfiguration().getResourceDirs();
             if (resourceRoots == null || resourceRoots.isEmpty()) {
                 return super.getResourceURL(resourceMeta);
             }
@@ -82,7 +83,7 @@ public class SourceResourceLoader extends ExternalContextResourceLoader {
     @Override
     public InputStream getResourceInputStream(ResourceMeta resourceMeta) {
         try {
-            List<String> resourceRoots = WeavingContext.getConfiguration().getResourceDirs();
+            List<String> resourceRoots = WeavingContext.getInstance().getConfiguration().getResourceDirs();
             if (resourceRoots == null || resourceRoots.isEmpty()) {
                 return super.getResourceInputStream(resourceMeta);
             }

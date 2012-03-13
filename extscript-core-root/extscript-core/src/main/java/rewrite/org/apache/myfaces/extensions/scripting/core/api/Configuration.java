@@ -19,7 +19,7 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.api;
 
-import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 

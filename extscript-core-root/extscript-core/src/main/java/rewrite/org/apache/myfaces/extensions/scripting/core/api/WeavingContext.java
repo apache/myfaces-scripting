@@ -254,7 +254,7 @@ public class WeavingContext
      * @param artifactType the artifact type to be reloaded
      * @return a proxied reloading object of type theInterface
      */
-    public static Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artifactType)
+    public Object createMethodReloadingProxyFromObject(Object o, Class theInterface, int artifactType)
     {
         //if (!isScriptingEnabled()) {
         //    return o;

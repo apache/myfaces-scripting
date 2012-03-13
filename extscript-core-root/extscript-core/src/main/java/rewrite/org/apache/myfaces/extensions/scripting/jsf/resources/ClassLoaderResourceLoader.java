@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.resources;
 
-import org.apache.myfaces.extensions.scripting.core.util.ClassLoaderUtils;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;

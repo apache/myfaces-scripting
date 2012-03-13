@@ -18,8 +18,6 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters;
 
-import org.apache.myfaces.extensions.scripting.core.util.Cast;
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 
 import javax.servlet.ServletContext;

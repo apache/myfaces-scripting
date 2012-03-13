@@ -18,7 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.resources;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -32,7 +33,8 @@ import java.net.URL;
  * given location if the Weaving configuration
  * has the parameter present
  */
-public class SourceResourceHandler extends ResourceHandlerImpl implements Decorated {
+public class SourceResourceHandler extends ResourceHandlerImpl implements Decorated
+{
 
     ResourceHandler _delegate = null;
     ResourceHandlerSupport _sourceHandlerSupport = null;

@@ -18,8 +18,8 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation;
 
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.AnnotationScanListener;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import java.lang.annotation.Annotation;
 

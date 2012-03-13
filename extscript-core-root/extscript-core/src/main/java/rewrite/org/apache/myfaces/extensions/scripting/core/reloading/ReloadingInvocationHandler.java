@@ -18,8 +18,9 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.reloading;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import java.lang.reflect.InvocationHandler;
 
@@ -33,7 +34,8 @@ import java.lang.reflect.InvocationHandler;
  * @version $Revision$ $Date$
  */
 @SuppressWarnings("unused")
-public abstract class ReloadingInvocationHandler implements InvocationHandler, Decorated {
+public abstract class ReloadingInvocationHandler implements InvocationHandler, Decorated
+{
     Class _loadedClass = null;
     Object _delegate = null;
 
