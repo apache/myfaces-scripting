@@ -275,7 +275,11 @@ public class WeavingContext
             if (!engine.needsRecompile()) continue;
             compile = true;
             log.info("[EXT-SCRIPTING] compiling " + engine.getEngineTypeAsStr() + " files");
-            engine.compile();
+            CompilationResult result = engine.compile();
+            if(result != null) {
+                WeavingContext.getInstance().setCompilationResult(engine.getEngineType(), result);
+            }
+            
             log.info("[EXT-SCRIPTING] compiling " + engine.getEngineTypeAsStr() + " files done");
         }
         return compile;

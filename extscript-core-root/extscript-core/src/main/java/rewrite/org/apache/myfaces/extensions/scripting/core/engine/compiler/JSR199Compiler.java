@@ -102,7 +102,7 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
 
             CompilationResult result =  handleDiagnostics(diagnosticCollector);
 
-            WeavingContext.getInstance().setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
+
             return result;
 
     }

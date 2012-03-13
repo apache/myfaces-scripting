@@ -22,6 +22,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
 
@@ -65,17 +66,19 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
 
     @Override
     //full compile
-    public void compile()
+    public CompilationResult compile()
     {
         WeavingContext context = WeavingContext.getInstance();
         Configuration configuration = context.getConfiguration();
         GroovyCompiler compiler = new GroovyCompiler();
         File targetDir = configuration.getCompileTarget();
         Collection<String> sourceDirs = configuration.getSourceDirs(ENGINE_TYPE_JSF_GROOVY);
+        CompilationResult res = null;
         for (String sourceRoot : sourceDirs)
         {
-            compiler.compile(new File(sourceRoot), targetDir, ClassUtils.getContextClassLoader());
+            res = compiler.compile(new File(sourceRoot), targetDir, ClassUtils.getContextClassLoader());
         }
+        return res;
     }
 
     public void scanDependencies()

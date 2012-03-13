@@ -54,22 +54,23 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
      * full compile will be called cyclicly
      * from the startup and daemon thread
      */
-    public void compile()
+    public CompilationResult compile()
     {
         WeavingContext context = WeavingContext.getInstance();
         Configuration configuration = context.getConfiguration();
         JSR199Compiler compiler = new JSR199Compiler();
         File targetDir = configuration.getCompileTarget();
         Collection<String> sourceDirs = configuration.getSourceDirs(getEngineType());
+        CompilationResult res = null;
         for (String sourceRoot : sourceDirs)
         {
-            CompilationResult res =  compiler.compile(new File(sourceRoot), targetDir,
+            res =  compiler.compile(new File(sourceRoot), targetDir,
                 ClassUtils.getContextClassLoader());
             if(res.hasErrors()) {
                 log.severe(res.getCompilerOutput());
             }
-
         }
+        return res;
     }
 
     public void scanDependencies()

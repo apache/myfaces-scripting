@@ -36,7 +36,7 @@ public abstract class WatchedResource implements Cloneable {
      */
     volatile boolean tainted = false;
 
-    volatile long  _lastLoaded = -1L;
+    //volatile long  _lastLoaded = -1L;
 
     /**
      * Unique identifier on the resource
@@ -50,29 +50,12 @@ public abstract class WatchedResource implements Cloneable {
      */
     public abstract File getFile();
 
-    /**
-     * @return  additional refresh attribute metadata
-     */
-    //public RefreshAttribute getRefreshAttribute() {
-    //    return _refreshAttribute;
-    //}
-
     public WatchedResource getClone()  {
         try {
             return (WatchedResource) super.clone();
         } catch (CloneNotSupportedException e) {
             return null;
         }
-    }
-
-    public long getLastLoaded()
-    {
-        return _lastLoaded;
-    }
-
-    public void setLastLoaded(long lastLoaded)
-    {
-        _lastLoaded = lastLoaded;
     }
 
     public boolean isTainted()

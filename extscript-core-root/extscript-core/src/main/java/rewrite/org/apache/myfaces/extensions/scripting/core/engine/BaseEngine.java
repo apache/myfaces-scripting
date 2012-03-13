@@ -95,7 +95,8 @@ public abstract class BaseEngine
             {
                 ClassResource classToProcess = new ClassResource();
                 classToProcess.setFile(sourceFile);
-                classToProcess.setLastLoaded(-1);
+
+
                 classToProcess.setScriptingEngine(getEngineType());
                 if (!_watchedResources.containsKey(classToProcess.getIdentifier()))
                 {

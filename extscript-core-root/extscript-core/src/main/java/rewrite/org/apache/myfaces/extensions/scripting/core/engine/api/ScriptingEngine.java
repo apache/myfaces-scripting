@@ -63,7 +63,7 @@ public interface ScriptingEngine
     /**
      * runs the compile cycle for this engine
      */
-    public void compile();
+    public CompilationResult compile();
 
     /**
      * checks if the current engine has tainted classes
