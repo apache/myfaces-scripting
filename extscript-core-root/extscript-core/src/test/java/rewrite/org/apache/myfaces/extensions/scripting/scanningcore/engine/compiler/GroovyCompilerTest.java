@@ -21,9 +21,9 @@ package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.engine.comp
 
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
