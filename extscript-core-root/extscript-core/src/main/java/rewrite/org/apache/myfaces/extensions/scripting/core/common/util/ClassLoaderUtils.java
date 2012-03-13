@@ -19,7 +19,7 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.common.util;
 
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.io.File;
 import java.net.MalformedURLException;

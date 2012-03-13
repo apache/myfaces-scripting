@@ -21,7 +21,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.im
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.el.ELContext;
 import javax.faces.application.Application;

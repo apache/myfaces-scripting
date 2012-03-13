@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.reloading;
 
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
 import javax.faces.view.facelets.ComponentHandler;

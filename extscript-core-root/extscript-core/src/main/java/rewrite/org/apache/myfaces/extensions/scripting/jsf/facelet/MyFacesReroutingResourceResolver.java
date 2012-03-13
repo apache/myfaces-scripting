@@ -20,7 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 
 
 import org.apache.myfaces.view.facelets.impl.DefaultResourceResolver;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.io.File;
 import java.net.MalformedURLException;

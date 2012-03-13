@@ -20,14 +20,13 @@
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.startup;
 
 import org.apache.myfaces.webapp.StartupListener;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
 import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**

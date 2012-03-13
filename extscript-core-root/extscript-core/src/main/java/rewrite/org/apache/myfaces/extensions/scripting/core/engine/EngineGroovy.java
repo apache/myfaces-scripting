@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
 

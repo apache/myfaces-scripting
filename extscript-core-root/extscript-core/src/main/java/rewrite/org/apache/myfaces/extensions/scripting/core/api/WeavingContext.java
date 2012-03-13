@@ -17,9 +17,8 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.core.context;
+package rewrite.org.apache.myfaces.extensions.scripting.core.api;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;

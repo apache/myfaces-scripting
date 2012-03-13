@@ -19,7 +19,7 @@
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.support;
 
 import org.apache.myfaces.view.facelets.tag.BeanPropertyTagRule;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.Metadata;

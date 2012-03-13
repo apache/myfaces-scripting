@@ -19,7 +19,7 @@
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations.LifefcycleProxy;
 
 import javax.faces.lifecycle.Lifecycle;

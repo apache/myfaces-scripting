@@ -20,7 +20,7 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.StandardDependencyScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;

@@ -25,11 +25,11 @@ import org.codehaus.groovy.control.ErrorCollector;
 import org.codehaus.groovy.control.messages.Message;
 import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import java.io.File;

@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 

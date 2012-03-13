@@ -20,8 +20,8 @@
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters;
 
 import org.apache.myfaces.shared.util.ClassLoaderExtension;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 

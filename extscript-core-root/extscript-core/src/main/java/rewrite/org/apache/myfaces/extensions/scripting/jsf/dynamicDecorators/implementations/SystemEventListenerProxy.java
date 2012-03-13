@@ -22,7 +22,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.im
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;

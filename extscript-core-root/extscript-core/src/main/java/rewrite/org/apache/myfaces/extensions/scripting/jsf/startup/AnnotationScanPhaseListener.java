@@ -19,7 +19,7 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.startup;
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;

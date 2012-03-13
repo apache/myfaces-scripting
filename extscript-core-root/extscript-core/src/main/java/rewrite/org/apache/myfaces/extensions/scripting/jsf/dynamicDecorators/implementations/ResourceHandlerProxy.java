@@ -20,7 +20,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.im
 
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;

@@ -23,7 +23,7 @@ package rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet;
 import org.apache.myfaces.view.facelets.tag.jsf.BehaviorTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.ConverterTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.faces.view.facelets.*;
 

@@ -19,13 +19,12 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.monitor;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.context.WeavingContext;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.servlet.ServletContext;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
