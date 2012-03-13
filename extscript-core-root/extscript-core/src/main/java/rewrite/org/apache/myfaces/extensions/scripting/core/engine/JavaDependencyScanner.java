@@ -40,4 +40,5 @@ public class JavaDependencyScanner extends BaseScanner implements ClassScanner
         return ScriptingConst.JAVA_FILE_ENDING;
     }
 
+
 }

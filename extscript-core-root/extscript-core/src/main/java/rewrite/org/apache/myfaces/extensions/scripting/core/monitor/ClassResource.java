@@ -149,6 +149,7 @@ public class ClassResource extends WatchedResource
         //if (isTainted()) return;
         if (value && !tainted)
         {
+            WeavingContext.getInstance().markLastTaint();
             //TODO add logging event here
             logger.info("[EXT-SCRIPTING] tainting " + getSourceFile());
         }

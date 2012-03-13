@@ -27,6 +27,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**
@@ -77,11 +78,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener
     public void postInit(ServletContextEvent evt)
     {
         //tell the system that the startup phase is done
-        /*  WeavingContext.getWeaver().fullClassScan();
-        evt.getServletContext().setAttribute(ScriptingConst.CTX_ATTR_STARTUP, new AtomicBoolean(Boolean.FALSE));
-
-        WeavingContext.getExtensionEventRegistry().sendEvent(new SystemInitializedEvent());
-        */
+        WeavingContext.getInstance().markPostInit();
     }
 
     public void preDestroy(ServletContextEvent evt)

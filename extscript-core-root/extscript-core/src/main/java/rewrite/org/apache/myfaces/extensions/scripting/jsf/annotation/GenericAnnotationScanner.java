@@ -110,6 +110,9 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             //to get the runtime config
             return;
         }
+        if(!_weaver.isPostInit() || _weaver.getLastAnnotationScan() >= _weaver.getLastTaint()) return;
+        _weaver.markLastAnnotationScan();
+
 
         for (String className : _weaver.loadPossibleDynamicClasses()) {
             try {

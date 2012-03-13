@@ -45,43 +45,55 @@ import java.util.logging.Logger;
 
 public abstract class BaseScanner
 {
-    List<String> _scanPaths = new LinkedList<String>();DependencyScanner _depencyScanner = new StandardDependencyScanner();Logger _log = Logger.getLogger(JavaDependencyScanner.class.getName());
+    List<String> _scanPaths = new LinkedList<String>();
+    DependencyScanner _depencyScanner = new StandardDependencyScanner();
+    Logger _log = Logger.getLogger(JavaDependencyScanner.class.getName());
 
     public abstract int getEngineType();
 
     public abstract String getFileEnding();
 
-    public synchronized void scanPaths() {
+    public synchronized void scanPaths()
+    {
         //only one dependency check per refresh makes sense in our case
-       /* if (WeavingContext.getRefreshContext().isDependencyScanned(getEngineType())) {
+        /* if (WeavingContext.getRefreshContext().isDependencyScanned(getEngineType())) {
             return;
         } else {
             WeavingContext.getRefreshContext().setDependencyScanned(getEngineType(), true);
         }*/
         ScriptingEngine engine = WeavingContext.getInstance().getEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
 
-        if (_log.isLoggable(Level.INFO)) {
+        if (_log.isLoggable(Level.INFO))
+        {
             _log.info("[EXT-SCRITPING] starting class dependency scan");
         }
         long start = System.currentTimeMillis();
         final Set<String> possibleDynamicClasses = new HashSet<String>(engine.getPossibleDynamicClasses());
 
         final ClassLoader loader = getClassLoader();
-        for (String dynamicClass : possibleDynamicClasses) {
+        for (String dynamicClass : possibleDynamicClasses)
+        {
             runScan(possibleDynamicClasses, loader, dynamicClass);
         }
 
         long end = System.currentTimeMillis();
-        if (_log.isLoggable(Level.FINE)) {
+        if (_log.isLoggable(Level.FINE))
+        {
             _log.log(Level.FINE, "[EXT-SCRITPING] class dependency scan finished, duration: {0} ms", Long.toString(end - start));
         }
 
     }
 
-    private void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass) {
+    public void scanClass(Class clazz)
+    {
+        //TODO do nothing here
+    }
+
+    private void runScan(final Set<String> possibleDynamicClasses, final ClassLoader loader, String dynamicClass)
+    {
         //TODO implement the dep registry
         ExternalFilterDependencyRegistry scanRegistry = (ExternalFilterDependencyRegistry) WeavingContext.getInstance()
-        .getEngine(getEngineType()).getDependencyRegistry();
+                .getEngine(getEngineType()).getDependencyRegistry();
 
         scanRegistry.clearFilters();
         //We have to dynamically readjust the filters
@@ -90,8 +102,10 @@ public abstract class BaseScanner
                 WeavingContext.getInstance().getEngine(getEngineType()).getDependencyRegistry());
     }
 
-    protected ClassLoader getClassLoader() {
-        try {
+    protected ClassLoader getClassLoader()
+    {
+        try
+        {
             return AccessController.doPrivileged(new PrivilegedExceptionAction<ScannerClassloader>()
             {
                 public ScannerClassloader run()
@@ -100,13 +114,16 @@ public abstract class BaseScanner
                             getFileEnding(), WeavingContext.getInstance().getConfiguration().getCompileTarget());
                 }
             });
-        } catch (PrivilegedActionException e) {
-            _log.log(Level.SEVERE,"", e);
+        }
+        catch (PrivilegedActionException e)
+        {
+            _log.log(Level.SEVERE, "", e);
         }
         return null;
     }
 
-    public void addScanPath(String scanPath) {
+    public void addScanPath(String scanPath)
+    {
         _scanPaths.add(scanPath);
     }
 }

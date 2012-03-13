@@ -25,6 +25,7 @@ import javax.servlet.ServletContext;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +48,7 @@ public class ResourceMonitor extends Thread
     private static final String CONTEXT_KEY = "extscriptDaemon";
 
     static ResourceMonitor _instance = null;
+
 
     //Map<String, ClassResource> _classMap = new ConcurrentHashMap<String, ClassResource>(8, 0.75f, 1);
     //ClassDependencies _dependencyMap = new ClassDependencies();
@@ -123,6 +125,7 @@ public class ResourceMonitor extends Thread
         {
             _log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
         }
+
     }
 
     public void initialMonitoring()
@@ -136,22 +139,27 @@ public class ResourceMonitor extends Thread
             context.scanDependencies();
             //we next retaint all classes according to our dependency graph
             context.markTaintedDependends();
+
         }
     }
 
     public void performMonitoringTask()
     {
-        WeavingContext context = WeavingContext.getInstance();
-        context.initialFullScan();
+        synchronized(WeavingContext.getInstance().recompileLock) {
+            WeavingContext context = WeavingContext.getInstance();
+            context.initialFullScan();
 
-        //we compile wherever needed, taints are now in place due to our scan already being performed
-        if (context.compile())
-        {
-            //we now have to perform a full dependency scan to bring our dependency map to the latest state
-            context.scanDependencies();
-            //we next retaint all classes according to our dependency graph
-            context.markTaintedDependends();
+            //we compile wherever needed, taints are now in place due to our scan already being performed
+            if (context.compile())
+            {
+                //we now have to perform a full dependency scan to bring our dependency map to the latest state
+                context.scanDependencies();
+                //we next retaint all classes according to our dependency graph
+                context.markTaintedDependends();
+            }
         }
+        //context.annotationScan();
+
     }
 
     private void sleep()
@@ -171,5 +179,7 @@ public class ResourceMonitor extends Thread
     {
         this._running = running;
     }
+
+
 }
 

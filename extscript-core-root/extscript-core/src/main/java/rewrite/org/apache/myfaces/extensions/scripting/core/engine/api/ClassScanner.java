@@ -34,6 +34,7 @@ import org.apache.myfaces.extensions.scripting.api.ClassScanListener;
 public interface ClassScanner {
 
     public void scanPaths();
+    public void scanClass(Class clazz);
 
     public void addScanPath(String scanPath);
 

@@ -29,6 +29,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
@@ -59,6 +61,7 @@ public class Configuration
 
 
     String _initialCompile;
+
 
     /**
      * the target compile path
@@ -247,3 +250,4 @@ public class Configuration
 
 
 }
+

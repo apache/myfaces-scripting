@@ -20,7 +20,10 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.context;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
@@ -36,6 +39,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -58,13 +62,33 @@ public class WeavingContext
 
     ImplementationSPI _implementation = null;
     GlobalReloadingStrategy _reloadingStrategy = new GlobalReloadingStrategy();
-
+    ClassScanner _annotationScanner = null;
     Logger log = Logger.getLogger(this.getClass().getName());
     boolean _scriptingEnabled = true;
+
+    /*holder for various operations within our lifecycle*/
+    ConcurrentHashMap<String, Long> lifecycleRegistry = new ConcurrentHashMap<String, Long>();
 
     public void initEngines() throws IOException
     {
         FactoryEngines.getInstance().init();
+        initScanner();
+    }
+
+    public void initScanner()
+    {
+        try
+        {
+            Class scanner = ClassUtils.getContextClassLoader().loadClass("rewrite.org.apache.myfaces.extensions.scripting.jsf.annotation.GenericAnnotationScanner");
+            this._annotationScanner = (ClassScanner) ReflectUtil.instantiate(scanner);
+
+        }
+        catch (ClassNotFoundException e)
+        {
+            //we do nothing here
+            //generic annotation scanner can be missing in jsf 1.2 environments
+            //_logger.log(Level.FINER, "", e);
+        }
     }
 
     public Collection<ScriptingEngine> getEngines()
@@ -110,15 +134,16 @@ public class WeavingContext
     {
         for (ScriptingEngine engine : getEngines())
         {
-            if(!engine.getWatchedResources().containsKey(key)) continue;
+            if (!engine.getWatchedResources().containsKey(key)) continue;
             return engine.getWatchedResources().get(key);
         }
         return null;
     }
-    
-    public boolean isTainted(String key) {
+
+    public boolean isTainted(String key)
+    {
         ClassResource res = getWatchedResource(key);
-        if(res == null) return false;
+        if (res == null) return false;
         return res.isTainted();
     }
 
@@ -152,10 +177,17 @@ public class WeavingContext
     {
         for (ScriptingEngine engine : getEngines())
         {
-            //log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files");
             engine.scanForAddedDeleted();
-            //log.info("[EXT-SCRIPTING] scanning " + engine.getEngineType() + " files done");
         }
+        //the scanner scans only the tainted classes
+        //hence this should work whatever happens
+
+    }
+
+    public void annotationScan()
+    {
+        if (_annotationScanner != null)
+            _annotationScanner.scanPaths();
     }
 
     public boolean compile()
@@ -306,6 +338,42 @@ public class WeavingContext
     }
 
     //----------------------------------------------------------------------
+    //lifecycle related tasks
+    public boolean isPostInit()
+    {
+        return (lifecycleRegistry.get("LIFECYCLE_POST_INIT") != null);
+    }
+
+    public void markPostInit()
+    {
+        lifecycleRegistry.put("LIFECYCLE_POST_INIT", System.currentTimeMillis());
+    }
+
+    public void markLastTaint()
+    {
+        lifecycleRegistry.put("LIFECYCLE_LAST_TAINTED", System.currentTimeMillis());
+    }
+
+    public long getLastTaint()
+    {
+        Long lastTainted = lifecycleRegistry.get("LIFECYCLE_LAST_TAINTED");
+        lastTainted = (lastTainted != null) ? lastTainted : -1L;
+        return lastTainted;
+    }
+
+    public void markLastAnnotationScan()
+    {
+        lifecycleRegistry.put("LIFECYCLE_LAST_ANN_SCAN", System.currentTimeMillis());
+    }
+
+    public long getLastAnnotationScan()
+    {
+        Long lastTainted = lifecycleRegistry.get("LIFECYCLE_LAST_ANN_SCAN");
+        lastTainted = (lastTainted != null) ? lastTainted : -1L;
+        return lastTainted;
+    }
+
+    //----------------------------------------------------------------------
     /*public ClassDependencies getDependencyMap()
     {
         return _dependencyMap;
@@ -342,4 +410,5 @@ public class WeavingContext
     {
         _scriptingEnabled = scriptingEnabled;
     }
+
 }

@@ -19,8 +19,8 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.myfaces.extensions.scripting.core.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.DependencyRegistryImpl;
@@ -49,7 +49,13 @@ public abstract class BaseEngine
     DependencyRegistry _dependencyRegistry = new DependencyRegistryImpl(getEngineType(), _dependencyMap);
 
     Logger log = Logger.getLogger(this.getClass().getName());
-    
+
+
+    protected BaseEngine()
+    {
+
+    }
+
     public Map<String, ClassResource> getWatchedResources()
     {
         return _watchedResources;
@@ -67,7 +73,8 @@ public abstract class BaseEngine
     /**
      * @return a collection of possible dynamic classes
      */
-    public Collection<String> getPossibleDynamicClasses() {
+    public Collection<String> getPossibleDynamicClasses()
+    {
         return _watchedResources.keySet();
     }
 
@@ -75,65 +82,75 @@ public abstract class BaseEngine
      * runs a full scan of files to get a list of files which need to be processed
      * for the future
      */
-    public void scanForAddedDeleted() {
+    public void scanForAddedDeleted()
+    {
         Set<String> processedClasses = new HashSet<String>();
         processedClasses.addAll(_watchedResources.keySet());
-        
-        for(String sourcePath: getSourcePaths()) {
-           Collection<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourcePath), "*."+ getFileEnding());
-           
-            for(File sourceFile: sourceFiles) {
-               ClassResource classToProcess = new ClassResource();
+
+        for (String sourcePath : getSourcePaths())
+        {
+            Collection<File> sourceFiles = FileUtils.fetchSourceFiles(new File(sourcePath), "*." + getFileEnding());
+
+            for (File sourceFile : sourceFiles)
+            {
+                ClassResource classToProcess = new ClassResource();
                 classToProcess.setFile(sourceFile);
                 classToProcess.setLastLoaded(-1);
                 classToProcess.setScriptingEngine(getEngineType());
-                if(!_watchedResources.containsKey(classToProcess.getIdentifier())) {
+                if (!_watchedResources.containsKey(classToProcess.getIdentifier()))
+                {
                     _watchedResources.put(classToProcess.getIdentifier(), classToProcess);
-               } else {
-                   processedClasses.remove(classToProcess.getIdentifier());
-                   
-                   classToProcess = _watchedResources.get(classToProcess.getIdentifier());
-               }
-               if(classToProcess.needsRecompile()) {
-                   //TODO add entry for logging component here
-                   log.info("[EXT-SCRIPTING] tainting "+classToProcess.getIdentifier());
-                   classToProcess.setTainted(true);
-                   classToProcess.setChangedForCompile(true);
-               }
-           }
+                } else
+                {
+                    processedClasses.remove(classToProcess.getIdentifier());
+
+                    classToProcess = _watchedResources.get(classToProcess.getIdentifier());
+                }
+                if (classToProcess.needsRecompile())
+                {
+                    //TODO add entry for logging component here
+                    log.info("[EXT-SCRIPTING] tainting " + classToProcess.getIdentifier());
+                    classToProcess.setTainted(true);
+                    classToProcess.setChangedForCompile(true);
+                }
+            }
         }
-        for(String deleted:processedClasses) {
+        for (String deleted : processedClasses)
+        {
             _watchedResources.remove(deleted);
         }
-
 
     }
 
     /**
      * checks whether we have resources which are in need of a recompile
+     *
      * @return
      */
-    public boolean needsRecompile() {
+    public boolean needsRecompile()
+    {
         //TODO buffer this from scan
-        for(Map.Entry<String, ClassResource> resource: _watchedResources.entrySet()) {
-            if(resource.getValue().needsRecompile()) return true;
+        for (Map.Entry<String, ClassResource> resource : _watchedResources.entrySet())
+        {
+            if (resource.getValue().needsRecompile()) return true;
         }
         return false;
     }
 
     /**
      * checks whether we have resources which are tainted
+     *
      * @return
      */
-    public boolean isTainted() {
+    public boolean isTainted()
+    {
         //TODO buffer this from scan
-        for(Map.Entry<String, ClassResource> resource: _watchedResources.entrySet()) {
-            if(resource.getValue().isTainted()) return true;
+        for (Map.Entry<String, ClassResource> resource : _watchedResources.entrySet())
+        {
+            if (resource.getValue().isTainted()) return true;
         }
         return false;
     }
-
-
 
     public DependencyRegistry getDependencyRegistry()
     {
@@ -155,8 +172,6 @@ public abstract class BaseEngine
         _dependencyMap = dependencyMap;
     }
 
-
-    
     /**
      * marks all the dependencies of the tainted objects
      * also as tainted to allow proper refreshing.
@@ -171,7 +186,7 @@ public abstract class BaseEngine
             ClassResource resource = entry.getValue();
             if (!resource.isChangedForCompile()) continue;
             resource.setChangedForCompile(false);
-            log.info("[EXT-SCRIPTING] tainting dependency "+resource.getIdentifier());
+            log.info("[EXT-SCRIPTING] tainting dependency " + resource.getIdentifier());
             resource.setTainted(true);
             //classname
             String identifier = resource.getIdentifier();
@@ -186,21 +201,22 @@ public abstract class BaseEngine
     private void markDependencies(Set<String> _processedClasses, String identifier)
     {
         Set<String> referringClasses = _dependencyMap.getReferringClasses(identifier);
-        if(referringClasses == null) return;
+        if (referringClasses == null) return;
         for (String referringClass : referringClasses)
         {
             if (_processedClasses.contains(referringClass)) continue;
             ClassResource toTaint = _watchedResources.get(referringClass);
-            if(toTaint == null) continue;
+            if (toTaint == null) continue;
             //TODO add entry for logging component here
-            if(toTaint.isTainted()) {
-                log.info("[EXT-SCRIPTING] dependency already tainted:"+toTaint.getIdentifier());
+            if (toTaint.isTainted())
+            {
+                log.info("[EXT-SCRIPTING] dependency already tainted:" + toTaint.getIdentifier());
                 _processedClasses.add(toTaint.getIdentifier());
                 continue;
             }
             toTaint.setTainted(true);
             toTaint.setChangedForCompile(false);
-            log.info("[EXT-SCRIPTING] tainting dependency "+toTaint.getIdentifier());
+            log.info("[EXT-SCRIPTING] tainting dependency " + toTaint.getIdentifier());
             _processedClasses.add(toTaint.getIdentifier());
             markDependencies(_processedClasses, toTaint.getIdentifier());
         }
@@ -208,18 +224,18 @@ public abstract class BaseEngine
     }
 
     protected void initPaths(ServletContext context, String initParam, String defaultValue)
+    {
+        String pathSeparatedList = context.getInitParameter(initParam);
+        pathSeparatedList = (pathSeparatedList != null) ? pathSeparatedList : defaultValue;
+        if (pathSeparatedList.equals(defaultValue))
         {
-            String pathSeparatedList = context.getInitParameter(initParam);
-            pathSeparatedList = (pathSeparatedList != null) ? pathSeparatedList : defaultValue;
-            if (pathSeparatedList.equals(defaultValue))
-            {
-                URL resource = ClassUtils.getContextClassLoader().getResource("./");
-                pathSeparatedList = FilenameUtils.normalize(resource.getPath() + "../.." + defaultValue);
-            }
-            String[] paths = pathSeparatedList.split(",");
-            for (String path : paths)
-            {
-                getSourcePaths().add(path);
-            }
+            URL resource = ClassUtils.getContextClassLoader().getResource("./");
+            pathSeparatedList = FilenameUtils.normalize(resource.getPath() + "../.." + defaultValue);
         }
+        String[] paths = pathSeparatedList.split(",");
+        for (String path : paths)
+        {
+            getSourcePaths().add(path);
+        }
+    }
 }
