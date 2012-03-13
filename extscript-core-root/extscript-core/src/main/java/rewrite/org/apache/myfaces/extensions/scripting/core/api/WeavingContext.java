@@ -23,6 +23,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUti
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
@@ -34,10 +35,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.Implementati
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -51,22 +49,89 @@ import java.util.logging.Logger;
 
 public class WeavingContext
 {
+    static final Logger log = Logger.getLogger(WeavingContext.class.getName());
+
     /**
      * lock var which can be used for recompilation
      */
     public AtomicBoolean recompileLock = new AtomicBoolean(false);
+    /**
+     * configuration which stores all external configuration entries
+     */
     protected Configuration configuration = new Configuration();
 
     //ClassDependencies _dependencyMap = new ClassDependencies();
-
+    /**
+     * Service provider for the implementation under which this extension
+     * runs
+     */
     ImplementationSPI _implementation = null;
+    /**
+     * the collection of reloading strategies depending on their artifact type
+     */
     GlobalReloadingStrategy _reloadingStrategy = new GlobalReloadingStrategy();
+    /**
+     * the annotation scanning reference
+     */
     ClassScanner _annotationScanner = null;
-    Logger log = Logger.getLogger(this.getClass().getName());
+
+    /**
+     * true only if the startup has performed without errors
+     */
     boolean _scriptingEnabled = true;
 
-    /*holder for various operations within our lifecycle*/
+    /**
+     * holder for various operations within our lifecycle
+     */
     ConcurrentHashMap<String, Long> lifecycleRegistry = new ConcurrentHashMap<String, Long>();
+
+    /**
+     * This is a log which keeps track of the taints
+     * over time, we need that mostly for bean refreshes
+     * in multiuser surroundings, because only tainted beans need
+     * to be refreshed.
+     * Now if a user misses multiple updates he has to get a full
+     * set of changed classes to be able to drop all personal scoped beans tainted
+     * since the he refreshed last! Hence we have to move away from our
+     * two dimensional &lt;class, taint&gt; to a three dimensional &lt;class, taint, time&gt;
+     * view of things
+     */
+    private List<TaintingHistoryEntry> _taintLog = Collections.synchronizedList(new LinkedList<TaintingHistoryEntry>());
+
+    /**
+     * compilation results holder for the compiler listeners (components etc...)
+     */
+    private static final Map<Integer, CompilationResult> _compilationResults = new ConcurrentHashMap<Integer, CompilationResult>();
+
+    /**
+     * we keep a 10 minutes timeout period to keep the performance in place
+     */
+    private final long TAINT_HISTORY_TIMEOUT = 10 * 60 * 1000;
+
+    /**
+     * internal class used by our own history log
+     */
+    static class TaintingHistoryEntry
+    {
+        long _timestamp;
+        ClassResource _data;
+
+        public TaintingHistoryEntry(ClassResource data)
+        {
+            _data = data;
+            _timestamp = System.currentTimeMillis();
+        }
+
+        public long getTimestamp()
+        {
+            return _timestamp;
+        }
+
+        public ClassResource getData()
+        {
+            return _data;
+        }
+    }
 
     public void initEngines() throws IOException
     {
@@ -115,6 +180,9 @@ public class WeavingContext
         return ret;
     }
 
+    /**
+     * @return a map of all watched resources over all engines
+     */
     public Map<String, ClassResource> getAllWatchedResources()
     {
         Map<String, ClassResource> ret = new HashMap<String, ClassResource>();
@@ -129,6 +197,10 @@ public class WeavingContext
         return ret;
     }
 
+    /**
+     * @param key the watched resource classname
+     * @return the watched resource from the given key or null
+     */
     public ClassResource getWatchedResource(String key)
     {
         for (ScriptingEngine engine : getEngines())
@@ -139,6 +211,12 @@ public class WeavingContext
         return null;
     }
 
+    /**
+     * checks if a resource idenified by key is tainted
+     *
+     * @param key the identifier for the resource
+     * @return true in case of being tainted
+     */
     public boolean isTainted(String key)
     {
         ClassResource res = getWatchedResource(key);
@@ -353,6 +431,9 @@ public class WeavingContext
         lifecycleRegistry.put("LIFECYCLE_LAST_TAINTED", System.currentTimeMillis());
     }
 
+    /**
+     * @return the time value of the last taint happening
+     */
     public long getLastTaint()
     {
         Long lastTainted = lifecycleRegistry.get("LIFECYCLE_LAST_TAINTED");
@@ -360,16 +441,127 @@ public class WeavingContext
         return lastTainted;
     }
 
+    /**
+     * marks the last annotation scan
+     */
     public void markLastAnnotationScan()
     {
         lifecycleRegistry.put("LIFECYCLE_LAST_ANN_SCAN", System.currentTimeMillis());
     }
 
+    /**
+     * @return a the time value of the last annotation scan
+     */
     public long getLastAnnotationScan()
     {
         Long lastTainted = lifecycleRegistry.get("LIFECYCLE_LAST_ANN_SCAN");
         lastTainted = (lastTainted != null) ? lastTainted : -1L;
         return lastTainted;
+    }
+
+    //------------------------------ tainting history entries -----------------------
+
+    /**
+     * adds a new entry into our taint log
+     * which allows us to access tainting data
+     * from a given point in time
+     *
+     * @param data the tainting data to be added
+     */
+    public void addTaintLogEntry(ClassResource data)
+    {
+        _taintLog.add(new TaintingHistoryEntry(data));
+    }
+
+    /**
+     * garbage collects our tainting data
+     * and removes all entries which are not
+     * present anymore due to timeout
+     * this gc code is called asynchronously
+     * from our tainting thread to keep the
+     * performance intact
+     */
+    public void gcTaintLog()
+    {
+        long timeoutTimestamp = System.currentTimeMillis() - TAINT_HISTORY_TIMEOUT;
+        Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
+
+        while (it.hasNext())
+        {
+            TaintingHistoryEntry entry = it.next();
+            if (entry.getTimestamp() < timeoutTimestamp)
+            {
+                it.remove();
+            }
+        }
+    }
+
+    /**
+     * returns the last noOfEntries entries in the taint history
+     *
+     * @param noOfEntries the number of entries to be delivered
+     * @return a collection of the last &lt;noOfEntries&gt; entries
+     */
+    public Collection<ClassResource> getLastTainted(int noOfEntries)
+    {
+        Iterator<TaintingHistoryEntry> it = _taintLog.subList(Math.max(_taintLog.size() - noOfEntries, 0), _taintLog.size()).iterator();
+        List<ClassResource> retVal = new LinkedList<ClassResource>();
+        while (it.hasNext())
+        {
+            TaintingHistoryEntry entry = it.next();
+            retVal.add(entry.getData());
+        }
+        return retVal;
+    }
+
+    /**
+     * Returns a set of tainting data from a given point in time up until now
+     *
+     * @param timestamp the point in time from which the tainting data has to be derived from
+     * @return a set of entries which are a union of all points in time beginning from timestamp
+     */
+    public Collection<ClassResource> getTaintHistory(long timestamp)
+    {
+        List<ClassResource> retVal = new LinkedList<ClassResource>();
+        Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
+
+        while (it.hasNext())
+        {
+            TaintingHistoryEntry entry = it.next();
+            if (entry.getTimestamp() >= timestamp)
+            {
+                retVal.add(entry.getData());
+            }
+        }
+        return retVal;
+    }
+
+    /**
+     * Returns a set of tainted classes from a given point in time up until now
+     *
+     * @param timestamp the point in time from which the tainting data has to be derived from
+     * @return a set of classnames which are a union of all points in time beginning from timestamp
+     */
+    public Set<String> getTaintHistoryClasses(long timestamp)
+    {
+        Set<String> retVal = new HashSet<String>();
+        Iterator<TaintingHistoryEntry> it = _taintLog.iterator();
+
+        while (it.hasNext())
+        {
+            TaintingHistoryEntry entry = it.next();
+            if (entry.getTimestamp() >= timestamp)
+            {
+                if (entry.getData() instanceof ClassResource)
+                {
+                    retVal.add(((ClassResource) entry.getData()).getAClass().getName());
+                } else
+                {
+                    retVal.add(entry.getData().getFile().getAbsolutePath());
+                }
+            }
+        }
+        return retVal;
     }
 
     //----------------------------------------------------------------------
@@ -408,6 +600,16 @@ public class WeavingContext
     public void setScriptingEnabled(boolean scriptingEnabled)
     {
         _scriptingEnabled = scriptingEnabled;
+    }
+
+    public CompilationResult getCompilationResult(Integer scriptingEngine)
+    {
+        return _compilationResults.get(scriptingEngine);
+    }
+
+    public void setCompilationResult(Integer scriptingEngine, CompilationResult result)
+    {
+        _compilationResults.put(scriptingEngine, result);
     }
 
 }

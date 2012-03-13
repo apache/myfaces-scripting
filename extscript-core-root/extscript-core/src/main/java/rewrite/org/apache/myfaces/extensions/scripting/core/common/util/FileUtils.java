@@ -76,7 +76,7 @@ public class FileUtils {
         File tempDir;
 
         String baseTempPath = System.getProperty("java.io.tmpdir");
-        String tempDirName = "myfaces_compilation_"; //+ _tempMarker;
+        String tempDirName = "myfaces_compilation_" + _tempMarker;
 
         tempDir = new File(baseTempPath + File.separator + tempDirName);
         /*while (tempDir.exists()) {

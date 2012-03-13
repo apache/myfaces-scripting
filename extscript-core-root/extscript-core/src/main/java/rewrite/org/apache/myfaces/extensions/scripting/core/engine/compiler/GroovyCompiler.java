@@ -96,6 +96,10 @@ public class GroovyCompiler implements rewrite.org.apache.myfaces.extensions.scr
             result.registerWarning(convertMessage(collector.getWarning(i)));
         }
 
+        if(result != null) {
+             WeavingContext.getInstance().setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_GROOVY, result);
+        }
+
         return result;
     }
 

@@ -152,6 +152,8 @@ public class ClassResource extends WatchedResource
             WeavingContext.getInstance().markLastTaint();
             //TODO add logging event here
             logger.info("[EXT-SCRIPTING] tainting " + getSourceFile());
+            WeavingContext.getInstance().addTaintLogEntry(this);
+            WeavingContext.getInstance().gcTaintLog();
         }
         tainted = value;
     }

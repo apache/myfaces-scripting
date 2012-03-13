@@ -105,14 +105,8 @@ public class JavaCompilerTest
         WeavingContext.getInstance().getConfiguration().addWhitelistPackage("compiler.myPackage");
 
         CompilationResult result = null;
-        try
-        {
-            result = compiler.compile(root, target, loader);
-        }
-        catch (CompilationException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+
+        result = compiler.compile(root, target, loader);
 
         assertTrue(RESULT_HAS_NO_ERRORS, !result.hasErrors());
 
@@ -141,14 +135,7 @@ public class JavaCompilerTest
         target.deleteOnExit();
 
         CompilationResult result = null;
-        try
-        {
-            result = compiler.compile(root, target, loader);
-        }
-        catch (CompilationException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        result = compiler.compile(root, target, loader);
 
         assertTrue(RESULT_HAS_NO_ERRORS, !result.hasErrors());
 

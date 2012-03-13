@@ -20,6 +20,7 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
@@ -51,61 +52,11 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
 
     javax.tools.JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
     ContainerFileManager fileManager = null;
-    CompilationResult result = null;
+
 
     public JSR199Compiler()
     {
         super();
-    }
-
-    /**
-     * Compile a single file
-     *
-     * @param sourceRoot the source search path (root of our source)
-     * @return the compilation result of the  compilation
-     * @throws org.apache.myfaces.extensions.scripting.api.CompilationException
-     *          in case of a compilation error
-     * @deprecated note we will move over to a single
-     *             compile step in the beginning in the long run
-     *             we will deprecate it as soon as the full
-     *             compile at the beginning of the request
-     *             is implemented
-     *             <p/>
-     *             TODO move this code over to the weaver instead of the compiler
-     *             we do not do a single compile step anymore
-     */
-    public CompilationResult compile(File sourceRoot, File targetPath, File toCompile, ClassLoader classPathHolder) throws CompilationException
-    {
-        try
-        {
-            fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null));
-
-            DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector<JavaFileObject>();
-
-            //TODO add whitelist check here
-
-            getLog().info("[EXT-SCRIPTING] Doing a full recompile");
-
-            Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(toCompile);
-            String[] options = new String[]{JC_CLASSPATH, fileManager.getClassPath(), JC_TARGET_PATH,
-                                            targetPath.getAbsolutePath(),
-                                            JC_SOURCEPATH,
-                                            sourceRoot.getAbsolutePath(), JC_DEBUG};
-            javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
-            try
-            {
-                handleDiagnostics(diagnosticCollector);
-            }
-            catch (ClassNotFoundException e)
-            {
-                throw new CompilationException(e);
-            }
-            return this.result;
-        }
-        finally
-        {
-            this.result = null;
-        }
     }
 
     /**
@@ -122,10 +73,7 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
      * @throws org.apache.myfaces.extensions.scripting.api.CompilationException
      *          in case of a compilation error
      */
-    public CompilationResult compile(File sourceRoot, File destination, ClassLoader loader) throws CompilationException
-    {
-        try
-        {
+    public CompilationResult compile(File sourceRoot, File destination, ClassLoader loader)   {
             WeavingContext context = WeavingContext.getInstance();
             Configuration configuration = context.getConfiguration();
 
@@ -135,8 +83,6 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
 
             getLog().info("[EXT-SCRIPTING] Doing a full recompile");
 
-            //List<File> sourceFiles = FileUtils.fetchSourceFiles(WeavingContext.getConfiguration()
-            //    .getWhitelistedSourceDirs(ENGINE_TYPE_JSF_JAVA), JAVA_WILDCARD);
             List<File> sourceFiles = FileUtils.fetchSourceFiles(configuration.getWhitelistedSourceDirs
                     (ENGINE_TYPE_JSF_JAVA), JAVA_WILDCARD);
 
@@ -152,20 +98,13 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
                                             destination.getAbsolutePath(), JC_SOURCEPATH,
             sourceRoot.getAbsolutePath(), JC_DEBUG};
             javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
-            try
-            {
-                handleDiagnostics(diagnosticCollector);
-            }
-            catch (ClassNotFoundException e)
-            {
-                throw new CompilationException(e);
-            }
-            return this.result;
-        }
-        finally
-        {
-            this.result = null;
-        }
+
+
+            CompilationResult result =  handleDiagnostics(diagnosticCollector);
+
+            WeavingContext.getInstance().setCompilationResult(ScriptingConst.ENGINE_TYPE_JSF_JAVA, result);
+            return result;
+
     }
 
     /**
@@ -177,8 +116,7 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
      * @throws ClassNotFoundException in case of an error (this is enforced by the compiler interface
      *                                and probably will be overhauled in the long run)
      */
-    private void handleDiagnostics(DiagnosticCollector<JavaFileObject> diagnosticCollector) throws
-                                                                                            ClassNotFoundException
+    private CompilationResult handleDiagnostics(DiagnosticCollector<JavaFileObject> diagnosticCollector)
     {
         if (diagnosticCollector.getDiagnostics().size() > 0)
         {
@@ -200,15 +138,13 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
                     result.getWarnings().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
                 }
                 errors.append(error);
+
             }
-            this.result = result;
-            //WeavingContext.setCompilationResult(ENGINE_TYPE_JSF_JAVA, result);
-            assertErrorFound(errors, hasError);
-            //return result;
+            return result;
         } else
         {
             //WeavingContext.setCompilationResult(ENGINE_TYPE_JSF_JAVA, new CompilationResult(""));
-            this.result = new CompilationResult("");
+            return new CompilationResult("");
         }
     }
 

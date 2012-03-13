@@ -23,6 +23,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
 
@@ -62,15 +63,12 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
         Collection<String> sourceDirs = configuration.getSourceDirs(getEngineType());
         for (String sourceRoot : sourceDirs)
         {
-            try
-            {
-                compiler.compile(new File(sourceRoot), targetDir, ClassUtils.getContextClassLoader());
+            CompilationResult res =  compiler.compile(new File(sourceRoot), targetDir,
+                ClassUtils.getContextClassLoader());
+            if(res.hasErrors()) {
+                log.severe(res.getCompilerOutput());
             }
-            catch (CompilationException e)
-            {
-                log.severe(e.getMessage());
-                e.printStackTrace();
-            }
+
         }
     }
 
