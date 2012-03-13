@@ -19,10 +19,10 @@
 package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
 
 import junit.framework.TestCase;
-import org.apache.myfaces.extensions.scripting.api.CompilationException;
-import org.apache.myfaces.extensions.scripting.api.CompilationResult;
-import org.apache.myfaces.extensions.scripting.sandbox.compiler.Compiler;
-import org.apache.myfaces.extensions.scripting.sandbox.compiler.CompilerFactory;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.Compiler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -115,22 +115,28 @@ public abstract class AbstractGeneratorTestCase extends TestCase {
         }
     }
 
-    protected CompilationResult compileFile(String sourcePath, String targetPath, String fileName, String[] fileContent)
-            throws IOException, CompilationException {
-        return compileFile(CompilerFactory.createCompiler(),
-                new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName, fileContent);
+    /*protected CompilationResult compileFile(String sourcePath, String targetPath, String fileName,
+                                             String[] fileContent)
+            throws IOException, CompilationException
+    {
+        return compileFile(new JSR199Compiler(),
+                new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName,
+            fileContent);
     }
 
     protected CompilationResult compileFile(String sourcePath, String targetPath, String fileName, String[] fileContent, ClassLoader classLoader)
             throws IOException, CompilationException {
-        return compileFile(CompilerFactory.createCompiler(),
-                new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName, fileContent, classLoader);
+            return compileFile(new JSR199Compiler(),
+              new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName,
+                fileContent, classLoader);
     }
 
-    protected CompilationResult compileFile(Compiler compiler, String sourcePath, String targetPath, String fileName, String[] fileContent)
+    protected CompilationResult compileFile(Compiler compiler, String sourcePath, String targetPath,
+                                             String fileName, String[] fileContent)
             throws IOException, CompilationException {
-        return compileFile(compiler,
-                new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName, fileContent);
+            return compileFile(compiler,
+                new File(buildAbsolutePath(sourcePath)), new File(buildAbsolutePath(targetPath)), fileName,
+                fileContent);
     }
 
     protected CompilationResult compileFile(Compiler compiler, File sourcePath, File targetPath, String fileName, String[] fileContent)
@@ -146,7 +152,7 @@ public abstract class AbstractGeneratorTestCase extends TestCase {
         assertFalse("Compilation errors: " + result.getErrors().toString(), result.hasErrors());
 
         return result;
-    }
+    }  */
 
     /**
      * <p>Concatenates the given relative path and the path of the test directory. In doing so

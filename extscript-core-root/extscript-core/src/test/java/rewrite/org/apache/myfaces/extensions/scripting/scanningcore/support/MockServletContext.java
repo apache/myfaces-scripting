@@ -19,8 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
 
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
-import org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 
 import java.io.File;
 import java.util.HashMap;

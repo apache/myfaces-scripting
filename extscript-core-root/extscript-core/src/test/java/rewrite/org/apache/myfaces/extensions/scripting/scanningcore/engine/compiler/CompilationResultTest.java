@@ -19,9 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.engine.compiler;
 
-import org.apache.myfaces.extensions.scripting.api.CompilationResult;
 import org.junit.Before;
 import org.junit.Test;
+import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
