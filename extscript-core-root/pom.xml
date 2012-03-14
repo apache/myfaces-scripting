@@ -23,8 +23,10 @@
 
     <modules>
         <module>extscript-core</module>
+        <!--
         <module>extscript-myfaces12-extensions</module>
         <module>extscript-myfaces2-extensions</module>
         <module>extscript-core-java6</module>
+        -->
     </modules>
 </project>	

@@ -71,11 +71,18 @@
              meta bundle, which includes the entire
              ext-scripting core+java6 support + myfaces 2 support
          -->
+        <!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces20-bundle</artifactId>
             <version>1.0.3-SNAPSHOT</version>
         </dependency>
+        -->
+       <dependency>
+           <groupId>org.apache.myfaces.extensions.scripting</groupId>
+           <artifactId>extscript-core</artifactId>
+           <version>1.0.3-SNAPSHOT</version>
+       </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>

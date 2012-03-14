@@ -46,7 +46,9 @@
 
     <modules>
         <module>extscript-core-root</module>
+        <!--
         <module>extscript-bundles</module>
+        -->
         <module>extscript-examples</module>
     </modules>
 
