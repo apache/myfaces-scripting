@@ -55,9 +55,10 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             context.getConfiguration().init(servletContext);
             _log.info("[EXT-SCRIPTING] Loading Scripting end");
             _log.info("[EXT-SCRIPTING] initializing startup daemon");
-            ResourceMonitor.startup(servletContext);
+            ResourceMonitor.init(servletContext);
             _log.info("[EXT-SCRIPTING] initializing startup daemon end");
             _log.info("[EXT-SCRIPTING] Initial Scan and compile");
+            //the initial scan should happen synchronsously
             ResourceMonitor.getInstance().performMonitoringTask();
             _log.info("[EXT-SCRIPTING] Starting Change Monitor");
             ResourceMonitor.getInstance().start();

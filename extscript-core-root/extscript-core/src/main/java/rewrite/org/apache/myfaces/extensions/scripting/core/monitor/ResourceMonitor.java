@@ -70,7 +70,7 @@ public class ResourceMonitor extends Thread
     //    ScriptingWeaver _weavers = null;
     static WeakReference<ServletContext> _externalContext;
 
-    public static synchronized void startup(ServletContext externalContext)
+    public static synchronized void init(ServletContext externalContext)
     {
 
         if (_externalContext != null) return;
@@ -125,21 +125,6 @@ public class ResourceMonitor extends Thread
             _log.info("[EXT-SCRIPTING] Dynamic reloading watch daemon is shutting down");
         }
 
-    }
-
-    public void initialMonitoring()
-    {
-        WeavingContext context = WeavingContext.getInstance();
-        context.initialFullScan();
-        //we compile wherever needed, taints are now in place due to our scan already being performed
-        if (context.compile())
-        {
-            //we now have to perform a full dependency scan to bring our dependency map to the latest state
-            context.scanDependencies();
-            //we next retaint all classes according to our dependency graph
-            context.markTaintedDependends();
-
-        }
     }
 
     public void performMonitoringTask()

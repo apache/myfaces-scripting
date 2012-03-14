@@ -4,6 +4,9 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
               version="2.0">
 
+
+
+
     <!--
      * Licensed to the Apache Software Foundation (ASF) under one
      * or more contributor license agreements.  See the NOTICE file
@@ -22,7 +25,7 @@
      * specific language governing permissions and limitations
      * under the License.
     -->
-
+     <!--
      <lifecycle>
         <phase-listener>org.apache.myfaces.extensions.scripting.jsf.RefreshPhaseListener</phase-listener>
          
@@ -51,41 +54,48 @@
             <renderer-class>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-class>
         </renderer>
     </render-kit>
-
+    -->
 
     <factory>
+
         <!--
           all these factories are replacements for the normal ones
           issue is we have to make a codeweaving for every bean created
         -->
 
         <application-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
+            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
         </application-factory>
 
         <faces-context-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
+            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
         </faces-context-factory>
 
 
         <lifecycle-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
+            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
         </lifecycle-factory>
 
         <render-kit-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
+            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
         </render-kit-factory>
 
+      <!--
         <tag-handler-delegate-factory>
             org.apache.myfaces.extensions.scripting.facelet.TagHandlerDelegateFactoryImpl
         </tag-handler-delegate-factory>
-
+      -->
     </factory>
+    <lifecycle>
+        <phase-listener>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.AnnotationScanPhaseListener</phase-listener>
+    </lifecycle>
 
-
+    <!--
     <application>
-        <resource-handler>org.apache.myfaces.extensions.scripting.jsf2.resources.SourceResourceHandler</resource-handler>
+        <resource-handler>rewrite.org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
     </application>
+    -->
+
     <!--
     <application>
         <system-event-listener>
@@ -96,4 +106,16 @@
 
     </application>
    -->
+
+    <component>
+        <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
+        <component-class>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-type>
+        <component-class>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-class>
+    </component>
+
+
 </faces-config>
