@@ -53,6 +53,8 @@ public class ComponentHandlerReloadingStrategy extends SimpleReloadingStrategy
         ComponentHandler newHandler = (ComponentHandler) ReflectUtil.instantiate(aclass, new Cast(ComponentConfig.class, config));
 
         //save all pending non config related properties wherever possible
+
+
         super.mapProperties(newHandler, oldHandler);
 
         return newHandler;

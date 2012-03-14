@@ -18,6 +18,7 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine.api;
 
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
@@ -112,5 +113,11 @@ public interface ScriptingEngine
      */
     public String getEngineTypeAsStr();
 
+    /**
+     * loads the basic strategy which hosts also the property copying algorithm
+     *
+     * @return the basic strategy
+     */
+    public ReloadingStrategy getBasicReloadingStrategy();
 
 }

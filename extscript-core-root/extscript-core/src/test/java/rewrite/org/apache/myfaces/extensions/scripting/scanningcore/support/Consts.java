@@ -19,7 +19,7 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
 
-import static org.apache.myfaces.extensions.scripting.api.ScriptingConst.*;
+import static rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

@@ -19,7 +19,9 @@
 
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
+import org.apache.myfaces.extensions.scripting.groovyloader.core.StandardGroovyReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
@@ -56,6 +58,12 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
 
     public String getEngineTypeAsStr() {
         return "Groovy";
+    }
+
+    @Override
+    public ReloadingStrategy getBasicReloadingStrategy()
+    {
+        return new StandardGroovyReloadingStrategy();
     }
 
     @Override

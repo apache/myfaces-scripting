@@ -20,12 +20,14 @@
 package rewrite.org.apache.myfaces.extensions.scripting.core.engine;
 
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
+import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -91,6 +93,12 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
     
     public String getEngineTypeAsStr() {
         return "Java";
+    }
+
+    @Override
+    public ReloadingStrategy getBasicReloadingStrategy()
+    {
+        return new SimpleReloadingStrategy();
     }
 
     @Override
