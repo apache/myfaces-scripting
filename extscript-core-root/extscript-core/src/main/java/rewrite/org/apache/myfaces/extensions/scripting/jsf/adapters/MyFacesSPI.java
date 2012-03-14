@@ -18,7 +18,9 @@
  */
 package rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters;
 
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.ImplementationSPI;
 import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.handlers.MyFacesBeanHandler;
 
 import javax.servlet.ServletContext;
 
@@ -31,7 +33,8 @@ import javax.servlet.ServletContext;
 public class MyFacesSPI implements ImplementationSPI
 {
     CustomChainLoader _loader = null;
-    
+    MyFacesBeanHandler beanHandler = new MyFacesBeanHandler();
+
     public void registerClassloadingExtension(ServletContext context) {
         CustomChainLoader loader = new CustomChainLoader(context); //ReflectUtil.instantiate("extras.org.apache.myfaces.extensions
         // .scripting.servlet" +
@@ -41,6 +44,10 @@ public class MyFacesSPI implements ImplementationSPI
         _loader = loader;
     }
 
+    public void refreshManagedBeans() {
+        beanHandler.refreshAllManagedBeans();
+    }
+    
     public Class forName(String clazz) {
         return _loader.forName(clazz);
     }

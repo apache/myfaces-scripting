@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters;
+package rewrite.org.apache.myfaces.extensions.scripting.core.api;
 
 import javax.servlet.ServletContext;
 
@@ -31,5 +31,6 @@ public interface ImplementationSPI
 {
     public void registerClassloadingExtension(ServletContext context);
     public Class forName(String clazz);
+    public void refreshManagedBeans();
 
 }

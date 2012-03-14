@@ -34,7 +34,7 @@ import java.util.Map;
  * This phase listener is needed because the annotation scanner
  * relies on the facesContext to be present, we cannot do without it
  */
-public class AnnotationScanPhaseListener implements PhaseListener
+public class RefreshPhaseListener implements PhaseListener
 {
 
     @Override
@@ -51,6 +51,7 @@ public class AnnotationScanPhaseListener implements PhaseListener
         if(params.containsKey("ANN_PROCESSED")) return;
         else params.put("ANN_PROCESSED", Boolean.TRUE);
         WeavingContext.getInstance().annotationScan();
+        WeavingContext.getInstance().getImplementationSPI().refreshManagedBeans();
     }
 
     @Override

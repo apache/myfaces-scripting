@@ -30,7 +30,7 @@ import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.ClassResourc
 import rewrite.org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.GlobalReloadingStrategy;
 import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.MethodLevelReloadingHandler;
-import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.ImplementationSPI;
+import rewrite.org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -211,6 +211,29 @@ public class WeavingContext
         return null;
     }
 
+    public Collection<ClassResource> getTaintedClasses(int scriptingEngine) {
+            Map<String, ClassResource> watchedResources = getEngine(scriptingEngine).getWatchedResources();
+            List<ClassResource> res = new LinkedList<ClassResource>();
+            for(Map.Entry<String, ClassResource> entry: watchedResources.entrySet()) {
+                if(entry.getValue().isTainted()) {
+                    res.add(entry.getValue());
+                }
+            }
+            return res;
+        }
+
+
+    public Collection<ClassResource> getTaintedClasses() {
+        Map<String, ClassResource> watchedResources = getAllWatchedResources();
+        List<ClassResource> res = new LinkedList<ClassResource>();
+        for(Map.Entry<String, ClassResource> entry: watchedResources.entrySet()) {
+            if(entry.getValue().isTainted()) {
+                res.add(entry.getValue());
+            }
+        }
+        return res;
+    }
+    
     /**
      * checks if a resource idenified by key is tainted
      *
@@ -416,6 +439,10 @@ public class WeavingContext
     public void addDependency(int engineType, String fromClass, String toClass)
     {
         //TODO implement this tomorrow
+    }
+
+    public ImplementationSPI getImplementationSPI() {
+        return MyFacesSPI.getInstance();
     }
 
     //----------------------------------------------------------------------

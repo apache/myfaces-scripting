@@ -64,6 +64,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             ResourceMonitor.getInstance().start();
             _log.info("[EXT-SCRIPTING] Startup done");
             _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
+            //TODO make this more generic depending on the implementation
             MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
             _log.info("[EXT-SCRIPTING] registering the JSF Implementation");
             WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
