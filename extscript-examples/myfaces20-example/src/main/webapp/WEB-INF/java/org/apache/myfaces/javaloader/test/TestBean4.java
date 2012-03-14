@@ -28,7 +28,6 @@ public class TestBean4 {
     
     private String hello = "Hello world from test Bean 4";
 
-    
     public String getHello() {
         return hello;
     }
