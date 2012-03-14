@@ -60,7 +60,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase
     private static final String ATTR_NO_ENTRIES = "noEntries";
     private static final String ATTR_FILTER = "filter";
 
-    public TaintHistoryTest(String name)
+    public TaintHistoryTest()
     {
         super(TaintHistoryTest.class.getName());
     }
@@ -68,7 +68,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase
     public void setUp() throws Exception
     {
         super.setUp();
-        context = ContextUtils.startupSystem();
+       context = ContextUtils.startupSystem();
         _writer = new MockResponseWriter(new StringWriter(), null, null);
 
         facesContext.setResponseWriter(_writer);
@@ -87,6 +87,10 @@ public class TaintHistoryTest extends AbstractJsfTestCase
                 new HtmlFormRenderer());
     }
 
+    public void testBooga() {
+        assertTrue(true);
+    }
+
     public void testTaintHistory() throws Exception {
             ClassResource historyEntry = new ClassResource();
             historyEntry.setAClass(this.getClass());
@@ -95,6 +99,7 @@ public class TaintHistoryTest extends AbstractJsfTestCase
             historyEntry.setScriptingEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
             historyEntry.setFile(new File(BOOGA_JAVA));
            // historyEntry.getRefreshAttribute().requestRefresh();
+            //todo set source file
             historyEntry.setTainted(true);
 
             //WeavingContext.getInstance().addTaintLogEntry(historyEntry);

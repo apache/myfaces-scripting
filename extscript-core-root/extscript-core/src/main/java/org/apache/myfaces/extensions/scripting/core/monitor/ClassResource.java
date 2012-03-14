@@ -110,7 +110,11 @@ public class ClassResource extends WatchedResource
 
     public String getSourceFile()
     {
-        return _sourceFile.getAbsolutePath().substring(getSourceDir().length());
+        String sourceDir = getSourceDir();
+        if(sourceDir == null) {
+            sourceDir = _sourceFile.getPath();
+        }
+        return _sourceFile.getAbsolutePath().substring(sourceDir.length());
     }
 
     public String getSourceDir()
