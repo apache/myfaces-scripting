@@ -55,7 +55,7 @@
         -->
     </factory>
     <lifecycle>
-        <phase-listener>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.AnnotationScanPhaseListener
+        <phase-listener>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.RefreshPhaseListener
         </phase-listener>
     </lifecycle>
 
