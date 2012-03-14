@@ -18,14 +18,12 @@
  */
 package org.apache.myfaces.extensions.scripting.groovyloader.core
 
-import org.apache.myfaces.extensions.scripting.api.BaseWeaver
-import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy
+import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy
+
+
 
 public class StandardGroovyReloadingStrategy extends SimpleReloadingStrategy {
 
-  public StandardGroovyReloadingStrategy(BaseWeaver weaver) {
-    super(weaver);
-  }
 
   public StandardGroovyReloadingStrategy() {
     super();
