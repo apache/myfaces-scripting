@@ -36,6 +36,8 @@ import static rewrite.org.apache.myfaces.extensions.scripting.core.api.Scripting
  *          strategy
  *          <p/>
  *          TODO make the reloading strategy pluggable from outside (1.1)!
+ *          TODO groovy reloading strategy needs to be added at least the properties
+ *          mapping for a groovy class
  */
 
 public class GlobalReloadingStrategy implements ReloadingStrategy
