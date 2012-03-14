@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.utilstest;
+package org.apache.myfaces.extensions.scripting.scanningcore.utilstest;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Cast;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.Null;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
-import rewrite.org.apache.myfaces.extensions.scripting.scanningcore.probes.Probe;
+import org.apache.myfaces.extensions.scripting.core.common.util.Cast;
+import org.apache.myfaces.extensions.scripting.core.common.util.Null;
+import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
+import org.apache.myfaces.extensions.scripting.scanningcore.probes.Probe;
 
 import java.lang.reflect.Method;
 import java.util.Collection;

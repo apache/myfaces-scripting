@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.probes;
+package org.apache.myfaces.extensions.scripting.scanningcore.probes;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

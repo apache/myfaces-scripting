@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.groovyloader.core
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy
+import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy
 
 
 

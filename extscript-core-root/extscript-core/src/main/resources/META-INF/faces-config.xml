@@ -32,20 +32,20 @@
         -->
 
         <application-factory>
-            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
         </application-factory>
 
         <faces-context-factory>
-            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
         </faces-context-factory>
 
 
         <lifecycle-factory>
-            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
         </lifecycle-factory>
 
         <render-kit-factory>
-            rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
         </render-kit-factory>
 
         <!--
@@ -55,13 +55,13 @@
         -->
     </factory>
     <lifecycle>
-        <phase-listener>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.RefreshPhaseListener
+        <phase-listener>org.apache.myfaces.extensions.scripting.jsf.startup.RefreshPhaseListener
         </phase-listener>
     </lifecycle>
 
     <!--
     <application>
-        <resource-handler>rewrite.org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
+        <resource-handler>org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
     </application>
     -->
 
@@ -78,25 +78,25 @@
 
     <component>
         <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
-        <component-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.CompilerComponent
+        <component-class>org.apache.myfaces.extensions.scripting.jsf.components.CompilerComponent
         </component-class>
     </component>
 
     <component>
         <component-type>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-type>
-        <component-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.TaintHistory</component-class>
+        <component-class>org.apache.myfaces.extensions.scripting.jsf.components.TaintHistory</component-class>
     </component>
     <render-kit>
         <renderer>
             <component-family>javax.faces.Output</component-family>
             <renderer-type>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-type>
-            <renderer-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.CompilerComponentRenderer
+            <renderer-class>org.apache.myfaces.extensions.scripting.jsf.components.CompilerComponentRenderer
             </renderer-class>
         </renderer>
         <renderer>
             <component-family>javax.faces.Output</component-family>
             <renderer-type>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-type>
-            <renderer-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.TaintHistoryRenderer</renderer-class>
+            <renderer-class>org.apache.myfaces.extensions.scripting.jsf.components.TaintHistoryRenderer</renderer-class>
         </renderer>
     </render-kit>
 

@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
+package org.apache.myfaces.extensions.scripting.scanningcore.support;
 
 import junit.framework.TestCase;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.Compiler;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
+import org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
+import org.apache.myfaces.extensions.scripting.core.engine.api.Compiler;
 
 import java.io.File;
 import java.io.FileOutputStream;

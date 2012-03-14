@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
+package org.apache.myfaces.extensions.scripting.scanningcore.support;
 
 import java.io.File;
 

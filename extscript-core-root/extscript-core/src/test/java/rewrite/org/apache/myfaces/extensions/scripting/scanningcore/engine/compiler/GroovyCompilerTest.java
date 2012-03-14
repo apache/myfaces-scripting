@@ -17,16 +17,16 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.engine.compiler;
+package org.apache.myfaces.extensions.scripting.scanningcore.engine.compiler;
 
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.Configuration;
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
+import org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
+import org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
 
 import java.io.File;
 import java.io.IOException;

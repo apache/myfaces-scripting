@@ -19,7 +19,7 @@
 package org.apache.myfaces.javaloader.componentTest;
 
 import org.apache.myfaces.shared.renderkit.html.HtmlTextareaRendererBase;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
+import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

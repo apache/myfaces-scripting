@@ -19,7 +19,7 @@
 package org.apache.myfaces.javaloader.other;
 
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
+import org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.Resource;

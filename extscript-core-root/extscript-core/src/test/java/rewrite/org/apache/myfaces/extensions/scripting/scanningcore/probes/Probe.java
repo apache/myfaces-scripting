@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.probes;
+package org.apache.myfaces.extensions.scripting.scanningcore.probes;
 
 import org.junit.Ignore;
 

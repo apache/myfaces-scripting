@@ -17,11 +17,11 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
+package org.apache.myfaces.extensions.scripting.scanningcore.support;
 
 
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 
 import java.io.File;
 import java.util.HashMap;

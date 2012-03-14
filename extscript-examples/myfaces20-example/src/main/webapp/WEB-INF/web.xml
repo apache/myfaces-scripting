@@ -29,7 +29,7 @@
             Initializes the plugins for our groovy handlers
         </description>
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
         </param-value>
     </context-param>
 
@@ -70,7 +70,7 @@
             source dir
         </description>
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
-        <param-value>rewrite.org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
     </context-param>
 
     <!--
@@ -134,7 +134,7 @@
 
     <filter>
         <filter-name>scriptingFilter</filter-name>
-        <filter-class>rewrite.org.apache.myfaces.extensions.scripting.core.servlet.ScriptingServletFilter</filter-class>
+        <filter-class>org.apache.myfaces.extensions.scripting.core.servlet.ScriptingServletFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>scriptingFilter</filter-name>

@@ -1,4 +1,4 @@
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.probes;
+package org.apache.myfaces.extensions.scripting.scanningcore.probes;
 
 /**
  * Interface which will allow the proxying of our probe

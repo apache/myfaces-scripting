@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.context;
+package org.apache.myfaces.extensions.scripting.scanningcore.context;
 
 import org.junit.Before;
 import org.junit.Test;
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
+import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 
 import java.io.File;
 import java.io.IOException;

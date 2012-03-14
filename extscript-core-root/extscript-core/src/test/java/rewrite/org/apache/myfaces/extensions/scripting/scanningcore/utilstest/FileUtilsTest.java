@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.utilstest;
+package org.apache.myfaces.extensions.scripting.scanningcore.utilstest;
 
 import org.junit.Before;
 import org.junit.Test;
-import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support.PathUtils;
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
+import org.apache.myfaces.extensions.scripting.scanningcore.support.PathUtils;
 
 import java.io.File;
 import java.util.List;

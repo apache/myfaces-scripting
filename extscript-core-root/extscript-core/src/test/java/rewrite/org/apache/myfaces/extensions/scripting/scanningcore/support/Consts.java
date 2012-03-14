@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.support;
+package org.apache.myfaces.extensions.scripting.scanningcore.support;
 
-import static rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

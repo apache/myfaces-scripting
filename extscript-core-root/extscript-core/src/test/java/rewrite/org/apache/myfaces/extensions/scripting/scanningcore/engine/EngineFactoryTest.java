@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package rewrite.org.apache.myfaces.extensions.scripting.scanningcore.engine;
+package org.apache.myfaces.extensions.scripting.scanningcore.engine;
 
 import org.junit.Before;
 import org.junit.Test;
-import rewrite.org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
-import rewrite.org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
