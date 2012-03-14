@@ -69,7 +69,10 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
             res =  compiler.compile(new File(sourceRoot), targetDir,
                 ClassUtils.getContextClassLoader());
             if(res.hasErrors()) {
-                log.severe(res.getCompilerOutput());
+               for(CompilationResult.CompilationMessage msg :res.getErrors()) {
+                   log.severe(msg.getMessage());
+               }
+               // log.severe(res.getCompilerOutput());
             }
         }
         return res;

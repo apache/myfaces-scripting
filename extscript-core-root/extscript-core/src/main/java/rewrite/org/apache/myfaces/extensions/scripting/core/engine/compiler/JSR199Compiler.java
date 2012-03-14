@@ -70,13 +70,12 @@ public class JSR199Compiler implements rewrite.org.apache.myfaces.extensions.scr
      *
      * @param sourceRoot the root for all java sources to be compiled
      * @param loader     the classpath holder for the compilation
-     * @throws org.apache.myfaces.extensions.scripting.api.CompilationException
-     *          in case of a compilation error
+     * @return the collected compilation results as bundle
      */
     public CompilationResult compile(File sourceRoot, File destination, ClassLoader loader)   {
             WeavingContext context = WeavingContext.getInstance();
             Configuration configuration = context.getConfiguration();
-
+            destination.mkdirs();
             fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null));
 
             DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector<JavaFileObject>();

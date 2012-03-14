@@ -53,7 +53,7 @@ public class TestBean2 {
 
     public String getSayHello() {
       
-
+      //return "hello from bean2";
       return bean4.getHello();
       //return "replacement";
     }

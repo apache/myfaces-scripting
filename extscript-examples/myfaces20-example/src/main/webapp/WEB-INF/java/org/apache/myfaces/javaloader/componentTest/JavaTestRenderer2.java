@@ -18,15 +18,13 @@
  */
 package org.apache.myfaces.javaloader.componentTest;
 
-import java.io.IOException;
+import org.apache.myfaces.shared.renderkit.html.HtmlTextareaRendererBase;
+import rewrite.org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.FacesRenderer;
-
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
-import org.apache.myfaces.shared.renderkit.html.HtmlTextareaRendererBase;
+import java.io.IOException;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

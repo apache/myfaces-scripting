@@ -18,7 +18,8 @@
  */
 package org.apache.myfaces.javaloader.other;
 
-import org.apache.myfaces.extensions.scripting.api.Decorated;
+
+import rewrite.org.apache.myfaces.extensions.scripting.core.api.Decorated;
 
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.Resource;
@@ -27,7 +28,8 @@ import javax.faces.application.Resource;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class ResourceHandler1 extends BaseResourceHandler implements Decorated {
+public class ResourceHandler1 extends BaseResourceHandler implements Decorated
+{
     public ResourceHandler1(ResourceHandler delegate) {
         super(delegate);
     }

@@ -5,8 +5,6 @@
               version="2.0">
 
 
-
-
     <!--
      * Licensed to the Apache Software Foundation (ASF) under one
      * or more contributor license agreements.  See the NOTICE file
@@ -24,36 +22,6 @@
      * KIND, either express or implied.  See the License for the
      * specific language governing permissions and limitations
      * under the License.
-    -->
-     <!--
-     <lifecycle>
-        <phase-listener>org.apache.myfaces.extensions.scripting.jsf.RefreshPhaseListener</phase-listener>
-         
-    </lifecycle>
-
-    <component>
-        <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
-        <component-class>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-class>
-    </component>
-
-    <component>
-        <component-type>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-type>
-        <component-class>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-class>
-    </component>
-
-
-    <render-kit>
-        <renderer>
-            <component-family>javax.faces.Output</component-family>
-            <renderer-type>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-type>
-            <renderer-class>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>javax.faces.Output</component-family>
-            <renderer-type>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-type>
-            <renderer-class>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-class>
-        </renderer>
-    </render-kit>
     -->
 
     <factory>
@@ -80,14 +48,15 @@
             rewrite.org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
         </render-kit-factory>
 
-      <!--
-        <tag-handler-delegate-factory>
-            org.apache.myfaces.extensions.scripting.facelet.TagHandlerDelegateFactoryImpl
-        </tag-handler-delegate-factory>
-      -->
+        <!--
+          <tag-handler-delegate-factory>
+              org.apache.myfaces.extensions.scripting.facelet.TagHandlerDelegateFactoryImpl
+          </tag-handler-delegate-factory>
+        -->
     </factory>
     <lifecycle>
-        <phase-listener>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.AnnotationScanPhaseListener</phase-listener>
+        <phase-listener>rewrite.org.apache.myfaces.extensions.scripting.jsf.startup.AnnotationScanPhaseListener
+        </phase-listener>
     </lifecycle>
 
     <!--
@@ -109,13 +78,26 @@
 
     <component>
         <component-type>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-type>
-        <component-class>org.apache.myfaces.extensions.scripting.components.CompilerComponent</component-class>
+        <component-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.CompilerComponent
+        </component-class>
     </component>
 
     <component>
         <component-type>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-type>
-        <component-class>org.apache.myfaces.extensions.scripting.components.TaintHistory</component-class>
+        <component-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.TaintHistory</component-class>
     </component>
-
+    <render-kit>
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.apache.myfaces.extensions.scripting.components.CompilerComponentRenderer</renderer-type>
+            <renderer-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.CompilerComponentRenderer
+            </renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.apache.myfaces.extensions.scripting.components.TaintHistoryRenderer</renderer-type>
+            <renderer-class>rewrite.org.apache.myfaces.extensions.scripting.jsf.components.TaintHistoryRenderer</renderer-class>
+        </renderer>
+    </render-kit>
 
 </faces-config>
