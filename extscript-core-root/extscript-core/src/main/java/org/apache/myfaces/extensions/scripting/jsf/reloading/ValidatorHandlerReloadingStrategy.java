@@ -42,7 +42,7 @@ public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
     }
 
     @Override
-    public Object reload(Object scriptingInstance, int artifactType) {
+    public Object reload(Object scriptingInstance, int engineType, int artifactType) {
         if (!(scriptingInstance instanceof ComponentHandler)) return scriptingInstance;
         Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
         if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
@@ -55,7 +55,7 @@ public class ValidatorHandlerReloadingStrategy extends SimpleReloadingStrategy
         ValidatorHandler newHandler = (ValidatorHandler) ReflectUtil.instantiate(aclass, new Cast(ValidatorConfig.class, config));
 
         //save all pending non config related properties wherever possible
-        super.mapProperties(newHandler, oldHandler);
+        super.mapProperties(newHandler, engineType, oldHandler);
 
         return newHandler;
     }

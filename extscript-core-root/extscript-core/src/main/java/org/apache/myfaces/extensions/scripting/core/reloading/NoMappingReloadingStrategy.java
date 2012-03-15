@@ -48,7 +48,7 @@ public class NoMappingReloadingStrategy extends SimpleReloadingStrategy
     }
 
     @Override
-    protected void mapProperties(Object target, Object src)
+    protected void mapProperties(Object target, int engineType, Object src)
     {
     }
 }

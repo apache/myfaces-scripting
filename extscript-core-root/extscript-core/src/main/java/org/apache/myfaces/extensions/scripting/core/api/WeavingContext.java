@@ -165,6 +165,14 @@ public class WeavingContext
         return FactoryEngines.getInstance().getEngine(engineType);
     }
 
+    public ScriptingEngine getAssociatedEngine(Object artifact) {
+        for(ScriptingEngine engine : getEngines()) {
+            if(engine.isArtifactOfEngine(artifact)) return engine;
+        }
+        return null;
+    }
+    
+    
     /**
      * returns the mitable watche resource maps for the various engines
      *
@@ -386,9 +394,11 @@ public class WeavingContext
         return clazz;
     }
 
-    public Object reload(Object instance, int strategyType)
+    public Object reload(Object instance,  int strategyType)
     {
-        return _reloadingStrategy.reload(instance, strategyType);
+        int engineType = getAssociatedEngine(instance).getEngineType();
+
+        return _reloadingStrategy.reload(instance, engineType, strategyType);
     }
 
     /**

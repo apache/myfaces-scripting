@@ -18,21 +18,21 @@
  */
 package org.apache.myfaces.extensions.scripting.groovyloader.core
 
-import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy
 
 
 
-public class StandardGroovyReloadingStrategy extends SimpleReloadingStrategy {
+public class GroovyPropertyMapper
+{
 
 
-  public StandardGroovyReloadingStrategy() {
+  public GroovyPropertyMapper() {
     super();
   }
 
   /**
    * central algorithm which determines which property values are overwritten and which are not
    */
-  protected void mapProperties(def target, def src) {
+  public static void mapProperties(def target, def src) {
     src.properties.each {property ->
       //ok here is the algorithm, basic datatypes usually are not copied but read in anew and then overwritten
       //later on

@@ -58,7 +58,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
      * @param scriptingInstance the instance to be reloaded by the system
      * @return either the same object or a new instance utilizing the changed code
      */
-    public Object reload(Object scriptingInstance, int artifactType) {
+    public Object reload(Object scriptingInstance, int engineType, int artifactType) {
        //reload the class to get new static content if needed
         Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
 
@@ -75,7 +75,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
             Object newObject = aclass.newInstance();
 
             /*now we shuffle the properties between the objects*/
-            mapProperties(newObject, scriptingInstance);
+            mapProperties(newObject, engineType, scriptingInstance);
 
             return newObject;
         } catch (Exception e) {
@@ -96,16 +96,8 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
      * @param target the target which has to receive the properties
      * @param src    the source which has the original properties
      */
-    protected void mapProperties(Object target, Object src) {
-        try {
-            BeanUtils.copyProperties(target, src);
-        } catch (IllegalAccessException e) {
-            getLog().log(Level.FINEST, e.toString());
-            //this is wanted
-        } catch (InvocationTargetException e) {
-            getLog().log(Level.FINEST, e.toString());
-            //this is wanted
-        }
+    protected void mapProperties(Object target, int engineType, Object src) {
+       WeavingContext.getInstance().getEngine(engineType).copyProperties(target, src);
     }
 
     protected Logger getLog() {

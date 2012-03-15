@@ -120,4 +120,20 @@ public interface ScriptingEngine
      */
     public ReloadingStrategy getBasicReloadingStrategy();
 
+    /**
+     * detects whether a given object is an artifact of a given object
+     * @return
+     */
+    public boolean isArtifactOfEngine(Object artifact);
+
+    /**
+     * engine related copy properties, which takes
+     * certain language constructs into consideration.
+     * Groovy for instance has extra props for meta classes
+     * which should not be copied.
+     *
+     * @param dest the destination
+     * @param src  the source
+     */
+    public void copyProperties(Object dest, Object src);
 }

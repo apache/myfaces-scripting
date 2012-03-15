@@ -52,7 +52,7 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy
      * @return does nothing in this case and returns only the original instance, the reloading is handled
      *         for managed beans on another level
      */
-    public Object reload(Object scriptingInstance, int artifactType) {
+    public Object reload(Object scriptingInstance, int engineType, int artifactType) {
         return scriptingInstance;
     }
 

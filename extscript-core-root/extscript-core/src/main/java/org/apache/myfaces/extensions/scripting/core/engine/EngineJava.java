@@ -19,6 +19,8 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine;
 
+import groovy.lang.GroovyObject;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
@@ -31,7 +33,9 @@ import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStr
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
@@ -102,6 +106,28 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
     public ReloadingStrategy getBasicReloadingStrategy()
     {
         return new SimpleReloadingStrategy();
+    }
+
+    @Override
+    public boolean isArtifactOfEngine(Object artifact)
+    {
+        //TODO add other engines here
+        return !(artifact instanceof GroovyObject);
+    }
+
+    @Override
+    public void copyProperties(Object dest, Object src)
+    {
+
+        try {
+            BeanUtils.copyProperties(dest, src);
+        } catch (IllegalAccessException e) {
+            log.log(Level.FINEST, e.toString());
+            //this is wanted
+        } catch (InvocationTargetException e) {
+            log.log(Level.FINEST, e.toString());
+            //this is wanted
+        }
     }
 
     @Override

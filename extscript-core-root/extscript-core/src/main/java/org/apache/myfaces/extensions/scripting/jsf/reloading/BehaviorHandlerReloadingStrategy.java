@@ -46,7 +46,7 @@ public class BehaviorHandlerReloadingStrategy extends SimpleReloadingStrategy
     }
 
     @Override
-    public Object reload(Object scriptingInstance, int artifactType) {
+    public Object reload(Object scriptingInstance, int engineType, int artifactType) {
         if (!(scriptingInstance instanceof ComponentHandler)) return scriptingInstance;
         Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
         if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
@@ -62,7 +62,7 @@ public class BehaviorHandlerReloadingStrategy extends SimpleReloadingStrategy
         BehaviorHandler newHandler = (BehaviorHandler) ReflectUtil.instantiate(aclass, new Cast(BehaviorConfig.class, config));
 
         //save all pending non config related properties wherever possible
-        super.mapProperties(newHandler, oldHandler);
+        super.mapProperties(newHandler, engineType, oldHandler);
 
         return newHandler;
     }

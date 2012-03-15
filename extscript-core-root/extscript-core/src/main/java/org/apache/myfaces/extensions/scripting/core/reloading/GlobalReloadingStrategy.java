@@ -79,40 +79,40 @@ public class GlobalReloadingStrategy implements ReloadingStrategy
      * @param artifactType the artifact type for which the reloading strategy has to be applied to
      * @return either the same or a reloading object depending on the current state of the object
      */
-    public Object reload(Object toReload, int artifactType)
+    public Object reload(Object toReload, int engineType, int artifactType)
     {
 
         switch (artifactType)
         {
             case ARTIFACT_TYPE_MANAGEDBEAN:
-                return _beanStrategy.reload(toReload, artifactType);
+                return _beanStrategy.reload(toReload, engineType, artifactType);
 
             case ARTIFACT_TYPE_RENDERER:
-                return _noMappingStrategy.reload(toReload, artifactType);
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
             case ARTIFACT_TYPE_BEHAVIOR:
-                return _noMappingStrategy.reload(toReload, artifactType);
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
             case ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER:
-                return _noMappingStrategy.reload(toReload, artifactType);
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
             case ARTIFACT_TYPE_COMPONENT:
-                return _noMappingStrategy.reload(toReload, artifactType);
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
             case ARTIFACT_TYPE_VALIDATOR:
-                return _noMappingStrategy.reload(toReload, artifactType);
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
 
             case ARTIFACT_TYPE_COMPONENT_HANDLER:
-                return dynaReload(toReload, _componentHandlerStrategy, artifactType);
+                return dynaReload(toReload, _componentHandlerStrategy, engineType, artifactType);
             case ARTIFACT_TYPE_CONVERTER_HANDLER:
-                return dynaReload(toReload, _converterHandlerStrategy, artifactType);
+                return dynaReload(toReload, _converterHandlerStrategy, engineType, artifactType);
             case ARTIFACT_TYPE_VALIDATOR_HANDLER:
-                return dynaReload(toReload, _validatorHandlerStrategy, artifactType);
+                return dynaReload(toReload, _validatorHandlerStrategy, engineType, artifactType);
             case ARTIFACT_TYPE_BEHAVIOR_HANDLER:
-                return dynaReload(toReload, _behaviorHandlerStrategy, artifactType);
+                return dynaReload(toReload, _behaviorHandlerStrategy, engineType, artifactType);
 
             default:
-                return _allOthers.reload(toReload, artifactType);
+                return _allOthers.reload(toReload, engineType, artifactType);
         }
     }
 
-    public Object dynaReload(Object toReload, ReloadingStrategy strategy, int artifactType)
+    public Object dynaReload(Object toReload, ReloadingStrategy strategy, int engineType, int artifactType)
     {
         if (strategy == null)
         {
@@ -120,7 +120,7 @@ public class GlobalReloadingStrategy implements ReloadingStrategy
             return toReload;
         } else
         {
-            return strategy.reload(toReload, artifactType);
+            return strategy.reload(toReload, engineType, artifactType);
         }
     }
 

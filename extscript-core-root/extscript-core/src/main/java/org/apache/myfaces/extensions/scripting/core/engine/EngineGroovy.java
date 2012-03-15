@@ -19,7 +19,9 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine;
 
-import org.apache.myfaces.extensions.scripting.groovyloader.core.StandardGroovyReloadingStrategy;
+import groovy.lang.GroovyObject;
+import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
+import org.apache.myfaces.extensions.scripting.groovyloader.core.GroovyPropertyMapper;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
@@ -63,7 +65,19 @@ public class EngineGroovy extends BaseEngine implements ScriptingEngine
     @Override
     public ReloadingStrategy getBasicReloadingStrategy()
     {
-        return new StandardGroovyReloadingStrategy();
+        return new SimpleReloadingStrategy();
+    }
+
+    @Override
+    public boolean isArtifactOfEngine(Object artifact)
+    {
+        return (artifact instanceof GroovyObject);
+    }
+
+    @Override
+    public void copyProperties(Object dest, Object src)
+    {
+        GroovyPropertyMapper.mapProperties(dest, src);
     }
 
     @Override

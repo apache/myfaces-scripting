@@ -36,8 +36,9 @@ public interface ReloadingStrategy {
      * strategy pattern
      *
      * @param toReload     the object to be reloaded
+     * @param engineType   the engine type to reload
      * @param artifactType the artifact type to be reloaded (so that the pattern either can ignore it or use it)
      * @return either the original or the reloaded artifact depending on its type and state
      */
-    public Object reload(Object toReload, int artifactType);
+    public Object reload(Object toReload, int engineType, int artifactType);
 }
