@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations;
+package org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.implementations;
 
 
 import org.apache.myfaces.extensions.scripting.core.api.Decorated;

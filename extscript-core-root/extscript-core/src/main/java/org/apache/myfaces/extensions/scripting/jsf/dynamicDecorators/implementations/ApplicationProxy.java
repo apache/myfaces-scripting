@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations;
+package org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.implementations;
 
 import org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;

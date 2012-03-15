@@ -32,20 +32,20 @@
         -->
 
         <application-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingApplicationFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.factories.ScriptingApplicationFactory
         </application-factory>
 
         <faces-context-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingFacesContextFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.factories.ScriptingFacesContextFactory
         </faces-context-factory>
 
 
         <lifecycle-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingLifecycleFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.factories.ScriptingLifecycleFactory
         </lifecycle-factory>
 
         <render-kit-factory>
-            org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories.ScriptingRenderkitFactory
+            org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.factories.ScriptingRenderkitFactory
         </render-kit-factory>
 
         <!--

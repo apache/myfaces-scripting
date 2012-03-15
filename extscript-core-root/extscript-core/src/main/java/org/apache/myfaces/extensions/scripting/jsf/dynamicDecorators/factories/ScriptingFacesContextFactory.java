@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.factories;
+package org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.factories;
 
 
 import org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import org.apache.myfaces.extensions.scripting.jsf.dynamicdecorators.implementations.FacesContextProxy;
+import org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.implementations.FacesContextProxy;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
