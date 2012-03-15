@@ -26,7 +26,6 @@ import javax.faces.bean.ManagedBean
 
 @ManagedBean(name = "blogService")
 @ApplicationScoped
-
 public class BlogService {
   List blogEntries = new ArrayList()
 
@@ -36,7 +35,7 @@ public class BlogService {
 
   public void addEntry2(BlogEntry entry) {
     Logger log = Logger.getLogger(BlogService.class.getName())
-    log.info("Adding entry 2, topic: " + entry.topic)
+    log.info("Adding entry 2, topic:" + entry.topic)
 
     blogEntries.add(entry)
 

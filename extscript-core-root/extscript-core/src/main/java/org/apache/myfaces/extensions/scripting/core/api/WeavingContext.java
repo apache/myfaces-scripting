@@ -25,6 +25,7 @@ import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
+import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders.ScannerClassloader;
 import org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
@@ -350,7 +351,8 @@ public class WeavingContext
 
     public boolean isDynamic(Class clazz)
     {
-        return clazz.getClassLoader() instanceof ThrowAwayClassloader;
+        return ((clazz.getClassLoader() instanceof ThrowAwayClassloader) || (clazz.getClassLoader() instanceof
+            ScannerClassloader));
     }
 
     /**

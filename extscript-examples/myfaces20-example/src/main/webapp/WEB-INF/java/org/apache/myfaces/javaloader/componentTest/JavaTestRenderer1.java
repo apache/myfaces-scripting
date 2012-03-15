@@ -48,7 +48,7 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         JavaTestComponent myComponent = (JavaTestComponent) component;
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.write("<h3>Renderer Demo Java Renderer 1</h3>");
+        writer.write("<h3>Renderer Demo Java Renderer 1 aaa</h3>");
         //uncomment for demo 1
         test(myComponent, writer);
 

@@ -22,6 +22,8 @@ import java.util.logging.Logger
 import javax.faces.bean.ManagedBean
 import javax.faces.bean.ApplicationScoped
 
+
+
 public class BlogService2 {
   List blogEntries = new ArrayList()
 
@@ -32,7 +34,7 @@ public class BlogService2 {
 
   public void addEntry(def entry) {
     Logger log = Logger.getLogger(BlogService.class.getName())
-    log.info("Adding entry, topic xxx: " + entry.topic)
+    log.info("------Adding entry, topic: " + entry.topic)
     entry.topic = "topic from blogservice 2"
     blogEntries.add(entry)
 

@@ -24,6 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.FacesRenderer;
 import java.io.IOException;
 
 /**
@@ -33,7 +34,6 @@ import java.io.IOException;
  *          This renderer can act as a drag and drop target for the annotation
  *          set in JavaTestRenderer1
  */
-
 public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
 
     private static final String MSG = "<h2> Hello world ccc from Renderer 2 </h2>";

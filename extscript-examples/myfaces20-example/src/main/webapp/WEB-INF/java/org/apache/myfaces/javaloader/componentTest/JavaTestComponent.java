@@ -22,6 +22,7 @@ import org.apache.myfaces.javaloader.other.Markable;
 
 import javax.faces.component.UIInput;
 import javax.faces.component.FacesComponent;
+import javax.faces.component.UIOutput;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -34,7 +35,7 @@ import javax.faces.component.FacesComponent;
  */
 
 @FacesComponent("at.irian.JavaTestComponent")
-public class JavaTestComponent extends UIInput implements Markable {
+public class JavaTestComponent extends UIOutput implements Markable {
 
     String _testAttr;
 
