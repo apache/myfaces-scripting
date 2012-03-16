@@ -54,7 +54,7 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         writer.flush();
     }
     
-    
+
     //uncomment for demo 1
    
    private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {

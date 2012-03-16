@@ -120,11 +120,6 @@ public class RenderkitProxy extends RenderKit implements Decorated
     public Renderer getRenderer(String componentFamily, String rendererType)
     {
         weaveDelegate();
-        if (rendererType.contains("JavaTestRenderer"))
-        {
-            System.out.println("Debugpoint found");
-        }
-
         Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
         Renderer unproxiedRendr = unproxy(rendr);
 

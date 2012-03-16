@@ -33,11 +33,11 @@ import javax.faces.component.UIComponent;
 @FacesConverter(value = "at.irian.CustomConverter")
 public class TestConverter1 implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-        return value;  
+        return value;
     }
 
     
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-        return (String)value;  
+        return (String)value;
     }
 }

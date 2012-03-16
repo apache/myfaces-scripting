@@ -106,11 +106,6 @@ public class ScannerClassloader extends ClassLoader
             {
                 _logger.log(Level.FINER, "class read {0} bytes read", String.valueOf(len));
             }
-
-            if (className.contains("TestResourceHandler"))
-            {
-                System.out.println("debugpoint found");
-            }
             //we have to do it here because just in case
             //a dependent class is loaded as well we run into classcast exceptions
             Class retVal = super.defineClass(className, fileContent, 0, fileLength);
