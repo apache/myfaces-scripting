@@ -46,9 +46,7 @@
 
     <modules>
         <module>extscript-core-root</module>
-        <!--
         <module>extscript-bundles</module>
-        -->
         <module>extscript-examples</module>
     </modules>
 
@@ -121,6 +119,7 @@
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <inherited>true</inherited>
+                    <version>2.2</version>
                     <configuration>
                         <outputEncoding>UTF-8</outputEncoding>
                     </configuration>
@@ -213,7 +212,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
-                <version>2.3</version>
+
                 <!--
                 <configuration>
                     <aggregate>true</aggregate>
@@ -224,7 +223,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
-                <version>2.4</version>
+
                 <configuration>
                     <tags>
                         <tag>TODO</tag>
@@ -244,7 +243,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.12</version>
+
                 <configuration>
                     <targetJdk>1.5</targetJdk>
                 </configuration>

@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
+    <artifactId>extscript-bundles</artifactId>
+    <packaging>pom</packaging>
+    <name>MyFaces Extension Scripting meta bundles</name>
+    <version>1.0.2-SNAPSHOT</version>
+
+    <description>
+        Meta bundles bundling the various ext-script
+        combinations into one coherent package per
+        jsf version
+    </description>
+
+    <parent>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+        <artifactId>extscript-root</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+    </parent>
+
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-bundles</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-bundles</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-bundles</url>
+    </scm>
+
+    <modules>
+        <module>extscript-myfaces20-bundle</module>
+    </modules>
+
+
+     <profiles>
+        <!-- This profile is invoked by -DprepareRelease=true.  This allows mvn release:prepare to
+            run successfully on the assembly projects. -->
+        <profile>
+            <id>prepare-release</id>
+            <activation>
+                <property>
+                    <name>prepareRelease</name>
+                </property>
+            </activation>
+            <modules>
+                <module>extscript20-assembly</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <arguments>-DprepareRelease</arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
