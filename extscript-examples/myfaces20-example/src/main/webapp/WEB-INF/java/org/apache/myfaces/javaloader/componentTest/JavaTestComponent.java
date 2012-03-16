@@ -35,7 +35,7 @@ import javax.faces.component.UIOutput;
  */
 
 @FacesComponent("at.irian.JavaTestComponent")
-public class JavaTestComponent extends UIOutput implements Markable {
+public class JavaTestComponent extends UIInput implements Markable {
 
     String _testAttr;
 

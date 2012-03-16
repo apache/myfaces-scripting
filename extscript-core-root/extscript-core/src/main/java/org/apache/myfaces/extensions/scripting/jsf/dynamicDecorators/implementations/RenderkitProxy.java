@@ -31,7 +31,6 @@ import javax.faces.render.Renderer;
 import javax.faces.render.ResponseStateManager;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.lang.reflect.Field;
 import java.util.Iterator;
 
 /**
@@ -56,7 +55,6 @@ public class RenderkitProxy extends RenderKit implements Decorated
         weaveDelegate();
         //wo do it brute force here because we have sometimes casts and hence cannot rely on proxies
         //renderers itself are flyweight patterns which means they are shared over objects
-
         renderer = (Renderer) reloadInstance(renderer, ScriptingConst.ARTIFACT_TYPE_RENDERER);
 
         _delegate.addRenderer(componentFamily, rendererType, renderer);
@@ -77,7 +75,7 @@ public class RenderkitProxy extends RenderKit implements Decorated
             String name = proxiedObject.getClass().getName();
             while (name.contains("ExtVal") && (name.contains("Wrapper") || name.contains("Proxy")))
             {
-                proxiedObject = (Renderer)  ReflectUtil.getField(proxiedObject,
+                proxiedObject = (Renderer) ReflectUtil.getField(proxiedObject,
                         "wrapped", true);
                 name = proxiedObject.getClass().getName();
             }
@@ -89,53 +87,54 @@ public class RenderkitProxy extends RenderKit implements Decorated
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-
         return proxiedObject;
     }
 
-    private Renderer proxy(Renderer proxy, Renderer toBeProxied)
+    private Renderer applyToProxy(Renderer proxy, Renderer toBeProxied)
     {
-            Renderer oldProxiedObject = proxy;
-           try
-           {
-               //extval
-   
-               String name = proxy.getClass().getName();
-               while (name.contains("ExtVal") && (name.contains("Wrapper") || name.contains("Proxy")))
-               {
-                   oldProxiedObject = proxy;
-                   proxy = (Renderer) ReflectUtil.getField(proxy,"wrapped", true); //(Renderer) proxiedField.get(proxy);
-                   name = proxy.getClass().getName();
-                   if(!name.contains("ExtVal") && !(name.contains("Wrapper") || name.contains("Proxy"))) {
-                       ReflectUtil.setField(oldProxiedObject,"wrapped", proxy, true);
-                       return proxy;
-                   }
-               }
-           }
-           catch (RuntimeException e)
-           {
-               e.printStackTrace();
-           }
-           return  toBeProxied;
+        Renderer oldProxiedObject = proxy;
+        try
+        {
+            //extval
+
+            String name = proxy.getClass().getName();
+            while (name.contains("ExtVal") && (name.contains("Wrapper") || name.contains("Proxy")))
+            {
+                oldProxiedObject = proxy;
+                proxy = (Renderer) ReflectUtil.getField(proxy, "wrapped", true); //(Renderer) proxiedField.get(proxy);
+                name = proxy.getClass().getName();
+                if (!name.contains("ExtVal") && !(name.contains("Wrapper") || name.contains("Proxy")))
+                {
+                    ReflectUtil.setField(oldProxiedObject, "wrapped", proxy, true);
+                    return proxy;
+                }
+            }
+        }
+        catch (RuntimeException e)
+        {
+            e.printStackTrace();
+        }
+        return toBeProxied;
     }
+
     public Renderer getRenderer(String componentFamily, String rendererType)
     {
         weaveDelegate();
-        Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
-        Renderer unproxiedRendr = unproxy(rendr);
-        if(unproxiedRendr.getClass().getName().contains("JavaTestRenderer1")) {
+        if (rendererType.contains("JavaTestRenderer"))
+        {
             System.out.println("Debugpoint found");
         }
+
+        Renderer rendr = _delegate.getRenderer(componentFamily, rendererType);
+        Renderer unproxiedRendr = unproxy(rendr);
+
         //TODO extval proxy handling here
         Renderer rendr2 = (Renderer) reloadInstance(unproxiedRendr, ScriptingConst.ARTIFACT_TYPE_RENDERER);
         if (unproxiedRendr != rendr2)
         {
             Renderer tempRenderer = _delegate.getRenderer(componentFamily, rendererType);
-            /**<></>if (tempRenderer instanceof PurgedRenderer) {
-             return handleAnnotationChange(componentFamily, rendererType);
-             } */
             //in case of a renderer proxy we have to weave the original object back in
-            rendr2 = proxy(rendr ,rendr2);
+            rendr2 = applyToProxy(rendr, rendr2);
             _delegate.addRenderer(componentFamily, rendererType, rendr2);
             return rendr2;
         }
