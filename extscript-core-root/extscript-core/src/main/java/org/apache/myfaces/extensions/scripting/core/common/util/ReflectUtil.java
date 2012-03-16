@@ -18,13 +18,9 @@
  */
 package org.apache.myfaces.extensions.scripting.core.common.util;
 
-
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -35,11 +31,13 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 
-public class ReflectUtil {
+public class ReflectUtil
+{
 
     static final Logger _logger = Logger.getLogger(ReflectUtil.class.getName());
 
-    public static Object instantiate(String clazz, Object... varargs) {
+    public static Object instantiate(String clazz, Object... varargs)
+    {
         return instantiate(ClassUtils.forName(clazz), varargs);
     }
 
@@ -50,28 +48,41 @@ public class ReflectUtil {
      * @param varargs the instantiation parameters
      * @return the instantiated object
      */
-    public static Object instantiate(Class clazz, Object... varargs) {
+    public static Object instantiate(Class clazz, Object... varargs)
+    {
         Class[] classes = new Class[varargs.length];
-        for (int cnt = 0; cnt < varargs.length; cnt++) {
+        for (int cnt = 0; cnt < varargs.length; cnt++)
+        {
 
-            if (varargs[cnt] instanceof Cast) {
+            if (varargs[cnt] instanceof Cast)
+            {
                 classes[cnt] = ((Cast) varargs[cnt]).getClazz();
                 varargs[cnt] = ((Cast) varargs[cnt]).getValue();
-            } else {
+            } else
+            {
                 classes[cnt] = varargs[cnt].getClass();
             }
         }
 
-        try {
+        try
+        {
             Constructor constr = clazz.getConstructor(classes);
             return constr.newInstance(varargs);
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e)
+        {
             throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e)
+        {
             throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e)
+        {
             throw new RuntimeException(e);
-        } catch (InstantiationException e) {
+        }
+        catch (InstantiationException e)
+        {
             throw new RuntimeException(e);
         }
     }/*this is mostly just a helper to bypass a groovy bug in a more
@@ -80,7 +91,8 @@ public class ReflectUtil {
    * fixes that
    * */
 
-    public static Object newObject(Class clazz) throws IllegalAccessException, InstantiationException {
+    public static Object newObject(Class clazz) throws IllegalAccessException, InstantiationException
+    {
         return clazz.newInstance();
     }
 
@@ -93,18 +105,21 @@ public class ReflectUtil {
      * @param varargs    the arguments which have to be passed to the method
      * @return the return value of the method
      */
-    public static Object executeStaticMethod(Class obj, String methodName, Object... varargs) {
+    public static Object executeStaticMethod(Class obj, String methodName, Object... varargs)
+    {
 
         Collection<Method> methods = getMethods(obj, methodName, varargs.length);
 
         Object retVal = handleStaticMethod(obj, methodName, methods, varargs);
-        if (!methodNotFound(retVal)) {
+        if (!methodNotFound(retVal))
+        {
             return retVal;
         }
 
         methods = getAllMethods(obj, methodName, varargs.length);
         retVal = handleStaticMethod(obj, methodName, methods, varargs);
-        if (!methodNotFound(retVal)) {
+        if (!methodNotFound(retVal))
+        {
             return retVal;
         }
 
@@ -112,11 +127,69 @@ public class ReflectUtil {
 
     }
 
-    public static Collection<Method> getAllMethods(Class clazz, String methodName, int varargLength) {
+    public static void setField(Object obj, String fieldName, Object value, boolean protectedField)
+    {
+        try
+        {
+            Field f = null;
+            try
+            {
+                f = obj.getClass().getDeclaredField(fieldName);
+            }
+            catch (NoSuchFieldException e)
+            {
+                f = obj.getClass().getField(fieldName);
+            }
+
+            f.setAccessible(protectedField);
+            f.set(obj, value);
+
+        }
+        catch (NoSuchFieldException e)
+        {
+            throw new RuntimeException(e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object getField(Object obj, String fieldName, boolean protectedField)
+    {
+        try
+        {
+            Field f = null;
+            try
+            {
+                f = obj.getClass().getDeclaredField(fieldName);
+            }
+            catch (NoSuchFieldException e)
+            {
+                f = obj.getClass().getField(fieldName);
+            }
+            f.setAccessible(protectedField);
+            return f.get(obj);
+        }
+        catch (NoSuchFieldException e)
+        {
+            throw new RuntimeException(e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Collection<Method> getAllMethods(Class clazz, String methodName, int varargLength)
+    {
         ArrayList<Method> retVal = new ArrayList<Method>(30);
-        while (clazz != null) {
-            for (Method m : clazz.getDeclaredMethods()) {
-                if (m.getParameterTypes().length == varargLength && m.getName().equals(methodName)) {
+        while (clazz != null)
+        {
+            for (Method m : clazz.getDeclaredMethods())
+            {
+                if (m.getParameterTypes().length == varargLength && m.getName().equals(methodName))
+                {
                     retVal.add(m);
                 }
             }
@@ -126,10 +199,13 @@ public class ReflectUtil {
         return retVal;
     }
 
-    public static Collection<Method> getMethods(Class clazz, String methodName, int varargLength) {
+    public static Collection<Method> getMethods(Class clazz, String methodName, int varargLength)
+    {
         ArrayList<Method> retVal = new ArrayList<Method>(30);
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (m.getParameterTypes().length == varargLength && m.getName().equals(methodName)) {
+        for (Method m : clazz.getDeclaredMethods())
+        {
+            if (m.getParameterTypes().length == varargLength && m.getName().equals(methodName))
+            {
                 retVal.add(m);
             }
         }
@@ -150,7 +226,8 @@ public class ReflectUtil {
      *                          language execution where failures can happen but method executions
      *                          should not enforce exception handling
      */
-    public static Object executeMethod(Object obj, String methodName, Object... varargs) {
+    public static Object executeMethod(Object obj, String methodName, Object... varargs)
+    {
 
         Collection<Method> methods;
         //if we have an invocationHandler here we
@@ -158,7 +235,8 @@ public class ReflectUtil {
         //That way we can cover more dynamic stuff
         //our reload invocation handler is treated differently here
 
-        if (obj instanceof InvocationHandler) {
+        if (obj instanceof InvocationHandler)
+        {
             InvocationHandler objToInvoke = (InvocationHandler) obj;
 
             Object realTarget = WeavingContext.getInstance().getDelegateFromProxy(objToInvoke);
@@ -167,13 +245,15 @@ public class ReflectUtil {
             //to be accessed
             methods = getMethods(realTarget.getClass(), methodName, varargs.length);
             Object retVal = handleInvHandlerMethod(objToInvoke, methodName, methods, varargs);
-            if (!methodNotFound(retVal)) {
+            if (!methodNotFound(retVal))
+            {
                 return retVal;
             }
             //if not we try all of them until we have a match
             methods = getAllMethods(realTarget.getClass(), methodName, varargs.length);
             retVal = handleInvHandlerMethod(objToInvoke, methodName, methods, varargs);
-            if (!(methodNotFound(retVal))) {
+            if (!(methodNotFound(retVal)))
+            {
                 return retVal;
             }
 
@@ -186,14 +266,16 @@ public class ReflectUtil {
         //to be accessed
         methods = getMethods(clazz, methodName, varargs.length);
         Object retVal = handleObjMethod(obj, methodName, methods, varargs);
-        if (!methodNotFound(retVal)) {
+        if (!methodNotFound(retVal))
+        {
             return retVal;
         }
 
         //if not we try all of them until we have a match
         methods = getAllMethods(clazz, methodName, varargs.length);
         retVal = handleObjMethod(obj, methodName, methods, varargs);
-        if (!methodNotFound(retVal)) {
+        if (!methodNotFound(retVal))
+        {
             return retVal;
         }
 
@@ -204,7 +286,8 @@ public class ReflectUtil {
      * special marker class which is a special return value indicating
      * that not method has been found which can be executed
      */
-    static class _MethodNotFound {
+    static class _MethodNotFound
+    {
     }
 
     /**
@@ -214,7 +297,8 @@ public class ReflectUtil {
      * @param retVal the retVal which has to be investigated
      * @return true if the retVal is instance of _MethodNotFound false otherwise
      */
-    private static boolean methodNotFound(Object retVal) {
+    private static boolean methodNotFound(Object retVal)
+    {
         return retVal instanceof _MethodNotFound;
     }
 
@@ -228,14 +312,20 @@ public class ReflectUtil {
      * @param varargs     the list of varargs to be passed to the method
      * @return the result of the invocation, or an object of type _MethodNotFound otherwise
      */
-    static private Object handleInvHandlerMethod(InvocationHandler objToInvoke, String methodName, Collection<Method> methods, Object... varargs) {
-        for (Method m : methods) {
-            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+    static private Object handleInvHandlerMethod(InvocationHandler objToInvoke, String methodName, Collection<Method> methods, Object... varargs)
+    {
+        for (Method m : methods)
+        {
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length)
+            {
                 continue;
             }
-            try {
+            try
+            {
                 return objToInvoke.invoke(objToInvoke, m, varargs);
-            } catch (Throwable e) {
+            }
+            catch (Throwable e)
+            {
                 handleException(e);
             }
         }
@@ -251,14 +341,20 @@ public class ReflectUtil {
      * @param varargs     the list of varargs to be passed to the method
      * @return the result of the invocation, or an object of type _MethodNotFound otherwise
      */
-    static private Object handleObjMethod(Object objToInvoke, String methodName, Collection<Method> methods, Object... varargs) {
-        for (Method m : methods) {
-            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+    static private Object handleObjMethod(Object objToInvoke, String methodName, Collection<Method> methods, Object... varargs)
+    {
+        for (Method m : methods)
+        {
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length)
+            {
                 continue;
             }
-            try {
+            try
+            {
                 return m.invoke(objToInvoke, varargs);
-            } catch (Throwable e) {
+            }
+            catch (Throwable e)
+            {
                 handleException(e);
             }
         }
@@ -274,30 +370,42 @@ public class ReflectUtil {
      * @param varargs     the list of varargs to be passed to the method
      * @return the result of the invocation, or an object of type _MethodNotFound otherwise
      */
-    static private Object handleStaticMethod(Class objToInvoke, String methodName, Collection<Method> methods, Object... varargs) {
-        for (Method m : methods) {
-            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length) {
+    static private Object handleStaticMethod(Class objToInvoke, String methodName, Collection<Method> methods, Object... varargs)
+    {
+        for (Method m : methods)
+        {
+            if (!m.getName().equals(methodName) || m.getParameterTypes().length != varargs.length)
+            {
                 continue;
             }
-            try {
+            try
+            {
                 return m.invoke(objToInvoke, varargs);
-            } catch (Throwable e) {
+            }
+            catch (Throwable e)
+            {
                 handleException(e);
             }
         }
         return new _MethodNotFound();
     }
 
-    private static void handleException(Throwable e) {
-        if (e instanceof IllegalAccessException) {
-            if (_logger.isLoggable(Level.FINEST)) {
+    private static void handleException(Throwable e)
+    {
+        if (e instanceof IllegalAccessException)
+        {
+            if (_logger.isLoggable(Level.FINEST))
+            {
                 _logger.log(Level.FINEST, "", e);
             }
-        } else if (e instanceof IllegalArgumentException) {
-            if (_logger.isLoggable(Level.FINEST)) {
+        } else if (e instanceof IllegalArgumentException)
+        {
+            if (_logger.isLoggable(Level.FINEST))
+            {
                 _logger.log(Level.FINEST, "", e);
             }
-        } else {
+        } else
+        {
             throw new RuntimeException(e);
         }
     }
@@ -313,26 +421,37 @@ public class ReflectUtil {
      * @return the result object for the Method(method) call
      * @throws RuntimeException an unmanaged runtime exception in case of an introspection error
      */
-    public static Object fastExecuteMethod(Object obj, String methodName, Object... varargs) {
+    public static Object fastExecuteMethod(Object obj, String methodName, Object... varargs)
+    {
         Class[] classes = new Class[varargs.length];
-        for (int cnt = 0; cnt < varargs.length; cnt++) {
+        for (int cnt = 0; cnt < varargs.length; cnt++)
+        {
 
-            if (varargs[cnt] instanceof Cast) {
+            if (varargs[cnt] instanceof Cast)
+            {
                 classes[cnt] = ((Cast) varargs[cnt]).getClazz();
                 varargs[cnt] = ((Cast) varargs[cnt]).getValue();
-            } else {
+            } else
+            {
                 classes[cnt] = varargs[cnt].getClass();
             }
         }
 
-        try {
+        try
+        {
             Method m = fastGetMethod(obj, methodName, classes);
             return m.invoke(obj, varargs);
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e)
+        {
             throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e)
+        {
             throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e)
+        {
             throw new RuntimeException(e);
         }
 
@@ -351,11 +470,15 @@ public class ReflectUtil {
      * @return the method if found
      * @throws NoSuchMethodException in case it could not be found
      */
-    public static Method fastGetMethod(Object obj, String methodName, Class[] classes) throws NoSuchMethodException {
+    public static Method fastGetMethod(Object obj, String methodName, Class[] classes) throws NoSuchMethodException
+    {
         Method m;
-        try {
+        try
+        {
             m = obj.getClass().getDeclaredMethod(methodName, classes);
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e)
+        {
             m = obj.getClass().getMethod(methodName, classes);
         }
         return m;
@@ -372,36 +495,51 @@ public class ReflectUtil {
      * @return the result object for the Method(method) call
      * @throws RuntimeException an unmanaged runtime exception in case of an introspection error
      */
-    public static Object fastExecuteStaticMethod(Class obj, String methodName, Object... varargs) {
+    public static Object fastExecuteStaticMethod(Class obj, String methodName, Object... varargs)
+    {
         Class[] classes = new Class[varargs.length];
-        for (int cnt = 0; cnt < varargs.length; cnt++) {
+        for (int cnt = 0; cnt < varargs.length; cnt++)
+        {
 
-            if (varargs[cnt] instanceof Cast) {
+            if (varargs[cnt] instanceof Cast)
+            {
                 classes[cnt] = ((Cast) varargs[cnt]).getClazz();
                 varargs[cnt] = ((Cast) varargs[cnt]).getValue();
-            } else {
+            } else
+            {
                 classes[cnt] = varargs[cnt].getClass();
             }
         }
 
-        try {
+        try
+        {
             Method m = fastGetStaticMethod(obj, methodName, classes);
             return m.invoke(obj, varargs);
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e)
+        {
             throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e)
+        {
             throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e)
+        {
             throw new RuntimeException(e);
         }
 
     }
 
-    public static Method fastGetStaticMethod(Class obj, String methodName, Class[] classes) throws NoSuchMethodException {
+    public static Method fastGetStaticMethod(Class obj, String methodName, Class[] classes) throws NoSuchMethodException
+    {
         Method m;
-        try {
+        try
+        {
             m = obj.getDeclaredMethod(methodName, classes);
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e)
+        {
             m = obj.getMethod(methodName, classes);
         }
         return m;
@@ -415,7 +553,8 @@ public class ReflectUtil {
      * @param value the value object to be used as param
      * @return a Cast object of the parameters
      */
-    public static Cast cast(Class clazz, Object value) {
+    public static Cast cast(Class clazz, Object value)
+    {
         return new Cast(clazz, value);
     }
 
@@ -426,7 +565,8 @@ public class ReflectUtil {
      * @param clazz the cast target for the method call
      * @return a null value Cast object of the parameters
      */
-    public static Null nullCast(Class clazz) {
+    public static Null nullCast(Class clazz)
+    {
         return new Null(clazz);
     }
 }

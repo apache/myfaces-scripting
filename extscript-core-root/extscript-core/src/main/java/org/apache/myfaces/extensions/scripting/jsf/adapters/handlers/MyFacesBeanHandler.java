@@ -23,7 +23,6 @@ package org.apache.myfaces.extensions.scripting.jsf.adapters.handlers;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  *
- * TODO refactor this out
  */
 
 import org.apache.myfaces.config.RuntimeConfig;
@@ -276,6 +275,12 @@ public class MyFacesBeanHandler
         return WeavingContext.getInstance().isDynamic(managedBeanClass) && tainted.contains(managedBeanClass.getName());
     }
 
-
+    public  void registerManagedBean(Class clazz, String beanName) {
+        //TODO move this over from the beanimplementationListener
+    }
+    public  void removeManagedBean(String className) {
+        //TODO move this over from the beanimplementationlistener
+    }
+        
 }
 

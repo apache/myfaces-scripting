@@ -52,7 +52,6 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
 
     public void register(Class clazz, java.lang.annotation.Annotation ann) {
 
-        RuntimeConfig config = getRuntimeConfig();
 
         javax.faces.bean.ManagedBean annCasted = (javax.faces.bean.ManagedBean) ann;
 
@@ -64,6 +63,19 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         beanName = beanName.replaceAll("\"", "");
         //we need to reregister for every bean due to possible managed prop
         //and scope changes
+        registerManagedBean(clazz, beanName);
+
+    }
+
+    /**
+     * registers a new managed bean into runtime config
+     * @param clazz
+     * @param beanName
+     */
+    protected void registerManagedBean(Class clazz, String beanName)
+    {
+        RuntimeConfig config = getRuntimeConfig();
+
         ManagedBean mbean;
         if (!hasToReregister(beanName, clazz)) {
             mbean = (ManagedBean) _alreadyRegistered.get(beanName);
@@ -73,13 +85,14 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         }
 
         mbean.setBeanClass(clazz.getName());
+
+        ReflectUtil.setField(mbean, "beanClass", null, true);
         mbean.setName(beanName);
         handleManagedpropertiesCompiled(mbean, fields(clazz));
         resolveScope(clazz, mbean);
 
         _alreadyRegistered.put(beanName, mbean);
         config.addManagedBean(beanName, mbean);
-
     }
 
     private void resolveScope(Class clazz, ManagedBean mbean) {
@@ -102,7 +115,7 @@ public class BeanImplementationListener extends BaseAnnotationScanListener imple
         mbean.setScope(scope);
     }
 
-    private void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
+    protected void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
         /*since we reprocess the managed properties we can handle them here by clearing them first*/
         mbean.getManagedProperties().clear();
         for (Field field : fields) {

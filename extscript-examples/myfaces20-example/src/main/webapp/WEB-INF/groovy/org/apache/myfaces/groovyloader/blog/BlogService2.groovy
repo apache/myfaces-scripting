@@ -24,6 +24,8 @@ import javax.faces.bean.ApplicationScoped
 
 
 
+@ManagedBean(name = "blogService")
+@ApplicationScoped
 public class BlogService2 {
   List blogEntries = new ArrayList()
 

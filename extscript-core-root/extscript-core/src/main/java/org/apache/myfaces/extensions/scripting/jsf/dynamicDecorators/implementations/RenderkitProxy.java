@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.implementa
 import org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
@@ -76,24 +77,19 @@ public class RenderkitProxy extends RenderKit implements Decorated
             String name = proxiedObject.getClass().getName();
             while (name.contains("ExtVal") && (name.contains("Wrapper") || name.contains("Proxy")))
             {
-                Field proxiedField = proxiedObject.getClass().getDeclaredField("wrapped");
-                proxiedField.setAccessible(true);
-                proxiedObject = (Renderer) proxiedField.get(proxiedObject);
-
+                proxiedObject = (Renderer)  ReflectUtil.getField(proxiedObject,
+                        "wrapped", true);
                 name = proxiedObject.getClass().getName();
             }
 
             // "getWrapped");
         }
-        catch (IllegalAccessException e)
+        catch (RuntimeException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        catch (NoSuchFieldException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File
-            // Templates.
-        }
+
+
         return proxiedObject;
     }
 
@@ -107,23 +103,16 @@ public class RenderkitProxy extends RenderKit implements Decorated
                String name = proxy.getClass().getName();
                while (name.contains("ExtVal") && (name.contains("Wrapper") || name.contains("Proxy")))
                {
-                   Field proxiedField = proxy.getClass().getDeclaredField("wrapped");
-                   proxiedField.setAccessible(true);
                    oldProxiedObject = proxy;
-                   proxy = (Renderer) proxiedField.get(proxy);
+                   proxy = (Renderer) ReflectUtil.getField(proxy,"wrapped", true); //(Renderer) proxiedField.get(proxy);
                    name = proxy.getClass().getName();
                    if(!name.contains("ExtVal") && !(name.contains("Wrapper") || name.contains("Proxy"))) {
-                       proxiedField.set(oldProxiedObject, proxy);
+                       ReflectUtil.setField(oldProxiedObject,"wrapped", proxy, true);
                        return proxy;
                    }
-
                }
            }
-           catch (IllegalAccessException e)
-           {
-               e.printStackTrace();
-           }
-           catch (NoSuchFieldException e)
+           catch (RuntimeException e)
            {
                e.printStackTrace();
            }

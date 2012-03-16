@@ -50,8 +50,8 @@ public class RefreshPhaseListener implements PhaseListener
         Map<Object, Object> params = context.getAttributes();
         if(params.containsKey("ANN_PROCESSED")) return;
         else params.put("ANN_PROCESSED", Boolean.TRUE);
-        WeavingContext.getInstance().annotationScan();
         WeavingContext.getInstance().getImplementationSPI().refreshManagedBeans();
+        WeavingContext.getInstance().annotationScan();
     }
 
     @Override
