@@ -34,6 +34,7 @@ public class BlogService implements BlogServiceInterface {
 
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
 
+
     /**
      * Add an entry to our blogging list
      * Note: we have a testing annotation,

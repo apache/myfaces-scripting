@@ -35,7 +35,7 @@ public class BlogEntry {
     String content = "";
     
     public String getFirstName() {
-        return firstName+"aaa";
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
