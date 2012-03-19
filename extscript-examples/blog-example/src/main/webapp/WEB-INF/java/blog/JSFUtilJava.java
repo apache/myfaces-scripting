@@ -16,20 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.blog;
+package blog;
+
+import javax.el.ELContext;
+import javax.el.ELResolver;
+import javax.faces.context.FacesContext;
+
 
 /**
- * The entry class 
+ * @author werpu2
+ * @date: 01.09.2009
+ * <p/>
+ * A helper for JSF and introspection related tasks
  */
-public class BlogEntry { 
+public class JSFUtilJava {
 
-  String firstName = ""
-  String lastName = ""
-  String topic = ""
-  String content = "ddddddd"
+    public JSFUtilJava() {
+    }
 
-  public String getTopic() {
-    return topic;
-  }
+    /**
+     * resolves a variable in the current facesContext
+     *
+     * @param beanName
+     * @return
+     */
+    public static Object resolveVariable(String beanName) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        ELContext elContext = facesContext.getELContext();
+        ELResolver elResolver =elContext.getELResolver();
+
+        return elResolver.getValue(elContext, null, beanName);
+    }
 
 }

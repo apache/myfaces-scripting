@@ -49,13 +49,13 @@
         <managed-bean-class>org.apache.myfaces.javaloader.blog.Blog</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
+   <!--
     <managed-bean>
         <managed-bean-name>javaBlogService</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.javaloader.blog.BlogService</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-
+    -->
     <application>
         <navigation-handler>
             org.apache.myfaces.groovyloader.test.TestNavigationHandler

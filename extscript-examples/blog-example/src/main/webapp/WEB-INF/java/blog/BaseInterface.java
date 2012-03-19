@@ -16,20 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.blog;
+package blog;
 
 /**
- * The entry class 
+ * Base interface to test inheritance detection
+ *
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class BlogEntry { 
 
-  String firstName = ""
-  String lastName = ""
-  String topic = ""
-  String content = "ddddddd"
-
-  public String getTopic() {
-    return topic;
-  }
-
+public interface BaseInterface {
 }

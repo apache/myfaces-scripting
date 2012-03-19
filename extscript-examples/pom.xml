@@ -30,11 +30,11 @@
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.12</version>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.2.v20120308</version>
                 <configuration>
                     <connectors>
-                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
                             <port>9090</port>
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
@@ -51,7 +51,6 @@
             </plugin>
 
 
-
         </plugins>
     </build>
     <modules>
@@ -60,6 +59,7 @@
         -->
         <module>myfaces20-example</module>
         <module>myfaces20-extscript-helloworld</module>
+        <module>blog-example</module>
         <!--
         <module>spring-example</module>
         -->

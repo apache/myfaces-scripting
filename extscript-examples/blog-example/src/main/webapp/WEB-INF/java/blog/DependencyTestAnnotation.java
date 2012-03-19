@@ -16,20 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.groovyloader.blog;
+package blog;
 
-/**
- * The entry class 
- */
-public class BlogEntry { 
+import java.lang.annotation.*;
 
-  String firstName = ""
-  String lastName = ""
-  String topic = ""
-  String content = "ddddddd"
 
-  public String getTopic() {
-    return topic;
-  }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DependencyTestAnnotation {
 
 }

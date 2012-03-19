@@ -26,10 +26,6 @@
     <description>Webproject.xml</description>
 
 
-    <!--
-    Note this entry is vital it plugs the ext-scripting system into
-    a myfaces extension point
-    -->
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -40,14 +36,18 @@
     </context-param>
 
 
-    <!--
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/blog-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -58,7 +58,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/blog-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
 
@@ -66,54 +66,8 @@
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/blog-example/src/main/webapp
         </param-value>
-    </context-param>
-
-    <context-param>
-        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
-            source dir
-        </description>
-        <param-name>facelets.RESOURCE_RESOLVER</param-name>
-        <param-value>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</param-value>
-    </context-param>
-    -->
-    <!--
-    <context-param>
-        <description>a comma separated whitelist of root packages which are compiled those and nothing else
-            will be compiled during all compile stages, all other files stay permanently as they are
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.PGK_WHITELIST</param-name>
-        <param-value>org.apache.myfaces.groovyloader.blog</param-value>
-    </context-param>
-    -->
-
-
-    <!--
-     <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy</param-value>
-    </context-param>
-
-
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
-        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/java</param-value>
-    </context-param>
-
-
-    -->
-
-
-    <context-param>
-        <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
     </context-param>
 
 
@@ -126,13 +80,17 @@
     </context-param>
 
 
-    <!--
-    Note, this servlet filter is vital without it Ext-Scripting will not work,
-    if you do not set it you will get an appropriate warning in the command line
-    -->
+    <context-param>
+        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
+            source dir
+        </description>
+        <param-name>facelets.RESOURCE_RESOLVER</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
+    </context-param>
+
     <filter>
         <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+        <filter-class>org.apache.myfaces.extensions.scripting.core.servlet.ScriptingServletFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>scriptingFilter</filter-name>
@@ -143,6 +101,10 @@
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
 
+    <!--
+    Note, this servlet filter is vital without it Ext-Scripting will not work,
+    if you do not set it you will get an appropriate warning in the command line
+    -->
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>
         <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.javaloader.blog;
+package blog;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
