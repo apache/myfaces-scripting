@@ -49,15 +49,10 @@
                 and in the following videos in the Users Guide.
             </p>
             <center>
-                <object width="640px" height="480px">
-                    <param name="movie"
-                           value="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"></param>
-                    <param name="allowFullScreen" value="true"></param>
-                    <param name="allowscriptaccess" value="always"></param>
-                    <embed src="http://www.youtube.com/v/vUCCTCMjTPE&#38;hl=de_DE&#38;fs=1&#38;"
-                           type="application/x-shockwave-flash" allowscriptaccess="always"
-                           allowfullscreen="true" width="640px" height="480px"></embed>
-                </object>
+                <iframe class="youtube-player" type="text/html" width="640" height="480"
+                                                                    src="http://www.youtube.com/embed/vUCCTCMjTPE" frameborder="0">
+                                    </iframe>
+
             </center>
             <div class="objectAnnotation">Video: Development Lifecycle in Action</div>
 

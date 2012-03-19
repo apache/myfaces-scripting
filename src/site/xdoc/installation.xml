@@ -201,15 +201,15 @@
 
                 <p>First a context param has to be set which attaches the Ext-Scripting plugins to MyFaces</p>
                 <source><![CDATA[
-     <context-param>
-        <description>
-            Enables our scripting engine support plugins
-        </description>
-        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>
-            org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader
-        </param-value>
-     </context-param>]]></source>
+ <context-param>
+    <description>
+        Enables our scripting engine support plugins
+    </description>
+    <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+    <param-value>
+        org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader
+    </param-value>
+ </context-param>]]></source>
 
                 <h4>Additional Optional Steps</h4>
                 <p>Ext-Scripting exposes a number configuration parameters which can be set via context parameters in
@@ -248,24 +248,24 @@
                     allow the rerouting of source locations of the supported languages!
                 </p>
                 <source><![CDATA[
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>
-           <some project path>/src/main/webapp/WEB-INF/groovy
-        </param-value>
-    </context-param>
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
-        <param-value>
-            <some project path>/src/main/webapp/WEB-INF/java
-        </param-value>
-    </context-param>
+<context-param>
+    <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+        of the deployment dir
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
+    <param-value>
+       <some project path>/src/main/webapp/WEB-INF/groovy
+    </param-value>
+</context-param>
+<context-param>
+    <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+        of the deployment dir
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
+    <param-value>
+        <some project path>/src/main/webapp/WEB-INF/java
+    </param-value>
+</context-param>
                 ]]></source>
                 <ul>
                     <li>
@@ -295,34 +295,57 @@
                 </ul>
 
                 <source><![CDATA[
-         <!-- ======================================================================================
-                     Optional Loader Paths for resource files
-              ====================================================================================== -->
-             <context-param>
-                 <description>resource paths for our custom JSF2 resource resolver</description>
-                 <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
-                 <param-value>
-                     /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp
-                 </param-value>
-             </context-param>
+<!-- ======================================================================================
+         Optional Loader Paths for resource files
+  ====================================================================================== -->
+ <context-param>
+     <description>resource paths for our custom JSF2 resource resolver</description>
+     <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
+     <param-value>
+         ~/extensions-scripting3/examples/myfaces20-example/src/main/webapp
+     </param-value>
+ </context-param>
 
-         <!-- ======================================================================================
-              Optional: Tell Facelets to load the resources from your source dir
-              ====================================================================================== -->
-             <context-param>
-                 <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
-                     source dir
-                 </description>
-                 <param-name>facelets.RESOURCE_RESOLVER</param-name>
-                 <param-value>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</param-value>
-             </context-param>
+<!-- ======================================================================================
+  Optional: Tell Facelets to load the resources from your source dir
+  ====================================================================================== -->
+ <context-param>
+     <description>a redirecting Facelet resource resolver which allows to pick up templates
+        and resources from our source dir
+     </description>
+     <param-name>facelets.RESOURCE_RESOLVER</param-name>
+     <param-value>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</param-value>
+ </context-param>
         ]]></source>
                 </p>
                 This sums up the quick install and setup guide, if you want more detailed setup examples and
                 additional configuration entries
                 go to our <a href="exampleconfig.html">Example Configurations</a> page, which shows
                 a set of different configurations.
+
+
+            <h4>Package Whitelisting</h4>
+            <p>The last possible config entry is the ability to whitelist packages. If you have set this option
+            then only whitelisted packages will be picked up for dynamic recompilation</p>
+            <p>With this option you can point your sourcedir to the normal compile source and mark
+            special packages as dynamic (to isolate the dynamic part from the rest)</p>
+
+            For enabling this option add following entry to your web.xml:
+             <source><![CDATA[
+<!-- ======================================================================================
+    Optional: Whitelist of root packages where your sources should come from
+ ====================================================================================== -->
+<context-param>
+    <description>a comma separated whitelist of root packages which are compiled those and nothing else
+        will be compiled during all compile stages, all other files stay permanently as they are
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.PGK_WHITELIST</param-name>
+    <param-value>org.apache.myfaces.groovyloader.blog,org.apache.myfaces.javaloader.blog</param-value>
+</context-param>
+             ]]></source>
             </subsection>
+
+
         </section>
 
         <section name="Navigation Bottom">

@@ -42,16 +42,11 @@
 
                 <p>
                     <center>
-                        <object width="800" height="600">
-                            <param name="movie"
-                                   value="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"></param>
-                            <param name="allowFullScreen" value="true"></param>
-                            <param name="allowscriptaccess" value="always"></param>
-                            <embed src="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"
-                                   type="application/x-shockwave-flash" allowscriptaccess="always"
-                                   allowfullscreen="true" width="800" height="550"></embed>
-                        </object>
+                        <iframe class="youtube-player" type="text/html" width="800" height="600"
+                                src="http://www.youtube.com/embed/g2YvzOloNyI" frameborder="0">
+                        </iframe>
                     </center>
+
 
                 </p>
                 <p>
