@@ -22,7 +22,7 @@
     <section name="Navigation Top">
         <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
         or
-        <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
+        <a href="exampleconfig_102.html">On to the appendix: Example Configuration&gt;&gt;</a>
     </section>
 
     <section name="Appendix: Configuration Entries">
@@ -48,6 +48,13 @@
                     <td>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</td>
                     <td>MyFaces Extension Point Setup</td>
                 </tr>
+                <tr>
+                    <td>scriptingFilter</td>
+                    <td>YES</td>
+                    <td></td>
+                    <td>The scripting filter for further information look <a href="#scriptingFilter">below</a></td>
+                </tr>
+
 
                 <tr>
                     <td>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</td>

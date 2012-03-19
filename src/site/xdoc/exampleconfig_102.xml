@@ -52,6 +52,24 @@
         <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
     </context-param>
 
+    <!-- ======================================================================================
+            Scripting Filter
+            Second step to enable Ext-Scripting
+         ====================================================================================== -->
+    <filter>
+        <filter-name>scriptingFilter</filter-name>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>scriptingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+
     <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -171,7 +189,18 @@
         <param-value>Development</param-value>
     </context-param>
 
-
+    <filter>
+        <filter-name>scriptingFilter</filter-name>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>scriptingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>
