@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.core.servlet;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -31,12 +32,17 @@ import java.util.logging.Logger;
  *
  * @author Werner Punz
  */
+@WebFilter(urlPatterns = {"/*"},
+        dispatcherTypes = {DispatcherType.REQUEST,
+                           DispatcherType.FORWARD,
+                           DispatcherType.INCLUDE,
+                           DispatcherType.ERROR})
 public class ScriptingServletFilter implements Filter
 {
 
     ServletContext _context;
     Logger logger = Logger.getLogger(this.getClass().getName());
-    
+
     public void init(FilterConfig filterConfig) throws ServletException
     {
         _context = filterConfig.getServletContext();
@@ -44,10 +50,11 @@ public class ScriptingServletFilter implements Filter
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException
     {
-       synchronized (WeavingContext.getInstance().recompileLock) {
-           logger.fine("request");
-       }
-       filterChain.doFilter(servletRequest, servletResponse);
+        synchronized (WeavingContext.getInstance().recompileLock)
+        {
+            logger.fine("request");
+        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

@@ -60,7 +60,7 @@ public abstract class BaseScanner
         } else {
             WeavingContext.getRefreshContext().setDependencyScanned(getEngineType(), true);
         }*/
-        ScriptingEngine engine = WeavingContext.getInstance().getEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
+        ScriptingEngine engine = WeavingContext.getInstance().getEngine(getEngineType());
 
         if (_log.isLoggable(Level.INFO))
         {

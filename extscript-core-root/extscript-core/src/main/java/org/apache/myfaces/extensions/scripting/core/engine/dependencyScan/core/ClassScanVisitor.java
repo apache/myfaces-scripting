@@ -52,6 +52,7 @@ public class ClassScanVisitor implements ClassVisitor {
         _dependencyRegistry = registry;
         _engineType = engineType;
         _rootClass = rootClass;
+
     }
 
     public void visit(int version, int access, String name,

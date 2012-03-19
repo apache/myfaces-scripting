@@ -106,8 +106,10 @@ class MethodScanVisitor implements MethodVisitor {
     }
 
     private void registerDependency(Type dependency) {
-
+        
         String className = dependency.getClassName();
+
+        
         if (className.endsWith("[]")) {
             className = className.substring(0, className.indexOf("["));
         }

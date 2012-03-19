@@ -18,9 +18,10 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+      version="3.0">
 
 
     <description>MyProject web.xml</description>
@@ -131,19 +132,6 @@
         <param-value>/faces-config.xml</param-value>
     </context-param>
     -->
-
-    <filter>
-        <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.extensions.scripting.core.servlet.ScriptingServletFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>scriptingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>

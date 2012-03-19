@@ -61,9 +61,6 @@ public class ThrowAwayClassloader extends ClassLoader
      */
     public Class<?> loadClass(String className) throws ClassNotFoundException
     {
-        if(className.contains("TestResourceHandler")) {
-            System.out.println("Debugppint found");
-        }
         ClassResource res = (ClassResource) WeavingContext.getInstance().getResource(className);
         if (res == null) return super.loadClass(className);
         if (!res.isTainted() && res.getAClass() != null) return res.getAClass();
