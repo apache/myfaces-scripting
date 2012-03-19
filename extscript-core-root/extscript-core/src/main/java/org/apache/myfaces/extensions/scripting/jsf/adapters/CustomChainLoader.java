@@ -19,10 +19,10 @@
 
 package org.apache.myfaces.extensions.scripting.jsf.adapters;
 
+import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 import org.apache.myfaces.shared.util.ClassLoaderExtension;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import javax.servlet.ServletContext;

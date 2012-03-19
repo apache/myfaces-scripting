@@ -23,8 +23,8 @@ import org.apache.myfaces.extensions.scripting.core.api.ClassScanListener;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
-import org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 
 import javax.faces.context.FacesContext;
 import java.util.*;

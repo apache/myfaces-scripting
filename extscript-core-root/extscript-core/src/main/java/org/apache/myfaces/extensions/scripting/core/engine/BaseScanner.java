@@ -26,7 +26,6 @@ import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.Standa
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.filter.WhitelistFilter;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
-import org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
