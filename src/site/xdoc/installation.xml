@@ -192,8 +192,8 @@
                 </p>
                 <p>you can obtain both jars after the build from:
                     <ul>
-                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/xtscript-myfaces12-bundle/target/extscript-myfaces12-bundle-1.0-SNAPSHOT.jar</li>
-                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/xtscript-myfaces12-bundle/target/extscript-myfaces20-bundle-1.0-SNAPSHOT.jar</li>
+                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/extscript-myfaces12-bundle/target/extscript-myfaces12-bundle-1.0-SNAPSHOT.jar</li>
+                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/extscript-myfaces20-bundle/target/extscript-myfaces20-bundle-1.0-SNAPSHOT.jar</li>
                     </ul>
                 </p>
                 <p>After having done that you are ready to setup the rest of the Ext-Scripting configuration manually as

@@ -162,6 +162,10 @@ public class ClassResource extends WatchedResource
         tainted = value;
     }
 
+    public void setTainted(boolean value, boolean noLog)
+    {
+        tainted = value;
+    }
     /**
      * @return true if the source file has been modified compared to its classfile
      */

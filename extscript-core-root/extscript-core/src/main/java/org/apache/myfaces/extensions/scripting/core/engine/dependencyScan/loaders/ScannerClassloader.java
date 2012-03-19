@@ -30,8 +30,10 @@ import java.util.logging.Logger;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * TODO replace it with the ThrowAwayLoader
  */
-
+@Deprecated
 public class ScannerClassloader extends ClassLoader
 {
 

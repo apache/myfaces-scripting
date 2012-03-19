@@ -38,7 +38,13 @@ public class ThrowAwayClassloader extends ClassLoader
 {
 
     static final Logger _logger = Logger.getLogger(ThrowAwayClassloader.class.getName());
-
+    boolean _untaint = true;
+    public ThrowAwayClassloader(ClassLoader classLoader, boolean untaint)
+    {
+        super(classLoader);
+        _untaint = untaint;
+    }
+    
     public ThrowAwayClassloader(ClassLoader classLoader)
     {
         super(classLoader);
@@ -105,9 +111,11 @@ public class ThrowAwayClassloader extends ClassLoader
         //TODO we might run into issues here with inner classes
         Class retVal;
         if (res != null) {
-            retVal = (new ThrowAwayClassloader(getParent())).defineClass(className, fileContent, 0, fileLength);
-            res.setAClass(retVal);
-            res.setTainted(false);
+            retVal = (new ThrowAwayClassloader(getParent(),_untaint)).defineClass(className, fileContent, 0, fileLength);
+            if(_untaint) {
+                res.setAClass(retVal);
+                res.setTainted(false);
+            }
         } else {
             retVal = super.defineClass(className, fileContent, 0, fileLength);
         }

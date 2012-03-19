@@ -22,8 +22,9 @@ import org.apache.myfaces.extensions.scripting.core.api.AnnotationScanListener;
 import org.apache.myfaces.extensions.scripting.core.api.ClassScanListener;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
-import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders.ScannerClassloader;
+import org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 
 import javax.faces.context.FacesContext;
 import java.util.*;
@@ -118,8 +119,12 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
             try {
                 if(!_weaver.isTainted(className)) continue;
 
-                ScannerClassloader loader = new ScannerClassloader(Thread.currentThread().getContextClassLoader(),
-                        -1, null, _weaver.getConfiguration().getCompileTarget());
+                //TODO replace this with a direct call to our weavingContext
+                //<>ScannerClassloader loader = new ScannerClassloader(Thread.currentThread().getContextClassLoader(),
+                //        -1, null, _weaver.getConfiguration().getCompileTarget());
+                ThrowAwayClassloader loader = new ThrowAwayClassloader(ClassUtils.getContextClassLoader(), false);
+
+
 
                 Class clazz;
                 //in case the class does not exist we have to load it from our weavingcontext

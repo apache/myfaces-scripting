@@ -25,8 +25,8 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.StandardDependencyScanner;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.filter.WhitelistFilter;
-import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loaders.ScannerClassloader;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.registry.ExternalFilterDependencyRegistry;
+import org.apache.myfaces.extensions.scripting.core.loader.ThrowAwayClassloader;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
@@ -106,13 +106,19 @@ public abstract class BaseScanner
     {
         try
         {
-            return AccessController.doPrivileged(new PrivilegedExceptionAction<ScannerClassloader>()
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<ThrowAwayClassloader>()
             {
-                public ScannerClassloader run()
+               /*<> public ScannerClassloader run()
                 {
                     return new ScannerClassloader(Thread.currentThread().getContextClassLoader(), getEngineType(),
                             getFileEnding(), WeavingContext.getInstance().getConfiguration().getCompileTarget());
+                }*/
+
+                 public ThrowAwayClassloader run()
+                {
+                    return new ThrowAwayClassloader(Thread.currentThread().getContextClassLoader(),false);
                 }
+
             });
         }
         catch (PrivilegedActionException e)
