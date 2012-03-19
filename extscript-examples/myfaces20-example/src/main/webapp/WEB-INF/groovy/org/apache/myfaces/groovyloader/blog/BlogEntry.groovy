@@ -29,7 +29,6 @@ public class BlogEntry {
   String content = ""
 
 
-
   public String getTopic() {
     return topic;
   }

@@ -125,8 +125,9 @@ public class ThrowAwayClassloader extends ClassLoader
 
     @Override
     public InputStream getResourceAsStream(String name)
-    {
-        File resource = resolveClassFile(name);
+    {                   
+        File resource = new File(WeavingContext.getInstance().getConfiguration().getCompileTarget().getAbsolutePath()+File
+                .separator+name); //resolveClassFile(name);
         if (resource.exists())
         {
             try
