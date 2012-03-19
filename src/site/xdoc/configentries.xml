@@ -92,7 +92,9 @@
                     <td>NO</td>
                     <td>a comma separate list of whitelisted packages</td>
                     <td>Enables package whitelisting, a mechanism which allows to compile and reload only from
-                        whitelisted packages
+                        whitelisted packages. This can help in case of having to reroute ext-scripting to
+                        your compile source directories. With this option you can isolate your own dynamic classes
+                        from the rest of the system.
                     </td>
                 </tr>
                 <tr>
