@@ -96,8 +96,7 @@
 
 
     <!-- ======================================================================================
-            Scripting Filter
-            Second step to enable Ext-Scripting
+            Loader path for Groovy files
          ====================================================================================== -->
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
@@ -123,7 +122,7 @@
     </context-param>
 
     <!-- ======================================================================================
-            Optional Loader Paths for Groovy Source Files
+            Optional Loader Paths for resource files
          ====================================================================================== -->
     <context-param>
         <description>resource paths for our custom JSF2 resource resolver</description>
