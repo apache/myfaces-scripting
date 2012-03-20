@@ -45,7 +45,7 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     targetPath.mkdirs();
     val sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.scala")
     var sourceFileNames = List[String]()
-    for (sourceFile: File <- sourceFiles)
+    for (sourceFile:File <- sourceFiles)
     {
       sourceFileNames = sourceFileNames ::: List(sourceFile.getAbsolutePath())
     }
@@ -56,7 +56,7 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     var cp: String = System.getProperty("java.class.path")
 
 
-    if(!cp.contains("scala")) {
+    if(!cp.contains("scala")) { //probably a war container
       val classesDir = ClassUtils.getContextClassLoader().getResource("./").getFile();
 
       val libDir = classesDir+".."+File.separator+"lib"
@@ -65,7 +65,7 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
       finalPath.append(cp)
       finalPath.append(File.pathSeparator)
       finalPath.append(classesDir)
-      for(singleLib:File<-libs){
+      for(singleLib:File <- libs){
         finalPath.append(File.pathSeparator)
         finalPath.append(singleLib.getAbsolutePath)
       }

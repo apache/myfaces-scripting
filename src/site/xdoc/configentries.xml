@@ -58,6 +58,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of scala files on the sources
+                        directory instead of editing in the deployment dir /WEB-INF/scala
+                        <b>Note this functionality is enabled only in ext-script 1.0.3 or newer</b>
+                    </td>
+                </tr>
+                <tr>
                     <td>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</td>
                     <td>NO</td>
                     <td>comma separate list of paths</td>

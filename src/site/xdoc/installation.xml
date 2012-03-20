@@ -88,7 +88,7 @@
 
         <section name="Checkout and Build">
             <p>
-                While Ext-Scripting is already in beta stage, the best way to get started
+                While Ext-Scripting is already in stable stage, the best way to get started
                 is probably to checkout and build ext-scripting yourself from the latest codebase.
                 All other installation steps will have this step as prerequisite if you want to
                 use the latest codebase instead of one of the beta releases!
@@ -177,7 +177,7 @@
      </dependency>]]></source>
             </subsection>
 
-    
+
             <subsection name="Manual Setup">
                 <p>If you do not like Maven or you prefer a manual setup, Ext-Scripting provides convenient meta bundles.
                     A manual setup
@@ -275,6 +275,10 @@
                     <li>
                         <b>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</b>
                         does the same for Java sources..
+                    </li>
+                    <li>
+                        <b>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</b>
+                        does the same for Java Scala (Ext-Scripting 1.0.3 or newer)...
                     </li>
                 </ul>
 
