@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.myfaces.extensions.scripting.core.engine.compiler
 
 import java.io.File
@@ -15,9 +33,9 @@ import scala.collection.JavaConversions._
 
 class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.api.Compiler
 {
-  def error(message: String):Unit =
+  def error(message: String): Unit =
   {
-    println("[EXT-SCRIPTING] Error in scala compile:"+message)
+    println("[EXT-SCRIPTING] Error in scala compile:" + message)
   }
 
   def compile(sourcePath: File, targetPath: File, classLoader: ClassLoader): CompilationResult =
@@ -27,14 +45,15 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     targetPath.mkdirs();
     val sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.scala")
     var sourceFileNames = List[String]()
-    for (sourceFile:File <- sourceFiles) {
+    for (sourceFile: File <- sourceFiles)
+    {
       sourceFileNames = sourceFileNames ::: List(sourceFile.getAbsolutePath())
     }
     val settings = new Settings(error)
     settings.outdir.value = configuration.getCompileTarget.getAbsolutePath
     settings.deprecation.value = true // enable detailed deprecation warnings
     settings.unchecked.value = true // enable detailed unchecked warnings
-    val cp:String = System.getProperty("java.class.path")
+    val cp: String = System.getProperty("java.class.path")
     settings.classpath.value = cp
 
     val reporter = new CompilationResultReporter(settings)
