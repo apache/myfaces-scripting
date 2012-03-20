@@ -21,9 +21,9 @@ package org.apache.myfaces.extensions.scripting.core.engine.compiler
 import java.io.File
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext
-import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils
 import scala.tools.nsc.{Global, Settings}
 import scala.collection.JavaConversions._
+import org.apache.myfaces.extensions.scripting.core.common.util.{ClassUtils, FileUtils}
 
 /**
  *
@@ -53,9 +53,25 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     settings.outdir.value = configuration.getCompileTarget.getAbsolutePath
     settings.deprecation.value = true // enable detailed deprecation warnings
     settings.unchecked.value = true // enable detailed unchecked warnings
-    val cp: String = System.getProperty("java.class.path")
-    settings.classpath.value = cp
+    var cp: String = System.getProperty("java.class.path")
 
+
+    if(!cp.contains("scala")) {
+      val classesDir = ClassUtils.getContextClassLoader().getResource("./").getFile();
+
+      val libDir = classesDir+".."+File.separator+"lib"
+      val libs = FileUtils.fetchSourceFiles(new File(libDir),"*.jar")
+      val finalPath = new StringBuilder
+      finalPath.append(cp)
+      finalPath.append(File.pathSeparator)
+      finalPath.append(classesDir)
+      for(singleLib:File<-libs){
+        finalPath.append(File.pathSeparator)
+        finalPath.append(singleLib.getAbsolutePath)
+      }
+      cp = finalPath.toString()
+    }
+    settings.classpath.value = cp
     val reporter = new CompilationResultReporter(settings)
 
     val compiler = new Global(settings, reporter)

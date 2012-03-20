@@ -27,6 +27,7 @@ import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
+import org.apache.myfaces.extensions.scripting.core.engine.compiler.ScalaCompiler;
 import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 import scala.ScalaObject;
 
@@ -109,9 +110,9 @@ public class EngineScala extends BaseEngine implements ScriptingEngine
     {
         WeavingContext context = WeavingContext.getInstance();
         Configuration configuration = context.getConfiguration();
-        GroovyCompiler compiler = new GroovyCompiler();
+        ScalaCompiler compiler = new ScalaCompiler();
         File targetDir = configuration.getCompileTarget();
-        Collection<String> sourceDirs = configuration.getSourceDirs(ENGINE_TYPE_JSF_GROOVY);
+        Collection<String> sourceDirs = configuration.getSourceDirs(ENGINE_TYPE_JSF_SCALA);
         CompilationResult res = null;
         for (String sourceRoot : sourceDirs)
         {

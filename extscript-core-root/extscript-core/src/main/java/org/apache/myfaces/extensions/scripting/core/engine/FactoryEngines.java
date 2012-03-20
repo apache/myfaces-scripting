@@ -19,19 +19,12 @@
 package org.apache.myfaces.extensions.scripting.core.engine;
 
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import org.apache.myfaces.extensions.scripting.core.common.util.FileStrategy;
-import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -44,79 +37,57 @@ public class FactoryEngines
 {
     final Logger _log = Logger.getLogger(this.getClass().getName());
     /*we have to keep the order of the engines for the class detection*/
-    Map<Integer, ScriptingEngine> _engines = new LinkedHashMap<Integer, ScriptingEngine> ();
-    List<ScriptingEngine> _engineOrder = new CopyOnWriteArrayList<ScriptingEngine>();
+    Map<Integer, ScriptingEngine> _engines = new LinkedHashMap<Integer, ScriptingEngine>();
 
     public void init() throws IOException
     {
         //loadEnginesDynamically();
+        ScriptingEngine javaEngine = new EngineJava();
+        ScriptingEngine groovyEngine = null;
+        ScriptingEngine scalaEngine = null;
+        try
+        {
+            ClassUtils.getContextClassLoader().loadClass("groovy.lang.GroovyObject");
+            groovyEngine = (ScriptingEngine) ReflectUtil.instantiate("org.apache.myfaces.extensions.scripting.core" +
+                    ".engine.EngineGroovy");
+        }
+        catch (Exception ex)
+        {
+        }
+        try
+        {
+            ClassUtils.getContextClassLoader().loadClass("scala.ScalaObject");
+            scalaEngine = (ScriptingEngine) ReflectUtil.instantiate("org.apache.myfaces.extensions.scripting.core" +
+                    ".engine.EngineScala");
+        }
+        catch (Exception ex)
+        {
+        }
 
-        EngineJava javaEngine = new EngineJava();
-        EngineGroovy groovyEngine = new EngineGroovy();
-        EngineScala scalaEngine = new EngineScala();
         if (_engines.isEmpty())
         {
             //We now add the keys as linked hashmap keys
             //so that java always is last hence the class
             //detection has to work from top to bottom
-            _engines.put(groovyEngine.getEngineType(), groovyEngine);
-            _engines.put(scalaEngine.getEngineType(), scalaEngine);
+            if (groovyEngine != null)
+                _engines.put(groovyEngine.getEngineType(), groovyEngine);
+            if (scalaEngine != null)
+                _engines.put(scalaEngine.getEngineType(), scalaEngine);
+
             _engines.put(javaEngine.getEngineType(), javaEngine);
-
-            _engineOrder.add(javaEngine);
-            _engineOrder.add(groovyEngine);
         }
     }
 
-    /**
-     * loads the engins dynamically from
-     * their corresponding package and name
-     *
-     * @throws IOException
-     */
-    private void loadEnginesDynamically() throws IOException
-    {
-        ClassLoader currentLoader = ClassUtils.getContextClassLoader();//this.getClass().getClassLoader();
-        String canonicalPackageName = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);
-        //TODO not working in a servlet environment we for now map it hardcoded
-        Enumeration<URL> enumeration = currentLoader.getResources(canonicalPackageName);
-        while (enumeration.hasMoreElements())
-        {
-            //we load all classes which start with engine initially those are our
-            //enginesvTH
-            URL element = enumeration.nextElement();
-            File file = new File(element.getFile());
-            FileStrategy strategy = new FileStrategy(Pattern.compile("engine[^\\.(test)]+\\.class$"));
-            FileUtils.listFiles(file, strategy);
-            for (File foundFile : strategy.getFoundFiles())
-            {
-                String absoluteDir = foundFile.getAbsolutePath();
 
-                //TODO windows
-                String rootDir = absoluteDir.substring(0, absoluteDir.indexOf(canonicalPackageName));
-                String className = absoluteDir.substring(rootDir.length()).replaceAll(File.separator, ".");
-                className = className.substring(0, className.length() - 6);
-                try
-                {
-                    ScriptingEngine engine = (ScriptingEngine) ReflectUtil.instantiate(currentLoader.loadClass
-                            (className));
-                    _engines.put(engine.getEngineType(), engine);
-                    String supportedLanguage = className.substring(className.indexOf(".Engine") + ".Engine".length
-                            ());
-                    _log.info("[EXT-SCRIPTING] initializing Engine " + supportedLanguage);
-                    _engineOrder.add(engine);
-                }
-                catch (ClassNotFoundException e)
-                {
-                    //cannot happen
-                }
-            }
-        }
-    }
 
     public Collection<ScriptingEngine> getEngines()
     {
-        return _engineOrder;
+        List<ScriptingEngine> engineList = new ArrayList<ScriptingEngine>();
+        for(Map.Entry<Integer, ScriptingEngine> entry: _engines.entrySet()) {
+           engineList.add(entry.getValue());
+        }
+
+        return engineList;
     }
 
     public ScriptingEngine getEngine(int engineType)

@@ -130,18 +130,6 @@
     Note, this servlet filter is vital without it Ext-Scripting will not work,
     if you do not set it you will get an appropriate warning in the command line
     -->
-    <filter>
-        <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>scriptingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>
