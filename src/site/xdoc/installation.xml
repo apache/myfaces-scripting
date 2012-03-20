@@ -173,8 +173,36 @@
      <dependency>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-myfaces20-bundle</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.3</version>
      </dependency>]]></source>
+
+                <h4>Additional language libraries</h4>
+                <p>
+
+                    You have to add following artifacts to your dependency list for additional language support
+              <source><![CDATA[
+<dependency>
+    <groupId>org.codehaus.groovy</groupId>
+    <artifactId>groovy-all</artifactId>
+    <version>1.7.1</version>
+</dependency>
+              ]]></source>
+    For Groovy support (version number may vary)
+
+              <source><![CDATA[
+<dependency>
+    <groupId>org.scala-lang</groupId>
+    <artifactId>scala-library</artifactId>
+    <version>2.9.1</version>
+</dependency>
+<dependency>
+    <groupId>org.scala-lang</groupId>
+    <artifactId>scala-compiler</artifactId>
+    <version>2.9.1</version>
+</dependency>
+                ]]></source>
+    For Scala support.
+                </p>
             </subsection>
 
 
@@ -183,11 +211,16 @@
                     A manual setup
                     comes down to the task of adding the appropriate meta bundle (extscript-myfaces20-bundle)
                     to your WEB-INF/lib directory and adding a groovy-all.jar as additional dependency.
+                    For Scala support you have to add scala-library.jar and scala-compiler.jar to your
+                    WEB-INFU/lib. Note not adding those additional libs automatically will disable
+                    the respective language support.
                 </p>
-                <p>you can obtain both jars after the build from:
+                <p>you can obtain both bundle jars after the build from:
                     <ul>
                         <li>&lt;yourbuilderoot&gt;/extscript-bundles/extscript-myfaces20-bundle/target/extscript-myfaces20-bundle-1.0.3-SNAPSHOT.jar</li>
                     </ul>
+                    The additional language jars for the respective language
+                    can be obtained from the language distributions.
                 </p>
                 <p>After having done that you are ready to setup the rest of the Ext-Scripting configuration manually as
                     described in the section blow
