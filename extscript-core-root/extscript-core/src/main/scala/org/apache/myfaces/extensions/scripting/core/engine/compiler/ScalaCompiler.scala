@@ -30,11 +30,12 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     for (sourceFile:File <- sourceFiles) {
       sourceFileNames = sourceFileNames ::: List(sourceFile.getAbsolutePath())
     }
-
     val settings = new Settings(error)
     settings.outdir.value = configuration.getCompileTarget.getAbsolutePath
     settings.deprecation.value = true // enable detailed deprecation warnings
     settings.unchecked.value = true // enable detailed unchecked warnings
+    val cp:String = System.getProperty("java.class.path")
+    settings.classpath.value = cp
 
     val reporter = new CompilationResultReporter(settings)
 
