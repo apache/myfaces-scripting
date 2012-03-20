@@ -28,7 +28,7 @@ Download Apache MyFaces Extension Scripting
 
  Download Links and Release Notes will follow soon.
 
- Ext-Scripting 1.0.2
+Ext-Scripting 1.0.2 (latest version supporting MyFaces 1.2.x)
 
  Apache MyFaces Extension Scripting now has a 1.0.2 bugfix release which reenables compatibility with newer MyFaces
  versions:
@@ -48,8 +48,7 @@ Download Apache MyFaces Extension Scripting
 *-------------------------+---------+----------+-----------+
 | Ext-Script MyFaces 1.2 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.2/extscript-myfaces12-bundle-1.0.2.jar} extscript-myfaces12-bundle-1.0.2.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.2/extscript-myfaces12-bundle-1.0.2.jar.asc.md5} extscript-myfaces12-bundle-1.0.2.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.2/extscript-myfaces12-bundle-1.0.2.jar.asc}extscript-myfaces12-bundle-1.0.2.jar.asc}} |
 *-------------------------+---------+----------+-----------+
-| Ext-Script MyFaces 2.1 bundle(jar)     | {{{https://repository.apache
-.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar} extscript-myfaces20-bundle-1.0.2.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar.asc.md5} extscript-myfaces20-bundle-1.0.2.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar.asc}extscript-myfaces20-bundle-1.0.2.jar.asc}} |
+| Ext-Script MyFaces 2.1 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar} extscript-myfaces20-bundle-1.0.2.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar.asc.md5} extscript-myfaces20-bundle-1.0.2.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar.asc}extscript-myfaces20-bundle-1.0.2.jar.asc}} |
 *-------------------------+---------+----------+-----------+
 | Ext-Script Demo Application MyFaces 1.2 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.2/myfaces12-example-1.0.2.war} myfaces12-example-1.0.2.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.2/myfaces12-example-1.0.2.war.asc.md5} myfaces12-example-1.0.2.war.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.2/myfaces12-example-1.0.2.war.asc}myfaces12-example-1.0.2.war.asc}} |
 *-------------------------+---------+----------+-----------+

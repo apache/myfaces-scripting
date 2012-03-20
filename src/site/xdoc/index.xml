@@ -83,8 +83,8 @@
         <section name="Short Overview over Ext-Scripting">
             <subsection name="Supported for Scripting Languages">
                 <p>
-                    Ext-Scripting currently only supports Groovy as only scripting language.
-                    Additional scripting languages will be provided in subsequent releases.
+                    Ext-Scripting currently only supports Groovy Java and Scala as dynamic languages.
+                    Additional languages will be provided in subsequent releases.
                 </p>
             </subsection>
             <subsection name="Support for JSF2 and JSF2 Artifacts and Annotations">
@@ -99,7 +99,7 @@
                     Extensions scripting supports MyFaces only for now. Following versions are supported.
                 </p>
                 <ul>
-                    <li>1.2.8+</li>
+                    <li>1.2.8+ (note support will be dropped soon)</li>
                     <li>2.0+</li>
                 </ul>
                 <p>
