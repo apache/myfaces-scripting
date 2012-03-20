@@ -27,7 +27,7 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     targetPath.mkdirs();
     val sourceFiles = FileUtils.fetchSourceFiles(sourcePath, "*.scala")
     var sourceFileNames = List[String]()
-    for (val sourceFile:File <- sourceFiles) {
+    for (sourceFile:File <- sourceFiles) {
       sourceFileNames = sourceFileNames ::: List(sourceFile.getAbsolutePath())
     }
 

@@ -27,10 +27,7 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
@@ -46,8 +43,8 @@ import java.util.regex.Pattern;
 public class FactoryEngines
 {
     final Logger _log = Logger.getLogger(this.getClass().getName());
-
-    Map<Integer, ScriptingEngine> _engines = new ConcurrentHashMap<Integer, ScriptingEngine>();
+    /*we have to keep the order of the engines for the class detection*/
+    Map<Integer, ScriptingEngine> _engines = new LinkedHashMap<Integer, ScriptingEngine> ();
     List<ScriptingEngine> _engineOrder = new CopyOnWriteArrayList<ScriptingEngine>();
 
     public void init() throws IOException
@@ -56,10 +53,16 @@ public class FactoryEngines
 
         EngineJava javaEngine = new EngineJava();
         EngineGroovy groovyEngine = new EngineGroovy();
+        EngineScala scalaEngine = new EngineScala();
         if (_engines.isEmpty())
         {
-            _engines.put(javaEngine.getEngineType(), javaEngine);
+            //We now add the keys as linked hashmap keys
+            //so that java always is last hence the class
+            //detection has to work from top to bottom
             _engines.put(groovyEngine.getEngineType(), groovyEngine);
+            _engines.put(scalaEngine.getEngineType(), scalaEngine);
+            _engines.put(javaEngine.getEngineType(), javaEngine);
+
             _engineOrder.add(javaEngine);
             _engineOrder.add(groovyEngine);
         }

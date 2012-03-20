@@ -19,17 +19,16 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine;
 
-import groovy.lang.GroovyObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
-import org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
+import org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
 import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
+import scala.ScalaObject;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -45,61 +44,25 @@ import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
  * @version $Revision$ $Date$
  */
 
-public class EngineJava extends BaseEngine implements ScriptingEngine
+public class EngineScala extends BaseEngine implements ScriptingEngine
 {
-
     Logger log = Logger.getLogger(this.getClass().getName());
 
     @Override
     public void init(ServletContext context)
     {
-        initPaths(context, INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS, JAVA_SOURCE_ROOT);
+        initPaths(context, INIT_PARAM_CUSTOM_SCALA_LOADER_PATHS, SCALA_SOURCE_ROOT);
     }
-
-    /**
-     * full compile will be called cyclicly
-     * from the startup and daemon thread
-     */
-    public CompilationResult compile()
-    {
-        WeavingContext context = WeavingContext.getInstance();
-        Configuration configuration = context.getConfiguration();
-        JSR199Compiler compiler = new JSR199Compiler();
-        File targetDir = configuration.getCompileTarget();
-        Collection<String> sourceDirs = configuration.getSourceDirs(getEngineType());
-        CompilationResult res = null;
-        for (String sourceRoot : sourceDirs)
-        {
-            res =  compiler.compile(new File(sourceRoot), targetDir,
-                ClassUtils.getContextClassLoader());
-            if(res.hasErrors()) {
-               for(CompilationResult.CompilationMessage msg :res.getErrors()) {
-                   log.severe(msg.getMessage());
-               }
-               // log.severe(res.getCompilerOutput());
-            }
-        }
-        return res;
-    }
-
-    public void scanDependencies()
-    {
-        log.info("[EXT-SCRIPTING] starting dependency scan "+getEngineTypeAsStr());
-        JavaDependencyScanner scanner = new JavaDependencyScanner();
-        scanner.scanPaths();
-        log.info("[EXT-SCRIPTING] ending dependency scan" + getEngineTypeAsStr());
-    }
-
-    //-------------------------------------------------------------------------------------
 
     @Override
     public int getEngineType()
     {
-        return ENGINE_TYPE_JSF_JAVA;
+        return ENGINE_TYPE_JSF_SCALA;
     }
-    
-    public String getEngineTypeAsStr() {
-        return "Java";
+
+    public String getEngineTypeAsStr()
+    {
+        return "Scala";
     }
 
     @Override
@@ -111,28 +74,57 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
     @Override
     public boolean isArtifactOfEngine(Object artifact)
     {
-        return true;
+        return (artifact instanceof ScalaObject);
     }
 
     @Override
     public void copyProperties(Object dest, Object src)
     {
-
-        try {
+        try
+        {
             BeanUtils.copyProperties(dest, src);
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e)
+        {
             log.log(Level.FINEST, e.toString());
             //this is wanted
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e)
+        {
             log.log(Level.FINEST, e.toString());
             //this is wanted
         }
     }
 
+
     @Override
     public String getFileEnding()
     {
-        return "java";
+        return "scala";
     }
 
+    @Override
+    //full compile
+    public CompilationResult compile()
+    {
+        WeavingContext context = WeavingContext.getInstance();
+        Configuration configuration = context.getConfiguration();
+        GroovyCompiler compiler = new GroovyCompiler();
+        File targetDir = configuration.getCompileTarget();
+        Collection<String> sourceDirs = configuration.getSourceDirs(ENGINE_TYPE_JSF_GROOVY);
+        CompilationResult res = null;
+        for (String sourceRoot : sourceDirs)
+        {
+            res = compiler.compile(new File(sourceRoot), targetDir, ClassUtils.getContextClassLoader());
+        }
+        return res;
+    }
+
+    public void scanDependencies()
+    {
+        log.info("[EXT-SCRIPTING] starting dependency scan");
+        GroovyDependencyScanner scanner = new GroovyDependencyScanner();
+        scanner.scanPaths();
+        log.info("[EXT-SCRIPTING] ending dependency scan");
+    }
 }

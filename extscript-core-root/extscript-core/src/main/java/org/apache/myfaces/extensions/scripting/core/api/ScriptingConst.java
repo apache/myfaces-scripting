@@ -37,6 +37,9 @@ public class ScriptingConst
     public static final String INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH = "org.apache.myfaces.extensions.scripting.ADDITIONAL_CLASSPATH";
     public static final String INIT_PARAM_RESOURCE_PATH = "org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS";
+    public static final String INIT_PARAM_CUSTOM_SCALA_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.scala" +
+            ".LOADER_PATHS";
+
     public static final String INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.java.LOADER_PATHS";
     public static final String INIT_PARAM_INITIAL_COMPILE="org.apache.myfaces.extensions.scripting.INITIAL_COMPILE_AND_SCAN";
     public static final String INIT_PARAM_MYFACES_PLUGIN = "org.apache.myfaces.FACES_INIT_PLUGINS";
@@ -54,6 +57,7 @@ public class ScriptingConst
     public static final int ENGINE_TYPE_JSF_NO_ENGINE = -1;
     public static final int ENGINE_TYPE_JSF_GROOVY = 0;
     public static final int ENGINE_TYPE_JSF_JAVA = 1;
+    public static final int ENGINE_TYPE_JSF_SCALA = 2;
     public static final int ARTIFACT_TYPE_UNKNOWN = -1;
     public static final int ARTIFACT_TYPE_MANAGEDBEAN = 1;
     public static final int ARTIFACT_TYPE_MANAGEDPROPERTY = 2;
@@ -95,12 +99,15 @@ public class ScriptingConst
     public static final String FILE_EXTENSION_GROOVY = ".groovy";
     public static final String GROOVY_FILE_ENDING = ".groovy";
     public static final String JAVA_FILE_ENDING = ".java";
+    public static final String SCALA_FILE_ENDING = ".scala";
     public static final String JSR199_COMPILER = "org.apache.myfaces.extensions.scripting.loaders.java.jsr199.JSR199Compiler";
     public static final String JAVA5_COMPILER = "org.apache.myfaces.extensions.scripting.loaders.java.compiler.JavacCompiler";
     public static final String SCOPE_SESSION = "session";
     public static final String SCOPE_APPLICATION = "application";
     public static final String SCOPE_REQUEST = "request";
     public static final String GROOVY_SOURCE_ROOT = "/WEB-INF/groovy/";
+    public static final String SCALA_SOURCE_ROOT = "/WEB-INF/scala/";
+
     public static final String JAVA_SOURCE_ROOT = "/WEB-INF/java/";
     public static final String ERR_SERVLET_FILTER = "[EXT-SCRIPTING] The servlet filter has not been set, please check your web.xml for following entries:" +
             "\n    <filter>\n" +
