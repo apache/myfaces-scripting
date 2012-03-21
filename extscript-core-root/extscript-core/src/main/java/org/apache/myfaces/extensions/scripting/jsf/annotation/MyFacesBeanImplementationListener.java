@@ -39,7 +39,7 @@ import java.util.logging.Level;
  * @version $Revision$ $Date$
  */
 
-public class BeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener
+public class MyFacesBeanImplementationListener extends BaseAnnotationScanListener implements AnnotationScanListener
 {
 
     public boolean supportsAnnotation(String annotation) {
