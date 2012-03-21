@@ -43,10 +43,11 @@
                     <ul>
                         <li>Check if your installation environment is setup</li>
                         <li>Download the appropriate meta bundle and place it in WEB-INF/lib</li>
-                        <li>Download groovy-all.jar and place it in WEB-INF/lib</li>
-                        <li>Prepare your script paths</li>
-                        <li>Add your web.xml entries</li>
-                        <li>mvn clean install ...</li>
+                        <li>Download groovy-all.jar and or (scala-lang.jar and scala-compiler.jar) and place it in
+                            WEB-INF/lib</li>
+                        <li>Prepare your script paths (WEB-INF/java, WEB-INF/groovy, WEB-INF/scala)</li>
+                        <li>Add your <a href="./exampleconfig.html">web.xml</a> entries</li>
+                        <li>start the web application ...</li>
                     </ul>
                 </p>
                 <p>
@@ -54,8 +55,8 @@
                     <ul>
                         <li>Check if your installation environment is setup</li>
                         <li>Add your pom xml dependencies and the repository entry</li>
-                        <li>Prepare your script paths</li>
-                        <li>Add your web.xml entries</li>
+                        <li>Prepare your script paths (WEB-INF/java, WEB-INF/groovy, WEB-INF/scala)</li>
+                        <li>Add your <a href="./exampleconfig.html">web.xml</a> entries</li>
                         <li>mvn clean install ...</li>
                     </ul>
                 </p>
@@ -69,8 +70,8 @@
                         </li>
                         <li>Download groovy-all.jar and add it to your dependency and deployment settings</li>
                         <li>Prepare your script paths</li>
-                        <li>Add your web.xml entries</li>
-                        <li>mvn clean install ...</li>
+                        <li>Add your <a href="./exampleconfig.html">web.xml</a> entries</li>
+                        <li>start the web application ...</li>
                     </ul>
                 </p>
             </subsection>
