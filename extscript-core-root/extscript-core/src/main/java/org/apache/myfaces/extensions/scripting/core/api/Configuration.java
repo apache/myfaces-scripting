@@ -121,18 +121,7 @@ public class Configuration
         return WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths();
     }
 
-    public Collection<String> getAllSourceDirs()
-    {
-        List<String> result = new LinkedList<String>();
-        Collection<ScriptingEngine> engines = WeavingContext.getInstance().getEngines();
-        for (ScriptingEngine engine : engines)
-        {
-            result.addAll(engine.getSourcePaths());
-        }
-        return result;
-    }
-
-    /**
+        /**
          * returns a set of whitelisted subdirs hosting the source
          *
          * @param scriptingEngine the scripting engine for which the dirs have to be determined
