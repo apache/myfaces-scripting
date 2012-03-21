@@ -38,6 +38,31 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     println("[EXT-SCRIPTING] Error in scala compile:" + message)
   }
 
+  /**
+   * fetches a list of jars from a given dir and appends it to the given classpath
+   *
+   * @param libDir the library directory
+   * @param _cp
+   * @param classesDir
+   * @return
+   */
+  def fetchJarPath(libDir: String, _cp: String, classesDir: String): String =
+  {
+    var cp: String = _cp
+    val libs = FileUtils.fetchSourceFiles(new File(libDir), "*.jar")
+    val finalPath = new StringBuilder
+    finalPath.append(cp)
+    finalPath.append(File.pathSeparator)
+    finalPath.append(classesDir)
+    for (singleLib: File <- libs)
+    {
+      finalPath.append(File.pathSeparator)
+      finalPath.append(singleLib.getAbsolutePath)
+    }
+    cp = finalPath.toString()
+    cp
+  }
+
   def compile(sourcePath: File, targetPath: File, classLoader: ClassLoader): CompilationResult =
   {
     val context = WeavingContext.getInstance()
@@ -60,17 +85,11 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
       val classesDir = ClassUtils.getContextClassLoader().getResource("./").getFile();
 
       val libDir = classesDir+".."+File.separator+"lib"
-      val libs = FileUtils.fetchSourceFiles(new File(libDir),"*.jar")
-      val finalPath = new StringBuilder
-      finalPath.append(cp)
-      finalPath.append(File.pathSeparator)
-      finalPath.append(classesDir)
-      for(singleLib:File <- libs){
-        finalPath.append(File.pathSeparator)
-        finalPath.append(singleLib.getAbsolutePath)
-      }
-      cp = finalPath.toString()
+      cp = fetchJarPath(libDir, cp, classesDir)
     }
+
+
+
     settings.classpath.value = cp
     val reporter = new CompilationResultReporter(settings)
 

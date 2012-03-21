@@ -86,7 +86,7 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
     }
 
     private void initDefaultListeners() {
-        _listeners.add(new BeanImplementationListener());
+        _listeners.add(new MyFacesBeanImplementationListener());
         _listeners.add(new BehaviorImplementationListener());
         _listeners.add(new ComponentImplementationListener());
         _listeners.add(new ConverterImplementationListener());

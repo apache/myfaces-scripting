@@ -47,14 +47,15 @@
             <subsection name="General Setup Information" >
              <p>
 
-                Ext-Scripting has a complete appendix list over all configuration and setup options
-                for a quick overview please visit the following links. If you need detailed
+                Ext-Scripting has a complete appendix list over all <a href="./configentries.html">configuration and
+                 setup</a> options as well as <a href="./exampleconfig.html">example configurations</a>.
+                For a quick overview please visit the following links. If you need detailed
                 setup information, then read further on.
              </p>
             </subsection>
             <subsection name="Links">
                 <p>
-                    <ul><a href="setup_steps.html">Appendix: Configuration Setup Steps</a> </ul>
+                    <ul><a href="setup_steps.html">Appendix: Configuration Setup Step Overview</a> </ul>
                     <ul><a href="exampleconfig.html">Appendix: Example Configurations</a> </ul>
                     <ul><a href="configentries.html">Appendix: List of Configuration Options</a> </ul>
                 </p>
@@ -73,7 +74,7 @@
 
         <section name="Download">
             <p>
-                With version 1.0 Ext-Scripting provides all necessary artifacts
+                With version 1.0.x Ext-Scripting provides all necessary artifacts
                 as download artifacts to get quickly started.
                 A kickstart project is provided which can be used as shell for your own
                 projects.
@@ -316,9 +317,9 @@
                 </ul>
 
                 <h4>Dynamic resource reloading</h4>
-                <p>additionally Ext-Scripting allows the reloading of dynamic webresources
-                like facelets templates images css files etc... For that additiona  an additional config param is
-                    available
+                <p>additionally Ext-Scripting allows the reloading of dynamic web resources
+                like facelets templates images css files etc...  An additional config param is
+                    available to enable this functionality.
                     </p>
                 <p>
                 <ul>
@@ -364,10 +365,10 @@
             <h4>Package Whitelisting</h4>
             <p>The last possible config entry is the ability to whitelist packages. If you have set this option
             then only whitelisted packages will be picked up for dynamic recompilation</p>
-            <p>With this option you can point your sourcedir to the normal compile source and mark
+            <p>With this option you can point your source dir to the normal compile source and mark
             special packages as dynamic (to isolate the dynamic part from the rest)</p>
 
-            For enabling this option add following entry to your web.xml:
+            To enalbe this option, add following entry to your web.xml:
              <source><![CDATA[
 <!-- ======================================================================================
     Optional: Whitelist of root packages where your sources should come from

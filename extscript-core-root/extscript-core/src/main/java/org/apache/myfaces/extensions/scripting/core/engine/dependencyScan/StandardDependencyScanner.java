@@ -51,7 +51,7 @@ public class StandardDependencyScanner implements DependencyScanner
         _cp.setEngineType(engineType);
         _cp.setRootClass(className);
         _cp.setDependencyRegistry(registry);
-        investigateInheritanceHierarchy(loader, className);
+        scanClass(loader, className);
         registry.flush(engineType);
     }
 
@@ -65,7 +65,7 @@ public class StandardDependencyScanner implements DependencyScanner
      * @param loader    the classLoader which should be used for the hierarchy scanning
      * @param className the className which has to be investigated
      */
-    private void investigateInheritanceHierarchy(ClassLoader loader, String className) {
+    private void scanClass(ClassLoader loader, String className) {
         //we now have to fetch the parent hierarchy
 
         try {
@@ -81,7 +81,7 @@ public class StandardDependencyScanner implements DependencyScanner
             //our asm code normally covers this but since the scanner has to work outside of asm we do it twice, the same goes for the hierarchy
             scanInterfaces(loader, toCheck);
         } catch (ClassNotFoundException e) {
-            _logger.log(Level.SEVERE, "DefaultDependencyScanner.investigateInheritanceHierarchy() ", e);
+            _logger.log(Level.SEVERE, "DefaultDependencyScanner.scanClass() ", e);
         }
     }
 

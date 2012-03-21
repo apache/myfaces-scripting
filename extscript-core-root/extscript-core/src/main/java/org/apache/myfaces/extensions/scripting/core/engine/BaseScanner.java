@@ -97,6 +97,7 @@ public abstract class BaseScanner
         scanRegistry.clearFilters();
         //We have to dynamically readjust the filters
         scanRegistry.addFilter(new WhitelistFilter(possibleDynamicClasses));
+        //here we have a clear boundary into the ASM part
         _depencyScanner.fetchDependencies(loader, getEngineType(), dynamicClass,
                 WeavingContext.getInstance().getEngine(getEngineType()).getDependencyRegistry());
     }

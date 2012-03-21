@@ -124,7 +124,7 @@ public class EngineScala extends BaseEngine implements ScriptingEngine
     public void scanDependencies()
     {
         log.info("[EXT-SCRIPTING] starting dependency scan");
-        GroovyDependencyScanner scanner = new GroovyDependencyScanner();
+        ScalaDependencyScanner scanner = new ScalaDependencyScanner();
         scanner.scanPaths();
         log.info("[EXT-SCRIPTING] ending dependency scan");
     }
