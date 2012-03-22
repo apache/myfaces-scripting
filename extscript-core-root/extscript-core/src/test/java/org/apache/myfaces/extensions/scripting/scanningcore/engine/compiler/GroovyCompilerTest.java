@@ -112,6 +112,9 @@ public class GroovyCompilerTest
         assertTrue(CLASSFILE2_IS_COMPILED, !classFile2.exists());
         assertTrue(CLASSFILE2_IS_COMPILED, classFile3.exists());
 
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().delete();
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().mkdirs();
+
     }
 
     @Test
@@ -134,6 +137,10 @@ public class GroovyCompilerTest
 
         assertTrue(CLASSFILE1_IS_COMPILED1, classFile1.exists());
         assertTrue(CLASSFILE2_IS_COMPILED, classFile2.exists());
+
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().delete();
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().mkdirs();
+
 
     }
 
