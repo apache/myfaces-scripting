@@ -30,6 +30,7 @@ import org.apache.myfaces.renderkit.html.HtmlFormRenderer;
 import org.apache.myfaces.test.base.AbstractJsfTestCase;
 import org.apache.myfaces.test.mock.MockRenderKitFactory;
 import org.apache.myfaces.test.mock.MockResponseWriter;
+import org.junit.Ignore;
 
 import javax.faces.component.html.HtmlForm;
 import javax.servlet.ServletContext;
@@ -44,7 +45,7 @@ import java.io.StringWriter;
  *          we try to test here a simple mechanism, the taint history under
  *          JSF Testing conditions.
  */
-
+@Ignore
 public class TaintHistoryTest extends AbstractJsfTestCase
 {
 
