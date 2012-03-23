@@ -23,8 +23,6 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import javax.servlet.ServletContext;
 import java.lang.ref.WeakReference;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,7 +60,6 @@ public class ResourceMonitor extends Thread
      * the classMap still is needed for various identification tasks which are reload
      * related
      */
-    Map<Integer, Boolean> _systemRecompileMap = new ConcurrentHashMap<Integer, Boolean>(8, 0.75f, 1);
 
     boolean _running = false;
     //    boolean _contextInitialized = false;
@@ -112,9 +109,9 @@ public class ResourceMonitor extends Thread
     public void run()
     {
 
-        while (_running)
+        while (!Thread.currentThread().isInterrupted())
         {
-            if (!_running) break;
+            if (Thread.currentThread().isInterrupted()) break;
             //we run the full scan on the classes to bring our data structures up to the task
             performMonitoringTask();
             sleep();
@@ -131,7 +128,7 @@ public class ResourceMonitor extends Thread
     {
         synchronized(WeavingContext.getInstance().recompileLock) {
             WeavingContext context = WeavingContext.getInstance();
-            context.initialFullScan();
+            context.fullScan();
 
             //we compile wherever needed, taints are now in place due to our scan already being performed
             if (context.compile())

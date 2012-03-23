@@ -24,8 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext
 import scala.tools.nsc.{Global, Settings}
 import scala.collection.JavaConversions._
 
-import org.apache.myfaces.extensions.scripting.core.common.util.{ClassUtils, FileUtils}
-import java.util.Collections
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils
 
 /**
  *

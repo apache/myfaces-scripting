@@ -25,21 +25,6 @@
 
     <description>Webproject.xml</description>
 
-
-    <!--
-    Note this entry is vital it plugs the ext-scripting system into
-    a myfaces extension point
-    -->
-    <context-param>
-        <description>
-            Initializes the plugins for our groovy handlers
-        </description>
-        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
-        </param-value>
-    </context-param>
-
-
     <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead

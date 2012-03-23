@@ -281,7 +281,7 @@ public class WeavingContext
         return false;
     }
 
-    public void initialFullScan()
+    public void fullScan()
     {
         for (ScriptingEngine engine : getEngines())
         {

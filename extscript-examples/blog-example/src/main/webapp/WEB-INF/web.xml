@@ -25,7 +25,7 @@
 
     <description>Webproject.xml</description>
 
-
+   <!--
     <context-param>
         <description>
             Initializes the plugins for our groovy handlers
@@ -34,7 +34,7 @@
         <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
         </param-value>
     </context-param>
-
+    -->
 
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
