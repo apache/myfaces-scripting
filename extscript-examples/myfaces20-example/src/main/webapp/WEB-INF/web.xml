@@ -19,12 +19,21 @@
  * under the License.
 -->
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-      version="3.0">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
 
 
     <description>MyProject web.xml</description>
+    <context-param>
+        <description>
+            Initializes the plugins for our groovy handlers
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
+        </param-value>
+    </context-param>
+
 
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
