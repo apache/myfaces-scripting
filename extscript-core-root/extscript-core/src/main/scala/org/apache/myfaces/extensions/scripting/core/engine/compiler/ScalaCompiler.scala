@@ -23,7 +23,8 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext
 import scala.tools.nsc.{Global, Settings}
 import scala.collection.JavaConversions._
-import org.apache.myfaces.extensions.scripting.core.common.util.{ClassUtils, FileUtils}
+
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils
 
 /**
  *
@@ -78,17 +79,14 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     settings.outdir.value = configuration.getCompileTarget.getAbsolutePath
     settings.deprecation.value = true // enable detailed deprecation warnings
     settings.unchecked.value = true // enable detailed unchecked warnings
-    var cp: String = System.getProperty("java.class.path")
-
+    var cp: String = configuration.getSystemClasspath();
 
     if(!cp.contains("scala")) { //probably a war container
-      val classesDir = ClassUtils.getContextClassLoader().getResource("./").getFile();
-
-      val libDir = classesDir+".."+File.separator+"lib"
-      cp = fetchJarPath(libDir, cp, classesDir)
+      val classesDir = asScalaBuffer[String]  (configuration.getClassesPaths())
+      val jarDirs    = asScalaBuffer[String]  (configuration.getJarPaths())
+      cp += classesDir.reduceLeft[String]((a1:String,  a2:String) => a1+File.pathSeparator+a2)
+      cp += jarDirs.reduceLeft[String]((a1:String,  a2:String) => a1+File.pathSeparator+a2)
     }
-
-
 
     settings.classpath.value = cp
     val reporter = new CompilationResultReporter(settings)

@@ -25,6 +25,8 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -39,7 +41,8 @@ import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
 public class Configuration
 {
-   List<String> _additionalClassPath = new CopyOnWriteArrayList<String>();
+    private static final String WEB_INF_CLASSES = "/WEB-INF/classes";
+    List<String> _additionalClassPath = new CopyOnWriteArrayList<String>();
     /**
      * the package whitelist used by our system
      * to determine which packages are under control.
@@ -56,10 +59,9 @@ public class Configuration
      */
     volatile List<String> _resourceDirs = new CopyOnWriteArrayList<String>();
 
-
-
     String _initialCompile;
 
+    WeakReference<ServletContext> _contextWeakReference = null;
 
     /**
      * the target compile path
@@ -83,24 +85,27 @@ public class Configuration
     public void init(ServletContext context)
     {
         String packageWhiteList = context.getInitParameter(INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST);
-        packageWhiteList = (packageWhiteList == null)? "": packageWhiteList;
+        packageWhiteList = (packageWhiteList == null) ? "" : packageWhiteList;
         _packageWhiteList.addAll(Arrays.asList(packageWhiteList.split("\\,")));
 
         String additionalClassPath = context.getInitParameter(INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH);
-        additionalClassPath = (additionalClassPath == null)? "": additionalClassPath;
-        String [] additionalClassPaths = additionalClassPath.split("\\,");
+        additionalClassPath = (additionalClassPath == null) ? "" : additionalClassPath;
+        String[] additionalClassPaths = additionalClassPath.split("\\,");
         _additionalClassPath.addAll(Arrays.asList(additionalClassPaths));
 
         String resourcePath = context.getInitParameter(INIT_PARAM_RESOURCE_PATH);
-        resourcePath = (resourcePath == null)? "": resourcePath;
+        resourcePath = (resourcePath == null) ? "" : resourcePath;
         _resourceDirs.addAll(Arrays.asList(resourcePath.split("\\,")));
 
         _initialCompile = context.getInitParameter(INIT_PARAM_INITIAL_COMPILE);
         //_additionalClassPath = context.getInitParameter(INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH);
 
-        for(ScriptingEngine engine: FactoryEngines.getInstance().getEngines()) {
+        for (ScriptingEngine engine : FactoryEngines.getInstance().getEngines())
+        {
             engine.init(context);
         }
+
+        _contextWeakReference = new WeakReference<ServletContext>(context);
     }
 
     public String getFileEnding(int scriptingEngine)
@@ -121,46 +126,52 @@ public class Configuration
         return WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths();
     }
 
-        /**
-         * returns a set of whitelisted subdirs hosting the source
-         *
-         * @param scriptingEngine the scripting engine for which the dirs have to be determined
-         *                        (note every scripting engine has a unique integer value)
-         * @return the current whitelisted dirs hosting the sources
-         */
-        public Collection<String> getWhitelistedSourceDirs(int scriptingEngine) {
-            Collection<String> origSourceDirs = getSourceDirs(scriptingEngine);
-            if (_packageWhiteList.isEmpty()) {
-                return origSourceDirs;
-            }
-
-            return mergeWhitelisted(origSourceDirs);
+    /**
+     * returns a set of whitelisted subdirs hosting the source
+     *
+     * @param scriptingEngine the scripting engine for which the dirs have to be determined
+     *                        (note every scripting engine has a unique integer value)
+     * @return the current whitelisted dirs hosting the sources
+     */
+    public Collection<String> getWhitelistedSourceDirs(int scriptingEngine)
+    {
+        Collection<String> origSourceDirs = getSourceDirs(scriptingEngine);
+        if (_packageWhiteList.isEmpty())
+        {
+            return origSourceDirs;
         }
 
-        /**
-         * merges the whitelisted packages with the sourcedirs and generates a final list
-         * which left join of both sets - the ones which do not exist in reality
-         *
-         * @param origSourceDirs the original source dirs
-         * @return the joined existing subset of all directories which exist
-         */
-        private Collection<String> mergeWhitelisted(Collection<String> origSourceDirs) {
-            List<String> retVal = new ArrayList<String>(_packageWhiteList.size() * origSourceDirs.size() + origSourceDirs.size());
+        return mergeWhitelisted(origSourceDirs);
+    }
 
-            for (String whitelisted : _packageWhiteList) {
-                whitelisted = whitelisted.replaceAll("\\.", FileUtils.getFileSeparatorForRegex());
-                for (String sourceDir : origSourceDirs) {
-                    String newSourceDir = sourceDir + File.separator + whitelisted;
-                    if ((new File(newSourceDir)).exists()) {
-                        retVal.add(newSourceDir);
-                    }
+    /**
+     * merges the whitelisted packages with the sourcedirs and generates a final list
+     * which left join of both sets - the ones which do not exist in reality
+     *
+     * @param origSourceDirs the original source dirs
+     * @return the joined existing subset of all directories which exist
+     */
+    private Collection<String> mergeWhitelisted(Collection<String> origSourceDirs)
+    {
+        List<String> retVal = new ArrayList<String>(_packageWhiteList.size() * origSourceDirs.size() + origSourceDirs.size());
+
+        for (String whitelisted : _packageWhiteList)
+        {
+            whitelisted = whitelisted.replaceAll("\\.", FileUtils.getFileSeparatorForRegex());
+            for (String sourceDir : origSourceDirs)
+            {
+                String newSourceDir = sourceDir + File.separator + whitelisted;
+                if ((new File(newSourceDir)).exists())
+                {
+                    retVal.add(newSourceDir);
                 }
             }
-            return retVal;
         }
-
+        return retVal;
+    }
 
     //----------------------- standard setter and getter --------------------------------------
+
     /**
      * Add a new source dir for the corresponding scripting engine
      *
@@ -169,10 +180,54 @@ public class Configuration
      */
     public void addSourceDir(int scriptingEngine, String sourceDir)
     {
-        if(!WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths().contains(sourceDir))
+        if (!WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths().contains(sourceDir))
             WeavingContext.getInstance().getEngine(scriptingEngine).getSourcePaths().add(sourceDir);
     }
 
+    public String getSystemClasspath() {
+        return System.getProperty("java.class.path");
+    }
+    
+    public List<String> getJarPaths()
+    {
+        ServletContext context = _contextWeakReference.get();
+        Collection<String> relativePaths = _contextWeakReference.get().getResourcePaths("/WEB-INF/lib");
+        List<String> ret = new ArrayList<String>(relativePaths.size());
+        for (String jarPath : relativePaths)
+        {
+            try
+            {
+                ret.add(context.getResource(jarPath).getFile());
+            }
+            catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    public List<String> getClassesPaths()
+    {
+        ServletContext context = _contextWeakReference.get();
+        Collection<String> relativePaths = _contextWeakReference.get().getResourcePaths(WEB_INF_CLASSES);
+        List<String> ret = new ArrayList<String>(relativePaths.size());
+        for (String jarPath : relativePaths)
+        {
+            try
+            {
+                String file = context.getResource(jarPath).getFile();
+                int pos = file.indexOf(WEB_INF_CLASSES);
+                file = file.substring(0, pos + WEB_INF_CLASSES.length());
+                ret.add(file);
+            }
+            catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
 
     public List<String> getAdditionalClassPath()
     {
@@ -184,7 +239,8 @@ public class Configuration
         _additionalClassPath = additionalClassPath;
     }
 
-    public void addAdditionalClassPath(String additionalClassPath) {
+    public void addAdditionalClassPath(String additionalClassPath)
+    {
         _additionalClassPath.add(additionalClassPath);
     }
 
@@ -198,7 +254,8 @@ public class Configuration
         _packageWhiteList = packageWhiteList;
     }
 
-    public void addWhitelistPackage(String pckg) {
+    public void addWhitelistPackage(String pckg)
+    {
         _packageWhiteList.add(pckg);
     }
 
@@ -212,7 +269,8 @@ public class Configuration
         _resourceDirs = resourceDirs;
     }
 
-    public void addResourceDir(String resourceDir) {
+    public void addResourceDir(String resourceDir)
+    {
         _resourceDirs.add(resourceDir);
     }
 
@@ -235,7 +293,6 @@ public class Configuration
     {
         _compileTarget = compileTarget;
     }
-
 
 }
 

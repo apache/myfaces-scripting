@@ -75,7 +75,7 @@ public class InitialFullScanTest
                     groovyEngine.getSourcePaths().add(currentDirStr);
                 }
                 //we now scan for the files
-                WeavingContext.getInstance().initialFullScan();
+                WeavingContext.getInstance().fullScan();
 
             }
             catch (IOException e)
