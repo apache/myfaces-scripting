@@ -3,7 +3,7 @@
     <artifactId>extscript-core-root</artifactId>
     <packaging>pom</packaging>
     <name>MyFaces Extension Scripting Core Engine</name>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
 
     <description>
          MyFaces Extension Scripting Core Meta Project
@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-root</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
 
     <scm>
