@@ -27,7 +27,7 @@
     <!-- test -->
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
-        <myfaces2.version>2.0.12-SNAPSHOT</myfaces2.version>
+        <myfaces2.version>2.1.7-SNAPSHOT</myfaces2.version>
         <extval.version>2.0.5</extval.version>
         <groovy.version>1.7.2</groovy.version>
         <maven-scala-plugin.scalaVersion>2.15.2</maven-scala-plugin.scalaVersion>

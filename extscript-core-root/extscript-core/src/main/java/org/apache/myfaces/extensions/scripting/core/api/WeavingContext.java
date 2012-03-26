@@ -19,6 +19,8 @@
 
 package org.apache.myfaces.extensions.scripting.core.api;
 
+import org.apache.myfaces.extensions.scripting.core.api.events.WeavingEvent;
+import org.apache.myfaces.extensions.scripting.core.api.events.WeavingEventListener;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
@@ -85,6 +87,8 @@ public class WeavingContext
      */
     ConcurrentHashMap<String, Long> lifecycleRegistry = new ConcurrentHashMap<String, Long>();
 
+    WeakHashMap<WeavingEventListener, String> _listeners = new WeakHashMap<WeavingEventListener, String>();
+    
     /**
      * This is a log which keeps track of the taints
      * over time, we need that mostly for bean refreshes
@@ -133,6 +137,21 @@ public class WeavingContext
         }
     }
 
+    
+    public void addListener(WeavingEventListener listener) {
+        _listeners.put(listener,"");
+    }
+    
+    public void removeListener(WeavingEventListener listener) {
+        _listeners.remove(listener);
+    }
+    
+    public void sendWeavingEvent(WeavingEvent evt) {
+        for(WeavingEventListener listener: _listeners.keySet()) {
+            listener.onEvent(evt);
+        }
+    }
+    
     public void initEngines() throws IOException
     {
         FactoryEngines.getInstance().init();
