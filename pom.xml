@@ -27,11 +27,13 @@
     <!-- test -->
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
-        <myfaces2.version>2.1.6</myfaces2.version>
+        <myfaces2.version>2.1.7-SNAPSHOT</myfaces2.version>
         <extval.version>2.0.5</extval.version>
         <groovy.version>1.7.2</groovy.version>
         <maven-scala-plugin.scalaVersion>2.15.2</maven-scala-plugin.scalaVersion>
         <scala-library.version>2.10.0-M2</scala-library.version>
+        <deltaspike.version>0.2-incubating-SNAPSHOT</deltaspike.version>
+         <openwebbeans.version>1.1.2</openwebbeans.version>
     </properties>
 
 

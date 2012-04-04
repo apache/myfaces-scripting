@@ -60,6 +60,7 @@
         <module>myfaces20-example</module>
         <module>myfaces20-extscript-helloworld</module>
         <module>blog-example</module>
+        <module>cdi-example</module>
         <!--
         <module>spring-example</module>
         -->

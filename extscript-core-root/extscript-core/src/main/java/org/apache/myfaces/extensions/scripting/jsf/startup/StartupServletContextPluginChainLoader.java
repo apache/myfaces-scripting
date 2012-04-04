@@ -19,14 +19,18 @@
 
 package org.apache.myfaces.extensions.scripting.jsf.startup;
 
-import org.apache.myfaces.webapp.StartupListener;
+import org.apache.myfaces.extensions.scripting.core.api.Plugin;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
 import org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
+import org.apache.myfaces.webapp.StartupListener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 /**
@@ -42,6 +46,19 @@ import java.util.logging.Logger;
 public class StartupServletContextPluginChainLoader implements StartupListener
 {
     final Logger _log = Logger.getLogger(this.getClass().getName());
+    Plugin[] _plugins = new Plugin[]{};
+
+    public StartupServletContextPluginChainLoader()
+    {
+        ServiceLoader<Plugin> pluginLoader
+                = ServiceLoader.load(Plugin.class);
+        List<Plugin> plugins = new LinkedList<Plugin>();
+        for (Plugin plugin : pluginLoader)
+        {
+            plugins.add(plugin);
+        }
+        _plugins = plugins.toArray(new Plugin[plugins.size()]);
+    }
 
     public void preInit(ServletContextEvent servletContextEvent)
     {
@@ -68,6 +85,11 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
             _log.info("[EXT-SCRIPTING] registering the JSF Implementation");
             WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
+
+            for (Plugin plugin : _plugins)
+            {
+                plugin.preInit(servletContextEvent);
+            }
         }
         catch (IOException e)
         {
@@ -80,11 +102,18 @@ public class StartupServletContextPluginChainLoader implements StartupListener
     {
         //tell the system that the startup phase is done
         WeavingContext.getInstance().markPostInit();
+        for (Plugin plugin : _plugins)
+        {
+            plugin.postInit(evt);
+        }
     }
 
     public void preDestroy(ServletContextEvent evt)
     {
-
+        for (Plugin plugin : _plugins)
+        {
+            plugin.preDestroy(evt);
+        }
     }
 
     public void postDestroy(ServletContextEvent evt)
@@ -92,5 +121,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener
         //context is destroyed we have to shut down our daemon as well, by giving it
         //a hint to shutdown
         ResourceMonitor.getInstance().setRunning(false);
+        for (Plugin plugin : _plugins)
+        {
+            plugin.postDestroy(evt);
+        }
     }
 }
