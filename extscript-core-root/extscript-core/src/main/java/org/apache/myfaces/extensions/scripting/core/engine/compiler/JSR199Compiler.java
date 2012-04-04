@@ -31,9 +31,13 @@ import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,12 +85,26 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.c
             DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector<JavaFileObject>();
 
             getLog().info("[EXT-SCRIPTING] Doing a full recompile");
-
+            
             List<File> sourceFiles = FileUtils.fetchSourceFiles(configuration.getWhitelistedSourceDirs
                     (ENGINE_TYPE_JSF_JAVA), JAVA_WILDCARD);
+            
+            HashSet<String> alreadyProcessed = new HashSet<String>();
+            Iterator<File> sourceIt = sourceFiles.iterator();
+            while(sourceIt.hasNext()) {
+                File currentProcessed = sourceIt.next();
+                if(alreadyProcessed.contains(currentProcessed.getAbsolutePath())) {
+                    sourceIt.remove();
+                } else {
+                    alreadyProcessed.add(currentProcessed.getAbsolutePath());
+                }
 
+            }
+        
+        
             for (File sourceFile : sourceFiles)
             {
+                System.out.println("-----------------"+sourceFile.getAbsolutePath());
                 if (!sourceFile.exists())
                 {
                     getLog().log(Level.WARNING, "[EXT-SCRIPTING] Source file with path {0} does not exist it might cause an error in the compilation process", sourceFile.getAbsolutePath());

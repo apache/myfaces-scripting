@@ -20,6 +20,8 @@ package org.apache.myfaces.extensions.scripting.core.monitor;
 
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.BeginLifecycle;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.EndLifecycle;
 
 import javax.servlet.ServletContext;
 import java.lang.ref.WeakReference;
@@ -124,9 +126,19 @@ public class ResourceMonitor extends Thread
 
     }
 
+    public void stopIt()
+    {
+        super.interrupt();
+        _instance = null;
+        ServletContext context = _externalContext.get();
+        context.setAttribute(CONTEXT_KEY, null);
+        _externalContext = null;
+    }
+
     public void performMonitoringTask()
     {
         synchronized(WeavingContext.getInstance().recompileLock) {
+            WeavingContext.getInstance().sendWeavingEvent(new BeginLifecycle());
             WeavingContext context = WeavingContext.getInstance();
             context.fullScan();
 
@@ -138,10 +150,13 @@ public class ResourceMonitor extends Thread
                 //we next retaint all classes according to our dependency graph
                 context.markTaintedDependends();
             }
+            WeavingContext.getInstance().sendWeavingEvent(new EndLifecycle());
         }
         //context.annotationScan();
 
     }
+
+
 
     private void sleep()
     {

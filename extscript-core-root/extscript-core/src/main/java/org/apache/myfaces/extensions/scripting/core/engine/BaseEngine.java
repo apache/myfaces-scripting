@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 
 public abstract class BaseEngine
 {
-    CopyOnWriteArrayList<String> _sourcePaths = new CopyOnWriteArrayList<String>();
+    Set<String> _sourcePaths = Collections.synchronizedSet(new HashSet<String>());
     Map<String, ClassResource> _watchedResources = new ConcurrentHashMap<String, ClassResource>();
     //both belong together but the dependencyregistry is just
     //a wrapper for the dep map with additional functionality
@@ -61,7 +61,7 @@ public abstract class BaseEngine
         return _watchedResources;
     }
 
-    public List<String> getSourcePaths()
+    public Collection<String> getSourcePaths()
     {
         return _sourcePaths;
     }

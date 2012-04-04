@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.adapters;
 
-import org.apache.myfaces.extensions.scripting.core.api.ImplementationSPI;
+import org.apache.myfaces.extensions.scripting.core.api.ImplementationService;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.jsf.adapters.handlers.MyFacesBeanHandler;
 
@@ -30,7 +30,7 @@ import javax.servlet.ServletContext;
  *
  * SPI for various myfaces related tasks
  */
-public class MyFacesSPI implements ImplementationSPI
+public class MyFacesSPI implements ImplementationService
 {
     CustomChainLoader _loader = null;
     MyFacesBeanHandler beanHandler = new MyFacesBeanHandler();

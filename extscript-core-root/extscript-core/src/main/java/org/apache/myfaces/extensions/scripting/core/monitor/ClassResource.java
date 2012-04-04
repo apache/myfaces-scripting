@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.core.monitor;
 
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.TaintedEvent;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 
 import java.io.File;
@@ -53,60 +54,6 @@ public class ClassResource extends WatchedResource
     /*non initial change for delta change investigation*/
     volatile boolean changedForCompile = false;
 
-
-    //todo clean up the sourcepath and filename
-
-    //--- todo move this into a separate resource handling facility
-
-
-
-    @Override
-    /**
-     * returns the source file in this case
-     */
-    public File getFile()
-    {
-        try
-        {
-            return _sourceFile;
-        }
-        catch (NullPointerException ex)
-        {
-            return null;
-        }
-    }
-
-    public void setFile(File sourceFile)
-    {
-        _sourceFile = sourceFile;
-    }
-
-    public Class getAClass()
-    {
-        return _aClass;
-    }
-
-    public void setAClass(Class aClass)
-    {
-        this._aClass = aClass;
-    }
-
-    public int getScriptingEngine()
-    {
-        return _scriptingEngine;
-    }
-
-    public void setScriptingEngine(int scriptingEngine)
-    {
-        this._scriptingEngine = scriptingEngine;
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException
-    {
-        ClassResource retVal = (ClassResource) super.clone();
-        return retVal;
-    }
 
     public String getSourceFile()
     {
@@ -158,6 +105,7 @@ public class ClassResource extends WatchedResource
             logger.info("[EXT-SCRIPTING] tainting " + getSourceFile());
             WeavingContext.getInstance().addTaintLogEntry(this);
             WeavingContext.getInstance().gcTaintLog();
+            WeavingContext.getInstance().sendWeavingEvent(new TaintedEvent(this));
         }
         tainted = value;
     }
@@ -196,5 +144,54 @@ public class ClassResource extends WatchedResource
     public void setChangedForCompile(boolean changedForCompile)
     {
         this.changedForCompile = changedForCompile;
+    }
+
+
+    @Override
+    /**
+     * returns the source file in this case
+     */
+    public File getFile()
+    {
+        try
+        {
+            return _sourceFile;
+        }
+        catch (NullPointerException ex)
+        {
+            return null;
+        }
+    }
+
+    public void setFile(File sourceFile)
+    {
+        _sourceFile = sourceFile;
+    }
+
+    public Class getAClass()
+    {
+        return _aClass;
+    }
+
+    public void setAClass(Class aClass)
+    {
+        this._aClass = aClass;
+    }
+
+    public int getScriptingEngine()
+    {
+        return _scriptingEngine;
+    }
+
+    public void setScriptingEngine(int scriptingEngine)
+    {
+        this._scriptingEngine = scriptingEngine;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException
+    {
+        ClassResource retVal = (ClassResource) super.clone();
+        return retVal;
     }
 }

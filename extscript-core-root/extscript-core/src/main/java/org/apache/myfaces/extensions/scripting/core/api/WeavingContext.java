@@ -19,8 +19,10 @@
 
 package org.apache.myfaces.extensions.scripting.core.api;
 
-import org.apache.myfaces.extensions.scripting.core.api.events.WeavingEvent;
-import org.apache.myfaces.extensions.scripting.core.api.events.WeavingEventListener;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.BeginCompiling;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEvent;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEventListener;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.EndCompiling;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
@@ -67,7 +69,7 @@ public class WeavingContext
      * Service provider for the implementation under which this extension
      * runs
      */
-    ImplementationSPI _implementation = null;
+    ImplementationService _implementation = null;
     /**
      * the collection of reloading strategies depending on their artifact type
      */
@@ -323,13 +325,15 @@ public class WeavingContext
         for (ScriptingEngine engine : getEngines())
         {
             if (!engine.needsRecompile()) continue;
+            sendWeavingEvent(new BeginCompiling());
+
             compile = true;
             log.info("[EXT-SCRIPTING] compiling " + engine.getEngineTypeAsStr() + " files");
             CompilationResult result = engine.compile();
             if(result != null) {
                 WeavingContext.getInstance().setCompilationResult(engine.getEngineType(), result);
             }
-            
+            sendWeavingEvent(new EndCompiling());
             log.info("[EXT-SCRIPTING] compiling " + engine.getEngineTypeAsStr() + " files done");
         }
         return compile;
@@ -397,6 +401,10 @@ public class WeavingContext
                 new MethodLevelReloadingHandler(o, artifactType));
     }
 
+    public Class forName(String name) {
+        return _implementation.forName(name);
+    }
+    
     /**
      * reload the class dynamically
      */
@@ -471,7 +479,7 @@ public class WeavingContext
         //TODO implement this tomorrow
     }
 
-    public ImplementationSPI getImplementationSPI() {
+    public ImplementationService getImplementationSPI() {
         return MyFacesSPI.getInstance();
     }
 
@@ -643,12 +651,12 @@ public class WeavingContext
         return _instance;
     }
 
-    public ImplementationSPI getImplementation()
+    public ImplementationService getImplementation()
     {
         return _implementation;
     }
 
-    public void setImplementation(ImplementationSPI implementation)
+    public void setImplementation(ImplementationService implementation)
     {
         _implementation = implementation;
     }

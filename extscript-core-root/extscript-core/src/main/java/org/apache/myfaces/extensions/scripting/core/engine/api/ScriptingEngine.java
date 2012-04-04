@@ -39,7 +39,7 @@ public interface ScriptingEngine
 
     public Collection<String> getPossibleDynamicClasses();
     
-    public List<String> getSourcePaths();
+    public Collection<String> getSourcePaths();
 
     public Map<String, ClassResource> getWatchedResources();
 
