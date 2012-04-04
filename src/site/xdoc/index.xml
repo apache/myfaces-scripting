@@ -94,7 +94,7 @@
                     by allowing annotations to be used in a dynamic manner!
                 </p>
             </subsection>
-            <subsection name="Support for MyFace">
+            <subsection name="Support for MyFaces">
                 <p>
                     Extensions scripting supports MyFaces only for now. Following versions are supported.
                 </p>

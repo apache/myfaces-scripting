@@ -20,10 +20,9 @@ Download Apache MyFaces Extension Scripting
 Download Apache MyFaces Extension Scripting
 
 
- Apache MyFaces 1.0.3 is the newest version (not yet released). Significant changes have been made
- to Ext-Scripting 1.0.3, a general refactoring for maintainability was performed and basic
- Scala support added.
- Note, this is the first release, which is java6 and MyFaces 2.1.x only. For older versions of MyFaces
+ Apache MyFaces 1.0.3 is the newest version. Significant changes have been made,
+ a general refactoring for maintainability was performed and basicScala support added.
+ Note, this is the first release, which is Java 6 and MyFaces 2.1.x only. For older versions of MyFaces
  and Java 5, download Ext-Scripting 1.0.2.
 
   Release notes can be found {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12320165&styleName=Text&projectId=12310964}here}}
