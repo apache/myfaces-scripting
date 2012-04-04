@@ -26,7 +26,18 @@ Download Apache MyFaces Extension Scripting
  Note, this is the first release, which is java6 and MyFaces 2.1.x only. For older versions of MyFaces
  and Java 5, download Ext-Scripting 1.0.2.
 
- Download Links and Release Notes will follow soon.
+  Release notes can be found {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12320165&styleName=Text&projectId=12310964}here}}
+
+*-------------------------+---------+----------+-----------+
+|                         | Server | Checksum | Signature |
+*-------------------------+---------+----------+-----------+
+| Ext-Script MyFaces 2.1 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar} extscript-myfaces20-bundle-1.0.3.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar.asc.md5} extscript-myfaces20-bundle-1.0.3.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar.asc}extscript-myfaces20-bundle-1.0.3.jar.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Demo Application MyFaces 2.0 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war} myfaces20-example-1.0.3.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war.asc.md5} myfaces20-example-1.0.3.war.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war.asc}myfaces20-example-1.0.3.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Blank Application JSF2 (war)      | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.war} myfaces20-extscript-helloworld-1.0.3.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.war.md5} myfaces20-extscript-helloworld-1.0.3.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.war.asc} myfaces20-extscript-helloworld-1.0.3.war.asc}} |
+*-------------------------+---------+----------+-----------+
+
 
 Ext-Scripting 1.0.2 (latest version supporting MyFaces 1.2.x)
 
