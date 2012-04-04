@@ -130,6 +130,10 @@
     Note, this servlet filter is vital without it Ext-Scripting will not work,
     if you do not set it you will get an appropriate warning in the command line
     -->
+    <listener>
+        <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
+    </listener>
+
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>
