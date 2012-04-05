@@ -10,7 +10,7 @@
     <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces21-extscript-cdi</artifactId>
     <packaging>war</packaging>
-    <name>A simple project for MyFaces 2.1 and Ext-Scripting 1.0</name>
+    <name>A simple project for MyFaces 2.1 and Ext-Scripting 1.0 and CDI</name>
     <version>1.0.4-SNAPSHOT</version>
     <url>http://www.apache.org</url>
 

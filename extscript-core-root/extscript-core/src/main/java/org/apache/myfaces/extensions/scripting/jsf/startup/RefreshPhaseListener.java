@@ -20,11 +20,13 @@
 package org.apache.myfaces.extensions.scripting.jsf.startup;
 
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.RefreshBeginEvent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.servlet.ServletRequest;
 import java.util.Map;
 
 /**
@@ -50,6 +52,10 @@ public class RefreshPhaseListener implements PhaseListener
         Map<Object, Object> params = context.getAttributes();
         if(params.containsKey("ANN_PROCESSED")) return;
         else params.put("ANN_PROCESSED", Boolean.TRUE);
+        WeavingContext.getInstance().sendWeavingEvent(new RefreshBeginEvent(FacesContext
+                .getCurrentInstance()
+                .getExternalContext().getRequest()));
+
         WeavingContext.getInstance().getImplementationSPI().refreshManagedBeans();
         WeavingContext.getInstance().annotationScan();
     }

@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.cdi.startup;
 
 import javax.servlet.ServletContextEvent;
 import org.apache.myfaces.extensions.scripting.core.api.Plugin;
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -36,7 +37,7 @@ public class StartupPlugin implements Plugin
      */
     public void preInit(ServletContextEvent evt)
     {
-        System.out.println("-----------------PREINIT--------------------");
+        //WeavingContext.getInstance().
     }
 
     /**
@@ -46,7 +47,7 @@ public class StartupPlugin implements Plugin
      */
     public void postInit(ServletContextEvent evt)
     {
-        System.out.println("-----------------POSTINIT--------------------");
+
     }
 
     /**
@@ -56,7 +57,6 @@ public class StartupPlugin implements Plugin
      */
     public void preDestroy(ServletContextEvent evt)
     {
-        System.out.println("-----------------PREDESTROY--------------------");
     }
 
     /**
@@ -66,6 +66,5 @@ public class StartupPlugin implements Plugin
      */
     public void postDestroy(ServletContextEvent evt)
     {
-        System.out.println("-----------------POSTDESTROY--------------------");
     }
 }
