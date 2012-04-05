@@ -177,48 +177,7 @@
 
 
         <plugins>
-            <!-- scala tools plugin -->
-            <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <executions>
 
-                    <execution>
-                        <id>compile</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>compile</phase>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <phase>test-compile</phase>
-                    </execution>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.scala-lang</groupId>
-                        <artifactId>scala-library</artifactId>
-                        <version>${scala-library.version}</version>
-                    </dependency>
-
-
-                    <dependency>
-                        <groupId>org.scala-lang</groupId>
-                        <artifactId>scala-compiler</artifactId>
-                        <version>${scala-library.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -322,7 +281,7 @@
         <site>
             <id>apache-site</id>
             <name>Apache Website</name>
-            <url>scp://people.apache.org/www/myfaces.apache.org/extensions/scripting/</url>
+            <url>scpexe://werpu:HoliesAka39#@people.apache.org/www/myfaces.apache.org/extensions/scripting/</url>
         </site>
     </distributionManagement>
 
