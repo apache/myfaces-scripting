@@ -37,7 +37,7 @@
 
 
             The section covers the setup via download or custom build. If you need configuration detail info
-            or info on how to setup your ide correctly please follow the links in the navigation to
+            or information on how to setup your ide correctly please follow the links in the navigation to
             the correct section.
 
         </section>
@@ -89,8 +89,8 @@
 
         <section name="Checkout and Build">
             <p>
-                While Ext-Scripting is already in stable stage, the best way to get started
-                is probably to checkout and build ext-scripting yourself from the latest codebase.
+                While Ext-Scripting is already in stable state, the best way to get started
+                is probably to checkout and build Ext-Scripting yourself from the latest codebase.
                 All other installation steps will have this step as prerequisite if you want to
                 use the latest codebase instead of one of the beta releases!
                 First you have to check out the latest codebase from
@@ -106,7 +106,7 @@
             </p>
             <ul>
                 <li>A valid Subversion client</li>
-                <li>A valid servlet 3.0+ container</li>
+                <li>A valid Servlet 3.0+ container</li>
                 <li>Java 6 or higher</li>
                 <li>Maven 2.0.9 or higher</li>
             </ul>
@@ -317,8 +317,8 @@
                 </ul>
 
                 <h4>Dynamic resource reloading</h4>
-                <p>additionally Ext-Scripting allows the reloading of dynamic web resources
-                like facelets templates images css files etc...  An additional config param is
+                <p>Additionally Ext-Scripting allows the reloading of dynamic web resources
+                like Facelets templates images css files etc...  An additional config param is
                     available to enable this functionality.
                     </p>
                 <p>
@@ -329,7 +329,7 @@
                                         as the root of your web application.
                     </li>
                     <li><b>facelets.RESOURCE_RESOLVER</b> also needs to be set to <b>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</b> if
-                    you want dynamic facelet reloading enabled</li>
+                    you want dynamic Facelet reloading enabled</li>
                 </ul>
 
                 <source><![CDATA[
@@ -368,7 +368,7 @@
             <p>With this option you can point your source dir to the normal compile source and mark
             special packages as dynamic (to isolate the dynamic part from the rest)</p>
 
-            To enalbe this option, add following entry to your web.xml:
+            To enable this option, add following entry to your web.xml:
              <source><![CDATA[
 <!-- ======================================================================================
     Optional: Whitelist of root packages where your sources should come from
@@ -389,7 +389,6 @@
         <section name="Navigation Bottom">
             <a href="./index.html">&lt;&lt;Back to the Start Page</a>
             or
-
             <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 

@@ -217,7 +217,7 @@
         <section name="Debugging">
             <p>Ext-Scripting automatically compiles with the debug flags on. Debugging against a running configuration
                 should be no problem. If the debugger can be pointed towards the sources, debugging should work without
-                any sideeffects.
+                any side effects.
             </p>
             <p>
                 Due to the fact that the debugger can pick up the debug info from the newly compiled class
@@ -231,7 +231,7 @@
             <subsection name="Introduction">
                 <p>One of the goals of Ext-Scripting is to prevent unnecessary restarts and redeploys during
                     development. To
-                    enable this it provides custom functionality outside of the scope of providing scripting
+                    enable this, it provides custom functionality outside of the scope of providing scripting
                     capabilities.
                     One of those features is the page and resource reloading from your source directories.
                 </p>
