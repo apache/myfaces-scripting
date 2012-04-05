@@ -132,6 +132,14 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>1.0-beta-7</version>
+            </extension>
+        </extensions>
+
         <pluginManagement>
             <plugins>
 
@@ -281,7 +289,7 @@
         <site>
             <id>apache-site</id>
             <name>Apache Website</name>
-            <url>scpexe://werpu:HoliesAka39#@people.apache.org/www/myfaces.apache.org/extensions/scripting/</url>
+            <url>scp://people.apache.org/www/myfaces.apache.org/extensions/scripting/</url>
         </site>
     </distributionManagement>
 
