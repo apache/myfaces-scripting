@@ -269,7 +269,8 @@
                 </p>
                 <p>
                     The second parameter <b>facelets.RESOURCE_RESOLVER</b> is responsible for enabling the resouce loading
-                    of facelet templates and pages, since Facelets does not have an auto plugging mechanism this has to be
+                    of Facelet templates and pages, since Facelets does not have an auto plugging mechanism this has
+                    to be
                     set to a standard value which is <b>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</b>
                 </p>
                 <p>
