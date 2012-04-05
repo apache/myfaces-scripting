@@ -35,7 +35,7 @@
             <p>
                 Netbeans also works perfectly in conjunction with Ext-Scripting
                 pretty much everything said for Eclipse and Intellij also applies to NetBeans.
-                The biggest restriction is if you want to use netbeans in conjunction with maven
+                The biggest restriction is if you want to use Netbeans in conjunction with maven
                 only one source folder is picked up and you cannot use additional source folders
                 like for instance Intellij or Eclipse allow. So either dont use maven or
                 use package whitelisting as workaround if you want to use Netbeans.
@@ -62,7 +62,7 @@
         </section>
         <section name="Setting up Ext-Scripting specifics">
             <p>
-                If you only have one sourcepath you might have a look at the package whitelisting
+                If you only have one source path you might have a look at the package whitelisting
                 to mark only the packages you actively want to edit for this deployment cycle.
                 This speeds up startup time and helps generally to avoid restarts.
             </p>
