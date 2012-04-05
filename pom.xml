@@ -24,6 +24,7 @@
     <packaging>pom</packaging>
     <name>Myfaces Extension Scripting Project</name>
     <version>1.0.4-SNAPSHOT</version>
+    <url>http://myfaces.apache.org/ext-scripting</url>
     <!-- test -->
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
@@ -33,7 +34,7 @@
         <maven-scala-plugin.scalaVersion>2.15.2</maven-scala-plugin.scalaVersion>
         <scala-library.version>2.10.0-M2</scala-library.version>
         <deltaspike.version>0.2-incubating-SNAPSHOT</deltaspike.version>
-         <openwebbeans.version>1.1.2</openwebbeans.version>
+        <openwebbeans.version>1.1.2</openwebbeans.version>
     </properties>
 
 
@@ -140,13 +141,14 @@
                     <configuration>
                         <outputEncoding>UTF-8</outputEncoding>
                     </configuration>
+
                 </plugin>
                 <plugin>
                     <groupId>org.scala-tools</groupId>
                     <artifactId>maven-scala-plugin</artifactId>
                     <version>${maven-scala-plugin.scalaVersion}</version>
                 </plugin>
-           </plugins>
+            </plugins>
 
         </pluginManagement>
 
@@ -360,6 +362,13 @@
         </profile>
 
     </profiles>
+    <distributionManagement>
+        <site>
+            <id>apache-site</id>
+            <name>Apache Website</name>
+            <url>scpexe://people.apache.org/www/myfaces.apache.org/ext-scripting/</url>
+        </site>
+    </distributionManagement>
 
 
 </project>
