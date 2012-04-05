@@ -48,7 +48,7 @@
             <subsection name="Prerequirements">
 
                 <p>Secondly make sure that your project compiles properly
-                    and can be properly deployed from eclipse. Turn off any auto deployment mechanisms
+                    and can be properly deployed from Idea. Turn off any auto deployment mechanisms
                     which might trigger unnecessary restarts.
                 </p>
 
