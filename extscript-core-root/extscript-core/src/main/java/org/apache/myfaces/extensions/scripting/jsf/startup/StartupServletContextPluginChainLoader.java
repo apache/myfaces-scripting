@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 public class StartupServletContextPluginChainLoader implements StartupListener
 {
-    final Logger _log = Logger.getLogger(this.getClass().getName());
+    static final Logger _log = Logger.getLogger(StartupServletContextPluginChainLoader.class.getName());
     Plugin[] _plugins = new Plugin[]{};
 
     public StartupServletContextPluginChainLoader()
@@ -65,26 +65,7 @@ public class StartupServletContextPluginChainLoader implements StartupListener
         ServletContext servletContext = servletContextEvent.getServletContext();
         try
         {
-            WeavingContext context = WeavingContext.getInstance();
-            _log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
-            context.initEngines();
-            _log.info("[EXT-SCRIPTING] Loading configuration");
-            context.getConfiguration().init(servletContext);
-            _log.info("[EXT-SCRIPTING] Loading Scripting end");
-            _log.info("[EXT-SCRIPTING] initializing startup daemon");
-            ResourceMonitor.init(servletContext);
-            _log.info("[EXT-SCRIPTING] initializing startup daemon end");
-            _log.info("[EXT-SCRIPTING] Initial Scan and compile");
-            //the initial scan should happen synchronsously
-            ResourceMonitor.getInstance().performMonitoringTask();
-            _log.info("[EXT-SCRIPTING] Starting Change Monitor");
-            ResourceMonitor.getInstance().start();
-            _log.info("[EXT-SCRIPTING] Startup done");
-            _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
-            //TODO make this more generic depending on the implementation
-            MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
-            _log.info("[EXT-SCRIPTING] registering the JSF Implementation");
-            WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
+            startup(servletContext);
 
             for (Plugin plugin : _plugins)
             {
@@ -96,6 +77,32 @@ public class StartupServletContextPluginChainLoader implements StartupListener
             _log.severe("[EXT-SCRIPTING] Engine startup failed terminating ext-scripting");
         }
 
+    }
+
+    public static void startup(ServletContext servletContext) throws IOException
+    {
+        if(ResourceMonitor.getInstance() != null && ResourceMonitor.getInstance().isAlive()) return;
+
+        WeavingContext context = WeavingContext.getInstance();
+        _log.info("[EXT-SCRIPTING] Instantiating StartupServletContextPluginChainLoader");
+        context.initEngines();
+        _log.info("[EXT-SCRIPTING] Loading configuration");
+        context.getConfiguration().init(servletContext);
+        _log.info("[EXT-SCRIPTING] Loading Scripting end");
+        _log.info("[EXT-SCRIPTING] initializing startup daemon");
+        ResourceMonitor.init(servletContext);
+        _log.info("[EXT-SCRIPTING] initializing startup daemon end");
+        _log.info("[EXT-SCRIPTING] Initial Scan and compile");
+        //the initial scan should happen synchronsously
+        ResourceMonitor.getInstance().performMonitoringTask();
+        _log.info("[EXT-SCRIPTING] Starting Change Monitor");
+        ResourceMonitor.getInstance().start();
+        _log.info("[EXT-SCRIPTING] Startup done");
+        _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
+        //TODO make this more generic depending on the implementation
+        MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
+        _log.info("[EXT-SCRIPTING] registering the JSF Implementation");
+        WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
     }
 
     public void postInit(ServletContextEvent evt)

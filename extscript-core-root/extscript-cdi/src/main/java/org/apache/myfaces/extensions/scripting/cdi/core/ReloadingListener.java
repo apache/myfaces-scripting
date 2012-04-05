@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.cdi.listener;
+package org.apache.myfaces.extensions.scripting.cdi.core;
 
 import org.apache.myfaces.extensions.scripting.cdi.api.CdiContainerLoader;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEvent;

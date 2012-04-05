@@ -20,15 +20,23 @@
 package org.apache.myfaces.extensions.scripting.cdi.startup;
 
 import javax.servlet.ServletContextEvent;
+
+import org.apache.myfaces.extensions.scripting.cdi.core.ReloadingListener;
 import org.apache.myfaces.extensions.scripting.core.api.Plugin;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * An Ext-Scripting startup plugin
+ * which is called at the various
+ * stages of the startup lifecycle
+ *
+ * Stage 2 of our startup cycle
  */
 
-public class StartupPlugin implements Plugin
+public class ExtScriptStartupPlugin implements Plugin
 {
     /**
      * This method is called before myfaces initializes
@@ -38,6 +46,7 @@ public class StartupPlugin implements Plugin
     public void preInit(ServletContextEvent evt)
     {
         //WeavingContext.getInstance().
+        System.out.println("Starting up the jsf subsystem extension");
     }
 
     /**
@@ -47,7 +56,7 @@ public class StartupPlugin implements Plugin
      */
     public void postInit(ServletContextEvent evt)
     {
-
+        WeavingContext.getInstance().addListener(new ReloadingListener());
     }
 
     /**

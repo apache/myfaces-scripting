@@ -19,24 +19,36 @@
 
 package org.apache.myfaces.extensions.scripting.cdi.startup;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import javax.servlet.ServletContainerInitializer;
+import javax.servlet.ServletContext;
+import java.lang.ref.WeakReference;
+import java.util.Set;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Initializer which stores the servlet context
+ * for later non servlet based references.
+ *
+ * This is the first stage in the servlet lifecycle
+ * and starts before the cdi container.
+ *
+ * Stage 0 of our startup cycle
  */
 
-@WebListener
-public class StartupServletContextListener implements ServletContextListener
+public class CDIServletContainerInitializer implements ServletContainerInitializer
 {
+    private static WeakReference<ServletContext> _contextHolder = null;
 
-    public void contextInitialized(ServletContextEvent sce)
+    public void onStartup(Set<Class<?>> c, ServletContext cx)
     {
+        _contextHolder = new WeakReference(cx);
     }
 
-    public void contextDestroyed(ServletContextEvent sce)
+    public static ServletContext getContext()
     {
+        return _contextHolder.get();
     }
+
 }

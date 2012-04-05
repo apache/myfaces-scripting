@@ -17,4 +17,4 @@
 # under the License.
 #####################################################################################
 
-org.apache.myfaces.extensions.scripting.cdi.startup.StartupPlugin
+org.apache.myfaces.extensions.scripting.cdi.startup.ExtScriptStartupPlugin

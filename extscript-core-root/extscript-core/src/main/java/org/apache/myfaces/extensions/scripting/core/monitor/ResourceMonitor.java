@@ -96,6 +96,7 @@ public class ResourceMonitor extends Thread
     {
         //we do it in this complicated manner because of find bugs
         //practically this cannot really happen except for shutdown were it is not important anymore
+        if(_externalContext == null) return null;
         ServletContext context = _externalContext.get();
         if (context != null)
         {
