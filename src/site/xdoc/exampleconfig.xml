@@ -21,14 +21,14 @@
 
 <document>
     <section name="Navigation Top">
-        <a href="configentries.html">&lt;&lt;appendix Configuration Entries</a>
+        <a href="./configentries.html">&lt;&lt;appendix Configuration Entries</a>
     </section>
     <section name="Appendix: Example Configuration">
         <subsection name="General Information">
             <p>
                 This page gives a detailed example configuration for
                 Ext-Scripting for installation
-                details please visit the<a href="installation.html">setup guide</a>.
+                details please visit the<a href="./installation.html">setup guide</a>.
             </p>
         </subsection>
         <subsection name="Simple Configuration">
@@ -215,6 +215,6 @@
         </subsection>
     </section>
     <section name="Navigation Bottom">
-        <a href="configentries.html">&lt;&lt;appendix Configuration Entries</a>
+        <a href="./configentries.html">&lt;&lt;appendix Configuration Entries</a>
     </section>
 </document>    

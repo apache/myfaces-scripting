@@ -26,7 +26,7 @@
 
     <body>
         <section name="Navigation Top">
-            <a href="installation.html">On to the General Installation Guide&gt;&gt;</a>
+            <a href="./installation.html">On to the General Installation Guide&gt;&gt;</a>
         </section>
 
         <section name="Introduction">
@@ -67,14 +67,14 @@
             <p>
                 Ext-Scripting provides extensive documentation. Feel free
                 to browse our
-                <a href="installation.html">Installation Guide</a>
+                <a href="./installation.html">Installation Guide</a>
                 or
-                <a href="usersguide.html">Users Guide</a>
+                <a href="./usersguide.html">Users Guide</a>
                 for further information.
             </p>
             <p>
                 Also
-                <a href="download.html">download links</a>
+                <a href="./download.html">download links</a>
                 are provided on the left hand side of this page,
                 as well as further information.
             </p>
@@ -116,7 +116,7 @@
         </section>
 
         <section name="Navigation Bottom">
-            <a href="installation.html">On to the General Installation Guide&gt;&gt;</a>
+            <a href="./installation.html">On to the General Installation Guide&gt;&gt;</a>
         </section>
 
 

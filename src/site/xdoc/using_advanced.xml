@@ -25,10 +25,10 @@
 
     <body>
         <section name="Navigation Top">
-            <a href="using_general.html">&lt;&lt;Back to the General Users Guide</a>
+            <a href="./using_general.html">&lt;&lt;Back to the General Users Guide</a>
             or
 
-            <a href="using_eclipse_.html">On to the Eclipse Users Guide&gt;&gt;</a>
+            <a href="./using_eclipse_.html">On to the Eclipse Users Guide&gt;&gt;</a>
         </section>
 
 
@@ -273,7 +273,7 @@
                     set to a standard value which is <b>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</b>
                 </p>
                 <p>
-                    For further reference please also visit out <a href="configentries.html">Appendix: Configuration Entries Overview</a>
+                    For further reference please also visit out <a href="./configentries.html">Appendix: Configuration Entries Overview</a>
                     page.
                 </p>
             </subsection>
@@ -512,10 +512,10 @@
         </section>
 
         <section name="Navigation Bottom">
-            <a href="using_general.html">&lt;&lt;Back to the General Users Guide</a>
+            <a href="./using_general.html">&lt;&lt;Back to the General Users Guide</a>
             or
 
-            <a href="using_eclipse_.html">On to the Eclipse Users Guide&gt;&gt;</a>
+            <a href="./using_eclipse_.html">On to the Eclipse Users Guide&gt;&gt;</a>
         </section>
 
 

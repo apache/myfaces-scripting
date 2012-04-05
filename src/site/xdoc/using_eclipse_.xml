@@ -24,10 +24,10 @@
 
     <body>
         <section name="Navigation Top">
-               <a href="using_advanced.html">&lt;&lt;Back to the Advanced Users Guide</a>
+               <a href="./using_advanced.html">&lt;&lt;Back to the Advanced Users Guide</a>
                or
 
-               <a href="using_intellij.html">On to the Intellij Users Guide&gt;&gt;</a>
+               <a href="./using_intellij.html">On to the Intellij Users Guide&gt;&gt;</a>
            </section>
 
 

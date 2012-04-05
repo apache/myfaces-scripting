@@ -25,9 +25,9 @@
 
     <body>
         <section name="Navigation Top">
-            <a href="usersguide.html">&lt;&lt;Back to the Users Guide Start</a>
+            <a href="./usersguide.html">&lt;&lt;Back to the Users Guide Start</a>
             or
-            <a href="using_advanced.html">On to the Advanced Users Guide&gt;&gt;</a>
+            <a href="./using_advanced.html">On to the Advanced Users Guide&gt;&gt;</a>
         </section>
 
 
@@ -63,9 +63,9 @@
         </section>
 
         <section name="Navigation Bottom">
-            <a href="usersguide.html">&lt;&lt;Back to the Users Guide Start</a>
+            <a href="./usersguide.html">&lt;&lt;Back to the Users Guide Start</a>
             or
-            <a href="using_advanced.html">On to the Advanced Users Guide&gt;&gt;</a>
+            <a href="./using_advanced.html">On to the Advanced Users Guide&gt;&gt;</a>
         </section>
 
     </body>

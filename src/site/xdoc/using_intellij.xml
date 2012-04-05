@@ -25,10 +25,10 @@
     <body>
 
         <section name="Navigation Top">
-            <a href="using_eclipse_.html">&lt;&lt;Back to the Eclipse Users Guide</a>
+            <a href="./using_eclipse_.html">&lt;&lt;Back to the Eclipse Users Guide</a>
             or
 
-            <a href="using_netbeans.html">On to the NetBeans Users Guide&gt;&gt;</a>
+            <a href="./using_netbeans.html">On to the NetBeans Users Guide&gt;&gt;</a>
         </section>
 
 
@@ -91,9 +91,9 @@
 
 
         <section name="Navigation Bottom">
-            <a href="using_eclipse_.html">&lt;&lt;Back to the Eclipse Users Guide</a>
+            <a href="./using_eclipse_.html">&lt;&lt;Back to the Eclipse Users Guide</a>
             or
-            <a href="using_netbeans.html">On to the NetBeans Users Guide&gt;&gt;</a>
+            <a href="./using_netbeans.html">On to the NetBeans Users Guide&gt;&gt;</a>
         </section>
 
     </body>

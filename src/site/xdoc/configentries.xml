@@ -20,16 +20,16 @@
 -->
 <document>
     <section name="Navigation Top">
-        <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
+        <a href="./setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
         or
-        <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
+        <a href="./exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
     </section>
 
     <section name="Appendix: Configuration Entries">
         <subsection name="General Information">
             <p>
                 This page is a general quick overview over the possible configuration parameters, if you need further
-                details please visit the<a href="installation.html">setup guide</a>.
+                details please visit the<a href="./installation.html">setup guide</a>.
             </p>
         </subsection>
         <table>
@@ -140,9 +140,9 @@
 
 
     <section name="Navigation Bottom">
-        <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
+        <a href="./setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
         or
-        <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
+        <a href="./exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
     </section>
 
 

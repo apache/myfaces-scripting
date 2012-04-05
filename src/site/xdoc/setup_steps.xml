@@ -25,9 +25,9 @@
     <body>
 
         <section name="Navigation Top">
-            <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+            <a href="./using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
             or
-            <a href="configentries.html">On to the configuration entries overview&gt;&gt;</a>
+            <a href="./configentries.html">On to the configuration entries overview&gt;&gt;</a>
         </section>
 
         <section name="Appendix: Setup Steps">
@@ -35,7 +35,7 @@
 
             <subsection name="Short setup overview">
                 <p>This section is only a checklist of things to do at the setup for details follow the explanations
-                    in the <a href="installation.html">page</a>
+                    in the <a href="./installation.html">page</a>
                 </p>
 
                 <p>
@@ -78,9 +78,9 @@
         </section>
 
         <section name="Navigation Bottom">
-                   <a href="using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+                   <a href="./using_netbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
                    or
-                   <a href="configentries.html">On to the configuration entries overview&gt;&gt;</a>
+                   <a href="./configentries.html">On to the configuration entries overview&gt;&gt;</a>
         </section>
 
     </body>
