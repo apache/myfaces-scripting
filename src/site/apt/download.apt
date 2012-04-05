@@ -21,9 +21,9 @@ Download Apache MyFaces Extension Scripting
 
 
  Apache MyFaces 1.0.3 is the newest version. Significant changes have been made,
- a general refactoring for maintainability was performed and basicScala support added.
- Note, this is the first release, which is Java 6 and MyFaces 2.1.x only. For older versions of MyFaces
- and Java 5, download Ext-Scripting 1.0.2.
+ a general refactoring for maintainability was performed and basic Scala support has been added.
+ Note, this is the first release, which is Java 6 and MyFaces 2.1.6+ and Servlet 3.0 only. For older versions of
+ MyFaces and Java 5, download Ext-Scripting 1.0.2.
 
   Release notes can be found {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12320165&styleName=Text&projectId=12310964}here}}
 
@@ -32,7 +32,7 @@ Download Apache MyFaces Extension Scripting
 *-------------------------+---------+----------+-----------+
 | Ext-Script MyFaces 2.1 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar} extscript-myfaces20-bundle-1.0.3.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar.asc.md5} extscript-myfaces20-bundle-1.0.3.jar.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar.asc}extscript-myfaces20-bundle-1.0.3.jar.asc}} |
 *-------------------------+---------+----------+-----------+
-| Ext-Script Demo Application MyFaces 2.0 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war} myfaces20-example-1.0.3.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war.asc.md5} myfaces20-example-1.0.3.war.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war.asc}myfaces20-example-1.0.3.war.asc}} |
+| Ext-Script Demo Application MyFaces 2.1 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war} myfaces20-example-1.0.3.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war.asc.md5} myfaces20-example-1.0.3.war.asc.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.war.asc}myfaces20-example-1.0.3.war.asc}} |
 *-------------------------+---------+----------+-----------+
 | Ext-Script Blank Application JSF2 (war)      | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.war} myfaces20-extscript-helloworld-1.0.3.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.war.md5} myfaces20-extscript-helloworld-1.0.3.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.war.asc} myfaces20-extscript-helloworld-1.0.3.war.asc}} |
 *-------------------------+---------+----------+-----------+
@@ -45,8 +45,8 @@ Ext-Scripting 1.0.2 (latest version supporting MyFaces 1.2.x)
  Apache MyFaces is distributed as jar archives for inclusion and as war archives for the
  examples.
 
- Note this is the last release which will support java 5 and MyFaces 1.x from version 1.0.3 onwards
- only Java 6 and JSF 2.1 will be supported.
+ Note: this is the last release, which supports Java 5 and MyFaces 1.2.x from version 1.0.3 onwards
+ only Java 6 and JSF 2.1 and Servlet 3.0 will be supported.
 
  Use the links below to download
 
