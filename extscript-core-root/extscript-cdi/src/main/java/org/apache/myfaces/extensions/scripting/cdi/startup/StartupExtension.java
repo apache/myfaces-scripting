@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.extensions.scripting.cdi.startup;
 
+import org.apache.myfaces.extensions.scripting.cdi.core.CDIThrowAwayClassloader;
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 
@@ -50,16 +51,8 @@ public class StartupExtension implements Extension
         //the compile runs but not with the daemon thread
         //after that we can load the classes
         //by temporarily plugging in our throw away classloader
-        try
-        {
-            StartupServletContextPluginChainLoader.startup(CDIServletContainerInitializer.getContext());
-            _classLoaderHolder.set(Thread.currentThread().getContextClassLoader());
-            Thread.currentThread().setContextClassLoader(new ThrowAwayClassloader());
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+       _classLoaderHolder.set(Thread.currentThread().getContextClassLoader());
+       Thread.currentThread().setContextClassLoader(new CDIThrowAwayClassloader(Thread.currentThread().getContextClassLoader()));
     }
 
     void afterBeanDiscovery(@Observes AfterBeanDiscovery abd)
