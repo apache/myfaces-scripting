@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.extension.scripting.cdi;
+
 
 import javax.inject.Named;
 

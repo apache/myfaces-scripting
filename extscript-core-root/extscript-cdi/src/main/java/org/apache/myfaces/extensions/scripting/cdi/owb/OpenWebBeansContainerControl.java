@@ -28,6 +28,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
@@ -54,15 +55,15 @@ public class OpenWebBeansContainerControl implements CdiContainer
     }
 
     @Override
-    public synchronized void boot()
+    public synchronized void boot(ServletContextEvent servletContext)
     {
 
         init();
-        lifecycle.startApplication(null);
+        lifecycle.startApplication(servletContext);
     }
 
     @Override
-    public synchronized void shutdown()
+    public synchronized void shutdown(ServletContextEvent servletContext)
     {
         if (ctxCtrl != null)
         {
@@ -72,7 +73,7 @@ public class OpenWebBeansContainerControl implements CdiContainer
 
         if (lifecycle != null) 
         {
-            lifecycle.stopApplication(null);
+            lifecycle.stopApplication(servletContext);
         }
     }
 

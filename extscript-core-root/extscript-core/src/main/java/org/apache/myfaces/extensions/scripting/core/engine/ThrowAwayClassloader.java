@@ -55,6 +55,18 @@ public class ThrowAwayClassloader extends ClassLoader
     }
 
     @Override
+    protected Class<?> findClass(String s) throws ClassNotFoundException
+    {
+        return super.findClass(s);
+    }
+
+    @Override
+    protected synchronized Class<?> loadClass(String s, boolean b) throws ClassNotFoundException
+    {
+        return super.loadClass(s, b);
+    }
+
+    @Override
     /**
      * load called either if the class is not loaded at all
      * or if the class has been recompiled (check upfront)

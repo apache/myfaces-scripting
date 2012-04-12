@@ -98,7 +98,7 @@ public class ClassResource extends WatchedResource
     public void setTainted(boolean value)
     {
         //if (isTainted()) return;
-        if (value && !tainted)
+        if (value)
         {
             WeavingContext.getInstance().markLastTaint();
             //TODO add logging event here

@@ -23,6 +23,7 @@ package org.apache.myfaces.extensions.scripting.cdi.api;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -42,12 +43,12 @@ public interface CdiContainer
      * for Beans and extensions available.
      * The container might throw a DeploymentException or similar on startup.
      */
-    void boot();
+    void boot(ServletContextEvent context);
     
     /**
      * This will shutdown the underlying CDI container.
      */
-    void shutdown();
+    void shutdown(ServletContextEvent context);
     
 
     /**

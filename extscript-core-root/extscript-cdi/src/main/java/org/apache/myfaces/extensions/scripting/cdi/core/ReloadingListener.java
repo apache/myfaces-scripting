@@ -28,6 +28,7 @@ import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.Tai
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -70,9 +71,9 @@ public class ReloadingListener implements WeavingEventListener
 
                     container.getContextControl(req.getServletContext(),
                             req.getSession()).stopContexts();
-                    //container.shutdown();
+                    container.shutdown(new ServletContextEvent(req.getServletContext()));
 
-                    //CdiContainerLoader.getCdiContainer().boot();
+                    CdiContainerLoader.getCdiContainer().boot(new ServletContextEvent(req.getServletContext()));
 
                     container.getContextControl(req.getServletContext(),
                             req.getSession()).startContexts();
