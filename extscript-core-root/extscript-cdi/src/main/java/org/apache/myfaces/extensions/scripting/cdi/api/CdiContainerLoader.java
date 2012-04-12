@@ -49,14 +49,14 @@ public final class CdiContainerLoader
         }
         else
         {
-            throw new IllegalStateException("Could not find an implementation of " + org.apache.deltaspike.cdise.api.CdiContainer.class.getName() +
+            throw new IllegalStateException("Could not find an implementation of " + CdiContainer.class.getName() +
                 " available in the classpath!");
         }
 
         if (cdiIt.hasNext())
         {
             String foundContainers = getContainerDetails();
-            throw new IllegalStateException("Too many implementations of " + org.apache.deltaspike.cdise.api.CdiContainer.class.getName() +
+            throw new IllegalStateException("Too many implementations of " + CdiContainer.class.getName() +
                 " found in the classpath! Details: " + foundContainers);
         }
 

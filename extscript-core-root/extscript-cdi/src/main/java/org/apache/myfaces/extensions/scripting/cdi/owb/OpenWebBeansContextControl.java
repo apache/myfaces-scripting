@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 public class OpenWebBeansContextControl implements ContextControl
 {
 
-    private static final Logger LOG = Logger.getLogger(org.apache.deltaspike.cdise.owb.OpenWebBeansContextControl.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenWebBeansContextControl.class.getName());
 
     private HttpSession session = null;
     private ServletContext servletContext  = null;

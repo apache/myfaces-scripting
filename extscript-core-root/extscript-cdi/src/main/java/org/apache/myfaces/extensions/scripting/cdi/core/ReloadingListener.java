@@ -20,6 +20,7 @@
 package org.apache.myfaces.extensions.scripting.cdi.core;
 
 import org.apache.myfaces.extensions.scripting.cdi.api.CdiContainerLoader;
+import org.apache.myfaces.extensions.scripting.cdi.owb.OpenWebBeansContainerControl;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEvent;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEventListener;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.RefreshBeginEvent;
@@ -58,23 +59,27 @@ public class ReloadingListener implements WeavingEventListener
                 //TODO plug reloadable classloader in here temporarily
                 //as context classloader, then restart the container
                 //then restore the old classloader
-                ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-                ClassLoader tempClassLoader = new ThrowAwayClassloader(oldClassLoader);
-                Thread.currentThread().setContextClassLoader(tempClassLoader);
+                //ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+                //ClassLoader tempClassLoader = new ThrowAwayClassloader(oldClassLoader);
+                //Thread.currentThread().setContextClassLoader(tempClassLoader);
                 try
                 {
-                    CdiContainerLoader.getCdiContainer().getContextControl(req.getServletContext(),
+                    OpenWebBeansContainerControl container = (OpenWebBeansContainerControl) CdiContainerLoader
+                            .getCdiContainer();
+                    container.init();
+
+                    container.getContextControl(req.getServletContext(),
                             req.getSession()).stopContexts();
-                    CdiContainerLoader.getCdiContainer().shutdown();
+                    //container.shutdown();
 
-                    CdiContainerLoader.getCdiContainer().boot();
+                    //CdiContainerLoader.getCdiContainer().boot();
 
-                    CdiContainerLoader.getCdiContainer().getContextControl(req.getServletContext(),
+                    container.getContextControl(req.getServletContext(),
                             req.getSession()).startContexts();
                 }
                 finally
                 {
-                    Thread.currentThread().setContextClassLoader(oldClassLoader);
+                    //Thread.currentThread().setContextClassLoader(oldClassLoader);
                 }
             }
         }
