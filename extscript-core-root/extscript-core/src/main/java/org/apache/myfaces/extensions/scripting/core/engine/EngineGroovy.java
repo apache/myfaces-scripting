@@ -20,8 +20,6 @@
 package org.apache.myfaces.extensions.scripting.core.engine;
 
 import groovy.lang.GroovyObject;
-import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
-import org.apache.myfaces.extensions.scripting.groovyloader.core.GroovyPropertyMapper;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
@@ -29,13 +27,17 @@ import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
+import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
+import org.apache.myfaces.extensions.scripting.groovyloader.core.GroovyPropertyMapper;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.GROOVY_SOURCE_ROOT;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

@@ -19,13 +19,12 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine;
 
-import groovy.lang.GroovyObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationMessage;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.JSR199Compiler;
@@ -38,7 +37,9 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_CUSTOM_JAVA_LOADER_PATHS;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.JAVA_SOURCE_ROOT;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -73,7 +74,7 @@ public class EngineJava extends BaseEngine implements ScriptingEngine
             res =  compiler.compile(new File(sourceRoot), targetDir,
                 ClassUtils.getContextClassLoader());
             if(res.hasErrors()) {
-               for(CompilationResult.CompilationMessage msg :res.getErrors()) {
+               for(CompilationMessage msg :res.getErrors()) {
                    log.severe(msg.getMessage());
                }
                // log.severe(res.getCompilerOutput());

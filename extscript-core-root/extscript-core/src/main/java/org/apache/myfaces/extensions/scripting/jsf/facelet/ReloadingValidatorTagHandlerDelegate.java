@@ -19,10 +19,9 @@
 
 package org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-
-import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
 
 import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.FaceletContext;

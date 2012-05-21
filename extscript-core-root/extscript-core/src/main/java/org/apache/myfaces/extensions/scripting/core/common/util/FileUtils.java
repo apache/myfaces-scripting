@@ -92,6 +92,10 @@ public class FileUtils {
                 tempDir.deleteOnExit();
             }
         } */
+        if(!tempDir.exists()) {
+            tempDir.mkdirs();
+        }
+        tempDir.deleteOnExit();
         return tempDir;
     }
 

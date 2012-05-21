@@ -18,8 +18,8 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.resources;
 
-import org.apache.myfaces.renderkit.ErrorPageWriter;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
+import org.apache.myfaces.renderkit.ErrorPageWriter;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;

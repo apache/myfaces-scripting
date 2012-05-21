@@ -25,9 +25,20 @@ import org.apache.myfaces.extensions.scripting.core.api.AnnotationScanListener;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.common.util.StringUtils;
 
-import javax.faces.bean.*;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.CustomScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.NoneScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**

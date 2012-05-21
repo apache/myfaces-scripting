@@ -18,8 +18,8 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.facelet.support;
 
-import org.apache.myfaces.view.facelets.tag.BeanPropertyTagRule;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.view.facelets.tag.BeanPropertyTagRule;
 
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.Metadata;

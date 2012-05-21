@@ -23,9 +23,8 @@ import scala.tools.nsc.Settings
 
 import scala.tools.nsc.util._
 import tools.nsc.reporters.AbstractReporter
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult.CompilationMessage
 import java.io.{ BufferedReader, IOException, PrintWriter }
+import org.apache.myfaces.extensions.scripting.core.engine.api.{CompilationMessage, CompilationResult}
 
 /**
  *

@@ -19,7 +19,11 @@
 package org.apache.myfaces.extensions.scripting.jsf.facelet.support;
 
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.*;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.MetaRule;
+import javax.faces.view.facelets.Metadata;
+import javax.faces.view.facelets.MetadataTarget;
+import javax.faces.view.facelets.TagAttribute;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

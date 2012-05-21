@@ -16,5 +16,5 @@
 # specific language governing permissions and limitations
 # under the License.
 #####################################################################################
-
+#deprecated not needed anymore
 org.apache.myfaces.extensions.scripting.cdi.startup.ExtScriptStartupPlugin

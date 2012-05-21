@@ -19,14 +19,14 @@
 
 package org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-import org.apache.myfaces.view.facelets.tag.jsf.ActionSourceRule;
-import org.apache.myfaces.view.facelets.tag.jsf.ComponentTagHandlerDelegate;
-import org.apache.myfaces.view.facelets.tag.jsf.EditableValueHolderRule;
-import org.apache.myfaces.view.facelets.tag.jsf.ValueHolderRule;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.jsf.facelet.support.ComponentRule;
 import org.apache.myfaces.extensions.scripting.jsf.facelet.support.SwitchingMetarulesetImpl;
+import org.apache.myfaces.view.facelets.tag.jsf.ActionSourceRule;
+import org.apache.myfaces.view.facelets.tag.jsf.ComponentTagHandlerDelegate;
+import org.apache.myfaces.view.facelets.tag.jsf.EditableValueHolderRule;
+import org.apache.myfaces.view.facelets.tag.jsf.ValueHolderRule;
 
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;

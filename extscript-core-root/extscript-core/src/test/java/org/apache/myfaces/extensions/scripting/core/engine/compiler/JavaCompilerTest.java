@@ -29,8 +29,17 @@ import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.SimpleJavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Locale;
 
 import static org.junit.Assert.assertTrue;
 
@@ -38,7 +47,6 @@ import static org.junit.Assert.assertTrue;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-
 public class JavaCompilerTest
 {
     private static final String PROBE1 = "../../src/test/resources/compiler/TestProbe1.java";
@@ -87,6 +95,56 @@ public class JavaCompilerTest
         WeavingContext.getInstance().getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JAVA,
                 root.getAbsolutePath());
 
+    }
+
+    @Test
+    public void testInMemoryCompile() {
+        String sourceCode =
+                  "class DynamicCompilationHelloWorld{" +
+                          "public static void main (String args[]){" +
+                          "System.out.println (\"Hello, dynamic compilation world!\");" +
+                          "}" +
+                          "}";
+          /*Creating dynamic java source code file object*/
+          SimpleJavaFileObject fileObject = new DynamicJavaSourceCodeObject("DynamicCompilationHelloWorld", sourceCode);
+          JavaFileObject javaFileObjects[] = new JavaFileObject[]{fileObject};
+
+          /* Prepare a list of compilation units (java source code file objects) to input to compilation task*/
+          Iterable<? extends JavaFileObject> compilationUnits = Arrays.asList(javaFileObjects);
+
+          /*Prepare any compilation options to be used during compilation*/
+          //In this example, we are asking the compiler to place the output files under bin folder.
+
+          String[] compileOptions = new String[]{"-d", FileUtils.getTempDir().getAbsolutePath()};
+          Iterable<String> compilationOptions = Arrays.asList(compileOptions);
+
+          /*Instantiating the java compiler*/
+          JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
+          /**
+           * Retrieving the standard file manager from compiler object, which is used to provide
+           * basic building block for customizing how a compiler reads and writes to files.
+           *
+           * The same file manager can be reopened for another compiler task.
+           * Thus we reduce the overhead of scanning through file system and jar files each time
+           */
+          StandardJavaFileManager stdFileManager = compiler.getStandardFileManager(null, Locale.getDefault(), null);
+          /*Create a diagnostic controller, which holds the compilation problems*/
+          DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+          /*Create a compilation task from compiler by passing in the required input objects prepared above*/
+          JavaCompiler.CompilationTask compilerTask = compiler.getTask(null, stdFileManager, diagnostics, compilationOptions, null, compilationUnits);
+
+          //Perform the compilation by calling the call method on compilerTask object.
+          boolean status = compilerTask.call();
+
+          if (!status)
+          {//If compilation error occurs
+              /*Iterate through each compilation problem and print it*/
+              for (Diagnostic diagnostic : diagnostics.getDiagnostics())
+              {
+                  System.out.format("Error on line %d in %s", diagnostic.getLineNumber(), diagnostic);
+              }
+          }
     }
 
     @Test

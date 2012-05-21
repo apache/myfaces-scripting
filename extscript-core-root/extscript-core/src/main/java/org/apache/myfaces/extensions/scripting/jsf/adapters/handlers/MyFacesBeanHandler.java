@@ -35,7 +35,11 @@ import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import javax.faces.context.FacesContext;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

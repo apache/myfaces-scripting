@@ -19,9 +19,9 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core;
 
+import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
-import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

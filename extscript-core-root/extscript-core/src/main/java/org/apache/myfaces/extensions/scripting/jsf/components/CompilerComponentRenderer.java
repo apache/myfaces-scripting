@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.jsf.components;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.StringUtils;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationMessage;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import javax.faces.component.UIComponent;
@@ -91,7 +92,7 @@ public class CompilerComponentRenderer extends Renderer {
 
     private void writeWarnings(UIComponent component, ResponseWriter responseWriter, CompilationResult result) throws IOException {
         startDiv(component, responseWriter, RendererConst.WARNINGS);
-        for (CompilationResult.CompilationMessage msg : result.getWarnings()) {
+        for (CompilationMessage msg : result.getWarnings()) {
             startDiv(component, responseWriter, RendererConst.LINE);
             writeDiv(component, responseWriter, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
             writeDiv(component, responseWriter, RendererConst.MESSAGE, msg.getMessage());
@@ -110,7 +111,7 @@ public class CompilerComponentRenderer extends Renderer {
 
     private void writeErrors(UIComponent component, ResponseWriter responseWriter, CompilationResult result) throws IOException {
         startDiv(component, responseWriter, RendererConst.ERRORS);
-        for (CompilationResult.CompilationMessage msg : result.getErrors()) {
+        for (CompilationMessage msg : result.getErrors()) {
             startDiv(component, responseWriter, RendererConst.LINE);
             writeDiv(component, responseWriter, RendererConst.LINE_NO, String.valueOf(msg.getLineNumber()));
             writeDiv(component, responseWriter, RendererConst.MESSAGE, msg.getMessage());

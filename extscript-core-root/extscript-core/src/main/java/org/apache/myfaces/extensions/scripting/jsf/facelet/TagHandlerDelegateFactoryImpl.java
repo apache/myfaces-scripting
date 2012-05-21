@@ -19,13 +19,17 @@
 
 package org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.view.facelets.tag.jsf.BehaviorTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.ConverterTagHandlerDelegate;
 import org.apache.myfaces.view.facelets.tag.jsf.ValidatorTagHandlerDelegate;
-import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
-import javax.faces.view.facelets.*;
+import javax.faces.view.facelets.BehaviorHandler;
+import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.ConverterHandler;
+import javax.faces.view.facelets.TagHandlerDelegate;
+import javax.faces.view.facelets.TagHandlerDelegateFactory;
+import javax.faces.view.facelets.ValidatorHandler;
 
 /**
  * Tag handler delegate factory which injects reloading

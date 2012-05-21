@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.implementations;
 
-
 import org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
@@ -28,7 +27,12 @@ import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.*;
+import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
+import javax.faces.context.ResponseStream;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import javax.faces.render.RenderKit;
 import java.util.Iterator;

@@ -27,12 +27,24 @@ import javax.servlet.ServletContext;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.GROOVY_FILE_ENDING;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_INITIAL_COMPILE;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_RESOURCE_PATH;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.JAVA_FILE_ENDING;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -43,7 +55,7 @@ public class Configuration
 {
     private static final String WEB_INF_CLASSES = "/WEB-INF/classes";
     List<String> _additionalClassPath = new CopyOnWriteArrayList<String>();
-    /**
+    /**  kk
      * the package whitelist used by our system
      * to determine which packages are under control.
      * <p/>

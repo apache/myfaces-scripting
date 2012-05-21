@@ -19,9 +19,6 @@
 
 package org.apache.myfaces.extensions.scripting.core.api;
 
-import org.apache.myfaces.webapp.StartupListener;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 /**

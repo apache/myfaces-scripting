@@ -42,6 +42,7 @@ import java.util.Set;
  */
 public class ExtScriptScannerService extends AbstractMetaDataDiscovery
 {
+    private static final String RELOADING_LISTENER = "ReloadingListener";
     private final WebBeansLogger logger = WebBeansLogger.getLogger(ExtScriptScannerService.class);
 
     private boolean configure = false;
@@ -57,9 +58,16 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
     {
         super.init(context);
         this.servletContext = (ServletContext) context;
+        initExtScript(this.servletContext);
+    }
+
+    private void initExtScript(ServletContext servletContext)
+    {
         try
         {
             StartupServletContextPluginChainLoader.startup(servletContext);
+            servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
+            WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
         }
         catch (IOException e)
         {

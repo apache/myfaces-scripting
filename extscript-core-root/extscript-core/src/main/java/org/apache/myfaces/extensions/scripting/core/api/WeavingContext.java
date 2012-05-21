@@ -19,9 +19,9 @@
 
 package org.apache.myfaces.extensions.scripting.core.api;
 
-import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.BeginCompiling;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEvent;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEventListener;
+import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.BeginCompiling;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.EndCompiling;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
@@ -39,7 +39,16 @@ import org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;

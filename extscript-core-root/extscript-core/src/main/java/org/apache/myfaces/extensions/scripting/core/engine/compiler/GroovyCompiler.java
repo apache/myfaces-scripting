@@ -18,6 +18,13 @@
  */
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
+import org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationMessage;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -25,12 +32,6 @@ import org.codehaus.groovy.control.ErrorCollector;
 import org.codehaus.groovy.control.messages.Message;
 import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
-import org.apache.myfaces.extensions.scripting.core.api.Configuration;
-import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
-import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
-import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -111,13 +112,13 @@ public class GroovyCompiler implements org.apache.myfaces.extensions.scripting.c
      * @param message the Groovy compiler message you want to convert
      * @return the final converted compilation message
      */
-    protected CompilationResult.CompilationMessage convertMessage(Message message) {
+    protected CompilationMessage convertMessage(Message message) {
         if (message instanceof SimpleMessage) {
             SimpleMessage simpleMessage = (SimpleMessage) message;
-            return new CompilationResult.CompilationMessage(-1, simpleMessage.getMessage());
+            return new CompilationMessage(-1, simpleMessage.getMessage());
         } else if (message instanceof SyntaxErrorMessage) {
             SyntaxErrorMessage syntaxErrorMessage = (SyntaxErrorMessage) message;
-            return new CompilationResult.CompilationMessage(
+            return new CompilationMessage(
                     syntaxErrorMessage.getCause().getLine(), syntaxErrorMessage.getCause().getMessage());
         } else {
             if (_logger.isLoggable(Level.FINE)) {

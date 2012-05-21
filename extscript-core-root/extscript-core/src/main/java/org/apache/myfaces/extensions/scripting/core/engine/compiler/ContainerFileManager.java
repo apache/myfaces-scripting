@@ -38,53 +38,13 @@ import java.io.IOException;
 
 public class ContainerFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 
-    StandardJavaFileManager _delegate = null;
     String _classPath = null;
-
 
     public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
         super(standardJavaFileManager);
-        _delegate = standardJavaFileManager;
-    }
-
-    @Override
-    public JavaFileObject getJavaFileForOutput(Location location, String s, JavaFileObject.Kind kind, FileObject fileObject) throws IOException {
-        return super.getJavaFileForOutput(location, s, kind, fileObject);
-    }
-
-    @Override
-    public ClassLoader getClassLoader(Location location) {
-        return Thread.currentThread().getContextClassLoader();
-    }
-
-    public ClassLoader getClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
     }
 
     public Iterable<? extends JavaFileObject> getJavaFileObjects(File... files) {
-        return _delegate.getJavaFileObjects(files);
+        return fileManager.getJavaFileObjects(files);
     }
-
-    public Iterable<? extends JavaFileObject> getJavaFileObjects(String... files) {
-        return _delegate.getJavaFileObjects(files);
-    }
-
-    public Iterable<? extends JavaFileObject> getJavaFileObjectsSingle(String files) {
-        return _delegate.getJavaFileObjects(files);
-    }
-
-    public String getClassPath() {
-        if (_classPath != null) {
-            return _classPath;
-        }
-
-        String retStr = ClassLoaderUtils.buildClasspath(getClassLoader(null));
-
-        return (_classPath = retStr);
-    }
-
-    public File getTempDir() {
-        return WeavingContext.getInstance().getConfiguration().getCompileTarget();
-    }
-
 }

@@ -26,7 +26,6 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
-import org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.ScalaCompiler;
 import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 import scala.ScalaObject;
@@ -38,7 +37,9 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_SCALA;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_CUSTOM_SCALA_LOADER_PATHS;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.SCALA_SOURCE_ROOT;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

@@ -18,12 +18,12 @@
  */
 package org.apache.myfaces.extensions.scripting.core.engine.dependencyScan;
 
-import org.objectweb.asm.ClassReader;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyScanner;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassScanUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassScanVisitor;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ExtendedClassReader;
+import org.objectweb.asm.ClassReader;
 
 import java.io.IOException;
 import java.util.logging.Level;

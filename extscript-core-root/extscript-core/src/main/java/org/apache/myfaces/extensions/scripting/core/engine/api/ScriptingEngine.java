@@ -22,11 +22,9 @@ import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core.ClassDependencies;
 import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
-import org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 
 import javax.servlet.ServletContext;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**

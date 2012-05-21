@@ -20,24 +20,24 @@
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
-import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationMessage;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
+import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,7 +55,7 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.c
 {
 
     javax.tools.JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-    ContainerFileManager fileManager = null;
+    StandardJavaFileManager fileManager = null;
 
 
     public JSR199Compiler()
@@ -80,7 +80,8 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.c
             WeavingContext context = WeavingContext.getInstance();
             Configuration configuration = context.getConfiguration();
             destination.mkdirs();
-            fileManager = new ContainerFileManager(javaCompiler.getStandardFileManager(new DiagnosticCollector<JavaFileObject>(), null, null));
+            fileManager =  javaCompiler.getStandardFileManager(new
+                            DiagnosticCollector<JavaFileObject>(), Locale.getDefault(), null);
 
             DiagnosticCollector<JavaFileObject> diagnosticCollector = new DiagnosticCollector<JavaFileObject>();
 
@@ -104,16 +105,18 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.c
         
             for (File sourceFile : sourceFiles)
             {
-                System.out.println("-----------------"+sourceFile.getAbsolutePath());
                 if (!sourceFile.exists())
                 {
                     getLog().log(Level.WARNING, "[EXT-SCRIPTING] Source file with path {0} does not exist it might cause an error in the compilation process", sourceFile.getAbsolutePath());
                 }
             }
             Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFiles.toArray(new File[sourceFiles.size()]));
-            String[] options = new String[]{JC_CLASSPATH, fileManager.getClassPath(), JC_TARGET_PATH,
+            String[] options = new String[]{JC_CLASSPATH, /*fileManager.getClassPath()*/
+                                            ClassLoaderUtils.buildClasspath(ClassLoaderUtils.getDefaultClassLoader())
+                    , JC_TARGET_PATH,
                                             destination.getAbsolutePath(), JC_SOURCEPATH,
             sourceRoot.getAbsolutePath(), JC_DEBUG};
+
             javaCompiler.getTask(null, fileManager, diagnosticCollector, Arrays.asList(options), null, fileObjects).call();
 
 
@@ -149,10 +152,10 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.c
                 if (diagnostic.getKind().equals(Diagnostic.Kind.ERROR))
                 {
                     hasError = true;
-                    result.getErrors().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
+                    result.getErrors().add(new CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
                 } else
                 {
-                    result.getWarnings().add(new CompilationResult.CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
+                    result.getWarnings().add(new CompilationMessage(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.getDefault())));
                 }
                 errors.append(error);
 

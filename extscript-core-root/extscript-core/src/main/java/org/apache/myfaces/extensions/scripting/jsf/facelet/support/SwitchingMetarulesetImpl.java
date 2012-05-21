@@ -23,9 +23,20 @@ import org.apache.myfaces.view.facelets.tag.MetadataImpl;
 import org.apache.myfaces.view.facelets.tag.MetadataTargetImpl;
 import org.apache.myfaces.view.facelets.util.ParameterCheck;
 
-import javax.faces.view.facelets.*;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.MetaRule;
+import javax.faces.view.facelets.MetaRuleset;
+import javax.faces.view.facelets.Metadata;
+import javax.faces.view.facelets.MetadataTarget;
+import javax.faces.view.facelets.Tag;
+import javax.faces.view.facelets.TagAttribute;
+import javax.faces.view.facelets.TagException;
 import java.beans.IntrospectionException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

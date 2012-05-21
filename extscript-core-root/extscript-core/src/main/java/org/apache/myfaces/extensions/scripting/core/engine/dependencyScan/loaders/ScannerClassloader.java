@@ -21,7 +21,11 @@ package org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.loade
 
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;

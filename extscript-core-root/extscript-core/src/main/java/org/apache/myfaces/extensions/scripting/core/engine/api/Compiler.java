@@ -40,6 +40,6 @@ public interface Compiler {
      * @throws CompilationException
      *          if a severe error occurred while trying to compile a file
      */
-    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader);
+    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) throws CompilationException;
 
 }

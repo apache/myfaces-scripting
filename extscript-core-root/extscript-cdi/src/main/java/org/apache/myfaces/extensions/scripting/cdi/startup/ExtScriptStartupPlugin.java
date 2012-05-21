@@ -56,8 +56,9 @@ public class ExtScriptStartupPlugin implements Plugin
      */
     public void postInit(ServletContextEvent evt)
     {
-        evt.getServletContext().setAttribute("ReloadingListener", new ReloadingListener());
-        WeavingContext.getInstance().addListener((ReloadingListener) evt.getServletContext().getAttribute("ReloadingListener"));
+       // evt.getServletContext().setAttribute("ReloadingListener", new ReloadingListener());
+      //  WeavingContext.getInstance().addListener((ReloadingListener) evt.getServletContext().getAttribute
+      //      ("ReloadingListener"));
     }
 
     /**

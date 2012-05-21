@@ -21,8 +21,6 @@ package org.apache.myfaces.extensions.scripting.core.api.eventhandling.events;
 
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEvent;
 
-import javax.servlet.ServletRequest;
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$

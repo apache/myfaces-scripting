@@ -18,9 +18,13 @@
  */
 package org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core;
 
-import org.objectweb.asm.*;
-import org.objectweb.asm.signature.SignatureReader;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.DependencyRegistry;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.signature.SignatureReader;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

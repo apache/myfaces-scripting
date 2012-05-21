@@ -328,7 +328,7 @@
                         This parameter points to the root of your dynamic resources, usually the same dir
                                         as the root of your web application.
                     </li>
-                    <li><b>facelets.RESOURCE_RESOLVER</b> also needs to be set to <b>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</b> if
+                    <li><b>facelets.RESOURCE_RESOLVER</b> also needs to be set to <b>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</b> if
                     you want dynamic Facelet reloading enabled</li>
                 </ul>
 
@@ -352,7 +352,7 @@
         and resources from our source dir
      </description>
      <param-name>facelets.RESOURCE_RESOLVER</param-name>
-     <param-value>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</param-value>
+     <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
  </context-param>
         ]]></source>
                 </p>

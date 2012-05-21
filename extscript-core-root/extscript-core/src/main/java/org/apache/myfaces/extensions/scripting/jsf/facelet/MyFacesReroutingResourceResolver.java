@@ -18,9 +18,8 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.facelet;
 
-
-import org.apache.myfaces.view.facelets.impl.DefaultResourceResolver;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.view.facelets.impl.DefaultResourceResolver;
 
 import java.io.File;
 import java.net.MalformedURLException;

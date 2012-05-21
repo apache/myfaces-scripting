@@ -21,22 +21,47 @@ package org.apache.myfaces.extensions.scripting.jsf.dynamicDecorators.implementa
 import org.apache.myfaces.extensions.scripting.core.api.Decorated;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
-import javax.el.*;
+import javax.el.ELContextListener;
+import javax.el.ELException;
+import javax.el.ELResolver;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.*;
+import javax.faces.application.Application;
+import javax.faces.application.NavigationHandler;
+import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
+import javax.faces.application.StateManager;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.el.*;
+import javax.faces.el.MethodBinding;
+import javax.faces.el.PropertyResolver;
+import javax.faces.el.ReferenceSyntaxException;
+import javax.faces.el.ValueBinding;
+import javax.faces.el.VariableResolver;
 import javax.faces.event.ActionListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.validator.Validator;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_ACTIONLISTENER;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_APPLICATION;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_BEHAVIOR;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_COMPONENT;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_CONVERTER;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_ELCONTEXTLISTENER;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ARTIFACT_TYPE_VALIDATOR;
 
 /**
  * @author Werner Punz

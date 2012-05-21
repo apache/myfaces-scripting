@@ -132,68 +132,6 @@ public class CompilationResult {
 
     // ------------------------------------------ Public static classes
 
-    /**
-     * <p>Utility class that contains all the required information regarding
-     * a single compilation message.</p>
-     */
-    public static class CompilationMessage {
 
-        /**
-         * the line number of this compilation message
-         */
-        private long lineNumber;
-
-        /**
-         * the actual compilation message
-         */
-        private String message;
-
-        // -------------------------------------- Constructors
-
-        /**
-         * <p>Constructs a new compilation message using the line number
-         * and the actual compilation message as a string.</p>
-         *
-         * @param lineNumber the line number
-         * @param message    the actual compilation message
-         */
-        public CompilationMessage(long lineNumber, String message) {
-            this.lineNumber = lineNumber;
-            this.message = message;
-        }
-
-        // -------------------------------------- Public methods
-
-        /**
-         * <p>The number of the relevant line where this warning or error
-         * has occured, or <code>-1</code> if it is not known.</p>
-         *
-         * @return the line number
-         */
-        public long getLineNumber() {
-            return lineNumber;
-        }
-
-        /**
-         * <p>Returns the message itself as a string, i.e. the textual content
-         * of whatever the compiler complained about.</p>
-         *
-         * @return the message itself as a string
-         */
-        public String getMessage() {
-            return message;
-        }
-
-        /**
-         * <p>Returns a string representation of this compilation message.</p>
-         *
-         * @return a string representation of this compilation message
-         */
-        @Override
-        public String toString() {
-            return String.format(
-                    "CompilationMessage[lineNumber='%s', message='%s']", lineNumber, message);
-        }
-    }
 
 }

@@ -19,7 +19,6 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine;
 
-import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.StandardDependencyScanner;
