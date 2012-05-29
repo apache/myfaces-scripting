@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.extensions.scripting.core.context;
 
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class InitialFullScanTest
                 ScriptingEngine scalaEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_SCALA);
 
                 ClassLoader loader = this.getClass().getClassLoader();
-                String canonicalPackageName = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);                Enumeration<URL> enumeration = loader.getResources(canonicalPackageName);
+                String canonicalPackageName = this.getClass().getPackage().getName().replaceAll("\\.", FileUtils.getFileSeparatorForRegex());                Enumeration<URL> enumeration = loader.getResources(canonicalPackageName);
                 javaEngine.getSourcePaths().clear();
                 groovyEngine.getSourcePaths().clear();
                 //TODO source not binary dirs

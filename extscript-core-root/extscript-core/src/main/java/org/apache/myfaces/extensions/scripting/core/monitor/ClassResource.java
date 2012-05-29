@@ -23,6 +23,7 @@ import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.TaintedEvent;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 
 import java.io.File;
 import java.util.Collection;
@@ -126,7 +127,7 @@ public class ClassResource extends WatchedResource
     {
         String targetDir = WeavingContext.getInstance().getConfiguration().getCompileTarget().getAbsolutePath();
         String className = ClassUtils.relativeFileToClassName(getSourceFile());
-        className = targetDir + File.separator + className.replaceAll("\\.", File.separator) + ".class";
+        className = targetDir + File.separator + className.replaceAll("\\.", FileUtils.getFileSeparatorForRegex()) + ".class";
         File targetClass = new File(className);
         return !targetClass.exists() || targetClass.lastModified() < _sourceFile.lastModified();
     }
