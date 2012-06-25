@@ -60,7 +60,7 @@ public class ClassResource extends WatchedResource
     {
         String sourceDir = getSourceDir();
         if(sourceDir == null) {
-            sourceDir = _sourceFile.getPath();
+            sourceDir = _sourceFile.getParent()+File.separator;
         }
         return _sourceFile.getAbsolutePath().substring(sourceDir.length());
     }

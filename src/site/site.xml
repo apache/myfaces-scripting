@@ -115,7 +115,18 @@
          <item name="Others"         href="../otherProjects.html"/>
      </menu>
 
+     <menu name="External Resources">
+         <item name="Ext-Scripting Interview" href="http://www.jsfcentral.com/articles/punz-03-12.html"/>
+         <item name="Groovy Language Homepage" href="http://http://groovy.codehaus.org/" />
+         <item name="Scala Language Homepage" href="http://www.scala-lang.org/" />
+         <item name="Scala and Apache MyFaces Part 1"
+               href="http://www.irian.at/de/blog/-/blogs/marrying-scala-with-apache-myfaces" />
+         <item name="Scala and Apache MyFaces Part 2"
+               href="http://www.irian.at/de/blog/-/blogs/marrying-scala-with-apache-myfaces" />
+         <item name="Scala and Apache MyFaces Part 3"
+                   href="http://www.irian.at/de/blog/-/blogs/marrying-scala-with-apache-myfaces" />
 
+     </menu>
 
     <menu name="Foundation">
       <item name="ASF" href="http://apache.org/" />

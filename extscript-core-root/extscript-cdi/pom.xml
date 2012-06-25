@@ -47,6 +47,7 @@
             <artifactId>extscript-core</artifactId>
             <version>1.0.4-SNAPSHOT</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.apache.deltaspike.cdictrl</groupId>
             <artifactId>deltaspike-cdictrl-api</artifactId>
@@ -59,7 +60,7 @@
             <version>${deltaspike.version}</version>
             <scope>provided</scope>
         </dependency>
-
+        -->
         <!-- openwebbeans -->
         <dependency>
             <groupId>org.apache.openwebbeans</groupId>

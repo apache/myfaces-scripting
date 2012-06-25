@@ -69,9 +69,10 @@ public class InitialFullScanTest
                 while(enumeration.hasMoreElements()) {
                     URL currentDir = enumeration.nextElement();
                     String currentDirStr = currentDir.getFile();
-                    currentDirStr = currentDirStr.replaceAll("target"+File.separatorChar+"test\\-classes",
+                    currentDirStr = currentDirStr.replaceAll("%5c", FileUtils.getFileSeparatorForRegex());
+                    currentDirStr = currentDirStr.replaceAll("target/test\\-classes",
                             "src/main/java");
-                    currentDirStr = currentDirStr.replaceAll("target"+File.separatorChar+"classes",
+                    currentDirStr = currentDirStr.replaceAll("target/classes",
                                                 "src/main/java");
                     currentDirStr = currentDirStr.replaceAll("context", "api");
                     javaEngine.getSourcePaths().add(currentDirStr);
