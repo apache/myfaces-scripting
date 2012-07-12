@@ -20,6 +20,7 @@
 package org.apache.myfaces.extensions.scripting.core.support;
 
 import java.io.File;
+import java.net.URLDecoder;
 
 /**
  * Supportive utils to access the source
@@ -39,7 +40,7 @@ public class PathUtils {
         //we use a location relative to our current root one to reach the sources
         //because the test also has to be performed outside of maven
         //and the ide cannot cope with resource paths for now
-        _currentPath = loader.getResource("./").getPath();
+        _currentPath = URLDecoder.decode(loader.getResource("./").getPath());
         _resourceRoot = _currentPath + "../../src/test/resources";
     }
 

@@ -28,7 +28,9 @@ import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -234,7 +236,15 @@ public abstract class BaseEngine
         if (pathSeparatedList.equals(defaultValue))
         {
             URL resource = ClassUtils.getContextClassLoader().getResource("./");
-            pathSeparatedList = FilenameUtils.normalize(resource.getPath() + "../.." + defaultValue);
+            try
+            {
+                pathSeparatedList = FilenameUtils.normalize(URLDecoder.decode(resource.getPath(),"UTF-8")
+                        + "../.." + defaultValue);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
         }
         String[] paths = pathSeparatedList.split(",");
         for (String path : paths)

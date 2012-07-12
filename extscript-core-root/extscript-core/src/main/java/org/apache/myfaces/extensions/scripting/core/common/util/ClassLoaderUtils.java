@@ -22,9 +22,11 @@ package org.apache.myfaces.extensions.scripting.core.common.util;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,12 +91,18 @@ public class ClassLoaderUtils {
 
         URL[] urls = resolveClasspath(classLoader);
         for (URL url : urls) {
-            classpath.append(url.getPath());
-
-            // Note that the classpath separator character is platform
-            // dependent. On Windows systems it's ";" whereas on other
-            // UNIX systems it's ":".
-            classpath.append(File.pathSeparatorChar);
+            try
+            {
+                classpath.append(URLDecoder.decode(url.getPath(), "UTF-8"));
+                // Note that the classpath separator character is platform
+                // dependent. On Windows systems it's ";" whereas on other
+                // UNIX systems it's ":".
+                classpath.append(File.pathSeparatorChar);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
 
         String retVal = classpath.toString();

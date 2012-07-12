@@ -25,6 +25,7 @@ import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContext
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,8 +99,10 @@ public class MockServletContext extends org.apache.myfaces.test.mock.MockServlet
     public void setResourceRoot(String newRoot)
     {
         _resourceRoot = newRoot;
-        super.setDocumentRoot(new File(FilenameUtils.normalize(Thread.currentThread().getContextClassLoader().getResource("./")
-                .getPath() +
+        super.setDocumentRoot(new File(FilenameUtils.normalize(URLDecoder.decode(Thread.currentThread()
+                .getContextClassLoader()
+                .getResource("./")
+                .getPath()) +
                 _resourceRoot)));
     }
 

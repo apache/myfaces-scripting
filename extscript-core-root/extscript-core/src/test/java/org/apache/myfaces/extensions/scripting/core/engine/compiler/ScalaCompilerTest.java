@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import static org.junit.Assert.assertTrue;
 
@@ -70,7 +71,7 @@ public class ScalaCompilerTest
         //and the ide cannot cope with resource paths for now
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-        String currentPath = loader.getResource("./").getPath();
+        String currentPath = URLDecoder.decode(loader.getResource("./").getPath());
         String sourcePath1 = currentPath + PROBE1;
         String sourcePath2 = currentPath + PROBE2;
         String rootPath = currentPath + RESOURCES;
