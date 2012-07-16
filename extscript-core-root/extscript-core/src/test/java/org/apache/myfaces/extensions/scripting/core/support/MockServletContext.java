@@ -24,8 +24,10 @@ import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,11 +101,18 @@ public class MockServletContext extends org.apache.myfaces.test.mock.MockServlet
     public void setResourceRoot(String newRoot)
     {
         _resourceRoot = newRoot;
-        super.setDocumentRoot(new File(FilenameUtils.normalize(URLDecoder.decode(Thread.currentThread()
-                .getContextClassLoader()
-                .getResource("./")
-                .getPath()) +
-                _resourceRoot)));
+        try
+        {
+            super.setDocumentRoot(new File(FilenameUtils.normalize(URLDecoder.decode(Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResource("./")
+                    .getPath(), Charset.defaultCharset().toString()) +
+                    _resourceRoot)));
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
 }

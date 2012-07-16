@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,7 +94,7 @@ public class ClassLoaderUtils {
         for (URL url : urls) {
             try
             {
-                classpath.append(URLDecoder.decode(url.getPath(), "UTF-8"));
+                classpath.append(URLDecoder.decode(url.getPath(), Charset.defaultCharset().toString()));
                 // Note that the classpath separator character is platform
                 // dependent. On Windows systems it's ";" whereas on other
                 // UNIX systems it's ":".

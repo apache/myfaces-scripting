@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -238,7 +239,8 @@ public abstract class BaseEngine
             URL resource = ClassUtils.getContextClassLoader().getResource("./");
             try
             {
-                pathSeparatedList = FilenameUtils.normalize(URLDecoder.decode(resource.getPath(),"UTF-8")
+                pathSeparatedList = FilenameUtils.normalize(URLDecoder.decode(resource.getPath(),
+                        Charset.defaultCharset().toString())
                         + "../.." + defaultValue);
             }
             catch (UnsupportedEncodingException e)

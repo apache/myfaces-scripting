@@ -20,7 +20,9 @@
 package org.apache.myfaces.extensions.scripting.core.support;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 
 /**
  * Supportive utils to access the source
@@ -40,7 +42,14 @@ public class PathUtils {
         //we use a location relative to our current root one to reach the sources
         //because the test also has to be performed outside of maven
         //and the ide cannot cope with resource paths for now
-        _currentPath = URLDecoder.decode(loader.getResource("./").getPath());
+        try
+        {
+            _currentPath = URLDecoder.decode(loader.getResource("./").getPath(), Charset.defaultCharset().toString());
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new RuntimeException(e);
+        }
         _resourceRoot = _currentPath + "../../src/test/resources";
     }
 

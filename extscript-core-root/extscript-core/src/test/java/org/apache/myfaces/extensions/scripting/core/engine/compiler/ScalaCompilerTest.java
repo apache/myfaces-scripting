@@ -32,9 +32,12 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -71,7 +74,17 @@ public class ScalaCompilerTest
         //and the ide cannot cope with resource paths for now
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-        String currentPath = URLDecoder.decode(loader.getResource("./").getPath());
+        String currentPath = null;
+
+        try
+        {
+            currentPath = URLDecoder.decode(loader.getResource("./").getPath(), Charset.defaultCharset().toString());
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            fail(e.getMessage());
+        }
+
         String sourcePath1 = currentPath + PROBE1;
         String sourcePath2 = currentPath + PROBE2;
         String rootPath = currentPath + RESOURCES;
