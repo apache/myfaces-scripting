@@ -47,6 +47,7 @@
         <groupId>org.apache.myfaces</groupId>
         <artifactId>myfaces</artifactId>
         <version>12</version>
+
     </parent>
 
     <modules>
@@ -142,6 +143,25 @@
 
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.rat</groupId>
+                    <artifactId>apache-rat-plugin</artifactId>
+                    <version>0.8</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>.idea/**/*</exclude>
+                            <exclude>readme/**/*</exclude>
+                            <exclude>**/licenses/**/*</exclude>
+                            <exclude>.git/**/*</exclude>
+                            <exclude>**/*.log</exclude>
+                            <exclude>**/LICENSE.TXT</exclude>
+                            <exclude>**/NOTICE.TXT</exclude>
+                            <exclude>.gitignore</exclude>
+			    <exclude>**/target/rat.txt</exclude>
+                            <exclude>atlassian-ide-plugin.xml</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
 
                 <plugin>
                     <groupId>org.scala-tools</groupId>
@@ -185,6 +205,7 @@
 
 
         <plugins>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -283,7 +304,25 @@
                 </plugins>
             </build>
         </profile>
-
+        <profile>
+            <id>rat</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
     <distributionManagement>
         <site>
