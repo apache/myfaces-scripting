@@ -65,9 +65,13 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
     {
         try
         {
-            StartupServletContextPluginChainLoader.startup(servletContext);
-            servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
-            WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
+
+            if (servletContext.getAttribute(RELOADING_LISTENER) == null)
+            {
+                StartupServletContextPluginChainLoader.startup(servletContext);
+                servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
+                WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
+            }
         }
         catch (IOException e)
         {

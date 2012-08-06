@@ -150,7 +150,9 @@ public class WeavingContext
 
     
     public void addListener(WeavingEventListener listener) {
-        _listeners.put(listener,"");
+        if(!_listeners.containsKey(listener)) {
+            _listeners.put(listener,"");
+        }
     }
     
     public void removeListener(WeavingEventListener listener) {
