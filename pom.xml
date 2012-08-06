@@ -157,6 +157,7 @@
                             <exclude>**/LICENSE.TXT</exclude>
                             <exclude>**/NOTICE.TXT</exclude>
                             <exclude>.gitignore</exclude>
+			    <exclude>**/target/rat.txt</exclude>
                             <exclude>atlassian-ide-plugin.xml</exclude>
                         </excludes>
                     </configuration>
