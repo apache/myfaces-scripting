@@ -4,7 +4,7 @@
     <artifactId>extscript-bundles</artifactId>
     <packaging>pom</packaging>
     <name>MyFaces Extension Scripting meta bundles</name>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
 
     <description>
         Meta bundles bundling the various ext-script
@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-root</artifactId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.4-SNAPSHOT</version>
     </parent>
 
 
