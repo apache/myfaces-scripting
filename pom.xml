@@ -47,6 +47,7 @@
         <groupId>org.apache.myfaces</groupId>
         <artifactId>myfaces</artifactId>
         <version>12</version>
+
     </parent>
 
     <modules>
