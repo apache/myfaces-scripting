@@ -47,7 +47,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
+            /whatever/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -58,7 +58,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
+            /whatever/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
 
@@ -66,7 +66,7 @@
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp
+            /whatever/extscript-examples/myfaces20-example/src/main/webapp
         </param-value>
     </context-param>
 
