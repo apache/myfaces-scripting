@@ -331,6 +331,4 @@
             <url>scp://people.apache.org/www/myfaces.apache.org/extensions/scripting/</url>
         </site>
     </distributionManagement>
-
-
 </project>
