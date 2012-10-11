@@ -47,7 +47,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /whatever//myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/groovy
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -58,7 +58,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /whatever//myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/java
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
     
@@ -68,7 +68,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</param-name>
         <param-value>
-            /whatever//myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/scala
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/scala
         </param-value>
     </context-param>
     
@@ -77,7 +77,7 @@
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /whatever//myfaces20-extscript-helloworld/src/main/webapp/
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/
         </param-value>
     </context-param>
 
@@ -96,8 +96,8 @@
         up dependencies from other directories. Wildcarding regarding jar and zip files is allowed.
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.ADDITIONAL_CLASSPATH</param-name>
-        <param-value>/whatever//myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.4-SNAPSHOT/WEB-INF/lib/*.jar,
-        /whatever//myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.4-SNAPSHOT/WEB-INF/classes</param-value>
+        <param-value>/whatever/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.4-SNAPSHOT/WEB-INF/lib/*.jar,
+        /whatever/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.4-SNAPSHOT/WEB-INF/classes</param-value>
     </context-param>
 
     -->

@@ -156,9 +156,12 @@
                             <exclude>**/*.log</exclude>
                             <exclude>**/LICENSE.TXT</exclude>
                             <exclude>**/NOTICE.TXT</exclude>
+                            <exclude>**/asm-license.txt</exclude>
+                            <exclude>**/facelet-license.txt</exclude>
                             <exclude>.gitignore</exclude>
-			    <exclude>**/target/rat.txt</exclude>
+			                <exclude>**/target/rat.txt</exclude>
                             <exclude>atlassian-ide-plugin.xml</exclude>
+
                         </excludes>
                     </configuration>
                 </plugin>
