@@ -25,7 +25,7 @@
     <name>Myfaces Extension Scripting Project</name>
     <version>1.0.4-SNAPSHOT</version>
     <url>http://myfaces.apache.org/extensions/scripting</url>
-    <!-- test -->
+    
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
         <myfaces2.version>2.1.7</myfaces2.version>
