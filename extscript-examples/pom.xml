@@ -22,7 +22,7 @@
     <artifactId>extscript-examples</artifactId>
     <packaging>pom</packaging>
     <name>Examples Submodule</name>
-    <version>1.0.4</version>
+    <version>1.0.5-SNAPSHOT</version>
 
     <description>
         Examples Meta Project, see the subprojects
@@ -32,7 +32,7 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-root</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5-SNAPSHOT</version>
     </parent>
 
     <scm>
