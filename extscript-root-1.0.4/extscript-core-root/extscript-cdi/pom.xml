@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>extscript-cdi</artifactId>
+    <version>1.0.4</version>
+    <packaging>jar</packaging>
+    <name>MyFaces Extension Scripting Core</name>
+
+    <description>
+        Core of the MyFaces extensions.scripting
+    </description>
+
+    <parent>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+        <artifactId>extscript-core-root</artifactId>
+        <version>1.0.4</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>people.apache.snapshots</id>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <scm>
+        <connection>
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-core-root/extscript-core
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-core-root/extscript-core
+        </developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-core-root/extscript-core</url>
+    </scm>
+    <properties>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.scripting</groupId>
+            <artifactId>extscript-core</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-api</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-owb</artifactId>
+            <version>${deltaspike.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+        <!-- openwebbeans -->
+        <dependency>
+            <groupId>org.apache.openwebbeans</groupId>
+            <artifactId>openwebbeans-impl</artifactId>
+            <version>${openwebbeans.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openwebbeans</groupId>
+            <artifactId>openwebbeans-jsf</artifactId>
+            <version>${openwebbeans.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openwebbeans</groupId>
+            <artifactId>openwebbeans-web</artifactId>
+            <version>${openwebbeans.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openwebbeans</groupId>
+            <artifactId>openwebbeans-resource</artifactId>
+            <version>${openwebbeans.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openwebbeans</groupId>
+            <artifactId>openwebbeans-spi</artifactId>
+            <version>${openwebbeans.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- openwebbeans -->
+        <!-- openwebbeans api -->
+        <dependency>
+           <groupId>org.apache.geronimo.specs</groupId>
+           <artifactId>geronimo-jcdi_1.0_spec</artifactId>
+           <version>1.0</version>
+           <scope>provided</scope>
+       </dependency>
+
+       <!-- javax.inject jsr 330 -->
+       <dependency>
+           <groupId>org.apache.geronimo.specs</groupId>
+           <artifactId>geronimo-atinject_1.0_spec</artifactId>
+           <version>1.0</version>
+           <scope>provided</scope>
+       </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <!--
+            - Build and install into the repository some additional artifacts that we don't
+            - want to build during normal development because they take too long.
+            -->
+            <id>generate-assembly</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Install in the repository a "-javadoc.jar" file -->
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.8</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadoc</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!-- Install in the repository a "-sources.jar" file -->
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-source</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

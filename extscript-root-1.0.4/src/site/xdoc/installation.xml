@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <properties>
+        <title>Installation</title>
+    </properties>
+
+    <body>
+        <section name="Navigation Top">
+            <a href="./index.html">&lt;&lt;Back to the Start Page</a>
+            or
+
+            <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
+        </section>
+
+        <section name="General information">
+            This page covers the general installation and integration process, it does not
+            go into the details of the configuration.
+
+
+            The section covers the setup via download or custom build. If you need configuration detail info
+            or information on how to setup your ide correctly please follow the links in the navigation to
+            the correct section.
+
+        </section>
+
+
+        <section name="Setup overview">
+            <subsection name="General Setup Information" >
+             <p>
+
+                Ext-Scripting has a complete appendix list over all <a href="./configentries.html">configuration and
+                 setup</a> options as well as <a href="./exampleconfig.html">example configurations</a>.
+                For a quick overview please visit the following links. If you need detailed
+                setup information, then read further on.
+             </p>
+            </subsection>
+            <subsection name="Links">
+                <p>
+                    <ul><a href="./setup_steps.html">Appendix: Configuration Setup Step Overview</a> </ul>
+                    <ul><a href="./exampleconfig.html">Appendix: Example Configurations</a> </ul>
+                    <ul><a href="./configentries.html">Appendix: List of Configuration Options</a> </ul>
+                </p>
+            </subsection>
+        </section>
+
+
+        <section name="Checklist">
+            <p>
+
+            For a short checklist of setup steps please follow <b><a href="./setup_steps.html"> this link</a></b>. For a detailed
+                setup guide, please continue reading.
+            </p>
+        </section>
+
+
+        <section name="Download">
+            <p>
+                With version 1.0.x Ext-Scripting provides all necessary artifacts
+                as download artifacts to get quickly started.
+                A kickstart project is provided which can be used as shell for your own
+                projects.
+            </p>
+            <p>
+                For Download information please visit the <a href="./download.html"> download  page</a>.
+            </p>
+            <p>
+                Once you downloaded the necessary artifacts please check the <a href="#Manual_Setup">manual setup section</a> of this document.
+            </p>
+        </section>
+
+        <section name="Checkout and Build">
+            <p>
+                While Ext-Scripting is already in stable state, the best way to get started
+                is probably to checkout and build Ext-Scripting yourself from the latest codebase.
+                All other installation steps will have this step as prerequisite if you want to
+                use the latest codebase instead of one of the beta releases!
+                First you have to check out the latest codebase from
+
+                <a href="http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk">
+                    http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk
+                </a>
+
+                via a subversion client.
+            </p>
+            <p>
+                Make sure you have following requirements fulfilled before checking out:
+            </p>
+            <ul>
+                <li>A valid Subversion client</li>
+                <li>A valid Servlet 3.0+ container</li>
+                <li>Java 6 or higher</li>
+                <li>Maven 2.0.9 or higher</li>
+            </ul>
+            <p>
+                After checkout, a full build can be obtained from the root directory of your checkout via <b>mvn
+                clean install</b>.
+            </p>
+            <p>
+                Once finished, a valid build is installed, which can be used further on. Additionally you can find
+                two blueprint projects which you can use as starting points for your own projects under
+                <b>&lt;checkoutDir&gt;/examples</b>
+                , which can be started via<b>mvn jetty:run-exploded</b>.
+                The now generated files either can be used to be included in a maven install or be included manually
+                (please go to the next section for detailed setup instructions)
+
+            </p>
+
+        </section>
+
+        <section name="Setup of Ext-Scripting">
+
+            <subsection name="Requirements">
+                <p>
+                    Before setting up Ext-Scripting for your project make sure following requirements are met.
+                </p>
+                <ul>
+                    <li>JAVA_HOME points towards a valid Java SDK (JRE is not sufficient)</li>
+                    <li>You know how to create and deploy a web application within your preferred setup (command line,
+                        ide)
+                    </li>
+                </ul>
+            </subsection>
+
+            <subsection name="Setup">
+                <p>
+                    While one of the aims of Ext-Scripting was to enable an easy setup, for now it was not entirely
+                    possible for now to get a plug and play configuration. Several configuration steps have to be
+                    performed.
+                </p>
+                <ul>
+                    <li>A valid
+                        <b>MyFaces</b>
+                        installation has to be present
+                    </li>
+                    <li>Ext-Scripting and its dependencies has to be added to the MyFaces installation</li>
+                    <li>The paths to the scripts have to be present (see also below)</li>
+                </ul>
+
+            </subsection>
+
+
+            <subsection name="Preparations via Apache Maven 2">
+                <p>The easiest way once Extension scripting is compiled is probably a setup via Apache Maven 2
+                </p>
+                <p>
+                    Depending on your configuration and preferred JDK version you can add following entries to your
+                    Maven pom.xml to enable Ext-Scripting
+                </p>
+
+                <p/>
+
+
+                <h4>MyFaces 2.1+</h4>
+                <source><![CDATA[
+     <dependency>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+        <artifactId>extscript-myfaces20-bundle</artifactId>
+        <version>1.0.3</version>
+     </dependency>]]></source>
+
+                <h4>Additional language libraries</h4>
+                <p>
+
+                    You have to add following artifacts to your dependency list for additional language support
+              <source><![CDATA[
+<dependency>
+    <groupId>org.codehaus.groovy</groupId>
+    <artifactId>groovy-all</artifactId>
+    <version>1.7.1</version>
+</dependency>
+              ]]></source>
+    For Groovy support (version number may vary)
+
+              <source><![CDATA[
+<dependency>
+    <groupId>org.scala-lang</groupId>
+    <artifactId>scala-library</artifactId>
+    <version>2.9.1</version>
+</dependency>
+<dependency>
+    <groupId>org.scala-lang</groupId>
+    <artifactId>scala-compiler</artifactId>
+    <version>2.9.1</version>
+</dependency>
+                ]]></source>
+    For Scala support.
+                </p>
+            </subsection>
+
+
+            <subsection name="Manual Setup">
+                <p>If you do not like Maven or you prefer a manual setup, Ext-Scripting provides convenient meta bundles.
+                    A manual setup
+                    comes down to the task of adding the appropriate meta bundle (extscript-myfaces20-bundle)
+                    to your WEB-INF/lib directory and adding a groovy-all.jar as additional dependency.
+                    For Scala support you have to add scala-library.jar and scala-compiler.jar to your
+                    WEB-INFU/lib. Note not adding those additional libs automatically will disable
+                    the respective language support.
+                </p>
+                <p>you can obtain both bundle jars after the build from:
+                    <ul>
+                        <li>&lt;yourbuilderoot&gt;/extscript-bundles/extscript-myfaces20-bundle/target/extscript-myfaces20-bundle-1.0.3-SNAPSHOT.jar</li>
+                    </ul>
+                    The additional language jars for the respective language
+                    can be obtained from the language distributions.
+                </p>
+                <p>After having done that you are ready to setup the rest of the Ext-Scripting configuration manually as
+                    described in the section blow
+                </p>
+            </subsection>
+
+
+            <subsection name="Preparing the Necessary web.xml Entries">
+                <h4>Most important step</h4>
+                <p>To enable Ext-Scripting you also have to add several entries to your web.xml file.</p>
+
+                <p>First a context param has to be set which attaches the Ext-Scripting plugins to MyFaces</p>
+                <source><![CDATA[
+ <context-param>
+    <description>
+        Enables our scripting engine support plugins
+    </description>
+    <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+    <param-value>
+        org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader
+    </param-value>
+ </context-param>]]></source>
+
+                <h4>Additional Optional Steps</h4>
+                <p>Ext-Scripting exposes a number configuration parameters which can be set via context parameters in
+                    your web.xml
+                </p>
+
+                <h4>Adjust the web.xml Root source paths.</h4>
+                <p>Since the goal of Ext-Scripting is to provide scriptability to a running web application, it has to
+                    know where to find the sources. For this, a default location has been chosen
+                    according to the standards set by the Mojarra Groovy Extension.
+                </p>
+                <p>
+                    The location looks like:
+                </p>
+                <source><![CDATA[
+     <webapp>/WEB-INF/groovy                    
+                ]]></source>
+                <p>
+                    as root location for Groovy files
+                </p>
+                <source><![CDATA[
+     <webapp>/WEB-INF/java
+                ]]></source>
+                <p>
+                    as root location for java files.
+                </p>
+                <p>
+                    Following image displays the default locations:
+                    <img src="images/ext_default_file.jpg"/>
+                </p>
+                <p>However in a normal development scenario, it is often undesirable to have the files located in a
+                    deployment location, and a pointer mechanism towards the actual source locations would be more
+                    desirable.
+
+                    To provide such a mechanism, Ext-Scripting allows two optional web.xml context parameters, which
+                    allow the rerouting of source locations of the supported languages!
+                </p>
+                <source><![CDATA[
+<context-param>
+    <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+        of the deployment dir
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
+    <param-value>
+       <some project path>/src/main/webapp/WEB-INF/groovy
+    </param-value>
+</context-param>
+<context-param>
+    <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+        of the deployment dir
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
+    <param-value>
+        <some project path>/src/main/webapp/WEB-INF/java
+    </param-value>
+</context-param>
+<context-param>
+    <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+        of the deployment dir
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</param-name>
+    <param-value>
+        <some project path>/src/main/webapp/WEB-INF/scala
+    </param-value>
+</context-param>
+                ]]></source>
+                <ul>
+                    <li>
+                        <b>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</b>
+                        can be a comma separated list of paths which point to the actual Groovy sources.
+                    </li>
+                    <li>
+                        <b>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</b>
+                        does the same for Java sources..
+                    </li>
+                    <li>
+                        <b>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</b>
+                        does the same for Java Scala (Ext-Scripting 1.0.3 or newer)...
+                    </li>
+                </ul>
+
+                <h4>Dynamic resource reloading</h4>
+                <p>Additionally Ext-Scripting allows the reloading of dynamic web resources
+                like Facelets templates images css files etc...  An additional config param is
+                    available to enable this functionality.
+                    </p>
+                <p>
+                <ul>
+                    <li>
+                        <b>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</b>
+                        This parameter points to the root of your dynamic resources, usually the same dir
+                                        as the root of your web application.
+                    </li>
+                    <li><b>facelets.RESOURCE_RESOLVER</b> also needs to be set to <b>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</b> if
+                    you want dynamic Facelet reloading enabled</li>
+                </ul>
+
+                <source><![CDATA[
+<!-- ======================================================================================
+         Optional Loader Paths for resource files
+  ====================================================================================== -->
+ <context-param>
+     <description>resource paths for our custom JSF2 resource resolver</description>
+     <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
+     <param-value>
+         ~/extensions-scripting3/examples/myfaces20-example/src/main/webapp
+     </param-value>
+ </context-param>
+
+<!-- ======================================================================================
+  Optional: Tell Facelets to load the resources from your source dir
+  ====================================================================================== -->
+ <context-param>
+     <description>a redirecting Facelet resource resolver which allows to pick up templates
+        and resources from our source dir
+     </description>
+     <param-name>facelets.RESOURCE_RESOLVER</param-name>
+     <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
+ </context-param>
+        ]]></source>
+                </p>
+                This sums up the quick install and setup guide, if you want more detailed setup examples and
+                additional configuration entries
+                go to our <a href="./exampleconfig.html">Example Configurations</a> page, which shows
+                a set of different configurations.
+
+
+            <h4>Package Whitelisting</h4>
+            <p>The last possible config entry is the ability to whitelist packages. If you have set this option
+            then only whitelisted packages will be picked up for dynamic recompilation</p>
+            <p>With this option you can point your source dir to the normal compile source and mark
+            special packages as dynamic (to isolate the dynamic part from the rest)</p>
+
+            To enable this option, add following entry to your web.xml:
+             <source><![CDATA[
+<!-- ======================================================================================
+    Optional: Whitelist of root packages where your sources should come from
+ ====================================================================================== -->
+<context-param>
+    <description>a comma separated whitelist of root packages which are compiled those and nothing else
+        will be compiled during all compile stages, all other files stay permanently as they are
+    </description>
+    <param-name>org.apache.myfaces.extensions.scripting.PGK_WHITELIST</param-name>
+    <param-value>org.apache.myfaces.groovyloader.blog,org.apache.myfaces.javaloader.blog</param-value>
+</context-param>
+             ]]></source>
+            </subsection>
+
+
+        </section>
+
+        <section name="Navigation Bottom">
+            <a href="./index.html">&lt;&lt;Back to the Start Page</a>
+            or
+            <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
+        </section>
+
+    </body>
+</document>
+        

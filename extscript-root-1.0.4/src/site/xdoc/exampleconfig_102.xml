@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+
+<document>
+    <section name="Navigation Top">
+        <a href="./configentries.html">&lt;&lt;appendix Configuration Entries</a>
+    </section>
+    <section name="Appendix: Example Configuration">
+        <subsection name="General Information">
+            <p>
+                This page gives a detailed example configuration for
+                Ext-Scripting for installation
+                details please visit the<a href="./installation.html">setup guide</a>.
+            </p>
+        </subsection>
+        <subsection name="Simple Configuration">
+
+            <source><![CDATA[
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+    <description>MyProject web.xml</description>
+
+    <!-- ======================================================================================
+            Plugin Init Parameter
+            First Step to enable Ext-Scripting
+         ====================================================================================== -->
+    <context-param>
+        <description>
+            Initializes the plugins for our scripting support
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+    </context-param>
+
+    <!-- ======================================================================================
+            Scripting Filter
+            Second step to enable Ext-Scripting
+         ====================================================================================== -->
+    <filter>
+        <filter-name>scriptingFilter</filter-name>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>scriptingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+
+    <!-- Faces Servlet -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- Faces Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+        ]]></source>
+        </subsection>
+        <subsection name="Full Configuration">
+            <source><![CDATA[
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+    <description>MyProject web.xml</description>
+
+    <!-- ======================================================================================
+            Plugin Init Parameter
+            First Step to enable Ext-Scripting
+         ====================================================================================== -->
+
+    <context-param>
+        <description>
+            Initializes the plugins for our groovy handlers
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+    </context-param>
+
+
+    <!-- ======================================================================================
+            Scripting Filter
+            Second step to enable Ext-Scripting
+         ====================================================================================== -->
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
+        <param-value>
+            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
+        </param-value>
+    </context-param>
+
+    <!-- ======================================================================================
+            Optional Loader Paths for Java Source Files
+         ====================================================================================== -->
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
+        <param-value>
+            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp/WEB-INF/java
+        </param-value>
+    </context-param>
+
+    <!-- ======================================================================================
+            Optional Loader Paths for Groovy Source Files
+         ====================================================================================== -->
+    <context-param>
+        <description>resource paths for our custom JSF2 resource resolver</description>
+        <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
+        <param-value>
+            /Users/werpu2/development/workspace/extensions-scripting3/examples/myfaces20-example/src/main/webapp
+        </param-value>
+    </context-param>
+
+    <!-- ======================================================================================
+            Optional: Tell Facelets to load the resources from your source dir
+         ====================================================================================== -->
+    <context-param>
+        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
+            source dir
+        </description>
+        <param-name>facelets.RESOURCE_RESOLVER</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</param-value>
+    </context-param>
+
+    <!-- ======================================================================================
+            Optional: Whitelist of root packages where your sources should come from
+         ====================================================================================== -->
+    <context-param>
+        <description>a comma separated whitelist of root packages which are compiled those and nothing else
+            will be compiled during all compile stages, all other files stay permanently as they are
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.PGK_WHITELIST</param-name>
+        <param-value>org.apache.myfaces.groovyloader.blog,org.apache.myfaces.javaloader.blog</param-value>
+    </context-param>
+
+    <!-- ======================================================================================
+            Optional Additional Classpath
+         ====================================================================================== -->
+    <context-param>
+        <description>
+            Additional Classpaths which will be added to the compilers classpath
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.PGK_ADDITIONAL_CLASSPATH</param-name>
+        <param-value>/usr/lib/java/myjar.jar,/usr/lib/java/myjar2.jar</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>scriptingFilter</filter-name>
+        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>scriptingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+    <!-- Listener, to allow Jetty serving MyFaces apps -->
+    <listener>
+        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+    </listener>
+
+    <!-- Faces Servlet -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- Faces Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+
+
+
+</web-app>
+
+        ]]></source>
+        </subsection>
+    </section>
+    <section name="Navigation Bottom">
+        <a href="./configentries.html">&lt;&lt;appendix Configuration Entries</a>
+    </section>
+</document>    

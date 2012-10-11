@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+
+    <properties>
+        <title>Introduction</title>
+    </properties>
+
+    <body>
+        <section name="Navigation Top">
+            <a href="./installation.html">On to the General Installation Guide&gt;&gt;</a>
+        </section>
+
+        <section name="Introduction">
+            <subsection name="General Introduction">
+
+                <p>Welcome and hello to MyFaces Extension-Scripting, short Ext-Scripting. Ext-Scripting is an extensions
+                    project for MyFaces. It tries to add scripting and rapid prototyping (artifact level hot deployment)
+                    capabilities to JSF by adding
+                    scripting languages and JSP like recompilation mechanisms.
+
+                    Following link to the a video on YouTube shows you what Ext-Scripting can do for you:
+                </p>
+
+                <p>
+                    <center>
+                        <iframe class="youtube-player" type="text/html" width="800" height="600"
+                                src="http://www.youtube.com/embed/g2YvzOloNyI" frameborder="0">
+                        </iframe>
+                    </center>
+
+
+                </p>
+                <p>
+                    As the video shows, you can make changes to almost all JSF artifacts on the fly, and at the next
+                    reload the changes are present.
+                    The result is a reduction in server restarts and better turn around times. The
+                    same rapid prototyping approach which is normally present in scripting languages and scripting
+                    language based frameworks.
+
+                    Additionally to that, Ext-Scripting integrates various scripting languages to be used in conjunction
+                    with JSF, so that a mixed language approach becomes feasible within the bounds of the framework.
+                </p>
+
+            </subsection>
+
+        </section>
+        <section name="Documentation">
+            <p>
+                Ext-Scripting provides extensive documentation. Feel free
+                to browse our
+                <a href="./installation.html">Installation Guide</a>
+                or
+                <a href="./usersguide.html">Users Guide</a>
+                for further information.
+            </p>
+            <p>
+                Also
+                <a href="./download.html">download links</a>
+                are provided on the left hand side of this page,
+                as well as further information.
+            </p>
+        </section>
+
+        <section name="Short Overview over Ext-Scripting">
+            <subsection name="Supported for Scripting Languages">
+                <p>
+                    Ext-Scripting currently only supports Groovy Java and Scala (1.0.3+) as dynamic languages.
+                    Additional languages will be provided in subsequent releases.
+                </p>
+            </subsection>
+            <subsection name="Support for JSF2 and JSF2 Artifacts and Annotations">
+                <p>
+                    One of the main goals of Ext-Scripting was to provide JSF2 support out of the box. Most new JSF2
+                    artifacts are supported. Ext-Scripting even adds scriptability to the new annotation syntax of JSF2
+                    by allowing annotations to be used in a dynamic manner!
+                </p>
+            </subsection>
+            <subsection name="Support for MyFaces">
+                <p>
+                    Extensions scripting supports MyFaces only for now. Following versions are supported.
+                </p>
+                <ul>
+                    <li>1.2.8+ (note support will be dropped soon post 1.0.2)</li>
+                    <li>2.0+</li>
+                </ul>
+                <p>
+                    Older versions are not supported due to missing plugin mechanisms which allow Ext-Scripting to work.
+                </p>
+                <p>
+                    The JSF RI and Mojarra as time of writing are not supported due to missing framework hooks needed,
+                    but Mojarra supports Groovy out of the box within the core engine. So for the time being only
+                    MyFaces can be used. Also Portlets for 1.0.x are not supported, this limitation will be eliminated
+                    in future versions. Support for Mojarra maybe will come post 1.0.x.
+                </p>
+            </subsection>
+
+        </section>
+
+        <section name="Navigation Bottom">
+            <a href="./installation.html">On to the General Installation Guide&gt;&gt;</a>
+        </section>
+
+
+    </body>
+</document>

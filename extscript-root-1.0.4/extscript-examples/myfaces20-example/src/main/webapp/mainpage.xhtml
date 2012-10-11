@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:grv="http://myfaces.apache.org/groovy"
+      xmlns:g="http://java.sun.com/jsf/composite/greet"
+
+        >
+
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="body">
+        <h1>Hello from Apache MyFaces Extension Scripting  #{javatestbean.sayHello}</h1>
+        <h:panelGrid columns="2" columnClasses="celltop, celltop">
+
+
+            <h:panelGroup styleClass="stdBox" id="demoMenu">
+                <h2>Documentation</h2>
+
+                <h:outputLink target="_new"
+                              value="http://myfaces.apache.org/extensions/scripting/index.html">Extension Scripting Documentation</h:outputLink>
+
+
+                <h2>Demo and Testing Links</h2>
+                <h:panelGrid columns="1">
+                    <h:outputLink value="helloWorld.jsf">Hello World Artifacting Testing Case</h:outputLink>
+                    <h:outputLink value="componentTest.jsf">Component Testing Case</h:outputLink>
+                    <h:outputLink value="complexBean.jsf">Complex Bean Testing Case</h:outputLink>
+                    <h:outputLink value="javablog.jsf">Java Blog Example</h:outputLink>
+                    <h:outputLink value="blog.jsf">Groovy Blog Example</h:outputLink>
+                </h:panelGrid>
+            </h:panelGroup>
+
+            <h:panelGroup
+                    styleClass="stdBox"><h3>Apache Apache MyFaces Extension Scripting - short Ext-Scripting is a dynamic script
+                extension for the Apache MyFaces JSF Implementation.
+                With it you can edit JSF artifacts on the fly in both Groovy and Java.
+                </h3>
+            </h:panelGroup>
+
+        </h:panelGrid>
+
+        <h:panelGroup styleClass="stdBoxBig" style="width: 810px;">
+            <object width="800" height="600" style="margin-left: 5px;" >
+                <param name="movie"
+                       value="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"></param>
+                <param name="allowFullScreen" value="true"></param>
+                <param name="allowscriptaccess" value="always"></param>
+                <embed src="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"
+                       type="application/x-shockwave-flash" allowscriptaccess="always"
+                       allowfullscreen="true" width="800" height="550"></embed>
+            </object>
+        </h:panelGroup>
+
+
+    </ui:define>
+
+
+</ui:composition>
+</body>
+</html>

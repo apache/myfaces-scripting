@@ -1,0 +1,286 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+body {
+    background-color: white;
+}
+
+div.centerDiv {
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+}
+
+div.centerDiv form {
+    position: relative;
+}
+
+h1 {
+    color: #9999ff;
+    text-align: center;
+}
+
+div#backGroundFloat {
+    position: fixed;
+    z-index: -1;
+    background-color: black;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: url("../resources/img/sig07-009_mac.jpg");
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+#hello {
+    background-color: yellow;
+}
+
+.stdBox, .stdBoxBig, .messageBox {
+    display: block;
+    width: 400px;
+    border: 1px solid white;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 5px;
+    border-radius: 8px;
+    background-repeat: repeat-x;
+    margin-bottom: 5px;
+    min-height: 120px;
+
+}
+
+.stdBoxBig {
+    width: 800px;
+}
+
+.stdBox, .stdBoxBig {
+    background-color: white;
+    background-image: url("../resources/img/gradient1.jpg");
+}
+
+.messageBox {
+    background-image: url("../resources/img/gradient2.png");
+}
+
+/*=================================================
+Standard Menu
+===================================================*/
+div#menu {
+    background-color: white;
+    opacity: 0.9;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    padding: 5px;
+    font-weight: bold;
+
+}
+
+div#menu a {
+    color: blue;
+    margin-right: 10px;
+}
+
+div#menu a:hover {
+    color: red;
+}
+
+/*==================================================
+    Basic CSS information for our
+    taint history component
+    we do not use the compound
+    css for error and history
+    for readability reasons
+    although we have  load
+    of duplication here
+====================================================*/
+
+div.historyBox {
+    width: 820px;
+    heigh: 200px;
+
+    display: block;
+    overflow: auto;
+    border: 1px solid white;
+    color: #dedddd;
+    opacity: 0.92;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 5px;
+
+    padding: 5px;
+    margin-left: 10px;
+
+    background-image: url("../resources/img/gradient2.png");
+    background-repeat: repeat-x;
+}
+
+div.historyBox .line {
+    display: table;
+    width: 780px;
+
+    border: 1px dashed black;
+    background-color: #ccccff;
+    color: black;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+
+    border-radius: 5px;
+}
+
+div.historyBox .line .timestamp {
+    width: 120px;
+    float: left;
+    color: red;
+}
+
+div.historyBox .line .changedFile {
+    width: 650px;
+    overflow: hidden;
+    display: block;
+    float: left;
+}
+
+/*==================================================
+    Basic CSS information for our compiler
+    output component
+====================================================*/
+
+div.errorsLabel {
+    font-size: large;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+}
+
+div.warningsLabel {
+    font-size: large;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid black;
+}
+
+div.errorBox {
+    width: 820px;
+    heigh: 200px;
+
+    display: block;
+    overflow: auto;
+    border: 1px solid white;
+    color: #dedddd;
+    opacity: 0.92;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 5px;
+
+    padding: 5px;
+    margin-left: 10px;
+
+    background-image: url("../resources/img/gradient2.png");
+    background-repeat: repeat-x;
+}
+
+div.errorBox .line {
+    display: table;
+    width: 780px;
+
+    border: 1px dashed black;
+    background-color: #ccccff;
+    color: black;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+
+    border-radius: 5px;
+}
+
+div.errorBox .line .lineNo {
+    width: 40px;
+    float: left;
+    color: red;
+}
+
+div.errorBox .line .lineNo {
+    width: 30px;
+    float: left;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: large;
+}
+
+div.errorBox .line .message {
+    width: 738px;
+    display: block;
+    float: left;
+}
+
+.left {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+}
+
+.right {
+    position: absolute;
+    left: 430px;
+    top: 20px;
+}
+
+.label {
+    font-weight: bold;
+    color: black;
+    width: 150px;
+    padding-right: 5px;
+}
+
+.input input, .input textArea {
+    width: 200px;
+}
+
+input, textArea {
+    border: 1px solid black;
+}
+
+input:focus, textArea:focus {
+    background-color: yellow;
+}
+
+input.btn {
+    width: 100px;
+    margin-left: 263px;
+}
+
+
+.celltop {
+    vertical-align:top;
+}

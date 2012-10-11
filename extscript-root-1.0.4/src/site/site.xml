@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<project name="Apache MyFaces Extension-Scripting">
+  <bannerLeft>
+    <name>Apache MyFaces Extension-Scripting</name>
+
+
+    <src>images/extscriptlogo.png</src>
+
+    <href>http://myfaces.apache.org/ext-scripting</href>
+
+  </bannerLeft>
+  <bannerRight>
+    <name>Apache MyFaces</name>
+    <src>img/banners/MyFaces_logo.png</src>
+    <href>http://myfaces.apache.org/</href>
+  </bannerRight>
+  <skin>
+    <groupId>org.apache.myfaces.maven</groupId>
+    <artifactId>myfaces-site-skin</artifactId>
+    <version>3</version>
+  </skin>
+  <body>
+    <links>
+      <item name="Introduction" href="./index.html"/>
+      <item name="Download" href="./download.html"/>
+      <item name="Installation" href="./installation.html"/>
+      <item name="Users Guide" href="./usersguide.html"/>
+      <item name="Example Configurations" href="./exampleconfig.html"/>
+      <item name="Apache" href="http://www.apache.org"/>
+      <item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
+    </links>
+
+    <menu name="Download">
+        <item name="Download" href="download.html"/>
+    </menu>
+    <menu name="Documentation">
+      <item name="Introduction" href="index.html" />
+      <item name="Latest Version Installation" href="installation.html" />
+      <item name="Installation of version 1.0.2 or earlier" href="install_102.html" />
+
+      <item name="Users Guide" href="usersguide.html"/>
+      <item name="Appendix A: Setup Checklist" href="setup_steps.html" />
+      <item name="Appendix B: Configuration Entries" href="configentries.html" />
+      <item name="Appendix B1: Configuration Entries for 1.0.2 or earlier" href="configentries_102.html" />
+      <item name="Appendix C: Example Configurations" href="exampleconfig.html" />
+      <item name="Appendix C1: Example Configurations 1.0.2 or earlier" href="exampleconfig_102.html" />
+    </menu>
+
+    <menu ref="modules"/>
+    <menu ref="reports"/>
+
+    <menu name="Apache MyFaces" inherit="top">
+       <item name="Overview"       href="http://myfaces.apache.org/index.html"/>
+       <item name="Download"       href="http://myfaces.apache.org/download.html"/>
+     </menu>
+
+     <menu name="MyFaces Projects" inherit="top">
+         <item name="Core JSF-2.1"   href="../core21/index.html" collapse="true">
+           <item name="dummy"        href="dummy"/>
+         </item>
+         <item name="Core JSF-2.0"   href="../core20/index.html" collapse="true">
+           <item name="dummy"        href="dummy"/>
+         </item>
+         <item name="Core JSF-1.2"   href="../core12/index.html" collapse="true">
+           <item name="dummy"        href="dummy"/>
+         </item>
+         <item name="Core JSF-1.1"   href="../core11/index.html" collapse="true">
+           <item name="dummy"        href="dummy"/>
+         </item>
+     </menu>
+
+     <menu name="UI-Component Sets" inherit="top">
+         <item name="Trinidad"       href="../trinidad/index.html"/>
+         <item name="Tobago"         href="../tobago/index.html"/>
+         <item name="Tomahawk"       href="../tomahawk/index.html" collapse="true">
+           <item name="dummy"        href="dummy"/>
+         </item>
+     </menu>
+
+     <menu name="Add-ons and Extensions" inherit="top">
+         <item name="CODI"           href="../extensions/cdi/index.html"/>
+         <item name="Orchestra"      href="../orchestra/index.html"/>
+         <item name="ExtVal"         href="../extensions/validator/index.html"/>
+         <item name="ExtScript"      href="../extensions/scripting/index.html"/>
+
+         <item name="Portlet Bridge" href="../portlet-bridge/index.html"/>
+         <item name="Test"           href="../test/index.html" collapse="false">
+           <item name="Myfaces Test Framework for JSF 1.2 (and 1.1)" href="http://myfaces.apache.org/test/myfaces-test12/index.html"/>
+           <item name="Myfaces Test Framework for JSF 2.0"           href="http://myfaces.apache.org/test/myfaces-test20/index.html"/>
+         </item>
+         <item name="Commons"        href="../commons/index.html"/>
+         <item name="HTML5"          href="../html5/index.html"/>
+         <item name="Sandbox"        href="../sandbox/index.html" collapse="true">
+           <item name="dummy"        href="dummy"/>
+         </item>
+         <item name="Others"         href="../otherProjects.html"/>
+     </menu>
+
+     <menu name="External Resources">
+         <item name="Ext-Scripting Interview" href="http://www.jsfcentral.com/articles/punz-03-12.html"/>
+         <item name="Groovy Language Homepage" href="http://http://groovy.codehaus.org/" />
+         <item name="Scala Language Homepage" href="http://www.scala-lang.org/" />
+         <item name="Scala and Apache MyFaces Part 1"
+               href="http://www.irian.at/de/blog/-/blogs/marrying-scala-with-apache-myfaces" />
+         <item name="Scala and Apache MyFaces Part 2"
+               href="http://www.irian.at/de/blog/-/blogs/marrying-scala-with-apache-myfaces" />
+         <item name="Scala and Apache MyFaces Part 3"
+                   href="http://www.irian.at/de/blog/-/blogs/marrying-scala-with-apache-myfaces" />
+
+     </menu>
+
+    <menu name="Foundation">
+      <item name="ASF" href="http://apache.org/" />
+      <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
+      <item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
+    </menu>
+
+
+
+    
+  </body>
+</project>
