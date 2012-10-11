@@ -23,7 +23,7 @@
     <artifactId>extscript-root</artifactId>
     <packaging>pom</packaging>
     <name>Myfaces Extension Scripting Project</name>
-    <version>1.0.4</version>
+    <version>1.0.4-SNAPSHOT</version>
     <url>http://myfaces.apache.org/extensions/scripting</url>
     
     <properties>
