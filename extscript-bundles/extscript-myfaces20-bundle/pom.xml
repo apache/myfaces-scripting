@@ -24,7 +24,7 @@
     <artifactId>extscript-myfaces20-bundle</artifactId>
     <packaging>jar</packaging>
     <name>MyFaces Extension Scripting MyFaces 2.0 convenience meta bundle</name>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
 
     <description>
         The meta bundle bundeling all needed core runtimes
@@ -34,7 +34,7 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-bundles</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.4</version>
     </parent>
 
     <scm>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-core</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
+            <version>1.0.4</version>
         </dependency>
 
     </dependencies>

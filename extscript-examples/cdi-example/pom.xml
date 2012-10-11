@@ -22,14 +22,14 @@
     <parent>
         <artifactId>extscript-examples</artifactId>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces21-extscript-cdi</artifactId>
     <packaging>war</packaging>
     <name>A simple project for MyFaces 2.1 and Ext-Scripting 1.0 and CDI</name>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
     <url>http://www.apache.org</url>
 
     <scm>
@@ -96,13 +96,13 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces20-bundle</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
+            <version>1.0.4</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-cdi</artifactId>
-            <version>1.0.4-SNAPSHOT</version>
+            <version>1.0.4</version>
         </dependency>
 
         <!-- openwebbeans -->
