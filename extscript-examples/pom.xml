@@ -36,12 +36,12 @@
     </parent>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-examples
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-examples
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-examples
         </developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-examples</url>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-examples</url>
     </scm>
 
 

@@ -40,9 +40,9 @@
 
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-bundles</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-bundles</developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-bundles</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-bundles</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-bundles</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0.4/extscript-bundles</url>
     </scm>
 
     <modules>
