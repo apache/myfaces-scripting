@@ -47,7 +47,7 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/groovy
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/groovy
         </param-value>
     </context-param>
 
@@ -58,15 +58,26 @@
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/java
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
+    
+     <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</param-name>
+        <param-value>
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/scala
+        </param-value>
+    </context-param>
+    
 
     <context-param>
         <description>resource paths for our custom JSF2 resource resolver</description>
         <param-name>org.apache.myfaces.extensions.scripting.resources.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/development/workspace/extensions-scripting3/extscript-examples/myfaces20-example/src/main/webapp
+            /whatever/myfaces20-extscript-helloworld/src/main/webapp/
         </param-value>
     </context-param>
 
@@ -77,6 +88,18 @@
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
         <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
     </context-param>
+
+    <context-param>
+        <description>Some containers do not expand their war/ear files and do not return a proper classpath for the
+        compilers.
+        For those you can set an additional classpath as comma separated list of paths so that the compiler can pick
+        up dependencies from other directories. Wildcarding regarding jar and zip files is allowed.
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.ADDITIONAL_CLASSPATH</param-name>
+        <param-value>/whatever/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.4-SNAPSHOT/WEB-INF/lib/*.jar,
+        /whatever/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.4-SNAPSHOT/WEB-INF/classes</param-value>
+    </context-param>
+
     -->
     <!--
     <context-param>
@@ -88,27 +111,6 @@
     </context-param>
     -->
 
-
-    <!--
-     <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy</param-value>
-    </context-param>
-
-
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
-        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/java</param-value>
-    </context-param>
-
-
-    -->
 
 
     <context-param>

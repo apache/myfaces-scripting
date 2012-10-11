@@ -89,26 +89,6 @@
     -->
 
 
-    <!--
-     <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/groovy</param-value>
-    </context-param>
-
-
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
-        <param-value>D:/whatever/threads/extscript/examples/myfaces20-example/src/main/webapp/WEB-INF/java</param-value>
-    </context-param>
-
-
-    -->
 
 
     <context-param>

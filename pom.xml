@@ -25,7 +25,7 @@
     <name>Myfaces Extension Scripting Project</name>
     <version>1.0.4</version>
     <url>http://myfaces.apache.org/extensions/scripting</url>
-    <!-- test -->
+    
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
         <myfaces2.version>2.1.7</myfaces2.version>
@@ -156,9 +156,12 @@
                             <exclude>**/*.log</exclude>
                             <exclude>**/LICENSE.TXT</exclude>
                             <exclude>**/NOTICE.TXT</exclude>
+                            <exclude>**/asm-license.txt</exclude>
+                            <exclude>**/facelet-license.txt</exclude>
                             <exclude>.gitignore</exclude>
-			    <exclude>**/target/rat.txt</exclude>
+			                <exclude>**/target/rat.txt</exclude>
                             <exclude>atlassian-ide-plugin.xml</exclude>
+
                         </excludes>
                     </configuration>
                 </plugin>
@@ -331,6 +334,4 @@
             <url>scp://people.apache.org/www/myfaces.apache.org/extensions/scripting/</url>
         </site>
     </distributionManagement>
-
-
 </project>

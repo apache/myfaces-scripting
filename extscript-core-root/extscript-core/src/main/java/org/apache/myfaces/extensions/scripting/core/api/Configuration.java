@@ -25,14 +25,10 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -94,6 +90,31 @@ public class Configuration
     {
     }
 
+
+    private Collection<String> performWildCardSearch(String classPathEntry) {
+
+        if(classPathEntry.toLowerCase().endsWith("*.jar")|| classPathEntry.toLowerCase().endsWith("*.zip")){
+            //peform a full search of jars on the dir
+            classPathEntry = classPathEntry.substring(0, classPathEntry.length()-5);
+            File classPathDir = new File(classPathEntry);
+            String[] foundFiles = classPathDir.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.toLowerCase().endsWith(".jar") || name.toLowerCase().endsWith(".zip");
+                }
+            });
+            if(foundFiles == null) {
+                return Collections.emptyList();
+            }
+            ArrayList<String> retVal = new ArrayList<String>(foundFiles.length);
+            for(String foundFile: foundFiles) {
+                retVal.add(classPathEntry+foundFile);
+            }
+            return retVal;
+        }
+        return Arrays.asList(new String[] {classPathEntry});
+    }
+
     public void init(ServletContext context)
     {
         String packageWhiteList = context.getInitParameter(INIT_PARAM_SCRIPTING_PACKAGE_WHITELIST);
@@ -103,6 +124,10 @@ public class Configuration
         String additionalClassPath = context.getInitParameter(INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH);
         additionalClassPath = (additionalClassPath == null) ? "" : additionalClassPath;
         String[] additionalClassPaths = additionalClassPath.split("\\,");
+        for(String cp: additionalClassPaths) {
+            _additionalClassPath.addAll(performWildCardSearch(cp));
+        }
+
         _additionalClassPath.addAll(Arrays.asList(additionalClassPaths));
 
         String resourcePath = context.getInitParameter(INIT_PARAM_RESOURCE_PATH);

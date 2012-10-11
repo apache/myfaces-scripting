@@ -111,7 +111,15 @@ public class ResourceMonitor extends Thread
      */
     public void run()
     {
-
+        try {
+            //on Glassfish we have to defer the initial scan to avoid an NPE, for 
+            //reasons not debuggable, TODO check for a concurrency issue there
+            //which causes the npe
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ResourceMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         while (!Thread.currentThread().isInterrupted())
         {
             if (Thread.currentThread().isInterrupted()) break;
