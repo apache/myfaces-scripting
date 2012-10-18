@@ -419,19 +419,19 @@
              ]]></source>
             </subsection>
 
-            <subsection name="preparations for Openwebbeans">
-                <p>From a ext-scripting perspective, dropping the extscript-cdi war into your libraries dir
+            <subsection name="Preparations for Openwebbeans">
+                <p>From a Ext-Scripting perspective, dropping the extscript-cdi war into your libraries dir
                 is enough to enable Openwebbeans support, however you have to have Openwebbeans installed properly
                 which means you have to add a beans.xml file to your META-INF directory and you have to add following
                 entry to your web.xml file:
-                <code><![CDATA[
+                <source><![CDATA[
 <!-- ========================================================================================
                 Optional: enable only if you have openwebbeans working
 ========================================================================================== -->
 <listener>
     <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
 </listener>
-                ]]></code>
+                ]]></source>
 
                 </p>
             </subsection>
