@@ -182,7 +182,12 @@
         <param-value>Development</param-value>
     </context-param>
 
-
+    <!-- ========================================================================================
+                    Optional: enable only if you have openwebbeans working
+    ========================================================================================== -->
+    <listener>
+        <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
+    </listener>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>

@@ -174,7 +174,7 @@
      <dependency>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-myfaces20-bundle</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
      </dependency>]]></source>
 
                 <h4>Additional language libraries</h4>
@@ -203,6 +203,15 @@
 </dependency>
                 ]]></source>
     For Scala support.
+                    
+    For OpenWebbeans support please add following entry:
+                    <source><![CDATA[
+                     <dependency>
+                        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+                        <artifactId>extscript-cdi</artifactId>
+                        <version>1.0.4</version>
+                    </dependency>
+                 ]]></source>
                 </p>
             </subsection>
 
@@ -223,6 +232,24 @@
                     The additional language jars for the respective language
                     can be obtained from the language distributions.
                 </p>
+                <p>
+                    However following dependencies must be met so that Ext-Scripting can work:
+                    <ul>
+                        <li>commons-beanutils.jar version 1.8.3 or above</li>
+                        <li>commons-codec.jar version 1.3 or above</li>
+                        <li>commons-collections.jar version 3.2 or above</li>
+                        <li>commons-io.jar version 1.4 or above</li>
+                        <li>commons-logging.jar version 1.1.1 or above</li>
+                        <li>commons-digester version 1.8 or above</li>
+                        <li>groovy-all.jar version 1.7.2 or above</li>
+                        <li>scala-compiler.jar version 2.10.0-M2 or above</li>
+                        <li>scala-library.jar version 2.10.0-M2 or above</li>
+                    </ul>
+
+                    For your convenience an empty webapp is provided within the <a href="./download.html">download page</a>
+                    which delivers all needed dependencies to get you kickstarted.
+                </p>
+
                 <p>After having done that you are ready to setup the rest of the Ext-Scripting configuration manually as
                     described in the section blow
                 </p>
@@ -392,6 +419,22 @@
              ]]></source>
             </subsection>
 
+            <subsection name="preparations for Openwebbeans">
+                <p>From a ext-scripting perspective, dropping the extscript-cdi war into your libraries dir
+                is enough to enable Openwebbeans support, however you have to have Openwebbeans installed properly
+                which means you have to add a beans.xml file to your META-INF directory and you have to add following
+                entry to your web.xml file:
+                <code><![CDATA[
+<!-- ========================================================================================
+                Optional: enable only if you have openwebbeans working
+========================================================================================== -->
+<listener>
+    <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
+</listener>
+                ]]></code>
+
+                </p>
+            </subsection>
 
         </section>
 
