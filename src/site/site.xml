@@ -63,6 +63,7 @@
       <item name="Appendix B1: Configuration Entries for 1.0.2 or earlier" href="configentries_102.html" />
       <item name="Appendix C: Example Configurations" href="exampleconfig.html" />
       <item name="Appendix C1: Example Configurations 1.0.2 or earlier" href="exampleconfig_102.html" />
+      <item name="Issue Tracking" href="issuetracking.html"></item>
     </menu>
 
     <menu ref="modules"/>
