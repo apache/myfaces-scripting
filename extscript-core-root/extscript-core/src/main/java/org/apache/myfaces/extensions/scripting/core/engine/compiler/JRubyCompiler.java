@@ -32,8 +32,8 @@ import javax.script.ScriptException;
 import java.io.File;
 import java.util.List;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINETYPE_JSF_RUBY;
-import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerConst.RUBY_WILDARD;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINETYPE_JSF_JRUBY;
+import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerConst.JRUBY_WILDARD;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -49,7 +49,7 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
     private static final String ENGINE_JRUBY = "jruby";
 
     @Override
-    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader) throws CompilationException
+    public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader)
     {
         targetPath.mkdirs();
         String sources = getSourceFiles();
@@ -98,7 +98,7 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
         WeavingContext context = WeavingContext.getInstance();
         Configuration configuration = context.getConfiguration();
         List<File> sourceFiles = FileUtils.fetchSourceFiles(configuration.getWhitelistedSourceDirs
-                (ENGINETYPE_JSF_RUBY), RUBY_WILDARD);
+                (ENGINETYPE_JSF_JRUBY), JRUBY_WILDARD);
         StringBuilder sources = new StringBuilder(sourceFiles.size() * 30);
         for (File sourceFile : sourceFiles)
         {

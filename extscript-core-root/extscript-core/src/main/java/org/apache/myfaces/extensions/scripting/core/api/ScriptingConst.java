@@ -39,6 +39,8 @@ public class ScriptingConst
     public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_SCALA_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.scala" +
             ".LOADER_PATHS";
+    public static final String INIT_PARAM_CUSTOM_JRUBY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.jruby.LOADER_PATHS";
+
     //TODO add this
 
 
@@ -60,7 +62,7 @@ public class ScriptingConst
     public static final int ENGINE_TYPE_JSF_GROOVY = 0;
     public static final int ENGINE_TYPE_JSF_JAVA = 1;
     public static final int ENGINE_TYPE_JSF_SCALA = 2;
-    public static final int ENGINETYPE_JSF_RUBY = 3;
+    public static final int ENGINETYPE_JSF_JRUBY = 3;
     public static final int ARTIFACT_TYPE_UNKNOWN = -1;
     public static final int ARTIFACT_TYPE_MANAGEDBEAN = 1;
     public static final int ARTIFACT_TYPE_MANAGEDPROPERTY = 2;
@@ -103,7 +105,7 @@ public class ScriptingConst
     public static final String GROOVY_FILE_ENDING = ".groovy";
     public static final String JAVA_FILE_ENDING = ".java";
     public static final String SCALA_FILE_ENDING = ".scala";
-    public static final String RUBY_FILE_ENDING = ".rb";
+    public static final String JRUBY_FILE_ENDING = ".rb";
 
     public static final String JSR199_COMPILER = "org.apache.myfaces.extensions.scripting.loaders.java.jsr199.JSR199Compiler";
     public static final String JAVA5_COMPILER = "org.apache.myfaces.extensions.scripting.loaders.java.compiler.JavacCompiler";
@@ -111,6 +113,7 @@ public class ScriptingConst
     public static final String SCOPE_APPLICATION = "application";
     public static final String SCOPE_REQUEST = "request";
     public static final String GROOVY_SOURCE_ROOT = "/WEB-INF/groovy/";
+    public static final String JRUBY_SOURCE_ROOT = "/WEB-INF/ruby/";
     public static final String SCALA_SOURCE_ROOT = "/WEB-INF/scala/";
 
     public static final String JAVA_SOURCE_ROOT = "/WEB-INF/java/";

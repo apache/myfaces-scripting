@@ -33,11 +33,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINETYPE_JSF_RUBY;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINETYPE_JSF_JRUBY;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JAVA;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.GROOVY_FILE_ENDING;
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.RUBY_FILE_ENDING;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.JRUBY_FILE_ENDING;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_INITIAL_COMPILE;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_RESOURCE_PATH;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_SCRIPTING_ADDITIONAL_CLASSPATH;
@@ -155,8 +155,8 @@ public class Configuration
                 return JAVA_FILE_ENDING;
             case ENGINE_TYPE_JSF_GROOVY:
                 return GROOVY_FILE_ENDING;
-            case ENGINETYPE_JSF_RUBY:
-                return RUBY_FILE_ENDING;
+            case ENGINETYPE_JSF_JRUBY:
+                return JRUBY_FILE_ENDING;
             default:
                 throw new UnsupportedOperationException("Engine type unknown");
         }
