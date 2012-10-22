@@ -20,14 +20,13 @@
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import org.apache.commons.io.FilenameUtils;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
+import org.junit.Test;
 
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;

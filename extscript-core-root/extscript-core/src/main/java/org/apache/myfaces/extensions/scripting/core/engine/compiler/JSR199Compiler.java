@@ -28,7 +28,6 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult
 
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
-import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;

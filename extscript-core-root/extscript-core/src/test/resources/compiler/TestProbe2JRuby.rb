@@ -1,4 +1,4 @@
 java_package 'compiler'
-class TestProbe2
+class TestProbe2JRuby
 
 end

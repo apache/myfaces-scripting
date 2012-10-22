@@ -16,30 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
-import javax.tools.ForwardingJavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import java.io.File;
+package org.apache.myfaces.extensions.scripting.core.engine;
 
 /**
- * File manager, enforced by the Java Compiler API
- * which handles the source files
- *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ContainerFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.engine.api.ClassScanner;
 
-    String _classPath = null;
+/**
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 
-    public ContainerFileManager(StandardJavaFileManager standardJavaFileManager) {
-        super(standardJavaFileManager);
+public class JRubyDependencyScanner extends BaseScanner implements ClassScanner
+{
+    public JRubyDependencyScanner() {
     }
 
-    public Iterable<? extends JavaFileObject> getJavaFileObjects(File... files) {
-        return fileManager.getJavaFileObjects(files);
+    public int getEngineType() {
+        return ScriptingConst.ENGINE_TYPE_JSF_JRUBY;
+    }
+    public String getFileEnding() {
+        return ScriptingConst.JRUBY_FILE_ENDING;
     }
 }

@@ -19,10 +19,23 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.myfaces.extensions.scripting.core.api.Configuration;
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
+import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -33,9 +46,11 @@ public class JRubyCompilerTest
 {
     private static final String ROOT_DIR =
             "/Users/werpu2/development/workspace/extscript_trunk/extscript-core-root/extscript-core";
-    private static final String PROBE1 = "src/test/resources/compiler/TestProbe1.rb";
-    private static final String PROBE2 = "src/test/resources/compiler/TestProbe2.rb";
-    private static final String RESOURCES = "src/test/resources/";
+    private static final String PROBE1 = "../../src/test/resources/compiler/TestProbe1JRuby.rb";
+    private static final String PROBE2 = "../../src/test/resources/compiler/TestProbe2JRuby.rb";
+    private static final String RESOURCES = "../../src/test/resources/";
+
+    JRubyCompiler compiler = new JRubyCompiler();
 
     File probe1;
     File probe2;
@@ -47,13 +62,76 @@ public class JRubyCompilerTest
     private static final String CLASSFILE1_IS_COMPILED1 = "Classfile1 is compiled into the target";
     private static final String CLASSFILE2_IS_COMPILED = "Classfile2 is compiled into the target";
 
-    @Test
-    public void basicCompilerTest()
+    public JRubyCompilerTest()
     {
-        File tempDir = FileUtils.getTempDir();
-        tempDir.mkdirs();
-        JRubyCompiler compiler = new JRubyCompiler();
-        compiler.compile(new File(ROOT_DIR), tempDir, File.separator + PROBE1);
+        try
+        {
+            FactoryEngines.getInstance().init();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        //we use a location relative to our current root one to reach the sources
+        //because the test also has to be performed outside of maven
+        //and the ide cannot cope with resource paths for now
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+        String currentPath = null;
+
+        try
+        {
+            currentPath = URLDecoder.decode(loader.getResource("./").getPath(),
+                    Charset.defaultCharset().toString());
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            fail(e.getMessage());
+        }
+        String sourcePath1 = currentPath + PROBE1;
+        String sourcePath2 = currentPath + PROBE2;
+        String rootPath = currentPath + RESOURCES;
+
+        sourcePath1 = FilenameUtils.normalize(sourcePath1);
+        sourcePath2 = FilenameUtils.normalize(sourcePath2);
+        rootPath = FilenameUtils.normalize(rootPath);
+
+        probe1 = new File(sourcePath1);
+        probe2 = new File(sourcePath2);
+        root = new File(rootPath);
+
+        WeavingContext.getInstance().setConfiguration(new Configuration());
+        WeavingContext.getInstance().getConfiguration().addSourceDir(ScriptingConst.ENGINE_TYPE_JSF_JRUBY, root.getAbsolutePath());
+
     }
+
+    @Test
+    public void testFullCompile()
+    {
+        File targetDir = null;
+
+        File target = WeavingContext.getInstance().getConfiguration().getCompileTarget();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        target.mkdirs();
+        target.deleteOnExit();
+
+        CompilationResult result = compiler.compile(root, target, loader);
+
+        assertTrue(RESULT_HAS_NO_ERRORS, !result.hasErrors());
+
+        assertTrue(TARGET_DIR_EXISTS, target != null);
+        File classFile1 = new File(target.getAbsolutePath() + "/compiler/TestProbe1JRuby.class");
+        File classFile2 = new File(target.getAbsolutePath() + "/compiler/TestProbe2JRuby.class");
+
+        assertTrue(CLASSFILE1_IS_COMPILED1, classFile1.exists());
+        assertTrue(CLASSFILE2_IS_COMPILED, classFile2.exists());
+        classFile1.delete();
+        classFile2.delete();
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().delete();
+        WeavingContext.getInstance().getConfiguration().getCompileTarget().mkdirs();
+
+
+    }
+
 
 }

@@ -19,10 +19,10 @@
 
 package org.apache.myfaces.extensions.scripting.core.utilstest;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.support.PathUtils;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.List;

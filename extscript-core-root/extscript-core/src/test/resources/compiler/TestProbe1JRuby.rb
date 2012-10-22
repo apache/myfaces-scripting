@@ -1,7 +1,10 @@
+java_package 'compiler'
+java_import 'javax.faces.bean.ManagedBean'
 # a small ruby testing class to test for a valid compilation
 # from the compiler
 # @author Werner Punz
-class TestProbe1
+add_class_annotation '@ManagedBean'
+class TestProbe1JRuby
   java_signature 'void helloWorld()'
   def helloWorld
       puts "Hello from Ruby"

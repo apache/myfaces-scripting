@@ -49,6 +49,7 @@ public class FactoryEngines
         ScriptingEngine javaEngine = new EngineJava();
         ScriptingEngine groovyEngine = null;
         ScriptingEngine scalaEngine = null;
+        ScriptingEngine jrubyEngine = null;
         try
         {
             ClassUtils.getContextClassLoader().loadClass("groovy.lang.GroovyObject");
@@ -67,6 +68,15 @@ public class FactoryEngines
         catch (Exception ex)
         {
         }
+        try
+        {
+            ClassUtils.getContextClassLoader().loadClass("org.jruby.RubyObject");
+            jrubyEngine = (ScriptingEngine) ReflectUtil.instantiate("org.apache.myfaces.extensions.scripting.core" +
+                    ".engine.EngineJRuby");
+        }
+        catch (Exception ex)
+        {
+        }
 
         if (_engines.isEmpty())
         {
@@ -77,18 +87,20 @@ public class FactoryEngines
                 _engines.put(groovyEngine.getEngineType(), groovyEngine);
             if (scalaEngine != null)
                 _engines.put(scalaEngine.getEngineType(), scalaEngine);
+            if (jrubyEngine != null) {
+                _engines.put(jrubyEngine.getEngineType(), jrubyEngine);
+            }
 
             _engines.put(javaEngine.getEngineType(), javaEngine);
         }
     }
 
-
-
     public Collection<ScriptingEngine> getEngines()
     {
         List<ScriptingEngine> engineList = new ArrayList<ScriptingEngine>();
-        for(Map.Entry<Integer, ScriptingEngine> entry: _engines.entrySet()) {
-           engineList.add(entry.getValue());
+        for (Map.Entry<Integer, ScriptingEngine> entry : _engines.entrySet())
+        {
+            engineList.add(entry.getValue());
         }
 
         return engineList;

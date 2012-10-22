@@ -30,6 +30,12 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>helloJRubyBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.jrubyloader.bean.HelloJRubyBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
 
     <managed-bean>
         <managed-bean-name>testbean</managed-bean-name>

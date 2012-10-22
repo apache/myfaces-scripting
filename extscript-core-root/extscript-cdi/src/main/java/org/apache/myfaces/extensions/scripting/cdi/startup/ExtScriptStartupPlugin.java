@@ -19,11 +19,9 @@
 
 package org.apache.myfaces.extensions.scripting.cdi.startup;
 
-import javax.servlet.ServletContextEvent;
-
-import org.apache.myfaces.extensions.scripting.cdi.core.ReloadingListener;
 import org.apache.myfaces.extensions.scripting.core.api.Plugin;
-import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+
+import javax.servlet.ServletContextEvent;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

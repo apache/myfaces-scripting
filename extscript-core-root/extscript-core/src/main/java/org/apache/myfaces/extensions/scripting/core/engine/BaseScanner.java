@@ -45,7 +45,7 @@ public abstract class BaseScanner
 {
     List<String> _scanPaths = new LinkedList<String>();
     DependencyScanner _depencyScanner = new StandardDependencyScanner();
-    Logger _log = Logger.getLogger(JavaDependencyScanner.class.getName());
+    Logger _log = Logger.getLogger(BaseScanner.class.getName());
 
     public abstract int getEngineType();
 

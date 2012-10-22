@@ -19,11 +19,10 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine;
 
+import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.junit.Before;
 import org.junit.Test;
-import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 /**
  * @author Werner Punz (latest modification by $Author$)

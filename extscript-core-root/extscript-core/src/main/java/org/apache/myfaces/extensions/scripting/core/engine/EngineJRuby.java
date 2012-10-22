@@ -26,7 +26,6 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
-import org.apache.myfaces.extensions.scripting.core.engine.compiler.GroovyCompiler;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.JRubyCompiler;
 import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
 import org.jruby.RubyObject;
@@ -38,8 +37,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINETYPE_JSF_JRUBY;
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_GROOVY;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JRUBY;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.INIT_PARAM_CUSTOM_JRUBY_LOADER_PATHS;
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.JRUBY_SOURCE_ROOT;
 
@@ -61,7 +59,7 @@ public class EngineJRuby extends BaseEngine implements ScriptingEngine
     @Override
     public int getEngineType()
     {
-        return ENGINE_TYPE_JSF_GROOVY;
+        return ENGINE_TYPE_JSF_JRUBY;
     }
 
     public String getEngineTypeAsStr()
@@ -115,7 +113,7 @@ public class EngineJRuby extends BaseEngine implements ScriptingEngine
         Configuration configuration = context.getConfiguration();
         JRubyCompiler compiler = new JRubyCompiler();
         File targetDir = configuration.getCompileTarget();
-        Collection<String> sourceDirs = configuration.getSourceDirs(ENGINETYPE_JSF_JRUBY);
+        Collection<String> sourceDirs = configuration.getSourceDirs(ENGINE_TYPE_JSF_JRUBY);
         CompilationResult res = null;
         for (String sourceRoot : sourceDirs)
         {
@@ -126,10 +124,10 @@ public class EngineJRuby extends BaseEngine implements ScriptingEngine
 
     public void scanDependencies()
     {
-        log.info("[EXT-SCRIPTING] starting dependency scan");
-        //GroovyDependencyScanner scanner = new GroovyDependencyScanner();
-        //scanner.scanPaths();
-        log.info("[EXT-SCRIPTING] ending dependency scan");
+        log.info("[EXT-SCRIPTING] starting jruby dependency scan");
+        JRubyDependencyScanner scanner = new JRubyDependencyScanner();
+        scanner.scanPaths();
+        log.info("[EXT-SCRIPTING] ending jruby dependency scan");
     }
 
 }

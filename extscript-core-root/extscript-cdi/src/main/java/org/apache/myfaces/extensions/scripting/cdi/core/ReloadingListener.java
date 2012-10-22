@@ -25,7 +25,6 @@ import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEve
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEventListener;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.RefreshBeginEvent;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.TaintedEvent;
-import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

@@ -26,8 +26,6 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
-import org.apache.myfaces.extensions.scripting.core.engine.compiler.ScalaCompiler;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;

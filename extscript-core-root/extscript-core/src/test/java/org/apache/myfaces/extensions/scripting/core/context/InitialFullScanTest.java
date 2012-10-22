@@ -19,21 +19,18 @@
 
 package org.apache.myfaces.extensions.scripting.core.context;
 
-import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -60,6 +57,7 @@ public class InitialFullScanTest
                 ScriptingEngine javaEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
                 ScriptingEngine groovyEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
                 ScriptingEngine scalaEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_SCALA);
+                ScriptingEngine jrubyEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_JRUBY);
 
                 ClassLoader loader = this.getClass().getClassLoader();
                 String canonicalPackageName = this.getClass().getPackage().getName().replaceAll("\\.", FileUtils.getFileSeparatorForRegex());                Enumeration<URL> enumeration = loader.getResources(canonicalPackageName);
@@ -85,6 +83,8 @@ public class InitialFullScanTest
                 javaEngine.getSourcePaths().clear();;
                 groovyEngine.getSourcePaths().clear();
                 scalaEngine.getSourcePaths().clear();
+                jrubyEngine.getSourcePaths().clear();
+
             }
             catch (IOException e)
             {

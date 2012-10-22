@@ -19,8 +19,8 @@
 
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
-import org.junit.Test;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 

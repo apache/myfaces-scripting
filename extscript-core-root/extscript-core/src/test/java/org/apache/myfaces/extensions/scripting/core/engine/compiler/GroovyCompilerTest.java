@@ -20,12 +20,12 @@
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import org.apache.commons.io.FilenameUtils;
-import org.junit.Test;
 import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.engine.FactoryEngines;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;

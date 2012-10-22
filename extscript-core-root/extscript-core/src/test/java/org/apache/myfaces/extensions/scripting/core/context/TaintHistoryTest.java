@@ -22,14 +22,13 @@ package org.apache.myfaces.extensions.scripting.core.context;
 import org.apache.myfaces.extensions.scripting.core.api.ScriptingConst;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
+import org.apache.myfaces.extensions.scripting.core.support.ContextUtils;
 import org.apache.myfaces.extensions.scripting.jsf.components.TaintHistory;
 import org.apache.myfaces.extensions.scripting.jsf.components.TaintHistoryRenderer;
-import org.apache.myfaces.extensions.scripting.core.support.ContextUtils;
 import org.apache.myfaces.renderkit.html.HtmlFormRenderer;
 import org.apache.myfaces.test.base.AbstractJsfTestCase;
 import org.apache.myfaces.test.mock.MockRenderKitFactory;
 import org.apache.myfaces.test.mock.MockResponseWriter;
-import org.junit.Ignore;
 
 import javax.faces.component.html.HtmlForm;
 import javax.servlet.ServletContext;

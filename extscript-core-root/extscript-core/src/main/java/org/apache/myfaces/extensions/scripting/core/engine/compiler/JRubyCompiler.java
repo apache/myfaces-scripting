@@ -23,16 +23,17 @@ import org.apache.myfaces.extensions.scripting.core.api.Configuration;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils;
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationException;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationMessage;
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINETYPE_JSF_JRUBY;
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JRUBY;
 import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerConst.JRUBY_WILDARD;
 
 /**
@@ -52,14 +53,15 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
     public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader)
     {
         targetPath.mkdirs();
-        String sources = getSourceFiles();
+        List<String> sources = getSourceFiles();
         return compile(sourcePath, targetPath, sources);
     }
 
-    public CompilationResult compile(File sourcePath, File targetPath, String sources)
+    public CompilationResult compile(File sourcePath, File targetPath, List<String> sources)
     {
         targetPath.mkdirs();
-        if(targetPath.isDirectory() && targetPath.exists()){
+        if (targetPath.isDirectory() && targetPath.exists())
+        {
             System.out.println("targetpath is there");
         }
         String classPath = ClassLoaderUtils.buildClasspath(ClassLoaderUtils.getDefaultClassLoader());
@@ -67,23 +69,34 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
         StringBuilder commandString = new StringBuilder();
         commandString.append("require 'jruby/jrubyc'\n");
         commandString.append("options = Array.new \n");
-        commandString.append("options << '-d" + sourcePath.getAbsolutePath() + "'\n");
+        commandString.append("options << '-d" + sourcePath.getAbsolutePath().replaceAll("\\s", "\\\\ ") + "'\n");
         commandString.append("options<< '--javac' \n");
-        commandString.append("options<< '-t" + targetPath.getAbsolutePath() + "'\n");
-        commandString.append("options<< '-c" + classPath + " '\n");
-        commandString.append("options<< '" + sources + " '\n");
+        commandString.append("options<< '-t" + targetPath.getAbsolutePath().replaceAll("\\s", "\\\\ ") + "'\n");
+        commandString.append("options<< '-c" + classPath.replaceAll("\\s", "\\\\ ") + "'\n");
+        for (String singleSource : sources)
+        {
+            commandString.append("options<< '" + singleSource.replaceAll("\\s", "\\\\ ") + "'\n");
+        }
+
+        //commandString.append("options<< '" + sources + "'\n");
         commandString.append("$status = JRuby::Compiler::compile_argv(options) \n");
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName(ENGINE_JRUBY);
         try
         {
             engine.eval(commandString.toString());
-            String status = (String) engine.get("status");
-            if(status.equals("0")) {
-                return null;
+            Long status = (Long) engine.get("status");
+            if (status.equals(0L))
+            {
+                CompilationResult result = new CompilationResult("");
+                return result;
             }
-            //TODO parse the result and return a meaningful compilationresult
-            return null;
+            else
+            {
+                CompilationResult result = new CompilationResult("");
+                result.registerError(new CompilationMessage(status, "Errors occurred in a JRuby file please consult your log for further details"));
+                return result;
+            }
         }
         catch (ScriptException e)
         {
@@ -93,19 +106,20 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
         return null;
     }
 
-    private String getSourceFiles()
+    private List<String> getSourceFiles()
     {
         WeavingContext context = WeavingContext.getInstance();
         Configuration configuration = context.getConfiguration();
         List<File> sourceFiles = FileUtils.fetchSourceFiles(configuration.getWhitelistedSourceDirs
-                (ENGINETYPE_JSF_JRUBY), JRUBY_WILDARD);
+                (ENGINE_TYPE_JSF_JRUBY), JRUBY_WILDARD);
         StringBuilder sources = new StringBuilder(sourceFiles.size() * 30);
+        List<String> sourcesStr = new ArrayList<String>(sourceFiles.size());
         for (File sourceFile : sourceFiles)
         {
-            sources.append(sourceFile.getAbsolutePath());
-            sources.append(" ");
+            sourcesStr.add(sourceFile.getAbsolutePath());
+            //sources.append(" ");
         }
-        return sources.toString();
+        return sourcesStr;
     }
 
     public static void main(String... argv)

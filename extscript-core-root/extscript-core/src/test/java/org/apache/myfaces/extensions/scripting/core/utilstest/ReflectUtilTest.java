@@ -19,13 +19,13 @@
 
 package org.apache.myfaces.extensions.scripting.core.utilstest;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.apache.myfaces.extensions.scripting.core.common.util.Cast;
 import org.apache.myfaces.extensions.scripting.core.common.util.Null;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.probes.Probe;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.lang.reflect.Method;
 import java.util.Collection;

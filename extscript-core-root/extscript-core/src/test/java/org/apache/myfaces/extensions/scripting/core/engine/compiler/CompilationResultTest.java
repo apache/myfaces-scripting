@@ -20,9 +20,9 @@
 package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationMessage;
+import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 import org.junit.Before;
 import org.junit.Test;
-import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult;
 
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -20,15 +20,12 @@
 package org.apache.myfaces.extensions.scripting.cdi.startup;
 
 import org.apache.myfaces.extensions.scripting.cdi.core.CDIThrowAwayClassloader;
-import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
-import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
-import java.io.IOException;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
