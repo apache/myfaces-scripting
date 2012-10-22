@@ -92,6 +92,11 @@
             <artifactId>groovy-all</artifactId>
             <version>${groovy.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>1.7.0.preview2</version>
+        </dependency>
     </dependencies>
 
     <build>

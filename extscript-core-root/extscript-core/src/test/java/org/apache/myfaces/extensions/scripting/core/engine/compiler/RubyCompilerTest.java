@@ -16,21 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package compiler;
+
+package org.apache.myfaces.extensions.scripting.core.engine.compiler;
 
 /**
- * a simple testprobe to check if the compiler api works
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
 
-public class TestProbe1 {
-
-    private String testAttr;
-
-    public String getTestAttr() {
-        return testAttr;
-    }
-
-    public void setTestAttr(String testAttr) {
-        this.testAttr = testAttr;
-    }
+public class RubyCompilerTest
+{
 }
