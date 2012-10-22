@@ -1,1 +1,0 @@
-putstr "hello world"
