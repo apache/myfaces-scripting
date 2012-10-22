@@ -103,6 +103,8 @@ public class ScriptingConst
     public static final String GROOVY_FILE_ENDING = ".groovy";
     public static final String JAVA_FILE_ENDING = ".java";
     public static final String SCALA_FILE_ENDING = ".scala";
+    public static final String RUBY_FILE_ENDING = ".rb";
+
     public static final String JSR199_COMPILER = "org.apache.myfaces.extensions.scripting.loaders.java.jsr199.JSR199Compiler";
     public static final String JAVA5_COMPILER = "org.apache.myfaces.extensions.scripting.loaders.java.compiler.JavacCompiler";
     public static final String SCOPE_SESSION = "session";

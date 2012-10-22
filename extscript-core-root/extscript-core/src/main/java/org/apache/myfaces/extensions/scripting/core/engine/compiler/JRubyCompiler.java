@@ -53,6 +53,15 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
     {
         targetPath.mkdirs();
         String sources = getSourceFiles();
+        return compile(sourcePath, targetPath, sources);
+    }
+
+    public CompilationResult compile(File sourcePath, File targetPath, String sources)
+    {
+        targetPath.mkdirs();
+        if(targetPath.isDirectory() && targetPath.exists()){
+            System.out.println("targetpath is there");
+        }
         String classPath = ClassLoaderUtils.buildClasspath(ClassLoaderUtils.getDefaultClassLoader());
 
         StringBuilder commandString = new StringBuilder();
@@ -60,7 +69,7 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
         commandString.append("options = Array.new \n");
         commandString.append("options << '-d" + sourcePath.getAbsolutePath() + "'\n");
         commandString.append("options<< '--javac' \n");
-        commandString.append("options<< '-t" + targetPath.getAbsolutePath() + " '\n");
+        commandString.append("options<< '-t" + targetPath.getAbsolutePath() + "'\n");
         commandString.append("options<< '-c" + classPath + " '\n");
         commandString.append("options<< '" + sources + " '\n");
         commandString.append("$status = JRuby::Compiler::compile_argv(options) \n");
@@ -69,6 +78,12 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
         try
         {
             engine.eval(commandString.toString());
+            String status = (String) engine.get("status");
+            if(status.equals("0")) {
+                return null;
+            }
+            //TODO parse the result and return a meaningful compilationresult
+            return null;
         }
         catch (ScriptException e)
         {
