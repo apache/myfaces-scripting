@@ -63,10 +63,7 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
     public CompilationResult compile(File sourcePath, File targetPath, List<String> sources)
     {
         targetPath.mkdirs();
-        if (targetPath.isDirectory() && targetPath.exists())
-        {
-            System.out.println("targetpath is there");
-        }
+
         String classPath = ClassLoaderUtils.buildClasspath(ClassLoaderUtils.getDefaultClassLoader());
         //capturing stdout technique from http://thinkingdigitally.com/archive/capturing-output-from-puts-in-ruby/
         StringBuilder commandString = new StringBuilder();
