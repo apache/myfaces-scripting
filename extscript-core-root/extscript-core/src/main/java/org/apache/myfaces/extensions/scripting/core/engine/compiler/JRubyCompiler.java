@@ -32,6 +32,7 @@ import javax.script.ScriptException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.ENGINE_TYPE_JSF_JRUBY;
 import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerConst.JRUBY_WILDARD;
@@ -48,6 +49,8 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
 {
 
     private static final String ENGINE_JRUBY = "jruby";
+
+    private static  Logger logger = Logger.getLogger(JRubyCompiler.class.getName());
 
     @Override
     public CompilationResult compile(File sourcePath, File targetPath, ClassLoader classLoader)
@@ -105,11 +108,13 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
             if (status.equals(0L))
             {
                 CompilationResult result = new CompilationResult("No Errors");
+                logger.info("No Compilation errors");
                 return result;
             } else
             {
                 CompilationResult result = new CompilationResult("Errors");
                 result.registerError(new CompilationMessage(status, compilerOutput));
+                logger.info(compilerOutput);
                 return result;
             }
         }
