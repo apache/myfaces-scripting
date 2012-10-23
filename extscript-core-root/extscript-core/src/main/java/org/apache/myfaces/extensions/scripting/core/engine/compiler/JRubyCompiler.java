@@ -40,7 +40,7 @@ import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerCo
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  *          <p/>
- *          A compiler for jruby which uses ruby and the standard JSR 233
+ *          A compiler for jruby which uses ruby and the standard JSR 223
  *          for compiling classes into java classes
  */
 
@@ -65,36 +65,51 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
             System.out.println("targetpath is there");
         }
         String classPath = ClassLoaderUtils.buildClasspath(ClassLoaderUtils.getDefaultClassLoader());
-
+        //capturing stdout technique from http://thinkingdigitally.com/archive/capturing-output-from-puts-in-ruby/
         StringBuilder commandString = new StringBuilder();
         commandString.append("require 'jruby/jrubyc'\n");
-        commandString.append("options = Array.new \n");
-        commandString.append("options << '-d" + sourcePath.getAbsolutePath().replaceAll("\\s", "\\\\ ") + "'\n");
-        commandString.append("options<< '--javac' \n");
-        commandString.append("options<< '-t" + targetPath.getAbsolutePath().replaceAll("\\s", "\\\\ ") + "'\n");
-        commandString.append("options<< '-c" + classPath.replaceAll("\\s", "\\\\ ") + "'\n");
+        commandString.append("require 'stringio' \n");
+        commandString.append("module Kernel\n");
+        commandString.append("  def capture_stdout\n");
+        commandString.append("    out = StringIO.new\n");
+        commandString.append("    $stdout = out\n");
+        commandString.append("    yield\n");
+        commandString.append("    return out\n");
+        commandString.append("  ensure\n");
+        commandString.append("    $stdout = STDOUT\n");
+        commandString.append("  end\n");
+        commandString.append("end\n");
+        commandString.append("out = capture_stdout do\n");
+        commandString.append("  options = Array.new \n");
+        commandString.append("  options << '-d" + sourcePath.getAbsolutePath().replaceAll("\\s", "\\\\ ") + "'\n");
+        commandString.append("  options<< '--javac' \n");
+        commandString.append("  options<< '-t" + targetPath.getAbsolutePath().replaceAll("\\s", "\\\\ ") + "'\n");
+        commandString.append("  options<< '-c" + classPath.replaceAll("\\s", "\\\\ ") + "'\n");
         for (String singleSource : sources)
         {
-            commandString.append("options<< '" + singleSource.replaceAll("\\s", "\\\\ ") + "'\n");
+            commandString.append("  options<< '" + singleSource.replaceAll("\\s", "\\\\ ") + "'\n");
         }
+        commandString.append("  $status = JRuby::Compiler::compile_argv(options) \n");
+        commandString.append("end\n");
+        commandString.append("$finalOut = out.string\n");
 
         //commandString.append("options<< '" + sources + "'\n");
-        commandString.append("$status = JRuby::Compiler::compile_argv(options) \n");
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName(ENGINE_JRUBY);
         try
         {
+            //See: http://stackoverflow.com/questions/4183408/redirect-stdout-to-a-string-in-java
             engine.eval(commandString.toString());
             Long status = (Long) engine.get("status");
+            String compilerOutput = (String) engine.get("finalOut");
             if (status.equals(0L))
             {
-                CompilationResult result = new CompilationResult("");
+                CompilationResult result = new CompilationResult("No Errors");
                 return result;
-            }
-            else
+            } else
             {
-                CompilationResult result = new CompilationResult("");
-                result.registerError(new CompilationMessage(status, "Errors occurred in a JRuby file please consult your log for further details"));
+                CompilationResult result = new CompilationResult("Errors");
+                result.registerError(new CompilationMessage(status, compilerOutput));
                 return result;
             }
         }
@@ -120,25 +135,6 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
             //sources.append(" ");
         }
         return sourcesStr;
-    }
-
-    public static void main(String... argv)
-    {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName(ENGINE_JRUBY);
-        try
-        {
-            engine.eval("require 'jruby/jrubyc'\n" +
-                    "$status = 'hello world' #JRuby::Compiler::compile_argv(ARGV)");
-
-            Object status = engine.get("status");
-            System.out.println(status.toString());
-        }
-        catch (ScriptException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
     }
 
 }
