@@ -21,12 +21,7 @@ package org.apache.myfaces.extensions.scripting.spring.context;
 
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEvent;
 import org.apache.myfaces.extensions.scripting.core.api.eventhandling.WeavingEventListener;
-import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.RefreshBeginEvent;
-import org.apache.myfaces.extensions.scripting.core.api.eventhandling.events.TaintedEvent;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -35,6 +30,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ReloadingListener implements WeavingEventListener
 {
+    ConfigurableWebApplicationContext appContext = null;
+
+    public ReloadingListener(ConfigurableWebApplicationContext applicationContext)
+    {
+        appContext = applicationContext;
+    }
+
     @Override
     public void onEvent(WeavingEvent evt)
     {

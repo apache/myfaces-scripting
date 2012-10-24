@@ -24,6 +24,15 @@
          version="3.0">
 
     <context-param>
+        <description>
+            Initializes the plugins for our scripting handlers
+        </description>
+        <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
+        </param-value>
+    </context-param>
+
+    <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
     </context-param>

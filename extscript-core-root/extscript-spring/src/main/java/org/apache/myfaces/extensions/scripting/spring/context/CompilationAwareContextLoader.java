@@ -23,6 +23,8 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextException;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -42,7 +44,14 @@ public class CompilationAwareContextLoader extends ContextLoader
     protected WebApplicationContext createWebApplicationContext(
             ServletContext servletContext, ApplicationContext parent) throws BeansException
     {
-        WebApplicationContext retVal = super.createWebApplicationContext(servletContext, parent);
+        ConfigurableWebApplicationContext wac = new CompilationAwareXmlWebApplicationContext();
+
+        wac.setParent(parent);
+        wac.setServletContext(servletContext);
+        wac.setConfigLocation(servletContext.getInitParameter(CONFIG_LOCATION_PARAM));
+        customizeContext(servletContext, wac);
+        wac.refresh();
+
         //we now init the scripting system
         try
         {
@@ -50,8 +59,9 @@ public class CompilationAwareContextLoader extends ContextLoader
             //after the container is kickstarted
             if (servletContext.getAttribute(RELOADING_LISTENER) == null)
             {
+                //probably already started
                 StartupServletContextPluginChainLoader.startup(servletContext);
-                servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
+                servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener(wac));
                 WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
             }
         }
@@ -59,6 +69,21 @@ public class CompilationAwareContextLoader extends ContextLoader
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        return retVal;
+
+        Class contextClass = determineContextClass(servletContext);
+        if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass))
+        {
+            throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
+                    "] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
+        }
+
+        return wac;
     }
+
+    @Override
+    public void closeWebApplicationContext(ServletContext servletContext)
+    {
+        super.closeWebApplicationContext(servletContext);
+    }
+
 }

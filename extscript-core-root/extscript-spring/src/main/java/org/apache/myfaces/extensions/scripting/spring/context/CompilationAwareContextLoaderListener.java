@@ -22,6 +22,8 @@ package org.apache.myfaces.extensions.scripting.spring.context;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 
+import javax.servlet.ServletContextEvent;
+
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -29,15 +31,40 @@ import org.springframework.web.context.ContextLoaderListener;
 
 public class CompilationAwareContextLoaderListener extends ContextLoaderListener
 {
+
+    public CompilationAwareContextLoaderListener()
+    {
+        super();
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent event)
+    {
+        super.contextInitialized(event);
+    }
+
+    @Override
+    public ContextLoader getContextLoader()
+    {
+        return super.getContextLoader();
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event)
+    {
+        super.contextDestroyed(event);
+    }
+
     /**
-        * <p>Creates the context loader to use. Note that actually the context loader
-        * starts up the web application context, this listener just delgates
-        * to it.</p>
-        *
-        * @return the context loader to use to start up the web appplication context
-        */
-       @Override
-       protected ContextLoader createContextLoader() {
-           return new CompilationAwareContextLoader();
-       }
+     * <p>Creates the context loader to use. Note that actually the context loader
+     * starts up the web application context, this listener just delgates
+     * to it.</p>
+     *
+     * @return the context loader to use to start up the web appplication context
+     */
+    @Override
+    protected ContextLoader createContextLoader()
+    {
+        return new CompilationAwareContextLoader();
+    }
 }
