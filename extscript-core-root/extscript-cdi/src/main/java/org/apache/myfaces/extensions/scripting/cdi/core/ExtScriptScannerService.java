@@ -53,7 +53,9 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
     {
 
     }
-
+    //the service starts faster than our faces-servlet hence we need to initialize
+    //our system here, a second init is then done in the faces servlet
+    //but given that the system runs is ignored.
     public void init(Object context)
     {
         super.init(context);
@@ -65,7 +67,8 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
     {
         try
         {
-
+            //the reloading listener also is the marker to avoid double initialisation
+            //after the container is kickstarted
             if (servletContext.getAttribute(RELOADING_LISTENER) == null)
             {
                 StartupServletContextPluginChainLoader.startup(servletContext);
