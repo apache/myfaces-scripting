@@ -24,8 +24,27 @@
     <packaging>jar</packaging>
     <name>MyFaces Extension Scripting Core</name>
 
+    <parent>
+        <groupId>org.apache.myfaces.extensions.scripting</groupId>
+        <artifactId>extscript-core-root</artifactId>
+        <version>1.0.5-SNAPSHOT</version>
+    </parent>
+
     <description>
         Extension Scripting Spring Submodule
     </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.scripting</groupId>
+            <artifactId>extscript-core</artifactId>
+            <version>1.0.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>2.5.6</version>
+        </dependency>
+    </dependencies>
 
 </project>
