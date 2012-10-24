@@ -5,11 +5,11 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="person" class="at.irian.Person" scope="prototype">
+    <bean id="person" class="org.apache.myfaces.extension.scripting.spring.example.Person" scope="prototype">
         <property name="name" value="Lukas Huemer" />
     </bean>
 
-    <bean id="greeter" class="at.irian.Greeter">
+    <bean id="greeter" class="org.apache.myfaces.extension.scripting.spring.example.Greeter">
         <property name="person" ref="person" />
     </bean>
 

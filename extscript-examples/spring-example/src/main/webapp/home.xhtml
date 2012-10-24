@@ -1,4 +1,5 @@
-<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,15 +18,21 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-              version="2.0">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+        >
+<h:head>
+    <title>Hello World</title>
+</h:head>
+<h:body>
+     <h1>
+      <h:outputText value="From JSF: The greeter says '#{greeter.greeting}' to '#{person.name}'."/> <br/>
+      <h:outputText value="From JSF: The greeter says '#{greeter.anotherGreeting}'."/> <br/>
+     </h1>
 
-    <application>
-        <variable-resolver>
-            org.springframework.web.jsf.DelegatingVariableResolver
-        </variable-resolver>
-    </application>
-
-</faces-config>
+     <h:form id="helloForm">
+        <h:commandButton action="reload" value="Reload" />
+     </h:form>
+ </h:body>
+</html>
