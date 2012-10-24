@@ -21,6 +21,7 @@ package org.apache.myfaces.extensions.scripting.spring.bean;
 
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
+import org.apache.myfaces.extensions.scripting.spring.bean.support.CompilationAwareInstantiationStrategy;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.CannotLoadBeanClassException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -40,10 +41,12 @@ public class CompilationAwareRefreshableBeanFactory extends DefaultListableBeanF
     public CompilationAwareRefreshableBeanFactory(BeanFactory parentBeanFactory)
     {
         super(parentBeanFactory);
+        setInstantiationStrategy(new CompilationAwareInstantiationStrategy());
     }
 
     public CompilationAwareRefreshableBeanFactory()
     {
+        setInstantiationStrategy(new CompilationAwareInstantiationStrategy());
     }
 
     /**
@@ -102,7 +105,7 @@ public class CompilationAwareRefreshableBeanFactory extends DefaultListableBeanF
             }
 
             Class retVal = beanDefinition.resolveBeanClass(getBeanClassLoader());
-            try
+           /* try
             {
                 //spring caches the constructor, we have to set it anew
                 //this imposes a limitation to () constructors but
@@ -113,7 +116,7 @@ public class CompilationAwareRefreshableBeanFactory extends DefaultListableBeanF
             catch (NoSuchMethodException e)
             {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
+            }*/
 
             return retVal;
         }
@@ -128,4 +131,7 @@ public class CompilationAwareRefreshableBeanFactory extends DefaultListableBeanF
                     beanDefinition.getResourceDescription(), beanName, beanDefinition.getBeanClassName(), err);
         }
     }
+
+
+
 }
