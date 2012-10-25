@@ -30,15 +30,17 @@ import org.springframework.web.context.ConfigurableWebApplicationContext;
 
 public class ReloadingListener implements WeavingEventListener
 {
-    ConfigurableWebApplicationContext appContext = null;
 
-    public ReloadingListener(ConfigurableWebApplicationContext applicationContext)
+    public ReloadingListener()
     {
-        appContext = applicationContext;
     }
 
     @Override
     public void onEvent(WeavingEvent evt)
     {
+        //TODO add a listener for tainted classes
+        //and once a tainting happens add the classes
+        //to our SpringWeavingContext so that it can be identified
+        //later to avoid unecessary refreshes
     }
 }

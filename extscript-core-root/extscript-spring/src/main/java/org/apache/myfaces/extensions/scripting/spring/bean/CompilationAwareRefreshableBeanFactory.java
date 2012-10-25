@@ -124,9 +124,8 @@ public class CompilationAwareRefreshableBeanFactory extends DefaultListableBeanF
 
     private boolean requiresRefresh(Object bean, BeanDefinition beanDefinition)
     {
-        //TODO add the refreshable classes from the event handler there
         Class clazz = ProxyAopUtils.resolveTargetClass(bean);
-        return WeavingContext.getInstance().isDynamic(clazz);
+        return WeavingContext.getInstance().isTainted(clazz.getName());
     }
 
     @Override
@@ -234,6 +233,7 @@ public class CompilationAwareRefreshableBeanFactory extends DefaultListableBeanF
                 {
                     try
                     {
+                        //TODO outdated check here
                         Object value = invokeMethod(sourceDescriptor.getReadMethod(), source, new Object[0]);
                         if (value instanceof ThrowAwayClassloader)
                         {
