@@ -22,7 +22,7 @@
     <artifactId>extscript-spring</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>MyFaces Extension Scripting Core</name>
+    <name>MyFaces Extension Scripting Core Spring</name>
 
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>

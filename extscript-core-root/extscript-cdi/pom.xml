@@ -22,7 +22,7 @@
     <artifactId>extscript-cdi</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>MyFaces Extension Scripting Core</name>
+    <name>MyFaces Extension Scripting Core for Apache OWB</name>
 
     <description>
         Core of the MyFaces extensions.scripting
