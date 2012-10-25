@@ -19,10 +19,12 @@
 
 package org.apache.myfaces.extensions.scripting.spring.context;
 
+import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 
 import javax.servlet.ServletContextEvent;
+import java.io.IOException;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -40,6 +42,22 @@ public class CompilationAwareContextLoaderListener extends ContextLoaderListener
     @Override
     public void contextInitialized(ServletContextEvent event)
     {
+        try
+        {
+            //the reloading listener also is the marker to avoid double initialisation
+            //after the container is kickstarted
+            if (event.getServletContext().getAttribute("StartupInitialized") == null)
+            {
+                //probably already started
+                StartupServletContextPluginChainLoader.startup(event.getServletContext());
+                event.getServletContext().setAttribute("StartupInitialized", Boolean.TRUE);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         super.contextInitialized(event);
     }
 

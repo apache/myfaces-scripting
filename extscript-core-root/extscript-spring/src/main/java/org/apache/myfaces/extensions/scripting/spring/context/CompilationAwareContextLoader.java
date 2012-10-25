@@ -53,21 +53,7 @@ public class CompilationAwareContextLoader extends ContextLoader
         wac.refresh();
 
         //we now init the scripting system
-        try
-        {
-            //the reloading listener also is the marker to avoid double initialisation
-            //after the container is kickstarted
-            if (servletContext.getAttribute(INITIALIZED) == null)
-            {
-                //probably already started
-                StartupServletContextPluginChainLoader.startup(servletContext);
-                servletContext.setAttribute(INITIALIZED, Boolean.TRUE);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+
 
         Class contextClass = determineContextClass(servletContext);
         if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass))

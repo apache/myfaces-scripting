@@ -237,9 +237,11 @@ public abstract class BaseEngine
         if (pathSeparatedList.equals(defaultValue))
         {
             URL resource = ClassUtils.getContextClassLoader().getResource("./");
+            //in war deployments a problem can occur if not all paths are set
+            String path = (resource == null)? "bogusPath" : resource.getPath();
             try
             {
-                pathSeparatedList = FilenameUtils.normalize(URLDecoder.decode(resource.getPath(),
+                pathSeparatedList = FilenameUtils.normalize(URLDecoder.decode(path,
                         Charset.defaultCharset().toString())
                         + "../.." + defaultValue);
             }
