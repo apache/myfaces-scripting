@@ -39,7 +39,7 @@ public class ScriptingConst
     public static final String INIT_PARAM_CUSTOM_GROOVY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS";
     public static final String INIT_PARAM_CUSTOM_SCALA_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.scala" +
             ".LOADER_PATHS";
-    public static final String INIT_PARAM_CUSTOM_JRUBY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.jruby.LOADER_PATHS";
+    public static final String INIT_PARAM_CUSTOM_JRUBY_LOADER_PATHS = "org.apache.myfaces.extensions.scripting.ruby.LOADER_PATHS";
 
     //TODO add this
 

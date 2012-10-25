@@ -71,7 +71,16 @@
             /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/scala
         </param-value>
     </context-param>
-    
+
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the source
+        directories of the deployment dir.
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.ruby.LOADER_PATHS</param-name>
+        <param-value>
+            /whatever/extscript-examples/myfaces20-example/src/main/webapp/WEB-INF/ruby
+        </param-value>
+    </context-param>
 
     <context-param>
         <description>resource paths for our custom JSF2 resource resolver</description>
