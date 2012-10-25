@@ -27,6 +27,8 @@ import org.springframework.core.Conventions;
  * whether a bean definition has to be refreshed or not. Note that this attribute, however, is
  * only capable of determining whether a bean definition has to be refreshed, sometimes you'll
  * actually have to refresh bean instances as well.</p>
+ *
+ * @author Bernhard Huemer
  */
 public class RefreshableBeanAttribute
 {

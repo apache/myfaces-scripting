@@ -46,6 +46,7 @@ import java.lang.reflect.Method;
  * both the constructor / factory method to use and the according resolved arguments. However,
  * this will most probably cause problems.
  * </p>
+ * @author Bernhard Huemer (latest modification by $Author$)
  */
 public class CompilationAwareInstantiationStrategy extends CglibSubclassingInstantiationStrategy
 {

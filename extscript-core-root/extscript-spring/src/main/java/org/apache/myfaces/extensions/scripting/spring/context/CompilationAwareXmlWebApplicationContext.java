@@ -25,6 +25,7 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
+ * @author Bernhard Huemer
  * @version $Revision$ $Date$
  */
 

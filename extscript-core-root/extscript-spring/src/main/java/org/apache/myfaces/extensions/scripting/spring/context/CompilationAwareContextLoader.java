@@ -38,7 +38,7 @@ import java.io.IOException;
 
 public class CompilationAwareContextLoader extends ContextLoader
 {
-    private static final String RELOADING_LISTENER = "ReloadingListener";
+    private static final String INITIALIZED = "CompilationAwareContextLoaderInit";
 
     @Override
     protected WebApplicationContext createWebApplicationContext(
@@ -57,12 +57,11 @@ public class CompilationAwareContextLoader extends ContextLoader
         {
             //the reloading listener also is the marker to avoid double initialisation
             //after the container is kickstarted
-            if (servletContext.getAttribute(RELOADING_LISTENER) == null)
+            if (servletContext.getAttribute(INITIALIZED) == null)
             {
                 //probably already started
                 StartupServletContextPluginChainLoader.startup(servletContext);
-                servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
-                WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
+                servletContext.setAttribute(INITIALIZED, Boolean.TRUE);
             }
         }
         catch (IOException e)

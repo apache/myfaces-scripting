@@ -20,7 +20,8 @@
 package org.apache.myfaces.extension.scripting.spring.example;
 
 /**
- *
+ * @author Bernhard Huemer
+ * @author Werner Punz
  */
 public class Greeter
 {

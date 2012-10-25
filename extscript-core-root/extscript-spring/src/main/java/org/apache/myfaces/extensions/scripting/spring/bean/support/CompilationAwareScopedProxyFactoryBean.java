@@ -37,6 +37,7 @@ import java.lang.reflect.Modifier;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
+ * @author Bernhard Huemer
  * @version $Revision$ $Date$
  */
 
