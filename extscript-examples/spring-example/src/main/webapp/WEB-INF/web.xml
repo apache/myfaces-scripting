@@ -30,7 +30,7 @@
         <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
         </param-value>
     </context-param>
-
+   <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -49,7 +49,7 @@
             <param-value>
                 /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/spring-example/src/main/webapp/WEB-INF/ruby            </param-value>
         </context-param>
-
+    -->
     <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
@@ -114,11 +114,11 @@
     </context-param>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
-    <!--
+  
     <listener>
         <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
     </listener>
-    -->
+    
     <listener>
         <!--
         <listener-class>
