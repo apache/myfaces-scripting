@@ -18,6 +18,11 @@
 =end
 java_package 'org.apache.myfaces.jrubyloader.bean'
 
+java_import 'javax.faces.bean.ManagedBean'
+java_import 'javax.faces.bean.RequestScoped'
+
+java_annotation 'ManagedBean'
+java_annotation 'RequestScoped'
 class HelloJRubyBean
   java_signature 'String getHelloWorld()'
    def getHelloWorld
