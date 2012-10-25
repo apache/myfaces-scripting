@@ -31,4 +31,8 @@
         <property name="person" ref="person" />
     </bean>
 
+    <bean id="rubyBean" class="org.apache.myfaces.jrubyloader.bean.HelloJRubyBean">
+
+    </bean>
+
 </beans>
