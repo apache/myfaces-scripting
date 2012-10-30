@@ -54,6 +54,7 @@
         <module>extscript-core-root</module>
         <module>extscript-bundles</module>
         <module>extscript-examples</module>
+        <module>extscript-doccompiler</module>
     </modules>
 
     <scm>
