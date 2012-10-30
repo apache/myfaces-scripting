@@ -69,7 +69,6 @@ public class XSLTDocCompiler
 
     public static void main(String... argv)
     {
-
         String[] fileEndings = {"xml"};
 
         Iterator fileIter = FileUtils.iterateFiles(new File(FilenameUtils.normalize(currentPath + File.separator + docRootPath)), fileEndings, true);
@@ -81,18 +80,37 @@ public class XSLTDocCompiler
 
     }
 
+    //code blocks must be at least 4 chars into the
+    static int handleCode(StringBuilder target, int pos, String[] lines)
+    {
+        pos++;
+        while (!lines[pos].contains("</code>"))
+        {
+            //code blocks must be at least 4 chars into the current line
+            target.append("    ");
+            target.append(lines[pos]);
+            target.append("\n");
+            pos++;
+        }
+        return pos;
+    }
+
     static String formatter(String in)
     {
         StringBuilder target = new StringBuilder();
         String[] lines = in.split("\n+");
-        for (String line : lines)
+
+        for (int cnt = 0; cnt < lines.length; cnt++)
         {
+            String line = lines[cnt];
             //no inline xml/html formatting
-            if (line.matches("\\s+[^<#]+"))
+            if (line.contains("<code>"))
+            {
+                cnt = handleCode(target, cnt, lines);
+            } else if (line.matches("\\s+[^#]+"))
             {
                 line = line.replaceAll("\\s+", " ");
-            }
-            if (line.matches("\\s+#.+"))
+            } else if (line.matches("\\s+#.+"))
             {
                 line = line.replaceAll("\\s+", "");
             }
@@ -105,7 +123,7 @@ public class XSLTDocCompiler
     private static void transformFile(File xmlFile)
     {
         //File xmlFile = new File(strXmlFile);
-        File xsltFile = new File(FilenameUtils.normalize(currentPath+File.separator+strXsltFile));
+        File xsltFile = new File(FilenameUtils.normalize(currentPath + File.separator + strXsltFile));
 
         // JAXP liest Daten über die Source-Schnittstelle
         Source xmlSource = new StreamSource(xmlFile);
@@ -122,7 +140,7 @@ public class XSLTDocCompiler
             trans.transform(xmlSource, new StreamResult(baos));
             String result = baos.toString("UTF-8");
 
-            String fileName = FilenameUtils.normalize(currentPath+File.separator+strTargetDir + File.separator + xmlFile.getName().split("\\.")[0] + ".mdtext");
+            String fileName = FilenameUtils.normalize(currentPath + File.separator + strTargetDir + File.separator + xmlFile.getName().split("\\.")[0] + ".mdtext");
             File target = new File(fileName);
             FileUtils.deleteQuietly(target);
             result = formatter(result);
