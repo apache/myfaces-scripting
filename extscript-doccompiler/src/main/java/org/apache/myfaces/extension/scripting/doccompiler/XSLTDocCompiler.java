@@ -112,7 +112,7 @@ public class XSLTDocCompiler
 
             } else if (line.matches("\\s+#.+"))
             {
-                line = line.replaceAll("\\s+", "");
+                line = line.replaceAll("^\\s+", "");
             }
             if (!line.contains("<code>"))
             {
