@@ -61,7 +61,12 @@
         <xsl:copy-of select="."/>
     </xsl:template>
     <xsl:template match="img">
+        <xsl:attribute name="alt" />
+        <xsl:attribute name="src" />
+        ![<xsl:value-of select="@alt"/>](<xsl:value-of select="@src"/>)
+        <!--
         <xsl:copy-of select="."/>
+        -->
     </xsl:template>
 	<xsl:template match="/">
 		<xsl:apply-templates/>
