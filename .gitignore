@@ -12,6 +12,7 @@ groovy-bin/*
 .project
 .classpath
 .idea
+.mdtext
 atlassian-ide-plugin.xml
 pom.xml.versionsBackup
 
