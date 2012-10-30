@@ -77,11 +77,11 @@
                 <b>File->Project Properties -> Sources - > Source Package Folders</b>
                 and press the Add Folder button
             </p>
-            <img src="images/netbeans_source1.jpg" alt="setting the sourcepath from Intellij"/>
+            <img src="images/netbeans-source1.jpg" alt="setting the sourcepath from Intellij"/>
             <p>
                 After that you get a file dialog where you can choose your source directory.
             </p>
-            <img src="images/netbeans_source2.jpg" alt="setting the sourcepath from Intellij"/>
+            <img src="images/netbeans-source2.jpg" alt="setting the sourcepath from Intellij"/>
             <p>
                 You can leave your compile target directory unchanged
             </p>

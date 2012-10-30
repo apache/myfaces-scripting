@@ -74,7 +74,7 @@
                 <b>File->Project Structure ->Modules->&lt;Your Web Module&gt;</b>
                 and mark your script directories as source paths:
 
-                <img src="images/intellij_source.jpg" alt="setting the sourcepath from Intellij"/>
+                <img src="images/intellij-source.jpg" alt="setting the sourcepath from Intellij"/>
             </p>
             <p>
                 You can leave your compile target directory unchanged

@@ -151,7 +151,7 @@
                     </table>
                 </p>
 
-                <img src="images/compiler_output.png" width="600px" height="270px" alt="Image Compiler Output"
+                <img src="images/compiler-output.png" width="600px" height="270px" alt="Image Compiler Output"
                      title="Image Compiler Output"/>
                 <div class="objectAnnotation">Image: Compiler Output Component</div>
             </subsection>
@@ -177,7 +177,7 @@
                 </p>
                 <p>
                     <center>
-                        <img src="images/change_history.jpg" width="550px" height="45px" alt="change history component"
+                        <img src="images/change-history.jpg" width="550px" height="45px" alt="change history component"
                                 />
                         <div class="objectAnnotation">Image: Change History Component in Action</div>
                     </center>
