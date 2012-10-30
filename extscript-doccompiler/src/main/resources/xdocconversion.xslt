@@ -42,15 +42,18 @@
     <xsl:value-of disable-output-escaping="yes" select="." />
 </code>
     </xsl:template>
-    <!--
+
     <xsl:template match="a">
         <xsl:attribute name="href"/>
-        [<xsl:value-of disable-output-escaping="yes" select="." />]: <xsl:value-of select="@href"/>
+        [<xsl:value-of disable-output-escaping="no" select="." />](<xsl:value-of select="@href"/>)
     </xsl:template>
-    -->
+
+    <!--
     <xsl:template match="a">
         <xsl:copy-of select="."/>
     </xsl:template>
+    -->
+
     <xsl:template match="table">
         <xsl:copy-of select="."/>
     </xsl:template>
