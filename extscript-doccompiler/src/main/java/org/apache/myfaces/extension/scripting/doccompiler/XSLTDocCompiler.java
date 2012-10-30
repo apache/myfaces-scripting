@@ -86,7 +86,6 @@ public class XSLTDocCompiler
         pos++;
         while (!lines[pos].contains("</code>"))
         {
-            //code blocks must be at least 4 chars into the current line
             target.append("    ");
             target.append(lines[pos]);
             target.append("\n");
@@ -110,12 +109,16 @@ public class XSLTDocCompiler
             } else if (line.matches("\\s+[^#]+"))
             {
                 line = line.replaceAll("\\s+", " ");
+
             } else if (line.matches("\\s+#.+"))
             {
                 line = line.replaceAll("\\s+", "");
             }
-            target.append(line);
-            target.append("\n");
+            if (!line.contains("<code>"))
+            {
+                target.append(line);
+                target.append("\n");
+            }
         }
         return target.toString();
     }
