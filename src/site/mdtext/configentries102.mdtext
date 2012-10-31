@@ -1,4 +1,21 @@
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
 
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
 #Navigation Top
  [&lt;&lt;Back to the appendix: Setup steps](./setupSteps.html)
  or
@@ -90,36 +107,36 @@
  
 #Normal configuration entries
  all configuration entries except for the scripting filter follow the context parameter convention
-        <context-param>
-            <description>
-                Initializes the plugins for our scripting support
-            </description>
-            <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-            <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
-        </context-param>
+                <context-param>
+                    <description>
+                        Initializes the plugins for our scripting support
+                    </description>
+                    <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+                    <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+                </context-param>
              
              
  
 #Scripting Filter
- <a name="ScriptingFilter" />
+ []()
  All configuration entries are context parameters, the only exception is the scripting filter which is a servlet filter
  The scripting filter differs in its configuration by having to provide a servlet filter tag and a pattern:
-            <!-- ======================================================================================
-                    Scripting Filter
-                    Second step to enable Ext-Scripting
-                 ====================================================================================== -->
-            <filter>
-                <filter-name>scriptingFilter</filter-name>
-                <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
-            </filter>
-            <filter-mapping>
-                <filter-name>scriptingFilter</filter-name>
-                <url-pattern>/*</url-pattern>
-                <dispatcher>REQUEST</dispatcher>
-                <dispatcher>FORWARD</dispatcher>
-                <dispatcher>INCLUDE</dispatcher>
-                <dispatcher>ERROR</dispatcher>
-            </filter-mapping>
+                <!-- ======================================================================================
+                        Scripting Filter
+                        Second step to enable Ext-Scripting
+                     ====================================================================================== -->
+                <filter>
+                    <filter-name>scriptingFilter</filter-name>
+                    <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+                </filter>
+                <filter-mapping>
+                    <filter-name>scriptingFilter</filter-name>
+                    <url-pattern>/*</url-pattern>
+                    <dispatcher>REQUEST</dispatcher>
+                    <dispatcher>FORWARD</dispatcher>
+                    <dispatcher>INCLUDE</dispatcher>
+                    <dispatcher>ERROR</dispatcher>
+                </filter-mapping>
             
             
  Note for further examples of the configuration go to the section [On to the
