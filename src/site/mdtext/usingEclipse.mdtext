@@ -1,0 +1,56 @@
+
+ 
+ 
+#Navigation Top
+ [&lt;&lt;Back to the Advanced Users Guide](./usingAdvanced.html)
+ or
+ [On to the Intellij Users Guide&gt;&gt;](./usingIntellij.html)
+ 
+#Introduction
+ 
+ Eclipse is somewhat different to the rest of the IDEs because it allows to compile classes on the fly.
+ But yet still Ext-Scripting and Eclipse are a good combination, but several things have to be taken into
+ consideration.
+ 
+<ul>
+   <li>Ext-Scripting does its own incremental compile cycle depending on the sources changed</li>
+   <li>Deployment and Redeployment is not needed as long as Ext-Scripting itself can pick up the changes
+   </li>
+</ul>
+ 
+#Setting up Eclipse
+## Prerequirements
+ Secondly make sure that your project compiles properly
+ and can be properly deployed from eclipse. Turn off any auto deployment mechanisms
+ which might trigger unnecessary restarts.
+ 
+ If you use scripting languages make sure to have the proper
+ plugin installed for the scripting language of your choice
+ 
+ 
+ 
+#Setting up Ext-Scripting specifics
+ 
+ If you only have one sourcepath you might have a look at the package whitelisting
+ to mark only the packages you actively want to edit for this deployment cycle.
+ This speeds up startup time and helps generally to avoid restarts.
+ 
+ 
+ If you use different paths then you can work by including the added source paths as sources
+ like WEB-INF/java or WEB-INF/groovy (not classes compiled via Ext-Scripting always have higher loading
+ priority than what can be found in WEB-INF/classes), so there is no need to change any target directories
+ source directories always are enough.
+ 
+ 
+ You can leave your compile target directory unchanged
+ 
+ 
+ If you prefer your own source paths to be the sources of everything set the
+ org.apache.myfaces.extensions.scripting.java.LOADER_PATHS
+ or
+ org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS
+ accordingly in your web.xml the same goes for the resource roots.
+ 
+ 
+ TODO add images here
+ 

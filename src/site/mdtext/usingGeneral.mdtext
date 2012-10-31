@@ -1,0 +1,40 @@
+
+ 
+ 
+#Navigation Top
+ [&lt;&lt;Back to the Users Guide Start](./usersguide.html)
+ or
+ [On to the Advanced Users Guide&gt;&gt;](./usingAdvanced.html)
+ 
+#General Users Guide
+ 
+ Using Ext-Scripting once properly setup is straight forward. Usually it comes down to editing, reloading
+ on
+ the browser editing, reloading the page, .... However if you edit within a running configurations keep
+ an
+ eye on the console/log output. All compile errors and messages go automatically into the log.
+ 
+ 
+ ![](images/development-states.jpg)
+ 
+ Image: Development Lifecycle
+ 
+ The development cycle also can seen in the following video 
+ and in the following videos in the Users Guide.
+ 
+ 
+ <iframe class="youtube-player" type="text/html" width="640" height="480" src="http://www.youtube.com/embed/vUCCTCMjTPE" frameborder="0">
+ </iframe>
+ 
+ Video: Development Lifecycle in Action
+ 
+ As you can see, there is no need for any recompile anymore, no server restart
+ everything is done dynamically, and you get instant results.
+ 
+ 
+#Navigation Bottom
+ [&lt;&lt;Back to the Users Guide Start](./usersguide.html)
+ or
+ [On to the Advanced Users Guide&gt;&gt;](./usingAdvanced.html)
+ 
+ 
