@@ -101,7 +101,18 @@
                 <ul>
                     <li>1.2.8+ (note support will be dropped soon post 1.0.2)</li>
                     <li>2.0+</li>
+                    <ul>
+                        <li>1.2.8+ (note support will be dropped soon post 1.0.2)</li>
+                        <li>2.0+</li>
+                    </ul>
                 </ul>
+
+                <ol>
+                    <li>1.2.8+ (note support will be dropped soon post 1.0.2)</li>
+                    <li>2.0+</li>
+
+                </ol>
+
                 <p>
                     Older versions are not supported due to missing plugin mechanisms which allow Ext-Scripting to work.
                 </p>
