@@ -94,6 +94,108 @@ public class XSLTDocCompiler
         return pos;
     }
 
+    static int determinePrecedingBlanks(String in)
+    {
+        //we determine how many blanks are before the first < and we cut that from the rest
+        //of the table, that way we keep the formatting but do not run into the code issue mdtext has
+        char[] tokenizer = in.toCharArray();
+        int pos = 0;
+        for (; pos < tokenizer.length; pos++)
+        {
+            char token = tokenizer[pos];
+            if (!(token == ' '))
+            {
+                break;
+            }
+        }
+        return pos;
+    }
+
+    static String cutPrecedingBlanks(String in, int maxBlanks)
+    {
+        char[] tokenizer = in.toCharArray();
+        Character token = null;
+        int cnt = 0;
+        for (; cnt <= maxBlanks && cnt < tokenizer.length; cnt++)
+        {
+            token = tokenizer[cnt];
+            if (!token.equals(' '))
+            {
+                break;
+            }
+        }
+        StringBuilder finalStr = new StringBuilder(in.length());
+        while (cnt < tokenizer.length)
+        {
+            finalStr.append(tokenizer[cnt]);
+            cnt++;
+        }
+        return finalStr.toString();
+    }
+
+    static int handleUL(StringBuilder target, int pos, String[] lines, int indendation)
+    {
+        int precedingBlanks = Math.max(0, determinePrecedingBlanks(lines[pos]) - indendation);
+        target.append(cutPrecedingBlanks(lines[pos], precedingBlanks));
+        target.append("\n");
+        //special case same line ul is closed
+        if (lines[pos].contains("</ul>"))
+        {
+            return pos;
+        }
+
+        pos++;
+        //TODO nesting
+
+        while (pos < lines.length && !lines[pos].contains("</ul>"))
+        {
+            if (lines[pos].contains("<ul>"))
+            {
+                pos = handleUL(target, pos, lines, precedingBlanks);
+            } else
+            {
+                target.append(cutPrecedingBlanks(lines[pos], precedingBlanks));
+                target.append("\n");
+            }
+            pos++;
+
+        }
+        if (pos < lines.length)
+        {
+            target.append(cutPrecedingBlanks(lines[pos], precedingBlanks));
+            target.append("\n");
+        }
+        return pos;
+    }
+
+    static int handleTable(StringBuilder target, int pos, String[] lines, int indentation)
+    {
+        int precedingBlanks = Math.max(0, determinePrecedingBlanks(lines[pos]) - indentation);
+        target.append(cutPrecedingBlanks(lines[pos], precedingBlanks));
+        target.append("\n");
+        if (lines[pos].contains("</table>"))
+        {
+            return pos;
+        }
+        pos++;
+
+        while (pos < lines.length && !lines[pos].contains("</table>"))
+        {
+            if (lines[pos].contains("<table>"))
+            {
+                pos = handleTable(target, pos, lines, precedingBlanks);
+            } else
+            {
+                target.append(cutPrecedingBlanks(lines[pos], precedingBlanks));
+                target.append("\n");
+            }
+            pos++;
+        }
+        target.append(cutPrecedingBlanks(lines[pos], precedingBlanks));
+        target.append("\n");
+        return pos;
+    }
+
     static String formatter(String in)
     {
         StringBuilder target = new StringBuilder();
@@ -106,6 +208,12 @@ public class XSLTDocCompiler
             if (line.contains("<code>"))
             {
                 cnt = handleCode(target, cnt, lines);
+            } else if (line.contains("<table>"))
+            {
+                cnt = handleTable(target, cnt, lines, 0);
+            } else if (line.contains("<ul>"))
+            {
+                cnt = handleUL(target, cnt, lines, 0);
             } else if (line.matches("\\s+[^#]+"))
             {
                 line = line.replaceAll("\\s+", " ");
@@ -114,7 +222,7 @@ public class XSLTDocCompiler
             {
                 line = line.replaceAll("^\\s+", "");
             }
-            if (!line.contains("<code>"))
+            if (!line.contains("<code>") && !line.contains("<table>") && !line.contains("<ul>"))
             {
                 target.append(line);
                 target.append("\n");
