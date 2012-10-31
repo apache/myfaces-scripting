@@ -28,7 +28,7 @@
             <a href="./index.html">&lt;&lt;Back to the Start Page</a>
             or
 
-            <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
+            <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 
         <section name="General information">
@@ -62,10 +62,10 @@
             </subsection>
             <subsection name="Links">
                 <p>
-                    <ul><a href="./setup_steps.html">Appendix: Configuration Setup Steps</a> </ul>
-                    <ul><a href="./exampleconfig_102.html">Appendix: Example Configurations for 1.0.2 or earlier</a>
+                    <ul><a href="./setupSteps.html">Appendix: Configuration Setup Steps</a> </ul>
+                    <ul><a href="./exampleconfig102.html">Appendix: Example Configurations for 1.0.2 or earlier</a>
                     </ul>
-                    <ul><a href="./configentries_102.html">Appendix: List of Configuration Options for 1.02 or earlier</a> </ul>
+                    <ul><a href="./configentries102.html">Appendix: List of Configuration Options for 1.02 or earlier</a> </ul>
                 </p>
             </subsection>
         </section>
@@ -74,7 +74,7 @@
         <section name="Checklist">
             <p>
 
-            For a short checklist of setup steps please follow <b><a href="./setup_steps.html"> this link</a></b>. For a detailed
+            For a short checklist of setup steps please follow <b><a href="./setupSteps.html"> this link</a></b>. For a detailed
                 setup guide, please continue reading.
             </p>
         </section>
@@ -276,7 +276,7 @@
                 </p>
                 <p>
                     Following image displays the default locations:
-                    <img src="images/ext_default_file.jpg"/>
+                    <img src="images/ext-default-file.jpg"/>
                 </p>
                 <p>However in a normal development scenario, it is often undesirable to have the files located in a
                     deployment location, and a pointer mechanism towards the actual source locations would be more
@@ -323,7 +323,7 @@
             <a href="./index.html">&lt;&lt;Back to the Start Page</a>
             or
 
-            <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
+            <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 
     </body>

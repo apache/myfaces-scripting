@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<document>
+    <properties>
+        <title>Using Ext-Scripting in Eclipse</title>
+    </properties>
+
+    <body>
+
+        <section name="Navigation Top">
+            <a href="./usingIntellij.html">&lt;&lt;Back to the Intellij Users Guide</a>
+            or
+            <a href="./setupSteps.html">On to the appendix: Setup Steps&gt;&gt;</a>
+        </section>
+
+
+        <section name="Introduction">
+            <p>
+                Netbeans also works perfectly in conjunction with Ext-Scripting
+                pretty much everything said for Eclipse and Intellij also applies to NetBeans.
+                The biggest restriction is if you want to use Netbeans in conjunction with maven
+                only one source folder is picked up and you cannot use additional source folders
+                like for instance Intellij or Eclipse allow. So either dont use maven or
+                use package whitelisting as workaround if you want to use Netbeans.
+
+            </p>
+            <ul>
+                <li>Ext-Scripting does its own incremental compile cycle depending on the sources changed</li>
+                <li>Deployment and Redeployment is not needed as long as Ext-Scripting itself can pick up the changes
+                </li>
+            </ul>
+        </section>
+        <section name="Setting up Eclipse">
+            <subsection name="Prerequirements">
+
+                <p>Secondly make sure that your project compiles properly
+                    and can be properly deployed from Netbeans. Turn off any auto deployment mechanisms
+                    which might trigger unnecessary restarts.
+                </p>
+
+                <p>If you use scripting languages make sure to have the proper
+                    plugin installed for the scripting language of your choice
+                </p>
+            </subsection>
+        </section>
+        <section name="Setting up Ext-Scripting specifics">
+            <p>
+                If you only have one source path you might have a look at the package whitelisting
+                to mark only the packages you actively want to edit for this deployment cycle.
+                This speeds up startup time and helps generally to avoid restarts.
+            </p>
+            <p>
+                If you use different paths then you can work by including the added source paths as sources
+                like WEB-INF/java or WEB-INF/groovy (not classes compiled via Ext-Scripting always have higher loading
+                priority than what can be found in WEB-INF/classes), so there is no need to change any target
+                directories
+                source directories always are enough.
+
+                To change your source directories open
+                <b>File->Project Properties -> Sources - > Source Package Folders</b>
+                and press the Add Folder button
+            </p>
+            <img src="images/netbeans-source1.jpg" alt="setting the sourcepath from Intellij"/>
+            <p>
+                After that you get a file dialog where you can choose your source directory.
+            </p>
+            <img src="images/netbeans-source2.jpg" alt="setting the sourcepath from Intellij"/>
+            <p>
+                You can leave your compile target directory unchanged
+            </p>
+            <p>
+                If you prefer your own source paths to be the sources of everything set the
+                <b>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</b>
+                or
+                <b>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</b>
+                accordingly in your web.xml the same goes for the resource roots.
+            </p>
+
+        </section>
+
+        <section name="Navigation Bottom">
+            <a href="./usingIntellij.html">&lt;&lt;Back to the Intellij Users Guide</a>
+            or
+            <a href="./setupSteps.html">On to the appendix: Setup Steps&gt;&gt;</a>
+        </section>
+
+    </body>
+</document>

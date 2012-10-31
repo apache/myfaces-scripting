@@ -26,7 +26,7 @@
     <body>
         <section name="Navigation Top">
             <a href="./installation.html">&lt;&lt;Back to the Setup Guide</a> or
-            <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
+            <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 
 
@@ -80,19 +80,19 @@
             <p>The Following Chapters should help you to guide you through the usage of Ext-Scripting</p>
             <ul>
                 <li>
-                    <a href="./using_general.html">General users guide</a>
+                    <a href="./usingGeneral.html">General users guide</a>
                 </li>
                 <li>
-                    <a href="./using_advanced.html">Advanced usage</a>
+                    <a href="./usingAdvanced.html">Advanced usage</a>
                 </li>
                 <li>
-                    <a href="./using_eclipse_.html">Ext-Scripting in Eclipse</a>
+                    <a href="./usingEclipse.html">Ext-Scripting in Eclipse</a>
                 </li>
                 <li>
-                    <a href="./using_intellij.html">Ext-Scripting in Intellij</a>
+                    <a href="./usingIntellij.html">Ext-Scripting in Intellij</a>
                 </li>
                 <li>
-                    <a href="./using_intellij.html">Ext-Scripting in Netbeans</a>
+                    <a href="./usingNetbeans.html">Ext-Scripting in Netbeans</a>
                 </li>
             </ul>
         </section>
@@ -100,7 +100,7 @@
         <section name="Navigation Bottom">
             <a href="./installation.html">&lt;&lt;Back to the Setup Guide</a>  or
 
-            <a href="./using_general.html">On to the General Users Guide&gt;&gt;</a>
+            <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
         </section>
 
     </body>

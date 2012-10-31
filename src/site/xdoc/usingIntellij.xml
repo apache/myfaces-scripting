@@ -25,21 +25,18 @@
     <body>
 
         <section name="Navigation Top">
-            <a href="./using_intellij.html">&lt;&lt;Back to the Intellij Users Guide</a>
+            <a href="./usingEclipse.html">&lt;&lt;Back to the Eclipse Users Guide</a>
             or
-            <a href="./setup_steps.html">On to the appendix: Setup Steps&gt;&gt;</a>
+
+            <a href="./usingNetbeans.html">On to the NetBeans Users Guide&gt;&gt;</a>
         </section>
 
 
         <section name="Introduction">
             <p>
-                Netbeans also works perfectly in conjunction with Ext-Scripting
-                pretty much everything said for Eclipse and Intellij also applies to NetBeans.
-                The biggest restriction is if you want to use Netbeans in conjunction with maven
-                only one source folder is picked up and you cannot use additional source folders
-                like for instance Intellij or Eclipse allow. So either dont use maven or
-                use package whitelisting as workaround if you want to use Netbeans.
-
+                Intellij is very specific because it allows mixed programming out of the box, hence it is the ideal
+                partner for mixing it with Ext-Scripting. However while setting everything up you have to be aware
+                of several specifics.
             </p>
             <ul>
                 <li>Ext-Scripting does its own incremental compile cycle depending on the sources changed</li>
@@ -51,7 +48,7 @@
             <subsection name="Prerequirements">
 
                 <p>Secondly make sure that your project compiles properly
-                    and can be properly deployed from Netbeans. Turn off any auto deployment mechanisms
+                    and can be properly deployed from Idea. Turn off any auto deployment mechanisms
                     which might trigger unnecessary restarts.
                 </p>
 
@@ -62,7 +59,7 @@
         </section>
         <section name="Setting up Ext-Scripting specifics">
             <p>
-                If you only have one source path you might have a look at the package whitelisting
+                If you only have one sourcepath you might have a look at the package whitelisting
                 to mark only the packages you actively want to edit for this deployment cycle.
                 This speeds up startup time and helps generally to avoid restarts.
             </p>
@@ -74,14 +71,11 @@
                 source directories always are enough.
 
                 To change your source directories open
-                <b>File->Project Properties -> Sources - > Source Package Folders</b>
-                and press the Add Folder button
+                <b>File->Project Structure ->Modules->&lt;Your Web Module&gt;</b>
+                and mark your script directories as source paths:
+
+                <img src="images/intellij-source.jpg" alt="setting the sourcepath from Intellij"/>
             </p>
-            <img src="images/netbeans-source1.jpg" alt="setting the sourcepath from Intellij"/>
-            <p>
-                After that you get a file dialog where you can choose your source directory.
-            </p>
-            <img src="images/netbeans-source2.jpg" alt="setting the sourcepath from Intellij"/>
             <p>
                 You can leave your compile target directory unchanged
             </p>
@@ -95,10 +89,11 @@
 
         </section>
 
+
         <section name="Navigation Bottom">
-            <a href="./using_intellij.html">&lt;&lt;Back to the Intellij Users Guide</a>
+            <a href="./usingEclipse.html">&lt;&lt;Back to the Eclipse Users Guide</a>
             or
-            <a href="./setup_steps.html">On to the appendix: Setup Steps&gt;&gt;</a>
+            <a href="./usingNetbeans.html">On to the NetBeans Users Guide&gt;&gt;</a>
         </section>
 
     </body>

@@ -22,7 +22,7 @@
     <section name="Navigation Top">
         <a href="./setupSteps.html">&lt;&lt;Back to the appendix: Setup steps</a>
         or
-        <a href="./exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
+        <a href="./exampleconfig102.html">On to the appendix: Example Configuration&gt;&gt;</a>
     </section>
 
     <section name="Appendix: Configuration Entries">
@@ -48,6 +48,13 @@
                     <td>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</td>
                     <td>MyFaces Extension Point Setup</td>
                 </tr>
+                <tr>
+                    <td>scriptingFilter</td>
+                    <td>YES</td>
+                    <td></td>
+                    <td>The scripting filter for further information look <a href="#scriptingFilter">below</a></td>
+                </tr>
+
 
                 <tr>
                     <td>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</td>
@@ -55,15 +62,6 @@
                     <td>comma separate list of paths</td>
                     <td>Additional comma separated loader paths to allow direct editing of groovy files on the sources
                         directory instead of editing in the deployment dir /WEB-INF/groovy
-                    </td>
-                </tr>
-                <tr>
-                    <td>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</td>
-                    <td>NO</td>
-                    <td>comma separate list of paths</td>
-                    <td>Additional comma separated loader paths to allow direct editing of scala files on the sources
-                        directory instead of editing in the deployment dir /WEB-INF/scala
-                        <b>Note this functionality is enabled only in ext-script 1.0.3 or newer</b>
                     </td>
                 </tr>
                 <tr>
@@ -91,7 +89,7 @@
                 <tr>
                     <td>facelets.RESOURCE_RESOLVER</td>
                     <td>NO</td>
-                    <td>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</td>
+                    <td>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</td>
                     <td>Enables the loading of xhtml facelet pages from your source directory, if
                         org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS is set properly
                     </td>
@@ -101,9 +99,7 @@
                     <td>NO</td>
                     <td>a comma separate list of whitelisted packages</td>
                     <td>Enables package whitelisting, a mechanism which allows to compile and reload only from
-                        whitelisted packages. This can help in case of having to reroute ext-scripting to
-                        your compile source directories. With this option you can isolate your own dynamic classes
-                        from the rest of the system.
+                        whitelisted packages
                     </td>
                 </tr>
                 <tr>
@@ -123,7 +119,7 @@
     </section>
 
     <section name="Normal configuration entries">
-        <p>all configuration follow the context parameter convention</p>
+        <p>all configuration entries except for the scripting filter follow the context parameter convention</p>
          <source><![CDATA[
             <context-param>
                 <description>
@@ -137,6 +133,33 @@
 
     </section>
 
+    <section name="Scripting Filter">
+        <a name="scriptingFilter" />
+        <p>All configuration entries are context parameters, the only exception is the scripting filter which is a servlet filter</p>
+        <p>The scripting filter differs in its configuration by having to provide a servlet filter tag and a pattern:</p>
+
+        <source><![CDATA[
+            <!-- ======================================================================================
+                    Scripting Filter
+                    Second step to enable Ext-Scripting
+                 ====================================================================================== -->
+            <filter>
+                <filter-name>scriptingFilter</filter-name>
+                <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+            </filter>
+            <filter-mapping>
+                <filter-name>scriptingFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+                <dispatcher>REQUEST</dispatcher>
+                <dispatcher>FORWARD</dispatcher>
+                <dispatcher>INCLUDE</dispatcher>
+                <dispatcher>ERROR</dispatcher>
+            </filter-mapping>
+        ]]>
+        </source>            
+        <p>Note for further examples of the configuration go to the section <a href="./exampleconfig.html">On to the
+            appendix: Example Configuration&gt;&gt;</a> </p>
+    </section>
 
 
     <section name="Navigation Bottom">

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<document>
+    <properties>
+        <title>Using Ext-Scripting in Eclipse</title>
+    </properties>
+
+    <body>
+
+        <section name="Navigation Top">
+            <a href="./usingNetbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+            or
+            <a href="./configentries.html">On to the configuration entries overview&gt;&gt;</a>
+        </section>
+
+        <section name="Appendix: Setup Steps">
+
+
+            <subsection name="Short setup overview">
+                <p>This section is only a checklist of things to do at the setup for details follow the explanations
+                    in the <a href="./installation.html">page</a>
+                </p>
+
+                <p>
+                    Manual setup
+                    <ul>
+                        <li>Check if your installation environment is setup</li>
+                        <li>Download the appropriate meta bundle and place it in WEB-INF/lib</li>
+                        <li>Download groovy-all.jar and or (scala-lang.jar and scala-compiler.jar) and place it in
+                            WEB-INF/lib</li>
+                        <li>Prepare your script paths (WEB-INF/java, WEB-INF/groovy, WEB-INF/scala)</li>
+                        <li>Add your <a href="./exampleconfig.html">web.xml</a> entries</li>
+                        <li>start the web application ...</li>
+                    </ul>
+                </p>
+                <p>
+                    Build via maven
+                    <ul>
+                        <li>Check if your installation environment is setup</li>
+                        <li>Add your pom xml dependencies and the repository entry</li>
+                        <li>Prepare your script paths (WEB-INF/java, WEB-INF/groovy, WEB-INF/scala)</li>
+                        <li>Add your <a href="./exampleconfig.html">web.xml</a> entries</li>
+                        <li>mvn clean install ...</li>
+                    </ul>
+                </p>
+
+                <p>
+                    Build via ide
+                    <ul>
+                        <li>Check if your installation environment is setup</li>
+                        <li>Download the appropriate meta bundle and add it to your dependency and deployment settings
+                        (for the download location check the <a href="./download.html">download page</a>)
+                        </li>
+                        <li>Download groovy-all.jar and add it to your dependency and deployment settings</li>
+                        <li>Prepare your script paths</li>
+                        <li>Add your <a href="./exampleconfig.html">web.xml</a> entries</li>
+                        <li>start the web application ...</li>
+                    </ul>
+                </p>
+            </subsection>
+        </section>
+
+        <section name="Navigation Bottom">
+                   <a href="./usingNetbeans.html">&lt;&lt;Back to the Netbeans Users Guide</a>
+                   or
+                   <a href="./configentries.html">On to the configuration entries overview&gt;&gt;</a>
+        </section>
+
+    </body>
+</document>

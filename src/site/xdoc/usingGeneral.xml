@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <properties>
+        <title>General Users Guide</title>
+    </properties>
+
+    <body>
+        <section name="Navigation Top">
+            <a href="./usersguide.html">&lt;&lt;Back to the Users Guide Start</a>
+            or
+            <a href="./usingAdvanced.html">On to the Advanced Users Guide&gt;&gt;</a>
+        </section>
+
+
+        <section name="General Users Guide">
+            <p>
+                Using Ext-Scripting once properly setup is straight forward. Usually it comes down to editing, reloading
+                on
+                the browser editing, reloading the page, .... However if you edit within a running configurations keep
+                an
+                eye on the console/log output. All compile errors and messages go automatically into the log.
+            </p>
+            <center>
+                <img src="images/development-states.jpg" width="386px" height="337px"/>
+            </center>
+            <div class="objectAnnotation">Image: Development Lifecycle</div>
+
+            <p>
+                The development cycle also can seen in the following video 
+                and in the following videos in the Users Guide.
+            </p>
+            <center>
+                <iframe class="youtube-player" type="text/html" width="640" height="480"
+                                                                    src="http://www.youtube.com/embed/vUCCTCMjTPE" frameborder="0">
+                                    </iframe>
+
+            </center>
+            <div class="objectAnnotation">Video: Development Lifecycle in Action</div>
+
+            <p>
+                As you can see, there is no need for any recompile anymore, no server restart
+                everything is done dynamically, and you get instant results.
+            </p>
+        </section>
+
+        <section name="Navigation Bottom">
+            <a href="./usersguide.html">&lt;&lt;Back to the Users Guide Start</a>
+            or
+            <a href="./usingAdvanced.html">On to the Advanced Users Guide&gt;&gt;</a>
+        </section>
+
+    </body>
+</document>    
