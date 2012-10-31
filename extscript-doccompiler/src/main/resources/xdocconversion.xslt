@@ -34,40 +34,41 @@
     <xsl:template match="subsubsubsection">### <xsl:attribute name="name"/><xsl:value-of select="@name"/>
         <xsl:apply-templates/>
     </xsl:template>
+
     <xsl:template match="ul">
-        <xsl:copy-of select="."/>
-    </xsl:template>
-    <xsl:template match="source">
-<code>
-    <xsl:value-of disable-output-escaping="yes" select="." />
-</code>
+        <xsl:copy-of select="." />
     </xsl:template>
 
-    <xsl:template match="a">
-        <xsl:attribute name="href"/>
-        [<xsl:value-of disable-output-escaping="no" select="." />](<xsl:value-of select="@href"/>)
-    </xsl:template>
+    <!-- enable if you want the template list handling nested lists do not work
+    due to the code formatter we have to run afterwards hence this is disabled per
+    default, if you do not have nested lists feel free to run it
+    <xsl:template match="ul/li">* <xsl:value-of select="." /></xsl:template>
+    <xsl:template match="ul/ul/li"> * <xsl:value-of select="." /></xsl:template>
+    <xsl:template match="ul/ol/li"> - <xsl:value-of select="." /></xsl:template>
 
-    <!--
-    <xsl:template match="a">
-        <xsl:copy-of select="."/>
-    </xsl:template>
+
+    <xsl:template match="ol/li">- <xsl:value-of select="." /></xsl:template>
+    <xsl:template match="ol/ol/li"> - <xsl:value-of select="." /></xsl:template>
+    <xsl:template match="ol/ul/li"> * <xsl:value-of select="." /></xsl:template>
     -->
 
+    <xsl:template match="source">
+       <code>
+           <!-- hidden line break so that code definitely is on its own line -->
+           <xsl:text>&#xA;</xsl:text>
+           <xsl:value-of disable-output-escaping="yes" select="."/>
+           <xsl:text>&#xA;</xsl:text>
+       </code>
+    </xsl:template>
+
+    <xsl:template match="a"><xsl:attribute name="href"/>[<xsl:value-of disable-output-escaping="no" select="." />](<xsl:value-of select="@href"/>)</xsl:template>
     <xsl:template match="table">
         <xsl:copy-of select="."/>
     </xsl:template>
     <xsl:template match="iframe">
         <xsl:copy-of select="."/>
     </xsl:template>
-    <xsl:template match="img">
-        <xsl:attribute name="alt" />
-        <xsl:attribute name="src" />
-        ![<xsl:value-of select="@alt"/>](<xsl:value-of select="@src"/>)
-        <!--
-        <xsl:copy-of select="."/>
-        -->
-    </xsl:template>
+    <xsl:template match="img"><xsl:attribute name="alt" /><xsl:attribute name="src" />![<xsl:value-of select="@alt"/>](<xsl:value-of select="@src"/>)</xsl:template>
 	<xsl:template match="/">
 		<xsl:apply-templates/>
 	</xsl:template>
