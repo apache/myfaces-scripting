@@ -220,7 +220,7 @@
 
 # Manual Checkout and Build
 
- For manual checkout and building instructions of the Ext-Scripting Trunk  {{{installation.html}Ext-Scripting installation page}}
+ For manual checkout and building instructions of the Ext-Scripting Trunk  [Ext-Scripting installation page](./installation.html)
 
 
 # Latest source code from SVN repository
@@ -257,7 +257,7 @@ Verifying signatures
  PGP verification ensures that the file came from a certain person.  We strongly recommend
   you verify your downloads with both PGP and MD5.
 
- The PGP signatures can be verified using {{{http://www.pgpi.org/}PGP}} or
+ The PGP signatures can be verified using [PGP](http://www.pgpi.org/) or
  [GPG](http://www.gnupg.org/).  First download the Apache MyFaces
  [KEYS](http://www.apache.org/dist/myfaces/KEYS)	as well as the <<<asc>>> signature file
  for the particular distribution. It is important that you get these files from the ultimate

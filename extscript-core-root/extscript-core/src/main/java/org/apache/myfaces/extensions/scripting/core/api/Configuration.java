@@ -327,6 +327,10 @@ public class Configuration
         return _compileTarget;
     }
 
+    public File getCompileTarget(String appendix) {
+        return new File(_compileTarget.getAbsolutePath()+appendix);
+    }
+
     public void setCompileTarget(File compileTarget)
     {
         _compileTarget = compileTarget;

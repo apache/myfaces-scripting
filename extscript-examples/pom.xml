@@ -93,6 +93,7 @@
         <module>blog-example</module>
         <module>cdi-example</module>
         <module>spring-example</module>
+        <module>weld-example</module>
         <!--
         <module>spring-example</module>
         -->
