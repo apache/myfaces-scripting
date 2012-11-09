@@ -19,8 +19,8 @@
 package org.apache.myfaces.extensions.scripting.jsf.resources;
 
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
-import org.apache.myfaces.renderkit.ErrorPageWriter;
 
+import javax.faces.FacesException;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
@@ -246,8 +246,8 @@ public abstract class ResourceHandlerImpl extends ResourceHandler
     @Override
     public void handleResourceRequest(FacesContext facesContext) throws IOException
     {
-        try
-        {
+        //try
+        //{
             String resourceBasePath = getResourceHandlerSupport()
                     .calculateResourceBasePath(facesContext);
 
@@ -362,14 +362,15 @@ public abstract class ResourceHandlerImpl extends ResourceHandler
                             + e.getMessage());
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
-        }
-        catch (Throwable ex)
-        {
+       // }
+      //  catch (Throwable ex)
+      //  {
             // handle the Throwable accordingly. Maybe generate an error page.
             // FIXME we are creating a html error page for a non html request here
             // shouln't we do something better? -=Jakob Korherr=-
-            ErrorPageWriter.handleThrowable(facesContext, ex);
-        }
+            //ErrorPageWriter.handleThrowable(facesContext, ex);
+      //      throw new FacesException(ex);
+      //  }
     }
 
     /**

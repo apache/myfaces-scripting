@@ -47,7 +47,7 @@ public abstract class AbstractGeneratorTestCase extends TestCase {
     public void setUp() throws Exception {
         // Create the test directory within the directory that the class file of this test case is located in
         testDirectory =
-                new File(URLDecoder.decode(getClass().getResource(".").toURI().getPath(), Charset.defaultCharset().toString()), "test");
+                new File(URLDecoder.decode(getClass().getResource("src/test/java").toURI().getPath(), Charset.defaultCharset().toString()), "test");
         if (!testDirectory.mkdirs() && !testDirectory.exists()) {
             throw new IllegalStateException(
                     "Couldn't setup the test case for the test case '" + getClass().getName()

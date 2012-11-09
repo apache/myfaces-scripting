@@ -47,6 +47,8 @@ import java.util.logging.Logger;
  * Bean handler implementation
  * which encapsulates the myfaces specific parts
  * of the bean processing
+ *
+ *
  */
 public class MyFacesBeanHandler
 {

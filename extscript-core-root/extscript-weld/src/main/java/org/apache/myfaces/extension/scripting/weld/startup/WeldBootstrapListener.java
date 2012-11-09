@@ -23,16 +23,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.myfaces.extension.scripting.weld.core.CDIThrowAwayClassloader;
 import org.apache.myfaces.extension.scripting.weld.core.ReloadingListener;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
-import org.jboss.weld.environment.Container;
-import org.jboss.weld.bootstrap.api.Bootstrap;
-import org.jboss.weld.servlet.api.ServletListener;
+import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoaderBase;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -68,7 +64,7 @@ public class WeldBootstrapListener extends org.jboss.weld.environment.servlet.Li
             //after the container is kickstarted
             if (servletContext.getAttribute(RELOADING_LISTENER) == null)
             {
-                StartupServletContextPluginChainLoader.startup(servletContext);
+                StartupServletContextPluginChainLoaderBase.startup(servletContext);
                 servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
                 WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
                 File target = WeavingContext.getInstance().getConfiguration().getCompileTarget("/META-INF/beans.xml");

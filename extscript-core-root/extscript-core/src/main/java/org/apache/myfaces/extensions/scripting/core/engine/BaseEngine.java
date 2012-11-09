@@ -239,6 +239,7 @@ public abstract class BaseEngine
             URL resource = ClassUtils.getContextClassLoader().getResource("./");
             //in war deployments a problem can occur if not all paths are set
             String path = (resource == null)? "bogusPath" : resource.getPath();
+
             try
             {
                 pathSeparatedList = FilenameUtils.normalize(URLDecoder.decode(path,
@@ -250,6 +251,7 @@ public abstract class BaseEngine
                 e.printStackTrace();
             }
         }
+        log.info("[EXT-SCRIPTING]: sourcepaths found: "+pathSeparatedList);
         String[] paths = pathSeparatedList.split(",");
         for (String path : paths)
         {

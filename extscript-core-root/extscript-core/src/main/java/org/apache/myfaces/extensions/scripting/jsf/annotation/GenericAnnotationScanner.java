@@ -30,9 +30,11 @@ import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,7 +93,11 @@ public class GenericAnnotationScanner extends BaseAnnotationScanListener impleme
     }
 
     private void initDefaultListeners() {
-        _listeners.add(new MyFacesBeanImplementationListener());
+        Iterator<AnnotationScanListener> it = ServiceLoader.load(AnnotationScanListener.class).iterator();
+        while(it.hasNext()) {
+            _listeners.add(it.next());
+        }
+        //_listeners.add(new MyFacesBeanImplementationListener());
         _listeners.add(new BehaviorImplementationListener());
         _listeners.add(new ComponentImplementationListener());
         _listeners.add(new ConverterImplementationListener());

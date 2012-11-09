@@ -19,8 +19,6 @@
 
 package org.apache.myfaces.extensions.scripting.spring.context;
 
-import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextException;
@@ -29,7 +27,6 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
-import java.io.IOException;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

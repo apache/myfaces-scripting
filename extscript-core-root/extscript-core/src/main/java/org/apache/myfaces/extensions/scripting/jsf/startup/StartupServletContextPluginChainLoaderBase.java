@@ -22,8 +22,6 @@ package org.apache.myfaces.extensions.scripting.jsf.startup;
 import org.apache.myfaces.extensions.scripting.core.api.Plugin;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
-import org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
-import org.apache.myfaces.webapp.StartupListener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -43,12 +41,12 @@ import java.util.logging.Logger;
  *          initial scan and compile
  */
 
-public class StartupServletContextPluginChainLoader implements StartupListener
+public class StartupServletContextPluginChainLoaderBase
 {
-    static final Logger _log = Logger.getLogger(StartupServletContextPluginChainLoader.class.getName());
+    static final Logger _log = Logger.getLogger(StartupServletContextPluginChainLoaderBase.class.getName());
     Plugin[] _plugins = new Plugin[]{};
 
-    public StartupServletContextPluginChainLoader()
+    public StartupServletContextPluginChainLoaderBase()
     {
         ServiceLoader<Plugin> pluginLoader
                 = ServiceLoader.load(Plugin.class);
@@ -100,9 +98,9 @@ public class StartupServletContextPluginChainLoader implements StartupListener
         _log.info("[EXT-SCRIPTING] Startup done");
         _log.info("[EXT-SCRIPTING] init the chain loader for class loading");
         //TODO make this more generic depending on the implementation
-        MyFacesSPI.getInstance().registerClassloadingExtension(servletContext);
-        _log.info("[EXT-SCRIPTING] registering the JSF Implementation");
-        WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
+        WeavingContext.getInstance().getImplementation().registerClassloadingExtension(servletContext);
+        //_log.info("[EXT-SCRIPTING] registering the JSF Implementation");
+        //WeavingContext.getInstance().setImplementation(WeavingContext.getInstance().getImplementationSPI());
     }
 
     public void postInit(ServletContextEvent evt)

@@ -20,7 +20,7 @@
 package org.apache.myfaces.extensions.scripting.cdi.core;
 
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
-import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader;
+import org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoaderBase;
 import org.apache.webbeans.config.OWBLogConst;
 import org.apache.webbeans.corespi.scanner.AbstractMetaDataDiscovery;
 import org.apache.webbeans.corespi.scanner.AnnotationDB;
@@ -71,7 +71,7 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
             //after the container is kickstarted
             if (servletContext.getAttribute(RELOADING_LISTENER) == null)
             {
-                StartupServletContextPluginChainLoader.startup(servletContext);
+                StartupServletContextPluginChainLoaderBase.startup(servletContext);
                 servletContext.setAttribute(RELOADING_LISTENER, new ReloadingListener());
                 WeavingContext.getInstance().addListener((ReloadingListener) servletContext.getAttribute(RELOADING_LISTENER));
             }

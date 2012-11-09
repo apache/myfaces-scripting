@@ -32,6 +32,7 @@ import javax.faces.bean.NoneScoped;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -236,5 +237,14 @@ public class MyFacesBeanImplementationListener extends BaseAnnotationScanListene
                 _alreadyRegistered.remove(toRemove);
             }
         }
+    }
+
+    protected RuntimeConfig getRuntimeConfig() {
+        final FacesContext facesContext = FacesContext.getCurrentInstance();
+        //runtime config not started
+        if (facesContext == null) {
+            return null;
+        }
+        return RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
     }
 }

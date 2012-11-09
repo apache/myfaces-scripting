@@ -26,6 +26,8 @@
     <title>Hello World</title>
 </h:head>
 <h:body>
-    <h:outputFormat value="hello world" />
+    <h:outputFormat value="hello world: #{javaHello.helloWorld}" />
+    <br />
+    <h:outputFormat value="hello world: #{groovyHello.helloWorld}" />
 </h:body>
 </html>

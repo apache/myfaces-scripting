@@ -21,7 +21,6 @@ package org.apache.myfaces.extensions.scripting.core.support;
 
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.monitor.ResourceMonitor;
-import org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 
 import java.io.IOException;
 
@@ -56,8 +55,8 @@ public class ContextUtils
 
                 ResourceMonitor.getInstance().performMonitoringTask();
                 ResourceMonitor.getInstance().start();
-
-                WeavingContext.getInstance().setImplementation(MyFacesSPI.getInstance());
+                WeavingContext.getInstance().getImplementation();
+                //WeavingContext.getInstance().setImplementation(WeavingContext.getInstance().getImplementationSPI());
             }
             catch (IOException e)
             {

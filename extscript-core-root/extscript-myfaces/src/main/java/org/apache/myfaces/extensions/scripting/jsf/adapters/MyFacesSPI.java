@@ -27,40 +27,36 @@ import javax.servlet.ServletContext;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *
- * SPI for various myfaces related tasks
+ *          <p/>
+ *          SPI for various myfaces related tasks
  */
 public class MyFacesSPI implements ImplementationService
 {
     CustomChainLoader _loader = null;
     MyFacesBeanHandler beanHandler = new MyFacesBeanHandler();
 
-    public void registerClassloadingExtension(ServletContext context) {
+    public MyFacesSPI()
+    {
+    }
+
+    public void registerClassloadingExtension(ServletContext context)
+    {
         CustomChainLoader loader = new CustomChainLoader(context); //ReflectUtil.instantiate("extras.org.apache.myfaces.extensions
         // .scripting.servlet" +
-                //".CustomChainLoader",
-                //new Cast(ServletContext.class, context));
+        //".CustomChainLoader",
+        //new Cast(ServletContext.class, context));
         ClassUtils.addClassLoadingExtension(loader, true);
         _loader = loader;
     }
 
-    public void refreshManagedBeans() {
+    public void refreshManagedBeans()
+    {
         beanHandler.refreshAllManagedBeans();
     }
-    
-    public Class forName(String clazz) {
+
+    public Class forName(String clazz)
+    {
         return _loader.forName(clazz);
     }
-    
 
-    private static MyFacesSPI ourInstance = new MyFacesSPI();
-
-    public static MyFacesSPI getInstance()
-    {
-        return ourInstance;
-    }
-
-    private MyFacesSPI()
-    {
-    }
 }

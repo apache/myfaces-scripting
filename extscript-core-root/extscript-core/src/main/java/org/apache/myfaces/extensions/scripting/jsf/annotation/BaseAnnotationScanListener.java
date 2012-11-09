@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.extensions.scripting.jsf.annotation;
 
-import org.apache.myfaces.config.RuntimeConfig;
-
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -40,14 +38,7 @@ public class BaseAnnotationScanListener {
     Logger _log = Logger.getLogger(this.getClass().getName());
     static Map<String, Object> _alreadyRegistered = new ConcurrentHashMap<String, Object>(8, 0.75f, 1);
 
-    protected RuntimeConfig getRuntimeConfig() {
-        final FacesContext facesContext = FacesContext.getCurrentInstance();
-        //runtime config not started
-        if (facesContext == null) {
-            return null;
-        }
-        return RuntimeConfig.getCurrentInstance(facesContext.getExternalContext());
-    }
+
 
     protected Application getApplication() {
         return FacesContext.getCurrentInstance().getApplication();

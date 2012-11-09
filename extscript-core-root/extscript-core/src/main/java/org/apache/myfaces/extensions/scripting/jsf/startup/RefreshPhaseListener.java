@@ -55,7 +55,7 @@ public class RefreshPhaseListener implements PhaseListener
                 .getCurrentInstance()
                 .getExternalContext().getRequest()));
 
-        WeavingContext.getInstance().getImplementationSPI().refreshManagedBeans();
+        WeavingContext.getInstance().getImplementation().refreshManagedBeans();
         WeavingContext.getInstance().annotationScan();
     }
 

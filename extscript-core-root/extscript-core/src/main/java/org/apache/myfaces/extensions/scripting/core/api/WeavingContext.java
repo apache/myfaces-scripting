@@ -34,7 +34,6 @@ import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 import org.apache.myfaces.extensions.scripting.core.monitor.WatchedResource;
 import org.apache.myfaces.extensions.scripting.core.reloading.GlobalReloadingStrategy;
 import org.apache.myfaces.extensions.scripting.core.reloading.MethodLevelReloadingHandler;
-import org.apache.myfaces.extensions.scripting.jsf.adapters.MyFacesSPI;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -47,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,7 +78,7 @@ public class WeavingContext
      * Service provider for the implementation under which this extension
      * runs
      */
-    ImplementationService _implementation = null;
+    volatile ImplementationService _implementation = null;
     /**
      * the collection of reloading strategies depending on their artifact type
      */
@@ -99,7 +99,8 @@ public class WeavingContext
     ConcurrentHashMap<String, Long> lifecycleRegistry = new ConcurrentHashMap<String, Long>();
 
     WeakHashMap<WeavingEventListener, String> _listeners = new WeakHashMap<WeavingEventListener, String>();
-    
+
+
     /**
      * This is a log which keeps track of the taints
      * over time, we need that mostly for bean refreshes
@@ -490,8 +491,8 @@ public class WeavingContext
         //TODO implement this tomorrow
     }
 
-    public ImplementationService getImplementationSPI() {
-        return MyFacesSPI.getInstance();
+    protected ImplementationService getImplementationSPI() {
+        return ServiceLoader.load(ImplementationService.class).iterator().next(); //MyFacesSPI.getInstance();
     }
 
     //----------------------------------------------------------------------
@@ -644,17 +645,6 @@ public class WeavingContext
         return retVal;
     }
 
-    //----------------------------------------------------------------------
-    /*public ClassDependencies getDependencyMap()
-    {
-        return _dependencyMap;
-    }
-
-    public void setDependencyMap(ClassDependencies dependencyMap)
-    {
-        _dependencyMap = dependencyMap;
-    } */
-
     protected static WeavingContext _instance = new WeavingContext();
 
     public static WeavingContext getInstance()
@@ -664,6 +654,9 @@ public class WeavingContext
 
     public ImplementationService getImplementation()
     {
+        if(_implementation == null) {
+            _implementation = getImplementationSPI();
+        }
         return _implementation;
     }
 
