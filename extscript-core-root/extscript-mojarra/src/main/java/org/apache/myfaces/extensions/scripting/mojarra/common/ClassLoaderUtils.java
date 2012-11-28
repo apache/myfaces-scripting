@@ -28,8 +28,8 @@ import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 
 public class ClassLoaderUtils extends org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils
 {
+    static ClassLoader _oldClassLoader = null;
 
-    static ClassLoader oldClassLoader = null;
     public static void registerThrowAwayClassloader()
     {
         //we do not have the luxury of a pluggable classloading extensions like in myfaces
@@ -47,11 +47,11 @@ public class ClassLoaderUtils extends org.apache.myfaces.extensions.scripting.co
             return;
         }
         //in case of an unchanged classloader we can recycle our old throw away classloader
-        if(oldClassLoader != null && loader.equals(oldClassLoader.getParent())) {
-            Thread.currentThread().setContextClassLoader(oldClassLoader);
+        if(_oldClassLoader != null && loader.equals(_oldClassLoader.getParent())) {
+            Thread.currentThread().setContextClassLoader(_oldClassLoader);
         } else {
-            oldClassLoader = new ThrowAwayClassloader(loader);
-            Thread.currentThread().setContextClassLoader(oldClassLoader);
+            _oldClassLoader = new ThrowAwayClassloader(loader);
+            Thread.currentThread().setContextClassLoader(_oldClassLoader);
         }
     }
 
