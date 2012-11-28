@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.jsf.resources;
+package org.apache.myfaces.extensions.scripting.jsf.resources.deprecated;
 
 import javax.faces.context.FacesContext;
 

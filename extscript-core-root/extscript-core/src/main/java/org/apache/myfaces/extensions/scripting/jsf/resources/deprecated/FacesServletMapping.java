@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.jsf.resources;
+package org.apache.myfaces.extensions.scripting.jsf.resources.deprecated;
 
 /**
  * Represents a mapping entry of the FacesServlet in the web.xml
