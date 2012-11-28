@@ -47,7 +47,9 @@
 
     <modules>
         <module>extscript-myfaces20-bundle</module>
+        <!--
         <module>extscript-mojarra-bundle</module>
+        -->
     </modules>
 
 
