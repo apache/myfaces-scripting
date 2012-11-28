@@ -124,9 +124,9 @@
             </system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
-
-        <resource-handler>org.apache.myfaces.javaloader.test.TestResourceHandler</resource-handler>
-
-
+        <!--
+        <resource-handler>org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
+        -->
+        <resource-handler>org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
     </application>
 </faces-config>

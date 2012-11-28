@@ -36,11 +36,11 @@ import java.util.Map;
  * @version $Revision$ $Date$
  */
 
-public class LocalResource extends Resource
+public class SourceResource extends Resource
 {
     File _location;
 
-    public LocalResource(final String libraryName, final String resourceName, File location)
+    public SourceResource(final String libraryName, final String resourceName, File location)
     {
         setLibraryName(libraryName);
         setResourceName(resourceName);
@@ -48,7 +48,7 @@ public class LocalResource extends Resource
         _location = location;
     }
 
-    public LocalResource(final String libraryName, final String resourceName, File location, String contentType)
+    public SourceResource(final String libraryName, final String resourceName, File location, String contentType)
     {
         setLibraryName(libraryName);
         setResourceName(resourceName);

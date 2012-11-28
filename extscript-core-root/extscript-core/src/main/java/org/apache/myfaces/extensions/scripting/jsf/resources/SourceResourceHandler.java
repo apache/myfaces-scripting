@@ -33,11 +33,11 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 
-public class LocalResourceHandler extends ResourceHandlerWrapper
+public class SourceResourceHandler extends ResourceHandlerWrapper
 {
     private final ResourceHandler _wrapped;
 
-    public LocalResourceHandler(ResourceHandler wrapped)
+    public SourceResourceHandler(ResourceHandler wrapped)
     {
         _wrapped = wrapped;
     }
@@ -55,17 +55,17 @@ public class LocalResourceHandler extends ResourceHandlerWrapper
             File resourceFile = new File(resourceRoot + "/resources/" + libraryName + "/" + resourceName);
             if (resourceFile.exists())
             {
-                return new LocalResource(libraryName, resourceName, resourceFile);
+                return new SourceResource(libraryName, resourceName, resourceFile);
             }
             resourceFile = new File(resourceRoot + "/META-INF/resources/" + libraryName + "/" + resourceName);
             if (resourceFile.exists())
             {
-                return new LocalResource(libraryName, resourceName, resourceFile);
+                return new SourceResource(libraryName, resourceName, resourceFile);
             }
             resourceFile = new File(resourceRoot + "/" + libraryName + "/" + resourceName);
             if (resourceFile.exists())
             {
-                return new LocalResource(libraryName, resourceName, resourceFile);
+                return new SourceResource(libraryName, resourceName, resourceFile);
             }
         }
         return _wrapped.createResource(resourceName, libraryName);
@@ -84,17 +84,17 @@ public class LocalResourceHandler extends ResourceHandlerWrapper
             File resourceFile = new File(resourceRoot + "/resources/" + libraryName + "/" + resourceName);
             if (resourceFile.exists())
             {
-                return new LocalResource(libraryName, resourceName, resourceFile);
+                return new SourceResource(libraryName, resourceName, resourceFile);
             }
             resourceFile = new File(resourceRoot + "/META_INF/resources/" + libraryName + "/" + resourceName);
             if (resourceFile.exists())
             {
-                return new LocalResource(libraryName, resourceName, resourceFile);
+                return new SourceResource(libraryName, resourceName, resourceFile);
             }
             resourceFile = new File(resourceRoot + "/" + libraryName + "/" + resourceName);
             if (resourceFile.exists())
             {
-                return new LocalResource(libraryName, resourceName, resourceFile);
+                return new SourceResource(libraryName, resourceName, resourceFile);
             }
 
         }
