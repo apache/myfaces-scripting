@@ -31,6 +31,9 @@ import java.util.List;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * A simplified source resource handler which loads resources
+ * from a given directory which is not the webapp directory
  */
 
 public class SourceResourceHandler extends ResourceHandlerWrapper
@@ -52,17 +55,17 @@ public class SourceResourceHandler extends ResourceHandlerWrapper
 
         for (String resourceRoot : resourceRoots)
         {
-            File resourceFile = new File(resourceRoot + "/resources/" + libraryName + "/" + resourceName);
+            File resourceFile = new File(buildStdResourceDir(resourceName, libraryName, resourceRoot));
             if (resourceFile.exists())
             {
                 return new SourceResource(libraryName, resourceName, resourceFile);
             }
-            resourceFile = new File(resourceRoot + "/META-INF/resources/" + libraryName + "/" + resourceName);
+            resourceFile = new File(buildMetaInfResourceDir(resourceName, libraryName, resourceRoot));
             if (resourceFile.exists())
             {
                 return new SourceResource(libraryName, resourceName, resourceFile);
             }
-            resourceFile = new File(resourceRoot + "/" + libraryName + "/" + resourceName);
+            resourceFile = new File(buildRootResourceDir(resourceName, libraryName, resourceRoot));
             if (resourceFile.exists())
             {
                 return new SourceResource(libraryName, resourceName, resourceFile);
@@ -81,17 +84,17 @@ public class SourceResourceHandler extends ResourceHandlerWrapper
 
         for (String resourceRoot : resourceRoots)
         {
-            File resourceFile = new File(resourceRoot + "/resources/" + libraryName + "/" + resourceName);
+            File resourceFile = new File(buildStdResourceDir(resourceName, libraryName, resourceRoot));
             if (resourceFile.exists())
             {
                 return new SourceResource(libraryName, resourceName, resourceFile);
             }
-            resourceFile = new File(resourceRoot + "/META_INF/resources/" + libraryName + "/" + resourceName);
+            resourceFile = new File(buildMetaInfResourceDir(resourceName, libraryName, resourceRoot));
             if (resourceFile.exists())
             {
                 return new SourceResource(libraryName, resourceName, resourceFile);
             }
-            resourceFile = new File(resourceRoot + "/" + libraryName + "/" + resourceName);
+            resourceFile = new File(buildRootResourceDir(resourceName, libraryName, resourceRoot));
             if (resourceFile.exists())
             {
                 return new SourceResource(libraryName, resourceName, resourceFile);
@@ -99,6 +102,21 @@ public class SourceResourceHandler extends ResourceHandlerWrapper
 
         }
         return _wrapped.createResource(resourceName, libraryName);
+    }
+
+    private String buildMetaInfResourceDir(String resourceName, String libraryName, String resourceRoot)
+    {
+        return resourceRoot + "/META-INF/resources/" + libraryName + "/" + resourceName;
+    }
+
+    private String buildStdResourceDir(String resourceName, String libraryName, String resourceRoot)
+    {
+        return resourceRoot + "/resources/" + libraryName + "/" + resourceName;
+    }
+
+    private String buildRootResourceDir(String resourceName, String libraryName, String resourceRoot)
+    {
+        return resourceRoot + "/" + libraryName + "/" + resourceName;
     }
 
     @Override
