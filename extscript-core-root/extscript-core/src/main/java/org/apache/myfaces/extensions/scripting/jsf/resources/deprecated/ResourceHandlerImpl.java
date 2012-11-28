@@ -42,6 +42,7 @@ import java.util.logging.Logger;
  * @author Simon Lessard (latest modification by $Author: slessard $)
  *
  * @version $Revision: 696515 $ $Date: 2008-09-17 19:37:53 -0500 (mer., 17 sept. 2008) $
+ * @deprecated
  */
 public abstract class ResourceHandlerImpl extends ResourceHandler
 {

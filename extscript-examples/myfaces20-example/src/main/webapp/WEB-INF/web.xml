@@ -69,6 +69,15 @@
             /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-example/src/main/webapp
         </param-value>
     </context-param>
+
+    <context-param>
+        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
+            source dir
+        </description>
+        <param-name>facelets.RESOURCE_RESOLVER</param-name>
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.ReroutingResourceResolver</param-value>
+    </context-param>
+
     <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
@@ -110,16 +119,8 @@
         </param-value>
     </context-param>
 
-    <context-param>
-        <description>a redirecting Facelet resource resolver which allows to pick up templates and resources from our
-            source dir
-        </description>
-        <param-name>facelets.RESOURCE_RESOLVER</param-name>
-        <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.ReroutingResourceResolver</param-value>
-    </context-param>
+
     -->
-
-
 
 
     <context-param>
@@ -149,15 +150,17 @@
     -->
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
+
     <!--
     <listener>
         <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
     </listener>
     -->
+
     <listener>
-      <listener-class>
-        com.sun.faces.config.ConfigureListener
-      </listener-class>
+        <listener-class>
+            com.sun.faces.config.ConfigureListener
+        </listener-class>
     </listener>
 
     <!-- Faces Servlet -->

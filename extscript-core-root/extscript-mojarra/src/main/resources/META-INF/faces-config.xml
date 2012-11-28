@@ -58,9 +58,6 @@
         <phase-listener>org.apache.myfaces.extensions.scripting.jsf.startup.RefreshPhaseListener</phase-listener>
     </lifecycle>
 
-    <application>
-        <resource-handler>org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
-    </application>
 
     <!--
     <application>
@@ -96,5 +93,10 @@
             <renderer-class>org.apache.myfaces.extensions.scripting.jsf.components.TaintHistoryRenderer</renderer-class>
         </renderer>
     </render-kit>
+    <!-- not working on this stage the user has to define it
+    <application>
+        <resource-handler>org.apache.myfaces.extensions.scripting.jsf.resources.SourceResourceHandler</resource-handler>
+    </application>
+    -->
 
 </faces-config>

@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
  * 
  * @author Leonardo Uribe (latest modification by $Author: lu4242 $)
  * @version $Revision: 891494 $ $Date: 2009-12-16 19:42:18 -0500 (Mié, 16 Dic 2009) $
+ * @deprecated
  */
 public abstract class ResourceHandlerSupport
 {

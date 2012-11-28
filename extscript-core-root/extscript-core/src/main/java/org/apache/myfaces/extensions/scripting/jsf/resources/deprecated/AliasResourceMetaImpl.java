@@ -23,6 +23,7 @@ package org.apache.myfaces.extensions.scripting.jsf.resources.deprecated;
  * 
  * @author Leonardo Uribe (latest modification by $Author: lu4242 $)
  * @version $Revision: 700544 $ $Date: 2008-09-30 13:44:02 -0500 (Mar, 30 Sep 2008) $
+ * @deprecated
  */
 public class AliasResourceMetaImpl extends ResourceMetaImpl
 {

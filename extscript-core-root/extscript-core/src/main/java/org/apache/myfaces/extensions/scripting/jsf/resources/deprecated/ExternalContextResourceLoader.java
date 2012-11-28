@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * A resource loader implementation which loads resources from the webapp root. It uses the methods on ExternalContext
  * for handle resources.
- * 
+ * @deprecated
  */
 public class ExternalContextResourceLoader extends ResourceLoader
 {

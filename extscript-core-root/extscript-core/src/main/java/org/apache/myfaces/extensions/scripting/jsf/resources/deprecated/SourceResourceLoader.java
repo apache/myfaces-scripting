@@ -38,6 +38,8 @@ import java.util.Set;
  * so that the resource gets loaded properly from our source path
  * instead of the web context if present, the source paths as usual
  * are picked up by our context params.
+ *
+ * @deprecated
  */
 public class SourceResourceLoader extends ExternalContextResourceLoader {
 

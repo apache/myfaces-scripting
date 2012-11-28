@@ -29,6 +29,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * @deprecated
+ */
 public class ResourceLoaderUtils {
 
     public final static String JAVAX_FACES_LIBRARY_NAME = "javax.faces";

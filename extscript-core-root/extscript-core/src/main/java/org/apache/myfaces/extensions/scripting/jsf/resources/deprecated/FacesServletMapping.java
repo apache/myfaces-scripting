@@ -22,6 +22,7 @@ package org.apache.myfaces.extensions.scripting.jsf.resources.deprecated;
 /**
  * Represents a mapping entry of the FacesServlet in the web.xml
  * configuration file.
+ * @deprecated
  */
 public class FacesServletMapping
 {

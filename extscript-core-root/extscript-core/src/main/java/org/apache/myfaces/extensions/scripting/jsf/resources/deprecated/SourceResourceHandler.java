@@ -32,6 +32,7 @@ import java.net.URL;
  * which is supposed to pick up resources from a
  * given location if the Weaving configuration
  * has the parameter present
+ * @deprecated
  */
 public class SourceResourceHandler extends ResourceHandlerImpl implements Decorated
 {

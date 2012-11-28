@@ -23,6 +23,7 @@ package org.apache.myfaces.extensions.scripting.jsf.resources.deprecated;
  * 
  * @author Leonardo Uribe (latest modification by $Author: lu4242 $)
  * @version $Revision: 946779 $ $Date: 2010-05-20 15:31:42 -0500 (Jue, 20 May 2010) $
+ * @deprecated
  */
 public abstract class ResourceMeta
 {

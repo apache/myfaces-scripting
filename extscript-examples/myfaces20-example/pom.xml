@@ -83,11 +83,13 @@
                      <artifactId>jsf</artifactId>
                      <version>2.2-SNAPSHOT</version>
                  </dependency>
+
                  <dependency>
                      <groupId>org.apache.myfaces.extensions.scripting</groupId>
                      <artifactId>extscript-mojarra-bundle</artifactId>
                      <version>1.0.5-SNAPSHOT</version>
                  </dependency>
+
             </dependencies>
         </profile>
         <profile>
@@ -115,6 +117,7 @@
                     <artifactId>extscript-myfaces20-bundle</artifactId>
                     <version>1.0.5-SNAPSHOT</version>
                 </dependency>
+
             </dependencies>
         </profile>
     </profiles>

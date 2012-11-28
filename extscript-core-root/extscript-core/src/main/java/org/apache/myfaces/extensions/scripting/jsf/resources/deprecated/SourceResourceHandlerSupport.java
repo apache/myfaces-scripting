@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
  * the "parent" class and the child class
  * in this case it simply makes sense to avoid any internal sideeffects
  * between getResourceLoaders and the other methods
+ * @deprecated
  */
 public class SourceResourceHandlerSupport extends ResourceHandlerSupport {
 

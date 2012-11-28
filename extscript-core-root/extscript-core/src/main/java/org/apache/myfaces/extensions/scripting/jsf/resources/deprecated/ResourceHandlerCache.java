@@ -27,6 +27,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @deprecated
+ */
 public class ResourceHandlerCache
 {
     private static final Logger log = Logger

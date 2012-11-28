@@ -28,7 +28,7 @@ import java.net.URL;
 
 /**
  * A resource loader implementation which loads resources from the thread ClassLoader.
- * 
+ * @deprecated
  */
 public class ClassLoaderResourceLoader extends ResourceLoader
 {
