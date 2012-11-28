@@ -1,6 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -17,17 +15,22 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
--->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-        >
-<h:head>
-    <title>Hello World</title>
-</h:head>
-<h:body>
+ */
+package org.apache.myfaces.extensions.scripting.core.api;
 
-    <h:outputText value="hello: #{javaHello.helloWorld}" />
+/**
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
+public interface ClassLoaderService
+{
+    /**
+     * registers a throw away classloader into the system
+     */
+    public  void registerThrowAwayClassloader();
 
-</h:body>
-</html>
+    /**
+     * @return higher priorities override services with lower ones
+     */
+    public int getPriority();
+}

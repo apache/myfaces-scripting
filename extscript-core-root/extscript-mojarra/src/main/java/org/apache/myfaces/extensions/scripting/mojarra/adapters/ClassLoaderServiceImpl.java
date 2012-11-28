@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.mojarra.common;
+package org.apache.myfaces.extensions.scripting.mojarra.adapters;
 
+import org.apache.myfaces.extensions.scripting.core.api.ClassLoaderService;
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
 
 /**
@@ -26,11 +27,13 @@ import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
  * @version $Revision$ $Date$
  */
 
-public class ClassLoaderUtils extends org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils
+public class ClassLoaderServiceImpl
+        implements ClassLoaderService
 {
     static ClassLoader _oldClassLoader = null;
 
-    public static void registerThrowAwayClassloader()
+
+    static void internalRegisterThrowAwayClassloader()
     {
         //we do not have the luxury of a pluggable classloading extensions like in myfaces
         // instead we have to provide our own classloader which is hooked in from time to time into the running system
@@ -55,4 +58,15 @@ public class ClassLoaderUtils extends org.apache.myfaces.extensions.scripting.co
         }
     }
 
+    @Override
+    public void registerThrowAwayClassloader()
+    {
+        internalRegisterThrowAwayClassloader();
+    }
+
+    @Override
+    public int getPriority()
+    {
+        return 0;  //default implementation, lowest priority
+    }
 }

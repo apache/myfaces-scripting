@@ -34,10 +34,10 @@ import java.io.IOException;
  *          This renderer can act as a drag and drop target for the annotation
  *          set in JavaTestRenderer1
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
+
 public class JavaTestRenderer2 extends Renderer {
 
-    private static final String MSG = "<h2> Hello world ccc from Renderer 2 </h2>";
+    private static final String MSG = "<h2> Hello world ccc from Renderer 2</h2>";
     private static final String MSG2 = "<h3> hello world second var <h3>";
 
 

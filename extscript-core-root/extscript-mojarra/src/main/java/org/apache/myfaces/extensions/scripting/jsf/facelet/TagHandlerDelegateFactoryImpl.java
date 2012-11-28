@@ -17,12 +17,16 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.mojarra.facelet;
+package org.apache.myfaces.extensions.scripting.jsf.facelet;
 
 import com.sun.faces.facelets.tag.jsf.BehaviorTagHandlerDelegateImpl;
 import com.sun.faces.facelets.tag.jsf.ConverterTagHandlerDelegateImpl;
 import com.sun.faces.facelets.tag.jsf.ValidatorTagHandlerDelegateImpl;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.mojarra.facelet.ReloadingBehaviorTagHandlerDelegate;
+import org.apache.myfaces.extensions.scripting.mojarra.facelet.ReloadingComponentTagHandlerDelegate;
+import org.apache.myfaces.extensions.scripting.mojarra.facelet.ReloadingConverterTagHandlerDelegate;
+import org.apache.myfaces.extensions.scripting.mojarra.facelet.ReloadingValidatorTagHandlerDelegate;
 
 import javax.faces.view.facelets.BehaviorHandler;
 import javax.faces.view.facelets.ComponentHandler;

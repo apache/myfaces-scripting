@@ -19,6 +19,7 @@
 package org.apache.myfaces.extensions.scripting.core.common.util;
 
 
+import org.apache.myfaces.extensions.scripting.core.api.ClassLoaderService;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.io.File;
@@ -30,7 +31,9 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +43,23 @@ import java.util.logging.Logger;
  */
 public class ClassLoaderUtils {
 
+    /**
+     * fetches a default classloader service which is responsible of registering
+     * a classloader into the system
+     *
+     * @return  the classloading registration service
+     */
+    public static ClassLoaderService getDefaultClassLoaderService() {
+        Iterator<ClassLoaderService>  serviceIt = ServiceLoader.load(ClassLoaderService.class).iterator();
+        ClassLoaderService finalService = null;
+        while(serviceIt.hasNext()) {
+            ClassLoaderService service = serviceIt.next();
+            if(finalService == null || service.getPriority() > finalService.getPriority()) {
+                finalService = service;
+            }
+        }
+        return finalService;
+    }
 
     // ------------------------------------------ Public methods
 

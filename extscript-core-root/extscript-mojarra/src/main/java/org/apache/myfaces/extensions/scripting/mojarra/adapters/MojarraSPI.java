@@ -25,8 +25,8 @@ import com.sun.faces.mgbean.BeanManager;
 import com.sun.faces.mgbean.ManagedBeanInfo;
 import org.apache.myfaces.extensions.scripting.core.api.ImplementationService;
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
-import org.apache.myfaces.extensions.scripting.mojarra.common.ClassLoaderUtils;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -51,7 +51,12 @@ public class MojarraSPI implements ImplementationService
     @Override
     public void registerClassloadingExtension(ServletContext context)
     {
-        ClassLoaderUtils.registerThrowAwayClassloader();
+        ClassLoaderUtils.getDefaultClassLoaderService().registerThrowAwayClassloader();
+        /*ClassLoaderServiceImpl utils =
+                ServiceLoader.load(ClassLoaderService.class)
+                        .iterator().next();
+        utils.registerThrowAwayClassloader();  */
+
     }
 
     @Override
@@ -105,8 +110,9 @@ public class MojarraSPI implements ImplementationService
                 }
             }
 
-            for(ManagedBeanInfo info : taintedBeans) {
-               // String scope = info.getScope();
+            for (ManagedBeanInfo info : taintedBeans)
+            {
+                // String scope = info.getScope();
                 //new interface which comes with mojarra 2.2.x
                 manager.removeFromScope(info.getName(), FacesContext.getCurrentInstance());
             }

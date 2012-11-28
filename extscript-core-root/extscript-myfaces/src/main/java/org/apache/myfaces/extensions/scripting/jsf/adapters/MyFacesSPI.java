@@ -41,7 +41,7 @@ public class MyFacesSPI implements ImplementationService
 
     public void registerClassloadingExtension(ServletContext context)
     {
-        CustomChainLoader loader = new CustomChainLoader(context); //ReflectUtil.instantiate("extras.org.apache.myfaces.extensions
+        CustomChainLoader loader = new CustomChainLoader(context);
         // .scripting.servlet" +
         //".CustomChainLoader",
         //new Cast(ServletContext.class, context));

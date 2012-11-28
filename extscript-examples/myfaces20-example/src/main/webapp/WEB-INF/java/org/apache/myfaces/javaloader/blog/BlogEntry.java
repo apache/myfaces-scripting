@@ -29,7 +29,7 @@ import javax.faces.bean.RequestScoped;
 public class BlogEntry {
 
 
-    String firstName = "";
+    String firstName = "Werner";
     String lastName = "";
     String topic = "";
     String content = "";

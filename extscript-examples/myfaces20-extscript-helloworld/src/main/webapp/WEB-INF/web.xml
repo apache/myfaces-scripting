@@ -129,11 +129,6 @@
         <param-value>org.apache.myfaces.groovyloader.blog</param-value>
     </context-param>
     -->
-    <!--
-    <listener>
-        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-    </listener>
-    -->
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -149,17 +144,6 @@
     </context-param>
 
 
-    <!--
-    Note, this servlet filter is vital without it Ext-Scripting will not work,
-    if you do not set it you will get an appropriate warning in the command line
-    -->
-
-    <!-- Listener, to allow Jetty serving MyFaces apps -->
-    <!--
-    <listener>
-        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-    </listener>
-    -->
     <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

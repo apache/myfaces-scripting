@@ -48,7 +48,11 @@ public class StartupExtension implements Extension
         //the compile runs but not with the daemon thread
         //after that we can load the classes
         //by temporarily plugging in our throw away classloader
-       _classLoaderHolder.set(Thread.currentThread().getContextClassLoader());
+
+        //TODO unify the classloader setup because mojarra cannot handle
+        //changing classloaders, we have to stay on one classloader for the entire system
+        _classLoaderHolder.set(Thread.currentThread().getContextClassLoader());
+
        Thread.currentThread().setContextClassLoader(new CDIThrowAwayClassloader(Thread.currentThread().getContextClassLoader()));
     }
 
