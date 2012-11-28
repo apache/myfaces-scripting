@@ -604,6 +604,11 @@ public class ApplicationProxy extends Application implements Decorated
         return _delegate.createValueBinding(s);
     }
 
+    @Override
+    public void addBehavior(String behaviorId, String behaviorClass) {
+        _delegate.addBehavior(behaviorId, behaviorClass);
+    }
+
     /*<> @Override  public void addBehavior(String behaviorId, String behaviorClass)
    {
        weaveDelegate();
@@ -736,8 +741,8 @@ public class ApplicationProxy extends Application implements Decorated
     public Iterator<String> getBehaviorIds()
     {
         weaveDelegate();
-        return _behaviors.keySet().iterator();
-        //return _delegate.getBehaviorIds();
+        //return _behaviors.keySet().iterator();
+        return _delegate.getBehaviorIds();
     }
 
     @Override
