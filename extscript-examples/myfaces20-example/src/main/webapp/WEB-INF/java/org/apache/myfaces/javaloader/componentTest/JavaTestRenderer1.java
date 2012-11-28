@@ -40,7 +40,7 @@ public class JavaTestRenderer1 extends Renderer {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());
 
-    private static final String MSG2 = "Hello world from Renderer 1";
+    private static final String MSG2 = "Hello world from dynamic Renderer 1";
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
