@@ -1,6 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -17,18 +15,27 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
--->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-        >
-<h:head>
-    <title>Hello World</title>
-</h:head>
-<h:body>
+ */
 
-    <h:outputText value="hello: #{javaHello.helloWorld}" />
-    <br />
-    <h:outputText value="hello: #{javaHello2.helloWorld}" />
-</h:body>
-</html>
+/**
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
+
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean
+public class JavaHello2
+{
+    String helloWorld = "booga";
+
+    public String getHelloWorld()
+    {
+        return helloWorld;
+    }
+
+    public void setHelloWorld(String helloWorld)
+    {
+        this.helloWorld = helloWorld;
+    }
+}

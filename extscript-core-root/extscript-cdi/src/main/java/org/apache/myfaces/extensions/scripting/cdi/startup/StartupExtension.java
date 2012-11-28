@@ -19,7 +19,10 @@
 
 package org.apache.myfaces.extensions.scripting.cdi.startup;
 
+//import org.apache.myfaces.extensions.scripting.cdi.core.CDIThrowAwayClassloader;
+
 import org.apache.myfaces.extensions.scripting.cdi.core.CDIThrowAwayClassloader;
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -34,7 +37,7 @@ import javax.enterprise.inject.spi.Extension;
  *          An extension for cdi which does the initial lifecycle
  *          trigger from CDI instead of JSF since CDI is enabled
  *          before JSF we have to do it that way
- *
+ *          <p/>
  *          Stage 1 of our startup cycle
  */
 
@@ -48,22 +51,21 @@ public class StartupExtension implements Extension
         //the compile runs but not with the daemon thread
         //after that we can load the classes
         //by temporarily plugging in our throw away classloader
-
-        //TODO unify the classloader setup because mojarra cannot handle
-        //changing classloaders, we have to stay on one classloader for the entire system
         _classLoaderHolder.set(Thread.currentThread().getContextClassLoader());
 
-       Thread.currentThread().setContextClassLoader(new CDIThrowAwayClassloader(Thread.currentThread().getContextClassLoader()));
+        Thread.currentThread().setContextClassLoader(new CDIThrowAwayClassloader(Thread.currentThread().getContextClassLoader()));
+        //since we have an override we now register
+        //ClassLoaderUtils.getDefaultClassLoaderService().registerThrowAwayClassloader();
     }
 
     void afterBeanDiscovery(@Observes AfterBeanDiscovery abd)
     {
-        //here we unplug our temporary classloader
+
     }
 
-
     void afterDeploymentValidation(@Observes AfterDeploymentValidation abv)
-      {
-            Thread.currentThread().setContextClassLoader(_classLoaderHolder.get());
-      }
+    {
+        //here we unplug our temporary classloader
+       Thread.currentThread().setContextClassLoader(_classLoaderHolder.get());
+    }
 }

@@ -78,7 +78,7 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
         }
         catch (IOException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -135,7 +135,14 @@ public class ExtScriptScannerService extends AbstractMetaDataDiscovery
         Set<String> listURL = new HashSet<String>();
 
         // Root with beans.xml marker.
-        String[] urls = findBeansXmlBases("META-INF/beans.xml", WebBeansUtil.getCurrentClassLoader());
+        ClassLoader classLoader = WebBeansUtil.getCurrentClassLoader();
+        if(classLoader instanceof CDIThrowAwayClassloader) {
+            classLoader = classLoader.getParent();
+            //for beans.xml discovery we use our old classloader
+            //because the new one fails at disovering
+            //TODO research this.
+        }
+        String[] urls = findBeansXmlBases("META-INF/beans.xml", classLoader);
 
         if (urls != null)
         {

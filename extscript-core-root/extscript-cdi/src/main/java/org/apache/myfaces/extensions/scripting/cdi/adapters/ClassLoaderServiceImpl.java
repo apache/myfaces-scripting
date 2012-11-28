@@ -17,59 +17,44 @@
  * under the License.
  */
 
-package org.apache.myfaces.extensions.scripting.mojarra.adapters;
+package org.apache.myfaces.extensions.scripting.cdi.adapters;
 
+import org.apache.myfaces.extensions.scripting.cdi.core.CDIThrowAwayClassloader;
 import org.apache.myfaces.extensions.scripting.core.api.ClassLoaderService;
 import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
-
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 
-public class ClassLoaderServiceImpl
-        implements ClassLoaderService
+public class ClassLoaderServiceImpl implements ClassLoaderService
 {
-    static ClassLoader _oldClassLoader = null;
+    volatile static ClassLoader _oldClassLoader = null;
 
     @Override
     public void registerThrowAwayClassloader()
     {
-        //we do not have the luxury of a pluggable classloading extensions like in myfaces
+         //we do not have the luxury of a pluggable classloading extensions like in myfaces
         // instead we have to provide our own classloader which is hooked in from time to time into the running system
-        final ClassLoader loader = ClassLoaderUtils.getDefaultClassLoader();
+        ClassLoader loader = ClassLoaderUtils.getDefaultClassLoader();
         boolean found = false;
         ClassLoader parent = loader;
-        while (parent != null && !found)
-        {
-            found = parent instanceof ThrowAwayClassloader;
-            if (!found)
-            {
+        while(parent != null && !found) {
+            found = parent instanceof CDIThrowAwayClassloader;
+            if(!found) {
                 parent = parent.getParent();
             }
         }
-        if (found)
-        {
+        if(found) {
             return;
         }
         //in case of an unchanged classloader we can recycle our old throw away classloader
-        if (_oldClassLoader != null && loader.equals(_oldClassLoader.getParent()))
-        {
+        if(_oldClassLoader != null && loader.equals(_oldClassLoader.getParent())) {
             Thread.currentThread().setContextClassLoader(_oldClassLoader);
-        } else
-        {
-            _oldClassLoader = (ClassLoader) AccessController.doPrivileged(
-                    new PrivilegedAction()
-                    {
-                        public Object run()
-                        {
-                            return new ThrowAwayClassloader(loader);
-                        }
-                    });
+        } else {
+            _oldClassLoader = new CDIThrowAwayClassloader(loader);
             Thread.currentThread().setContextClassLoader(_oldClassLoader);
         }
     }
@@ -77,6 +62,6 @@ public class ClassLoaderServiceImpl
     @Override
     public int getPriority()
     {
-        return 0;  //default implementation, lowest priority
+        return 3;
     }
 }

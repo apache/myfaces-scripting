@@ -24,7 +24,11 @@ package org.apache.myfaces.extensions.scripting.jsf.adapters;
  * @version $Revision$ $Date$
  */
 
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils;
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
+
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -37,11 +41,12 @@ public class ClassLoaderServiceImpl
 {
     static ClassLoader _oldClassLoader = null;
 
-    static void internalRegisterThrowAwayClassloader()
+    @Override
+    public void registerThrowAwayClassloader()
     {
         //we do not have the luxury of a pluggable classloading extensions like in myfaces
         // instead we have to provide our own classloader which is hooked in from time to time into the running system
-        ClassLoader loader = org.apache.myfaces.extensions.scripting.core.common.util.ClassLoaderUtils.getDefaultClassLoader();
+        final ClassLoader loader = ClassLoaderUtils.getDefaultClassLoader();
         boolean found = false;
         ClassLoader parent = loader;
         while (parent != null && !found)
@@ -62,20 +67,21 @@ public class ClassLoaderServiceImpl
             Thread.currentThread().setContextClassLoader(_oldClassLoader);
         } else
         {
-            _oldClassLoader = new ThrowAwayClassloader(loader);
+            _oldClassLoader = (ClassLoader) AccessController.doPrivileged(
+                    new PrivilegedAction()
+                    {
+                        public Object run()
+                        {
+                            return new ThrowAwayClassloader(loader);
+                        }
+                    });
             Thread.currentThread().setContextClassLoader(_oldClassLoader);
         }
     }
 
     @Override
-    public void registerThrowAwayClassloader()
-    {
-        internalRegisterThrowAwayClassloader();
-    }
-
-    @Override
     public int getPriority()
     {
-        return 0;  //zero means we easily can override this one
+        return 0;  //default implementation, lowest priority
     }
 }

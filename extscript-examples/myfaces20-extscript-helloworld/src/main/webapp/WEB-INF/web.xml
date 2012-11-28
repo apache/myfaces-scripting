@@ -38,7 +38,7 @@
         <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
         </param-value>
     </context-param>
-
+    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -80,7 +80,7 @@
               /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.5-SNAPSHOT/WEB-INF/classes</param-value>
       </context-param>
 
-
+      -->
     <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the source

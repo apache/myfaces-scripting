@@ -30,7 +30,7 @@ import javax.inject.Named;
 @Named
 public class JavaHello
 {
-    String helloWorld = "Hello world from Java Bean";
+    String helloWorld = "Hello world from a dynamic Java Bean";
 
     public String getHelloWorld()
     {
