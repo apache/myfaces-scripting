@@ -52,11 +52,12 @@
             <artifactId>extscript-core</artifactId>
             <version>1.0.5-SNAPSHOT</version>
         </dependency>
+
         <dependency>
-                    <groupId>jsf</groupId>
-                    <artifactId>jsf</artifactId>
-                    <version>2.2-SNAPSHOT</version>
-                    <scope>provided</scope>
-                </dependency>
+            <groupId>jsf</groupId>
+            <artifactId>jsf</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

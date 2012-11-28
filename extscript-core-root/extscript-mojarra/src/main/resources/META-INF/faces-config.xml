@@ -55,8 +55,7 @@
         -->
     </factory>
     <lifecycle>
-        <phase-listener>org.apache.myfaces.extensions.scripting.jsf.startup.RefreshPhaseListener
-        </phase-listener>
+        <phase-listener>org.apache.myfaces.extensions.scripting.jsf.startup.RefreshPhaseListener</phase-listener>
     </lifecycle>
 
     <!--

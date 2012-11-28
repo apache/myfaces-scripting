@@ -85,7 +85,7 @@
                  </dependency>
                  <dependency>
                      <groupId>org.apache.myfaces.extensions.scripting</groupId>
-                     <artifactId>extscript-mojarra</artifactId>
+                     <artifactId>extscript-mojarra-bundle</artifactId>
                      <version>1.0.5-SNAPSHOT</version>
                  </dependency>
             </dependencies>
@@ -112,7 +112,7 @@
 
                 <dependency>
                     <groupId>org.apache.myfaces.extensions.scripting</groupId>
-                    <artifactId>extscript-myfaces</artifactId>
+                    <artifactId>extscript-myfaces20-bundle</artifactId>
                     <version>1.0.5-SNAPSHOT</version>
                 </dependency>
             </dependencies>
@@ -145,11 +145,6 @@
             <version>1.0.3-SNAPSHOT</version>
         </dependency>
         -->
-        <dependency>
-            <groupId>org.apache.myfaces.extensions.scripting</groupId>
-            <artifactId>extscript-core</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
-        </dependency>
 
         <!-- bean validation dependencies -->
         <!--

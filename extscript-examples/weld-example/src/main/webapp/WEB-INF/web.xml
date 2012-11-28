@@ -25,7 +25,6 @@
 
     <description>Webproject.xml</description>
 
-
     <!--
     Note this entry is vital it plugs the ext-scripting system into
     a myfaces extension point

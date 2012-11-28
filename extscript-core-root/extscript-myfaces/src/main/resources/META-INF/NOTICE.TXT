@@ -1,0 +1,14 @@
+This product includes software developed by:
+The Apache Software Foundation (http://www.apache.org/).
+
+------------------------------------------------------------------------
+See the file LICENSE.txt
+See licenses for accompanying products in the "/licenses" subdirectory.
+------------------------------------------------------------------------
+
+This software also includes code from Facelets (https://facelets.dev.java.net/)
+for the purpose of making components and facelet artifacts reloadable from
+other source directories.
+
+This product also includes the ASM bytecode library (http://asm.ow2.org/) for the purpose of
+dependency bytecode scanning.

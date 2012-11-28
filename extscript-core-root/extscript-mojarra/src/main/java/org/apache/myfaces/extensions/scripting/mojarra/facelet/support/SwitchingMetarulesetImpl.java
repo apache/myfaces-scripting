@@ -16,11 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.extensions.scripting.jsf.facelet.support;
+package org.apache.myfaces.extensions.scripting.mojarra.facelet.support;
 
-import org.apache.myfaces.view.facelets.tag.MetadataImpl;
-import org.apache.myfaces.view.facelets.tag.MetadataTargetImpl;
-import org.apache.myfaces.view.facelets.util.ParameterCheck;
 
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.MetaRule;
@@ -38,6 +35,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.sun.faces.facelets.tag.MetadataTargetImpl;
+
 
 /**
  * we have to to do a full reimplementation of the rule set
@@ -61,6 +60,9 @@ public class SwitchingMetarulesetImpl extends MetaRuleset {
     private final Tag _tag;
 
     private final Class<?> _type;
+
+
+
 
     public SwitchingMetarulesetImpl(Tag tag, Class<?> type) {
         _tag = tag;
