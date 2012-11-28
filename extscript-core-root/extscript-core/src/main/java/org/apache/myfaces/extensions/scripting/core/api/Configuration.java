@@ -254,6 +254,10 @@ public class Configuration
         {
             try
             {
+                if(jarPath.startsWith("/WEB-INF/classes")) {
+                    //tomcat plugin bug jarpath evaluates to /WEB-INF/classes//WEB-INF/classes
+                    jarPath = "/WEB-INF/classes";
+                }
                 String file = context.getResource(jarPath).getFile();
                 int pos = file.indexOf(WEB_INF_CLASSES);
                 file = file.substring(0, pos + WEB_INF_CLASSES.length());

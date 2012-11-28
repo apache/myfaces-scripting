@@ -24,7 +24,7 @@ import org.apache.myfaces.extensions.scripting.core.api.WeavingContext
 import scala.tools.nsc.{Global, Settings}
 import scala.collection.JavaConversions._
 
-import org.apache.myfaces.extensions.scripting.core.common.util.FileUtils
+import org.apache.myfaces.extensions.scripting.core.common.util.{ClassLoaderUtils, ClassUtils, FileUtils}
 
 /**
  *
@@ -79,16 +79,17 @@ class ScalaCompiler extends org.apache.myfaces.extensions.scripting.core.engine.
     settings.outdir.value = configuration.getCompileTarget.getAbsolutePath
     settings.deprecation.value = true // enable detailed deprecation warnings
     settings.unchecked.value = true // enable detailed unchecked warnings
-    var cp: String = configuration.getSystemClasspath();
+    /*var cp: String = configuration.getSystemClasspath()
 
     if(!cp.contains("scala")) { //probably a war container
+      //ClassLoaderUtils.buildClasspath(Thread.currentThread().getContextClassLoader)
       val classesDir = asScalaBuffer[String]  (configuration.getClassesPaths())
       val jarDirs    = asScalaBuffer[String]  (configuration.getJarPaths())
       cp += classesDir.reduceLeft[String]((a1:String,  a2:String) => a1+File.pathSeparator+a2)
       cp += jarDirs.reduceLeft[String]((a1:String,  a2:String) => a1+File.pathSeparator+a2)
-    }
+    } */
 
-    settings.classpath.value = cp
+    settings.classpath.value = ClassLoaderUtils.buildClasspath(Thread.currentThread().getContextClassLoader)
     val reporter = new CompilationResultReporter(settings)
 
     val compiler = new Global(settings, reporter)

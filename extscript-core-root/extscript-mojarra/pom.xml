@@ -17,12 +17,14 @@
     specific language governing permissions and limitations
     under the License.
 -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>extscript-spring</artifactId>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
+    <artifactId>extscript-mojarra</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>MyFaces Extension Scripting Core Spring</name>
+    <name>MyFaces Extension Scripting Mojarra</name>
 
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
@@ -32,16 +34,16 @@
 
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-spring
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-mojarra
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-spring
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-mojarra
         </developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-spring</url>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-mojarra</url>
     </scm>
 
     <description>
-        Extension Scripting Spring Submodule
+        Mojarra specific adapters of the MyFaces extensions.scripting
     </description>
 
     <dependencies>
@@ -51,10 +53,10 @@
             <version>1.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>2.5.6</version>
-        </dependency>
+                    <groupId>jsf</groupId>
+                    <artifactId>jsf</artifactId>
+                    <version>2.2-SNAPSHOT</version>
+                    <scope>provided</scope>
+                </dependency>
     </dependencies>
-
 </project>

@@ -22,7 +22,11 @@ package org.apache.myfaces.extensions.scripting.core.common.util;
 //reason due to the changes caused by the shade plugin it the ClassLoader
 //Extensions is in shared_impl in 1.2 and in shared in 2.x
 
+import javax.faces.FacesException;
 import java.io.File;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 
 /**
  * A generic utils class dealing with different aspects
@@ -100,20 +104,28 @@ public class ClassUtils
 
     public static ClassLoader getContextClassLoader()
     {
-        try
-        {
-            return (ClassLoader) ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.shared_impl.util.ClassUtils"),
-                    "getContextClassLoader");
-        }
-        catch (Exception e)
-        {
-            return (ClassLoader) ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.shared.util.ClassUtils"),
-                    "getContextClassLoader");
-        }
-
-        //return (ClassLoader) ReflectUtil.executeStaticMethod(forName("org.apache.myfaces.extensions.scripting.util" +
-        //        ".ClassUtils"),
-        //        "getContextClassLoader");
+        if (System.getSecurityManager() != null)
+            {
+                try
+                {
+                    ClassLoader cl = AccessController.doPrivileged(new PrivilegedExceptionAction<ClassLoader>()
+                    {
+                        public ClassLoader run() throws PrivilegedActionException
+                        {
+                            return Thread.currentThread().getContextClassLoader();
+                        }
+                    });
+                    return cl;
+                }
+                catch (PrivilegedActionException pae)
+                {
+                    throw new RuntimeException(pae);
+                }
+            }
+            else
+            {
+                return Thread.currentThread().getContextClassLoader();
+            }
     }
 
 }

@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.javaloader.componentTest;
 
-import org.apache.myfaces.shared.renderkit.html.HtmlTextareaRendererBase;
+import javax.faces.render.Renderer;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import javax.faces.component.UIComponent;
@@ -34,7 +34,8 @@ import java.io.IOException;
  *          This renderer can act as a drag and drop target for the annotation
  *          set in JavaTestRenderer1
  */
-public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
+@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
+public class JavaTestRenderer2 extends Renderer {
 
     private static final String MSG = "<h2> Hello world ccc from Renderer 2 </h2>";
     private static final String MSG2 = "<h3> hello world second var <h3>";
@@ -45,7 +46,7 @@ public class JavaTestRenderer2 extends HtmlTextareaRendererBase {
         super.encodeBegin(context, component);
         ResponseWriter writer = context.getResponseWriter();
         writer.write(((JavaTestComponent) component).getMyHello());
-        writer.write(MSG2);
+        writer.write(MSG);
         writer.write((String) ReflectUtil.executeMethod(component, "getMarker"));
     }
 }

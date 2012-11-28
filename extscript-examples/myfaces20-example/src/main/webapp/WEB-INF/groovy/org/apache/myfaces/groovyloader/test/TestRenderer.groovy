@@ -18,7 +18,8 @@
  */
 package org.apache.myfaces.groovyloader.test
 
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase
+import javax.faces.render.Renderer
+//import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase
 import javax.faces.context.FacesContext
 import javax.faces.component.UIComponent
 import javax.faces.context.ResponseWriter;
@@ -26,7 +27,7 @@ import javax.faces.context.ResponseWriter;
 /**
  * @author Werner Punz
  */ 
-public class TestRenderer extends HtmlTextRendererBase {
+public class TestRenderer extends Renderer {
 
   public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) {
 

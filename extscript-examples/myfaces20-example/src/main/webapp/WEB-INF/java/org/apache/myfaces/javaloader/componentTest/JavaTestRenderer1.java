@@ -18,8 +18,8 @@
  */
 package org.apache.myfaces.javaloader.componentTest;
 
-import org.apache.myfaces.shared.renderkit.html.HtmlTextRendererBase;
 
+import javax.faces.render.Renderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -35,8 +35,7 @@ import java.util.logging.Logger;
  *          you can move the annotation from one
  *          renderer artifact to the other
  */
-@FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-public class JavaTestRenderer1 extends HtmlTextRendererBase {
+public class JavaTestRenderer1 extends Renderer {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());
 
@@ -47,7 +46,7 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         JavaTestComponent myComponent = (JavaTestComponent) component;
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.write("<h3>Renderer Demo Java Renderer 1 aaa</h3>");
+        writer.write("<h3>Renderer Demo Java Renderer 1</h3>");
         //uncomment for demo 1
         test(myComponent, writer);
 

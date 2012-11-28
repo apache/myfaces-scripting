@@ -39,39 +39,49 @@
         </param-value>
     </context-param>
 
-
-    <!--
-    <context-param>
-        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-            of the deployment dir
-        </description>
-        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
-        <param-value>
-            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/groovy
-        </param-value>
-    </context-param>
-
-
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/java
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/java
         </param-value>
     </context-param>
-    
-     <context-param>
+
+    <context-param>
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</param-name>
+        <param-value>
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/groovy
+        </param-value>
+    </context-param>
+
+    <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
         </description>
         <param-name>org.apache.myfaces.extensions.scripting.scala.LOADER_PATHS</param-name>
         <param-value>
-            /whatever/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/scala
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-extscript-helloworld/src/main/webapp/WEB-INF/scala
         </param-value>
     </context-param>
 
+    <context-param>
+          <description>Some containers do not expand their war/ear files and do not return a proper classpath for the
+          compilers.
+          For those you can set an additional classpath as comma separated list of paths so that the compiler can pick
+          up dependencies from other directories. Wildcarding regarding jar and zip files is allowed.
+          </description>
+          <param-name>org.apache.myfaces.extensions.scripting.ADDITIONAL_CLASSPATH</param-name>
+          <param-value>/Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.5-SNAPSHOT/WEB-INF/lib/*.jar,
+              /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/myfaces20-extscript-helloworld/target/myfaces20-extscript-helloworld-1.0.5-SNAPSHOT/WEB-INF/classes</param-value>
+      </context-param>
+
+
+    <!--
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the source
         directories of the deployment dir.
@@ -119,9 +129,11 @@
         <param-value>org.apache.myfaces.groovyloader.blog</param-value>
     </context-param>
     -->
-
-
-
+    <!--
+    <listener>
+        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+    </listener>
+    -->
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -143,10 +155,11 @@
     -->
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
+    <!--
     <listener>
         <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
     </listener>
-
+    -->
     <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
