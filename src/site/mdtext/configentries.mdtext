@@ -86,7 +86,7 @@
        <tr>
            <td>facelets.RESOURCE_RESOLVER</td>
            <td>NO</td>
-           <td>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</td>
+           <td>org.apache.myfaces.extensions.scripting.jsf.facelet.ReroutingResourceResolver</td>
            <td>Enables the loading of xhtml facelet pages from your source directory, if
                org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS is set properly
            </td>

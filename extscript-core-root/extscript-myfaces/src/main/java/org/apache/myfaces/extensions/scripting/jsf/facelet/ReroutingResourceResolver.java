@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * decorated Facelet resource resolver to reroute
  * the resource requests to our source path if possible
  */
-public class MyFacesReroutingResourceResolver extends DefaultResourceResolver
+public class ReroutingResourceResolver extends DefaultResourceResolver
 {
 
     DefaultResourceResolver _delegate = new DefaultResourceResolver();

@@ -239,7 +239,7 @@
  The second parameter facelets.RESOURCE_RESOLVER is responsible for enabling the resouce loading
  of Facelet templates and pages, since Facelets does not have an auto plugging mechanism this has
  to be
- set to a standard value which is org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver
+ set to a standard value which is org.apache.myfaces.extensions.scripting.jsf.facelet.ReroutingResourceResolver
  
  
  For further reference please also visit out [Appendix: Configuration Entries Overview](./configentries.html)

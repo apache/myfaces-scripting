@@ -93,7 +93,7 @@
             source dir
         </description>
         <param-name>facelets.RESOURCE_RESOLVER</param-name>
-        <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.MyFacesReroutingResourceResolver</param-value>
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.facelet.ReroutingResourceResolver</param-value>
     </context-param>
 
     <!--
