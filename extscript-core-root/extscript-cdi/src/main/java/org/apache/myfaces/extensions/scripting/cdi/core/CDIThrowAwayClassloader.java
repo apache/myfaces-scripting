@@ -64,8 +64,7 @@ public class CDIThrowAwayClassloader extends ClassLoader
         if(res == null) {
             return clazz;
         }
-        //TODO check if the resource is a cdi resource or a jsf resource
-        //and in case of a jsf resource keep it tainted
+
         Annotation[] anns = clazz.getAnnotations();
         boolean cdiAnnotation = false;
         if(anns == null || anns.length == 0) {
@@ -76,6 +75,8 @@ public class CDIThrowAwayClassloader extends ClassLoader
                if(cdiAnnotation) break;
             }
         }
+        //we have to taint so that the extscript
+        // scanner can take over
         res.setTainted(!cdiAnnotation);
         return clazz;
     }

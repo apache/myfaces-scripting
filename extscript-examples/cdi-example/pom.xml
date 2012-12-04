@@ -79,7 +79,6 @@
              ext-scripting core+java6 support + myfaces 2 support
          -->
 
-
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-cdi</artifactId>
