@@ -60,7 +60,8 @@ public class InitialFullScanTest
                 ScriptingEngine jrubyEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_JRUBY);
 
                 ClassLoader loader = this.getClass().getClassLoader();
-                String canonicalPackageName = this.getClass().getPackage().getName().replaceAll("\\.", FileUtils.getFileSeparatorForRegex());                Enumeration<URL> enumeration = loader.getResources(canonicalPackageName);
+                String canonicalPackageName = this.getClass().getPackage().getName().replaceAll("\\.", FileUtils.getFileSeparatorForRegex());                
+                Enumeration<URL> enumeration = loader.getResources(canonicalPackageName);
                 javaEngine.getSourcePaths().clear();
                 groovyEngine.getSourcePaths().clear();
                 //TODO source not binary dirs
