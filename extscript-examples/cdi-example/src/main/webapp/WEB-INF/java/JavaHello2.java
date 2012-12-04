@@ -27,7 +27,7 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 public class JavaHello2
 {
-    String helloWorld = "booga";
+    String helloWorld = "Hello world from Managed Bean";
 
     public String getHelloWorld()
     {
