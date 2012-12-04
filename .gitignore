@@ -12,6 +12,7 @@ groovy-bin/*
 .project
 .classpath
 .idea
+extscript-mojarra/
 atlassian-ide-plugin.xml
 pom.xml.versionsBackup
 data
