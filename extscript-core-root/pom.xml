@@ -45,9 +45,7 @@
         <module>extscript-cdi</module>
         <module>extscript-spring</module>
         <module>extscript-myfaces</module>
-        <!--
         <module>extscript-mojarra</module>
-        -->
         <!--
         <module>extscript-weld</module>
         -->

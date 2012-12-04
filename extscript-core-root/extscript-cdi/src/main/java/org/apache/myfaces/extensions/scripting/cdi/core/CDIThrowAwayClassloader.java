@@ -21,9 +21,12 @@ package org.apache.myfaces.extensions.scripting.cdi.core;
 
 import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 import org.apache.myfaces.extensions.scripting.core.engine.ThrowAwayClassloader;
+import org.apache.myfaces.extensions.scripting.core.monitor.ClassResource;
 
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -56,7 +59,25 @@ public class CDIThrowAwayClassloader extends ClassLoader
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException
     {
-        return _delegate.loadClass(className);
+        Class clazz = _delegate.loadClass(className);
+        ClassResource res = (ClassResource) WeavingContext.getInstance().getResource(className);
+        if(res == null) {
+            return clazz;
+        }
+        //TODO check if the resource is a cdi resource or a jsf resource
+        //and in case of a jsf resource keep it tainted
+        Annotation[] anns = clazz.getAnnotations();
+        boolean cdiAnnotation = false;
+        if(anns == null || anns.length == 0) {
+            cdiAnnotation = true;
+        } else {
+            for(Annotation ann: anns) {
+               cdiAnnotation = ann instanceof Named;
+               if(cdiAnnotation) break;
+            }
+        }
+        res.setTainted(!cdiAnnotation);
+        return clazz;
     }
 
     @Override
