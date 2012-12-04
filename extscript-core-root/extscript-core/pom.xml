@@ -180,8 +180,6 @@
                         <artifactId>scala-library</artifactId>
                         <version>${scala-library.version}</version>
                     </dependency>
-
-
                     <dependency>
                         <groupId>org.scala-lang</groupId>
                         <artifactId>scala-compiler</artifactId>
