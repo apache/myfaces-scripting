@@ -59,25 +59,28 @@ public class CDIThrowAwayClassloader extends ClassLoader
     @Override
     public Class<?> loadClass(String className) throws ClassNotFoundException
     {
-        Class clazz = _delegate.loadClass(className);
         ClassResource res = (ClassResource) WeavingContext.getInstance().getResource(className);
-        if(res == null) {
+        boolean tainted = res.isTainted();
+        Class clazz = _delegate.loadClass(className);
+        if (res == null)
+        {
             return clazz;
         }
 
         Annotation[] anns = clazz.getAnnotations();
         boolean cdiAnnotation = false;
-        if(anns == null || anns.length == 0) {
-            cdiAnnotation = true;
-        } else {
-            for(Annotation ann: anns) {
-               cdiAnnotation = ann instanceof Named;
-               if(cdiAnnotation) break;
-            }
+        //@Named required without named no cdi bean
+        for (Annotation ann : anns)
+        {
+            cdiAnnotation = ann instanceof Named;
+            if (cdiAnnotation) break;
         }
         //we have to taint so that the extscript
         // scanner can take over
-        res.setTainted(!cdiAnnotation);
+        if (!cdiAnnotation)
+        {
+            res.setTainted(tainted);
+        }
         return clazz;
     }
 
@@ -139,7 +142,6 @@ public class CDIThrowAwayClassloader extends ClassLoader
     {
         return ClassLoader.getSystemClassLoader();
     }
-
 
     @Override
     public void setDefaultAssertionStatus(boolean b)

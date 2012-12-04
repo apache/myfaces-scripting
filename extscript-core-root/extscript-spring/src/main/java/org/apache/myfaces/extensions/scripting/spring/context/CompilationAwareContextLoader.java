@@ -51,7 +51,6 @@ public class CompilationAwareContextLoader extends ContextLoader
 
         //we now init the scripting system
 
-
         Class contextClass = determineContextClass(servletContext);
         if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass))
         {
