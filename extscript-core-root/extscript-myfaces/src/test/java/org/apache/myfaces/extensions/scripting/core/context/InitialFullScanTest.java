@@ -72,7 +72,7 @@ public class InitialFullScanTest
                             "src/main/java");
                     currentDirStr = currentDirStr.replaceAll("target/classes",
                                                 "src/main/java");
-                    currentDirStr = currentDirStr.replaceAll("context", "api");
+                    currentDirStr = currentDirStr.replaceAll("core/context", "jsf/startup");
                     javaEngine.getSourcePaths().add(currentDirStr);
                     groovyEngine.getSourcePaths().add(currentDirStr);
                     scalaEngine.getSourcePaths().add(currentDirStr);
