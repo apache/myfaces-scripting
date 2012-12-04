@@ -102,7 +102,7 @@ public class ScalaCompilerTest
 
     }
 
-    @Test @Ignore /*fails only on linux for whatever reasons*/
+    @Test /*fails only on linux for whatever reasons*/
     public void testFullCompile()
     {
         ScalaCompiler compiler = new ScalaCompiler();
