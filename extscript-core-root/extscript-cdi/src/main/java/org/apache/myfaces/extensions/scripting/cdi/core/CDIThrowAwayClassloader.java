@@ -60,13 +60,13 @@ public class CDIThrowAwayClassloader extends ClassLoader
     public Class<?> loadClass(String className) throws ClassNotFoundException
     {
         ClassResource res = (ClassResource) WeavingContext.getInstance().getResource(className);
-        boolean tainted = res.isTainted();
+
         Class clazz = _delegate.loadClass(className);
         if (res == null)
         {
             return clazz;
         }
-
+        boolean tainted = res.isTainted();
         Annotation[] anns = clazz.getAnnotations();
         boolean cdiAnnotation = false;
         //@Named required without named no cdi bean
