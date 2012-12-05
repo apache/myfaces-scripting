@@ -84,8 +84,9 @@ public class InitialFullScanTest
                 javaEngine.getSourcePaths().clear();;
                 groovyEngine.getSourcePaths().clear();
                 scalaEngine.getSourcePaths().clear();
-                jrubyEngine.getSourcePaths().clear();
-
+                if(jrubyEngine != null) {
+                    jrubyEngine.getSourcePaths().clear();
+                }
             }
             catch (IOException e)
             {
