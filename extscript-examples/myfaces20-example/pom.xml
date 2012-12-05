@@ -136,7 +136,6 @@
 
         <!--
         LGPL so no depdendency allowed here, you however can add it yourself
-
         <dependency>
             <groupId>org.jruby</groupId>
             <artifactId>jruby-complete</artifactId>
