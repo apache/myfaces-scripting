@@ -19,7 +19,7 @@
  
  
 #General Information
- As of Ext-Scripting 1.0.5 basic Mojarra support has been implemented.
+ As of Ext-Scripting 1.0.6 basic Mojarra support has been implemented.
  For now not the entire spectrum of services Ext-Scripting provides are enabled for Mojarra
  but basic Ext-Scripting works out of the box.
  Following compatibility diagram shows what
@@ -38,7 +38,6 @@
  support which utilizes the same paths. (This was a design decision to keep Mojarra compatibility
  at a time Mojarra support was not really under discussion)
  So here is an example configuration for Mojarra:
-
     <web-app xmlns="http://java.sun.com/xml/ns/javaee"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
