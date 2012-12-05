@@ -117,7 +117,9 @@ public class ResourceMonitor extends Thread
             //which causes the npe
             Thread.sleep(3000);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ResourceMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            //removing the interrupted exception error handler because it can happen
+            //and should not log an error.
+            //Logger.getLogger(ResourceMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         while (!Thread.currentThread().isInterrupted())
