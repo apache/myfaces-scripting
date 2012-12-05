@@ -42,15 +42,14 @@
     </context-param>
 
     <context-param>
-            <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
-                of the deployment dir
-            </description>
-            <param-name>org.apache.myfaces.extensions.scripting.ruby.LOADER_PATHS</param-name>
-            <param-value>
-                /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/spring-example/src/main/webapp/WEB-INF/ruby            </param-value>
-        </context-param>
-    -->
-    <!--
+        <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
+            of the deployment dir
+        </description>
+        <param-name>org.apache.myfaces.extensions.scripting.ruby.LOADER_PATHS</param-name>
+        <param-value>
+            /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/spring-example/src/main/webapp/WEB-INF/ruby            </param-value>
+    </context-param>
+
     <context-param>
         <description>Additional comma separated loader paths to allow direct editing on the sources directory instead
             of the deployment dir
@@ -70,9 +69,6 @@
             /Users/werpu2/development/workspace/extscript_trunk/extscript-examples/blog-example/src/main/webapp/WEB-INF/scala
         </param-value>
     </context-param>
-
-
-
 
     <context-param>
         <description>resource paths for our custom JSF2 resource resolver</description>
@@ -108,31 +104,16 @@
         <param-value>/WEB-INF/spring-config.xml</param-value>
     </context-param>
 
-    <context-param>
-        <param-name>sourcePathLocation</param-name>
-        <param-value>/home/bhuemer/Projects/spring-scripting/spring-scripting-usecase/src/main/java</param-value>
-    </context-param>
-
     <!-- Listener, to allow Jetty serving MyFaces apps -->
-  
     <listener>
         <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
     </listener>
     
     <listener>
-        <!--
-        <listener-class>
-            org.springframework.web.context.ContextLoaderListener
-        </listener-class>
-        -->
+        <!-- this listener class enables our spring reloading -->
         <listener-class>
             org.apache.myfaces.extensions.scripting.spring.context.CompilationAwareContextLoaderListener
         </listener-class>
-        <!--
-          <listener-class>
-          at.irian.springframework.extensions.scripting.context.CompilationAwareContextLoaderListener
-        </listener-class>
-        -->
     </listener>
 
 </web-app>
