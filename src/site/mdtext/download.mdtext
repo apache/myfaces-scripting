@@ -1,0 +1,279 @@
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+# Download Apache MyFaces Extension Scripting
+
+## Apache MyFaces Ext-Scripting 1.0.4
+
+ Apache MyFaces Ext-Scripting 1.0.4 is the newest version. With OpenWebbeans support and reenabled Windows support.
+
+ Releasenotes can be found [here](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310964&version=12320341)
+
+
+<table>
+    <thead>
+        <tr>
+           <td></td>
+           <td>Server</td>
+           <td>Checksum</td>
+           <td>Signature</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Ext-Script MyFaces 2.1 bundle(jar)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.4/extscript-myfaces20-bundle-1.0.4.jar">extscript-myfaces20-bundle-1.0.4.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.4/extscript-myfaces20-bundle-1.0.4.jar.md5">extscript-myfaces20-bundle-1.0.4.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.4/extscript-myfaces20-bundle-1.0.4.jar.asc">extscript-myfaces20-bundle-1.0.4.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td>Ext-Script OpenWebbeans support library</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-cdi/1.0.4/extscript-cdi-1.0.4.jar">extscript-cdi-1.0.4.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-cdi/1.0.4/extscript-cdi-1.0.4.jar.md5">extscript-cdi-1.0.4.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-cdi/1.0.4/extscript-cdi-1.0.4.jar.asc">extscript-cdi-1.0.4.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Demo Application MyFaces 2.1 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.4/myfaces20-example-1.0.4.jar">myfaces20-example-1.0.4.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.4/myfaces20-example-1.0.4.jar.md5">myfaces20-example-1.0.4.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.4/myfaces20-example-1.0.4.jar.asc">myfaces20-example-1.0.4.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank Application JSF2 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.4/myfaces20-extscript-helloworld-1.0.4.jar">myfaces20-extscript-helloworld-1.0.4.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.4/myfaces20-extscript-helloworld-1.0.4.jar.md5">myfaces20-extscript-helloworld-1.0.4.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.4/myfaces20-extscript-helloworld-1.0.4.jar.asc">myfaces20-extscript-helloworld-1.0.4.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank CDI Application (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces21-extscript-cdi/1.0.4/myfaces21-extscript-cdi-1.0.4.jar">myfaces21-extscript-cdi-1.0.4.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces21-extscript-cdi/1.0.4/myfaces21-extscript-cdi-1.0.4.jar.md5">myfaces21-extscript-cdi-1.0.4.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces21-extscript-cdi/1.0.4/myfaces21-extscript-cdi-1.0.4.jar.asc">myfaces21-extscript-cdi-1.0.4.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank CDI Application (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.4/extscript-root-1.0.4-source-release.jar">extscript-root-1.0.4-source-release.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.4/extscript-root-1.0.4-source-release.jar.md5">extscript-root-1.0.4-source-release.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/mextscript-root/1.0.4/extscript-root-1.0.4-source-release.jar.asc">extscript-root-1.0.4-source-release.jar.asc</a></td>
+        </tr>
+    </tbody>
+</table>
+
+## Apache MyFaces Ext-Scripting 1.0.3
+
+ is a general refactoring release for maintainability was performed and basic Scala support has been added.
+ Note, this is the first release, which is Java 6 and MyFaces 2.1.6+ and Servlet 3.0 only. For older versions of
+ MyFaces and Java 5, download Ext-Scripting 1.0.2.
+
+  Release notes can be found [here](https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12320165&styleName=Text&projectId=12310964)
+
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+# Download Apache MyFaces Extension Scripting
+
+## Apache MyFaces Ext-Scripting 1.0.4
+
+ Apache MyFaces Ext-Scripting 1.0.4 is the newest version. With OpenWebbeans support and reenabled Windows support.
+
+ Releasenotes can be found [here](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310964&version=12320341)
+
+
+<table>
+    <thead>
+        <tr>
+           <td></td>
+           <td>Server</td>
+           <td>Checksum</td>
+           <td>Signature</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Ext-Script MyFaces 2.1 bundle(jar)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar">extscript-myfaces20-bundle-1.0.3.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar.md5">extscript-myfaces20-bundle-1.0.3.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.3/extscript-myfaces20-bundle-1.0.3.jar.asc">extscript-myfaces20-bundle-1.0.3.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Demo Application MyFaces 2.1 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.jar">myfaces20-example-1.0.3.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.jar.md5">myfaces20-example-1.0.3.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.3/myfaces20-example-1.0.3.jar.asc">myfaces20-example-1.0.3.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank Application JSF2 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.jar">myfaces20-extscript-helloworld-1.0.3.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.jar.md5">myfaces20-extscript-helloworld-1.0.3.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.3/myfaces20-extscript-helloworld-1.0.3.jar.asc">myfaces20-extscript-helloworld-1.0.3.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank CDI Application (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.3/extscript-root-1.0.3-source-release.jar">extscript-root-1.0.3-source-release.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.3/extscript-root-1.0.3-source-release.jar.md5">extscript-root-1.0.3-source-release.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/mextscript-root/1.0.3/extscript-root-1.0.3-source-release.jar.asc">extscript-root-1.0.3-source-release.jar.asc</a></td>
+        </tr>
+    </tbody>
+</table>
+
+# Apache MyFaces Ext-Scripting 1.0.3
+
+ is a general refactoring release for maintainability was performed and basic Scala support has been added.
+ Note, this is the first release, which is Java 6 and MyFaces 2.1.6+ and Servlet 3.0 only. For older versions of
+ MyFaces and Java 5, download Ext-Scripting 1.0.2.
+
+  Release notes can be found [here](https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12320165&styleName=Text&projectId=12310964)
+
+## Ext-Scripting 1.0.2 (latest version supporting MyFaces 1.2.x)
+
+ Apache MyFaces Extension Scripting now has a 1.0.2 bugfix release which reenables compatibility with newer MyFaces
+ versions:
+ Apache MyFaces is distributed as jar archives for inclusion and as war archives for the
+ examples.
+
+ Note: this is the last release, which supports Java 5 and MyFaces 1.2.x from version 1.0.3 onwards
+ only Java 6 and JSF 2.1 and Servlet 3.0 will be supported.
+
+ Use the links below to download
+
+  Release notes can be found [here](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310964&version=12316367)
+
+<table>
+    <thead>
+        <tr>
+           <td></td>
+           <td>Server</td>
+           <td>Checksum</td>
+           <td>Signature</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Ext-Script MyFaces 1.2 bundle(jar)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.2/extscript-myfaces12-bundle-1.0.2.jar">extscript-myfaces12-bundle-1.0.2.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.2/extscript-myfaces12-bundle-1.0.2.jar.md5">extscript-myfaces12-bundle-1.0.2.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces12-bundle/1.0.2/extscript-myfaces12-bundle-1.0.2.jar.asc">extscript-myfaces12-bundle-1.0.2.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td>Ext-Script MyFaces 2.1 bundle(jar)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar">extscript-myfaces20-bundle-1.0.2.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar.md5">extscript-myfaces20-bundle-1.0.2.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.2/extscript-myfaces20-bundle-1.0.2.jar.asc">extscript-myfaces20-bundle-1.0.2.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Demo Application MyFaces 1.2 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.2/myfaces12-example-1.0.2.jar">myfaces12-example-1.0.2.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.2/myfaces12-example-1.0.2.jar.md5">myfaces12-example-1.0.2.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces12-example/1.0.2/myfaces12-example-1.0.2.jar.asc">myfaces12-example-1.0.2.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Demo Application MyFaces 2.1 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.2/myfaces20-example-1.0.2.jar">myfaces20-example-1.0.2.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.2/myfaces20-example-1.0.2.jar.md5">myfaces20-example-1.0.2.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.2/myfaces20-example-1.0.2.jar.asc">myfaces20-example-1.0.2.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank Application JSF2 (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.2/myfaces20-extscript-helloworld-1.0.2.jar">myfaces20-extscript-helloworld-1.0.2.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.2/myfaces20-extscript-helloworld-1.0.2.jar.md5">myfaces20-extscript-helloworld-1.0.2.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.2/myfaces20-extscript-helloworld-1.0.2.jar.asc">myfaces20-extscript-helloworld-1.0.2.jar.asc</a></td>
+        </tr>
+        <tr>
+            <td> Ext-Script Blank CDI Application (war)</td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.2/extscript-root-1.0.2-source-release.jar">extscript-root-1.0.2-source-release.jar</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.2/extscript-root-1.0.2-source-release.jar.md5">extscript-root-1.0.2-source-release.jar.md5</a></td>
+            <td><a href="https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/mextscript-root/1.0.2/extscript-root-1.0.2-source-release.jar.asc">extscript-root-1.0.2-source-release.jar.asc</a></td>
+        </tr>
+    </tbody>
+</table>
+
+
+# Manual Checkout and Build
+
+ For manual checkout and building instructions of the Ext-Scripting Trunk  [Ext-Scripting installation page](./installation.html)
+
+
+# Latest source code from SVN repository
+
+  If you want to use the latest Apache MyFaces Ext-Scripting features, the source code is under
+  version control with SVN.  Click [here](./source-repository.html)
+  for information on how to use the ASF MyFaces Ext-Scripting SVN Repository.
+
+  Building instructions can be found under [Ext-Scripting installation page](./installation.html)
+
+# Latest source code from SVN repository
+
+ If you want to use the latest Apache MyFaces Test features, the source code is under
+ version control with SVN.  Click [here](source-repository.html)
+ for information on how to use the ASF Test SVN Repository.
+
+# Verifying checksums
+
+ It is essential that you verify the integrity of the downloaded
+ files using the PGP and MD5 signatures. MD5 verification ensures the
+ file was not corrupted during the download process. PGP verification
+ ensures that the file came from a certain person.
+
+ To verify the MD5 signature on the files, you need to use a program
+ called <<<md5>>> or <<<md5sum>>>, which is
+ included in many UNIX distributions.  It is also available as part of
+ [GNU Textutils](http://www.gnu.org/software/textutils/textutils.html).
+ Windows users can get binary md5 programs from [here](http://www.fourmilab.ch/md5/),
+ [here](http://www.pc-tools.net/win32/freeware/console/), or
+ [here](http://www.slavasoft.com/fsum/).
+
+Verifying signatures
+
+ PGP verification ensures that the file came from a certain person.  We strongly recommend
+  you verify your downloads with both PGP and MD5.
+
+ The PGP signatures can be verified using [PGP](http://www.pgpi.org/) or
+ [GPG](http://www.gnupg.org/).  First download the Apache MyFaces
+ [KEYS](http://www.apache.org/dist/myfaces/KEYS)	as well as the <<<asc>>> signature file
+ for the particular distribution. It is important that you get these files from the ultimate
+ trusted source - the main ASF distribution site, rather than from a mirror.
+ Then verify the signatures using ...
+
+	  pgpk -a KEYS
+	  pgpv extscript-myfaces20-bundle-1.0.3.jar.asc extscript-myfaces20-bundle-1.0.3.jar
+
+	  or
+
+	  pgp -ka KEYS
+	  pgp extscript-myfaces20-bundle-1.0.3.jar.asc extscript-myfaces20-bundle-1.0.3.jar
+
+	  or
+
+      gpg --import KEYS
+	  gpg --verify extscript-myfaces20-bundle-1.0.3.jar.asc extscript-myfaces20-bundle-1.0.3.jar
+
