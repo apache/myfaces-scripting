@@ -45,6 +45,17 @@
         </dependency>
 
         <!--
+            LGPL so no depdendency allowed here, you however can add it yourself
+
+
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+          -->
+
+        <!--
             Note this is the only dependency we need
             for ext-scripting, the include is a so called
             meta bundle, which includes the entire
@@ -55,6 +66,7 @@
             <artifactId>extscript-myfaces20-bundle</artifactId>
             <version>1.0.5-SNAPSHOT</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>

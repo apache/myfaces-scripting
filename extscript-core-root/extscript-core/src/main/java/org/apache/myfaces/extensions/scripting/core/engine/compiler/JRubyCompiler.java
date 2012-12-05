@@ -96,6 +96,10 @@ public class JRubyCompiler implements org.apache.myfaces.extensions.scripting.co
         //commandString.append("options<< '" + sources + "'\n");
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName(ENGINE_JRUBY);
+        if(engine == null) {
+            logger.info("[EXT-SCRIPT] jruby not present compiler deactivated");
+            return new CompilationResult("No Errors");
+        }
         try
         {
             //See: http://stackoverflow.com/questions/4183408/redirect-stdout-to-a-string-in-java

@@ -30,9 +30,10 @@
     <bean id="greeter" class="org.apache.myfaces.extension.scripting.spring.example.Greeter">
         <property name="person" ref="person" />
     </bean>
-
+     <!--
+     enable it if you want a ruby testcase
     <bean id="rubyBean" class="org.apache.myfaces.jrubyloader.bean.HelloJRubyBean">
 
     </bean>
-
+    -->
 </beans>

@@ -28,7 +28,6 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.JRubyCompiler;
 import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
-import org.jruby.RubyObject;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -76,7 +75,15 @@ public class EngineJRuby extends BaseEngine implements ScriptingEngine
     @Override
     public boolean isArtifactOfEngine(Object artifact)
     {
-        return (artifact instanceof RubyObject);
+        //We only can link dynamically here due to licensing reasons
+        Class clazz = artifact.getClass();
+        do
+        {
+            boolean rubyObjectFound = clazz.getName().equals("org.jruby.RubyObject");
+            if (rubyObjectFound) return true;
+            clazz = clazz.getSuperclass();
+        } while (clazz != null);
+        return false;
     }
 
     @Override

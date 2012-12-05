@@ -68,7 +68,6 @@
                 </configuration>
             </plugin>
 
-
         </plugins>
     </build>
     <profiles>
@@ -134,6 +133,16 @@
             <artifactId>groovy-all</artifactId>
             <version>${groovy.version}</version>
         </dependency>
+
+        <!--
+        LGPL so no depdendency allowed here, you however can add it yourself
+
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+        -->
 
         <!--
              Note this is the only dependency we need
