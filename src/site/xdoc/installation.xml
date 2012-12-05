@@ -28,7 +28,7 @@
             <a href="./index.html">&lt;&lt;Back to the Start Page</a>
             or
 
-            <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
+            <a href="./owbSpring.html">On to the Openwebbeans Spring Guide &gt;&gt;</a>
         </section>
 
         <section name="General information">
@@ -174,7 +174,7 @@
      <dependency>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-myfaces20-bundle</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
      </dependency>]]></source>
 
                 <h4>Additional language libraries</h4>
@@ -209,7 +209,7 @@
                      <dependency>
                         <groupId>org.apache.myfaces.extensions.scripting</groupId>
                         <artifactId>extscript-cdi</artifactId>
-                        <version>1.0.4</version>
+                        <version>1.0.5</version>
                     </dependency>
                  ]]></source>
                 </p>
@@ -441,7 +441,7 @@
         <section name="Navigation Bottom">
             <a href="./index.html">&lt;&lt;Back to the Start Page</a>
             or
-            <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
+            <a href="./owbSpring.html">On to the Openwebbeans Spring Guide &gt;&gt;</a>
         </section>
 
     </body>

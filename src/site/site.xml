@@ -56,7 +56,7 @@
       <item name="Introduction" href="index.html" />
       <item name="Latest Version Installation" href="installation.html" />
       <item name="Installation of version 1.0.2 or earlier" href="install102.html" />
-
+      <item name="Openwebbeans and Spring" href="owbSpring.html" />
       <item name="Users Guide" href="usersguide.html"/>
       <item name="Appendix A: Setup Checklist" href="setupSteps.html" />
       <item name="Appendix B: Configuration Entries" href="configentries.html" />

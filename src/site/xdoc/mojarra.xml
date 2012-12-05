@@ -25,7 +25,7 @@
 
     <body>
         <section name="General Information">
-            As of Ext-Scripting 1.0.5 basic Mojarra support has been implemented.
+            As of Ext-Scripting 1.0.6 basic Mojarra support has been implemented.
             For now not the entire spectrum of services Ext-Scripting provides are enabled for Mojarra
             but basic Ext-Scripting works out of the box.
             Following compatibility diagram shows what

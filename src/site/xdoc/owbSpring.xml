@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <properties>
+        <title>Installation</title>
+    </properties>
+
+    <body>
+        <section name="Navigation Top">
+            <section name="Navigation Top">
+                <a href="./installation.html">&lt;&lt;Installation Guide</a>
+                or
+
+                <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
+            </section>
+
+        </section>
+        <section name="OpenWebbeans">
+            <subsection name="Introduction">
+                As of Version 1.0.4 Ext-Scripting has introduced basic openwebbeans support.
+                This support is considered to be experimental so use it with care.
+                <p/>
+                This means you can define CDI Beans within the supported scripting languages
+                and you can provide dynamic reloading (in a more simplified manner)
+                to OWB.
+                <p/>
+                The reloading is different to standard JSF due to CDI limitations, in case
+                of a changed bean the entire container is reloaded instead of the bean
+                and its dependencies. This has to be taken into consideration if you use
+                the OWB support module.
+                <p/>
+                Also Ext-Scripting OWB is an extension module, it is not part of the core distribution you get
+                if you include the<b>extscript-myfaces20-bundle</b>.
+                So a separate include of the OWB support
+                <b>module extscript-cdi</b>
+                is needed.
+            </subsection>
+            <subsection name="Setup">
+                To setup the OWB support module, you have to drop the extscript-cdi.jar into your
+                WEB-INF/lib or you have to add following code into maven.
+                <source><![CDATA[
+<dependency>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
+    <artifactId>extscript-cdi</artifactId>
+    <version>1.0.5</version>
+</dependency>
+                ]]></source>
+                And of course OpenWebbeans must be properly present, either via the app server
+                or simply by a Maven include.
+                No further setup needs to be done for the OWB integration, all other configuration
+                entries stay the same.
+            </subsection>
+            <subsection name="Example Project">
+                An Example Kickstarter project has been provided which shows the capabilities of the
+                plugin.
+                You can use it as kickstarter for your own OWB based Ext-Scripting projects.
+                It can be found under
+                <b>extscript-examples/cdi-example</b>
+                from the root
+                dir of the project.
+                You can start it with mvn
+                <b>jetty:run-exploded</b>
+                and you can edit the files in the
+                <b>target/&lt;webappname;gt;/WEB-INF...</b>
+                folder on the fly.
+            </subsection>
+        </section>
+        <section name="Spring">
+            <subsection name="Introduction">
+                As of version 1.0.5 basic spring support has been provided to Ext-Scripting.
+                This support is considered to be experimental so use it with care.
+                <p/>
+                Spring support means you can define Spring Beans within the supported scripting languages
+                and you can provide dynamic reloading to Spring.
+                <p/>
+                Also Spring support is an extension module, it is not part of the core distribution you get
+                if you include the<b>extscript-myfaces20-bundle</b>.
+                So a separate include of the Spring support
+                <b>module extscript-spring</b>
+            </subsection>
+            <subsection name="setup">
+                To setup the Spring support you have to add following dependencies:
+                <br/>
+                Either the extscript-spring.jar to your project additionally to the
+                Ext-Script bundle jar.
+                <br></br>
+                Or add following to your Maven configuration file:
+                <source><![CDATA[
+<dependency>
+    <groupId>org.apache.myfaces.extensions.scripting</groupId>
+    <artifactId>extscript-spring</artifactId>
+    <version>1.0.5</version>
+</dependency>
+                ]]></source>
+
+                And of course Spring must be properly present, either via the app server
+                or simply by a Maven include.
+                <p/>
+                Also following parameter must be added to your web.xml:
+                <source><![CDATA[
+<listener>
+    <!-- this listener class enables our spring reloading -->
+    <listener-class>
+        org.apache.myfaces.extensions.scripting.spring.context.CompilationAwareContextLoaderListener
+    </listener-class>
+</listener>
+                ]]></source>
+            </subsection>
+            <subsection name="Example Project">
+                An Example Kickstarter project has been provided which shows the capabilities of the
+                plugin.
+                You can use it as kickstarter for your own OWB based Ext-Scripting projects.
+                It can be found under
+                <b>extscript-examples/spring-example</b>
+                from the root
+                dir of the project.
+                You can start it with mvn
+                <b>jetty:run-exploded</b>
+                and you can edit the files located under the
+                <b>target/&lt;webappname;gt;/WEB-INF...</b>
+                folder on the fly.
+            </subsection>
+
+        </section>
+        <section name="Navigation Bottom">
+            <section name="Navigation Top">
+                <a href="./installation.html">&lt;&lt;Installation Guide</a>
+                or
+                <a href="./usingGeneral.html">On to the General Users Guide&gt;&gt;</a>
+            </section>
+
+        </section>
+    </body>
+</document>
