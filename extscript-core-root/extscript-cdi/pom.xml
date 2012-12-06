@@ -20,7 +20,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>extscript-cdi</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>MyFaces Extension Scripting Core for Apache OWB</name>
 
@@ -31,7 +31,7 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-core-root</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
 
     <repositories>
@@ -49,12 +49,12 @@
 
     <scm>
         <connection>
-            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.5/extscript-core-root/extscript-cdi
+            scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-cdi
         </connection>
         <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.5/extscript-core-root/extscript-cdi
+            scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-cdi
         </developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0.5/extscript-core-root/extscript-cdi</url>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-core-root/extscript-cdi</url>
     </scm>
     <properties>
 
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-core</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
         <!--
         <dependency>
