@@ -22,7 +22,7 @@
     <artifactId>extscript-doccompiler</artifactId>
     <packaging>pom</packaging>
     <name>MyFaces Extension Scripting Doccompiler</name>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
 
     <description>
          MyFaces Extension Scripting Core Meta Project
@@ -31,13 +31,13 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-root</artifactId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.5</version>
     </parent>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/trunk/extscript-core-root</developerConnection>
-        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/trunk/extscript-core-root</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.5/extscript-core-root</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/extensions/scripting/tags/extscript-root-1.0.5/extscript-core-root</developerConnection>
+        <url>http://svn.apache.org/viewvc/myfaces/extensions/scripting/tags/extscript-root-1.0.5/extscript-core-root</url>
     </scm>
 
 
