@@ -21,7 +21,34 @@ Download Apache MyFaces Extension Scripting
 
 Apache MyFaces Ext-Scripting 1.0.4
 
- Apache MyFaces Ext-Scripting 1.0.4 is the newest version. With OpenWebbeans support and reenabled Windows support.
+ Apache MyFaces Ext-Scripting 1.0.4 is the newest version. It has added Spring and JRuby  support.
+
+ Releasenotes can be found  {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310964&version=12323447  } here}}
+
+*-------------------------+---------+----------+-----------+
+|                         | Server | Checksum | Signature |
+*-------------------------+---------+----------+-----------+
+| Ext-Script MyFaces 2.1 bundle(jar)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.5/extscript-myfaces20-bundle-1.0.5.jar} extscript-myfaces20-bundle-1.0.5.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.5/extscript-myfaces20-bundle-1.0.5.jar.md5} extscript-myfaces20-bundle-1.0.5.jar.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-myfaces20-bundle/1.0.5/extscript-myfaces20-bundle-1.0.5.jar.asc}extscript-myfaces20-bundle-1.0.5.jar.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script OpenWebbeans support library | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-cdi/1.0.5/extscript-cdi-1.0.5.jar}extscript-cdi-1.0.5.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-cdi/1.0.5/extscript-cdi-1.0.5.jar.md5}extscript-cdi-1.0.5.jar.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-cdi/1.0.5/extscript-cdi-1.0.5.jar.asc }extscript-cdi-1.0.5.jar.asc }} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Spring support library | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-spring/1.0.5/extscript-spring-1.0.5.jar}extscript-spring-1.0.5.jar}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-spring/1.0.5/extscript-spring-1.0.5.jar.md5}extscript-spring-1.0.5.jar.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-spring/1.0.5/extscript-spring-1.0.5.jar.asc }extscript-spring-1.0.5.jar.asc }} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Demo Application MyFaces 2.1 (war)     | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.5/myfaces20-example-1.0.5.war} myfaces20-example-1.0.5.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.5/myfaces20-example-1.0.5.war.md5} myfaces20-example-1.0.5.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-example/1.0.5/myfaces20-example-1.0.5.war.asc}myfaces20-example-1.0.5.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Blank Application JSF2 (war)      | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.5/myfaces20-extscript-helloworld-1.0.5.war} myfaces20-extscript-helloworld-1.0.5.war}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.5/myfaces20-extscript-helloworld-1.0.5.war.md5} myfaces20-extscript-helloworld-1.0.5.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces20-extscript-helloworld/1.0.5/myfaces20-extscript-helloworld-1.0.5.war.asc} myfaces20-extscript-helloworld-1.0.5.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Blank CDI Application (war) | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces21-extscript-cdi/1.0.5/myfaces21-extscript-cdi-1.0.5.war} myfaces21-extscript-cdi-1.0.5.war }} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces21-extscript-cdi/1.0.5/myfaces21-extscript-cdi-1.0.5.war.md5}myfaces21-extscript-cdi-1.0.5.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/myfaces21-extscript-cdi/1.0.5/myfaces21-extscript-cdi-1.0.5.war.asc}myfaces21-extscript-cdi-1.0.5.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script Blank Spring Application (war) | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/spring-example/1.0.5/spring-example-1.0.5.war} spring-example-1.0.5.war }} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/spring-example/1.0.5/spring-example-1.0.5.war.md5}spring-example-1.0.5.war.md5}} | {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/spring-example/1.0.5/spring-example-1.0.5.war.asc}spring-example-1.0.5.war.asc}} |
+*-------------------------+---------+----------+-----------+
+| Ext-Script sources      |    {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.5/extscript-root-1.0.5-source-release.zip}extscript-root-1.0.5-source-release.zip}}     |   {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.5/extscript-root-1.0.5-source-release.zip.md5} extscript-root-1.0.5-source-release.zip.md5 }}       |   {{{https://repository.apache.org/content/repositories/releases/org/apache/myfaces/extensions/scripting/extscript-root/1.0.5/extscript-root-1.0.5-source-release.zip.asc}extscript-root-1.0.5-source-release.zip.asc}}       |
+*-------------------------+---------+----------+-----------+
+
+
+Apache MyFaces Ext-Scripting 1.0.4
+
+ Apache MyFaces Ext-Scripting 1.0.4 is the version. With OpenWebbeans support and reenabled Windows support.
 
  Releasenotes can be found  {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310964&version=12320341 } here}}
 
