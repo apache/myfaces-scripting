@@ -25,7 +25,8 @@
     <version>1.0.6-SNAPSHOT</version>
 
     <description>
-         MyFaces Extension Scripting Core Meta Project
+         A XDOC to MTEXT compiler to move the content to the cms in the long run.
+		 
     </description>
 
     <parent>
