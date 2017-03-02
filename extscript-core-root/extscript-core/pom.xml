@@ -145,6 +145,8 @@
                 </dependencies>
             </plugin>
             <!-- scala tools plugin -->
+            <!-- we remove scala support for now because of incompatible changes in the scala class format
+
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
@@ -184,6 +186,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            -->
             <!--
                 we reuse the maven shader plugin to get rid of the
                 asm transitive dependency in the final build

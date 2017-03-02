@@ -24,7 +24,7 @@
     <artifactId>extscript-mojarra-bundle</artifactId>
     <packaging>jar</packaging>
     <name>MyFaces Extension Scripting Mojarra 2.0 convenience meta bundle</name>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.6-SNAPSHOT</version>
 
     <description>
         The meta bundle bundeling all needed core runtimes
@@ -34,7 +34,7 @@
     <parent>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
         <artifactId>extscript-bundles</artifactId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
 
     <scm>
@@ -53,12 +53,12 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-core</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-mojarra</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

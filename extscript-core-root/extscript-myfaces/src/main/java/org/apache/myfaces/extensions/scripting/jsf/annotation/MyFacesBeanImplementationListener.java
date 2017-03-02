@@ -19,8 +19,9 @@
 package org.apache.myfaces.extensions.scripting.jsf.annotation;
 
 import org.apache.myfaces.config.RuntimeConfig;
+import org.apache.myfaces.config.element.ManagedBean;
 import org.apache.myfaces.config.element.NavigationRule;
-import org.apache.myfaces.config.impl.digester.elements.ManagedBean;
+
 import org.apache.myfaces.extensions.scripting.core.api.AnnotationScanListener;
 import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import org.apache.myfaces.extensions.scripting.core.common.util.StringUtils;
@@ -93,13 +94,16 @@ public class MyFacesBeanImplementationListener extends BaseAnnotationScanListene
             mbean = (ManagedBean) _alreadyRegistered.get(beanName);
             //return;
         } else {
-            mbean = new ManagedBean();
+            mbean = ManagedBeanHandler.newInstance();
         }
 
-        mbean.setBeanClass(clazz.getName());
+        ManagedBeanHandler.setBeanClass(mbean, clazz.getName());
+        //mbean.setBeanClass(clazz.getName());
+
 
         ReflectUtil.setField(mbean, "beanClass", null, true);
-        mbean.setName(beanName);
+        ManagedBeanHandler.setName(mbean, beanName);
+      //  mbean.setName(beanName);
         handleManagedpropertiesCompiled(mbean, fields(clazz));
         resolveScope(clazz, mbean);
 
@@ -124,7 +128,9 @@ public class MyFacesBeanImplementationListener extends BaseAnnotationScanListene
             CustomScoped customScoped = (CustomScoped) clazz.getAnnotation(CustomScoped.class);
             scope = (customScoped != null) ? customScoped.value() : "custom";
         }
-        mbean.setScope(scope);
+
+        //mbean.setScope(scope);
+        ManagedBeanHandler.setScope(mbean, scope);
     }
 
     protected void handleManagedpropertiesCompiled(ManagedBean mbean, Field[] fields) {
@@ -142,15 +148,20 @@ public class MyFacesBeanImplementationListener extends BaseAnnotationScanListene
                             + "' has a @ManagedProperty annotation");
                 }
 
-                org.apache.myfaces.config.impl.digester.elements.ManagedProperty mpc =
-                        new org.apache.myfaces.config.impl.digester.elements.ManagedProperty();
+                org.apache.myfaces.config.element.ManagedProperty mpc = ManagedPropertyHandler.newInstance();
                 String name = property.name();
                 if ((name == null) || "".equals(name)) {
                     name = field.getName();
                 }
-                mpc.setPropertyName(name);
-                mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
-                mpc.setValue(property.value());
+
+                ManagedPropertyHandler.setPropertyName(mpc, name);
+                //mpc.setPropertyName(name);
+                ManagedPropertyHandler.setPropertyClass(mpc, field.getType().getName());
+
+                //mpc.setPropertyClass(field.getType().getName()); // FIXME - primitives, arrays, etc.
+
+                ManagedPropertyHandler.setValue(mpc, property.value());// FIXME - primitives, arrays, etc.
+                //mpc.setValue(property.value());
 
                 ReflectUtil.executeMethod(mbean, "addProperty", mpc);
             }

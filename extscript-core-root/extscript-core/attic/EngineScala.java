@@ -28,7 +28,7 @@ import org.apache.myfaces.extensions.scripting.core.engine.api.CompilationResult
 import org.apache.myfaces.extensions.scripting.core.engine.api.ScriptingEngine;
 import org.apache.myfaces.extensions.scripting.core.engine.compiler.ScalaCompiler;
 import org.apache.myfaces.extensions.scripting.core.reloading.SimpleReloadingStrategy;
-import scala.ScalaObject;
+
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -44,6 +44,11 @@ import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.SC
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
+ *
+ * Note, for now we cannot support scala anymore because, ScalaObject as identifier
+ * for a scala compiled class does not exist anymore. I cannot detect that the underlying
+ * object is from Scala. (There is another way via scala reflection but that one needs to be investigated further)
+ * Sorry for removing scala support for now
  */
 
 public class EngineScala extends BaseEngine implements ScriptingEngine

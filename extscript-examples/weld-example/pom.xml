@@ -22,14 +22,14 @@
     <parent>
         <artifactId>extscript-examples</artifactId>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces21-extscript-weld-example</artifactId>
     <packaging>war</packaging>
     <name>A simple project for MyFaces 2.1 and Ext-Scripting 1.0 and Weld</name>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.6-SNAPSHOT</version>
     <url>http://www.apache.org</url>
     <dependencies>
         <!--
@@ -67,13 +67,13 @@
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces20-bundle</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-weld</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
         <!-- weld dependencies -->
         <dependency>
