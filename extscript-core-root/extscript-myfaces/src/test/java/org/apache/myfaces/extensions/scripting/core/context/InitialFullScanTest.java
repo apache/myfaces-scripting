@@ -56,7 +56,7 @@ public class InitialFullScanTest
             {
                 ScriptingEngine javaEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_JAVA);
                 ScriptingEngine groovyEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_GROOVY);
-                ScriptingEngine scalaEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_SCALA);
+              //  ScriptingEngine scalaEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_SCALA);
                 ScriptingEngine jrubyEngine = factory.getEngine(ScriptingConst.ENGINE_TYPE_JSF_JRUBY);
 
                 ClassLoader loader = this.getClass().getClassLoader();
@@ -76,14 +76,14 @@ public class InitialFullScanTest
                     currentDirStr = currentDirStr.replaceAll("core/context", "jsf/startup");
                     javaEngine.getSourcePaths().add(currentDirStr);
                     groovyEngine.getSourcePaths().add(currentDirStr);
-                    scalaEngine.getSourcePaths().add(currentDirStr);
+                  //  scalaEngine.getSourcePaths().add(currentDirStr);
                 }
                 //we now scan for the files
                 WeavingContext.getInstance().fullScan();
                 assertTrue("watched resources must have java files", javaEngine.getWatchedResources().size() > 0);
                 javaEngine.getSourcePaths().clear();;
                 groovyEngine.getSourcePaths().clear();
-                scalaEngine.getSourcePaths().clear();
+                //scalaEngine.getSourcePaths().clear();
                 if(jrubyEngine != null) {
                     jrubyEngine.getSourcePaths().clear();
                 }
