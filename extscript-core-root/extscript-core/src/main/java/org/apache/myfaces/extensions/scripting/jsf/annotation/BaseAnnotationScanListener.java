@@ -48,8 +48,7 @@ public class BaseAnnotationScanListener {
      * unregisters this class in the central registry
      * is triggered if the class itself has been registered previously
      *
-     * @param className
-     * @return
+     * @param className the classname which should be unregistered
      */
     public void purge(String className) {
 

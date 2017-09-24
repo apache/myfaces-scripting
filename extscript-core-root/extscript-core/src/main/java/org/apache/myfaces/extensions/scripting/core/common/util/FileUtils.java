@@ -46,7 +46,7 @@ public class FileUtils {
      * <p>&nbsp;</p>
      * the touch is basically just the same as unix touch
      *
-     * @param fileToTouch
+     * @param fileToTouch the file which needs unix style touching
      */
     public static void touch(File fileToTouch) {
         //we change our lastMofied to the current system time
@@ -72,6 +72,10 @@ public class FileUtils {
         return sep;
     }
 
+    /**
+     * Gets a temp dir to work on
+     * @return a temp dir which can be used for io processing
+     */
     public static File getTempDir() {
         File tempDir;
 
@@ -183,7 +187,7 @@ public class FileUtils {
 
     /**
      * fetches the source paths from a given root directory in the format
-     * <path>/<appendix>;...
+     * &lt;path&gt;/&lt;appendix&gt;;...
      *
      * @param sourcePath the sourcePath from which the directory traversal should happen from
      * @param appendix   the appendix which has to be appended to every path found

@@ -419,6 +419,7 @@ public class WeavingContext
     
     /**
      * reload the class dynamically
+     * @param clazz ... the class which needs reloading
      */
     public Class reload(Class clazz)
     {

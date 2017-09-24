@@ -92,6 +92,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
      * which have to preserve some kind of delegate before instantiation.
      *
      * @param target the target which has to receive the properties
+     * @param engineType the engine type for the mapping
      * @param src    the source which has the original properties
      */
     protected void mapProperties(Object target, int engineType, Object src) {

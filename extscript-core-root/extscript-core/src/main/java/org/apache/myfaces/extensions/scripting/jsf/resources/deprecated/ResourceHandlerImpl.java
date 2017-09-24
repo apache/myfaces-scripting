@@ -115,6 +115,12 @@ public abstract class ResourceHandlerImpl extends ResourceHandler
      * loader. If no library, or resource is found, just return null,
      * so the algorithm in createResource can continue checking with the
      * next registered ResourceLoader.
+     *
+     * @param resourceLoader the resource loader for this resource
+     * @param resourceName the resource name for this resource
+     * @param libraryName   the library name for this resource
+     *
+     * @return the resource meta data for the specifiy resource
      */
     protected ResourceMeta deriveResourceMeta(ResourceLoader resourceLoader,
             String resourceName, String libraryName)

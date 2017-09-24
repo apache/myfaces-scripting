@@ -32,6 +32,8 @@ import java.util.List;
 
 /**
  * registry facade which is used to track our dependencies
+ *
+ * @author Werner Punz
  */
 public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry
 {
@@ -95,7 +97,7 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry
     }
 
     /**
-     * adds a dependency to our dependency map (usually rootclass -> dependency and currentClass -> dependency)
+     * adds a dependency to our dependency map (usually rootclass -&gt; dependency and currentClass -&gt; dependency)
      *
      * @param engineType            the engine type for this dependency
      * @param rootClass             the root class of this scan which all dependencies are referenced from
@@ -134,6 +136,8 @@ public class DependencyRegistryImpl implements ExternalFilterDependencyRegistry
 
     /**
      * flush to flush down our stored dependencies into our final map
+     *
+     * @param engineType the engine type
      */
     public void flush(Integer engineType) {
         //_registrationStrategy.apply(_dependencies);

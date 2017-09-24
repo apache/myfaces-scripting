@@ -41,7 +41,7 @@ public abstract class WatchedResource implements Cloneable {
     /**
      * Unique identifier on the resource
      *
-     * @return
+     * @return get the unique idientifier for this resource
      */
     public abstract String getIdentifier();
 

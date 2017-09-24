@@ -42,25 +42,56 @@ public abstract class ResourceLoader
         _prefix = prefix;
     }
 
+    /**
+     * Gets the resource version of a specifiy resource
+     *
+     * @param path the resource path
+     * @return the version of the resource as String
+     */
     public abstract String getResourceVersion(String path);
 
     /**
      * Return the max available version found (if exists) or
-     * return null if no version available. 
+     * return null if no version available.
+     *
+     * @param path the path to the library
+     * @return the available version or null
      */
     public abstract String getLibraryVersion(String path);
 
     /**
-     * Return the max available version found (if exists) or
-     * return null if no version available. 
+     * Return the resourource url from the given meta data
+     *
+     * @param resourceMeta the resource metadata
+     * @return the resourource url from the given meta data
      */
     public abstract URL getResourceURL(ResourceMeta resourceMeta);
 
+    /**
+     *  Returns an input stream on a given resource defined by resource meta
+     *
+      * @param resourceMeta the resource metadata
+     * @return an input stream on the given resource
+     */
     public abstract InputStream getResourceInputStream(ResourceMeta resourceMeta);
-    
+
+    /**
+     * creates a resource meta data object
+     * @param prefix the prefix for the resource
+     * @param libraryName the library name
+     * @param libraryVersion the library version
+     * @param resourceName the resource name
+     * @param resourceVersion and the version
+     * @return a ResourceMeta object of the information passed to this method
+     */
     public abstract ResourceMeta createResourceMeta(String prefix, String libraryName, String libraryVersion,
             String resourceName, String resourceVersion);
-    
+
+    /**
+     * checks if the library exists
+     * @param libraryName the library name to check for
+     * @return true if it exists
+     */
     public abstract boolean libraryExists(String libraryName);
     
     private Comparator<String> _versionComparator = null;
@@ -79,9 +110,15 @@ public abstract class ResourceLoader
         _versionComparator = versionComparator;
     }
 
-    public class VersionComparator implements Comparator<String>
+    protected class VersionComparator implements Comparator<String>
     {
 
+        /**
+         * Standard comoare method
+         * @param s1 string1 to compare
+         * @param s2 string2 to compare
+         * @return standard numeric compare result
+         */
         public int compare(String s1, String s2)
         {
             int n1 = 0;
@@ -143,12 +180,20 @@ public abstract class ResourceLoader
             return n1 - n2;
         }
     }
-    
+
+    /**
+     * getter for the standard resource loader prefix
+     * @return the resource loader prefix
+     */
     public String getPrefix()
     {
         return _prefix;
     }
 
+    /**
+     * setter for the prefix
+     * @param prefix the prefix satring used for the resource loader
+     */
     public void setPrefix(String prefix)
     {
         _prefix = prefix;

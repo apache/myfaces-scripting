@@ -19,12 +19,18 @@
 package org.apache.myfaces.extensions.scripting.core.common.util;
 
 /**
- * @Author Werner Punz
+ * @author Werner Punz
  * Null representation for easier introspection calls
+ *
+ * @author Werner Punz
  */
 public class Null extends Cast
 {
 
+    /**
+     * representation of a null value of a specific class
+     * @param clazz
+     */
     public Null(Class clazz) {
         super(clazz, null);
     }

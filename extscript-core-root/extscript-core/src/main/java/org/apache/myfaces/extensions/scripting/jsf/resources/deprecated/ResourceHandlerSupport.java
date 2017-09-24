@@ -43,6 +43,9 @@ public abstract class ResourceHandlerSupport
      * /javax.faces.resource/image.jpg
      * 
      * This is used on ResourceHandler.handleResourceRequest()
+     *
+     * @param facesContext the standard faces context
+     * @return the resource base path from a given faces context
      * 
      */
     public abstract String calculateResourceBasePath(FacesContext facesContext);
@@ -52,21 +55,21 @@ public abstract class ResourceHandlerSupport
      * using the standard. The order of ResourceLoaders define
      * its precedence. 
      * 
-     * @return
+     * @return an array of resource loaders
      */
     public abstract ResourceLoader[] getResourceLoaders();
     
     /**
      * Check if the mapping used is done using extensions (.xhtml, .jsf)
      * or if it is not (/faces/*)
-     * @return
+     * @return true if the mapping is done with extensions
      */
     public abstract boolean isExtensionMapping();
     
     /**
      * Get the mapping used as prefix(/faces) or sufix(.jsf)
      * 
-     * @return
+     * @return the defined mapping for triggering the faces servlet
      */
     public abstract String getMapping();
     
@@ -74,14 +77,14 @@ public abstract class ResourceHandlerSupport
      * Return the time when the app started. This is useful to set the
      * "Last-Modified" header in some specific cases.
      * 
-     * @return
+     * @return the startup time as long value
      */
     public abstract long getStartupTime();
     
     /**
      * Return the time that should be set on "Expires" header in a resource.
      * 
-     * @return
+     * @return the max time expires value as long
      */
     public abstract long getMaxTimeExpires();
 }

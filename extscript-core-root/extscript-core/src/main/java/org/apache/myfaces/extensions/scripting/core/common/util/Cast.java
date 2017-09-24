@@ -21,21 +21,36 @@ package org.apache.myfaces.extensions.scripting.core.common.util;
 /**
  * Simple casting representation for introspection
  * calls
+ *
+ * @author Werner Punz
  */
 public class Cast {
 
     Class clazz;
     Object value;
 
+    /**
+     *
+     * @param clazz the cast class representing the value
+     * @param value the value itself
+     */
     public Cast(Class clazz, Object value) {
         this.clazz = clazz;
         this.value = value;
     }
 
+    /**
+     * standard getter
+     * @return the cast class representing the value
+     */
     public Class getClazz() {
         return clazz;
     }
 
+    /**
+     * standard getter
+     * @return the value itself
+     */
     public Object getValue() {
         return value;
     }

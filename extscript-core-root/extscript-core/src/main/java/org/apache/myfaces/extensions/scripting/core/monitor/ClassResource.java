@@ -86,7 +86,7 @@ public class ClassResource extends WatchedResource
     /**
      * identifier for this resource is the classname
      *
-     * @return
+     * @return the class name for this resource
      */
     public String getIdentifier()
     {

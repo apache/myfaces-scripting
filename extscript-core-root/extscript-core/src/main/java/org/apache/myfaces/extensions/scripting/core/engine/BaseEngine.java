@@ -132,7 +132,7 @@ public abstract class BaseEngine
     /**
      * checks whether we have resources which are in need of a recompile
      *
-     * @return
+     * @return true if a recompile is needed
      */
     public boolean needsRecompile()
     {
@@ -147,7 +147,7 @@ public abstract class BaseEngine
     /**
      * checks whether we have resources which are tainted
      *
-     * @return
+     * @return true if any resource is tainted
      */
     public boolean isTainted()
     {
