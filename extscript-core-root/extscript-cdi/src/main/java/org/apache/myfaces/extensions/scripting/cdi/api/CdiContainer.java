@@ -42,11 +42,15 @@ public interface CdiContainer
      * Booting the CdiTestContainer will scan the whole classpath
      * for Beans and extensions available.
      * The container might throw a DeploymentException or similar on startup.
+     *
+     * @param context standard servlet context event
      */
     void boot(ServletContextEvent context);
     
     /**
      * This will shutdown the underlying CDI container.
+     *
+     * @param context standard servlet context
      */
     void shutdown(ServletContextEvent context);
     

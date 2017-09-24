@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Set;
 
 /**
- * OpenWebBeans specific implementation of {@link org.apache.deltaspike.cdise.api.CdiContainer}.
+ * OpenWebBeans specific implementation of CdiContainer
  */
 public class OpenWebBeansContainerControl implements CdiContainer
 {
