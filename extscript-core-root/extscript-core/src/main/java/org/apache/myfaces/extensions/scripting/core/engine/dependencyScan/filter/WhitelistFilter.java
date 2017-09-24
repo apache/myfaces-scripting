@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Filter class which depends upon a list of whitelisted packages
  * wildcards in this filter are implicit which means
- * <p/>
+ * <p></p>
  * org.apache.myfaces includes all files
  * under org.apache.myfaces
  */

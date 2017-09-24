@@ -66,7 +66,7 @@ public class MyFacesBeanHandler
     /**
      * Refreshes all managed beans
      * session, and personal scoped ones
-     * <p/>
+     * <p></p>
      * personal scoped beans are beans which
      * have either
      * <li> session scope </li>

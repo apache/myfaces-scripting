@@ -173,7 +173,7 @@
                     Maven pom.xml to enable Ext-Scripting
                 </p>
 
-                <p/>
+                <p></p>
                 <h4>MyFaces 1.2.8+</h4>
                 <source><![CDATA[
      <dependency>

@@ -57,7 +57,7 @@ public class ResourceMonitor extends Thread
      * It keeps track whether the engines source paths
      * have dirty files or not and if true we enforce a recompile at the
      * next refresh!
-     * <p/>
+     * <p></p>
      * We keep track on engine level to avoid to search the classMap for every refresh
      * the classMap still is needed for various identification tasks which are reload
      * related

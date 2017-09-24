@@ -38,7 +38,7 @@ import java.io.StringWriter;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          Taint history test, which is the first JSF related test
  *          we try to test here a simple mechanism, the taint history under
  *          JSF Testing conditions.

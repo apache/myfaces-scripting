@@ -33,7 +33,7 @@ import java.io.IOException;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          This class unfortunately has to be copied over from Weld with minor modifications
  *          the reason for it is that the bootstrap instance var is private final transient
  *          but we have to reroute it to our own bootstrapper.

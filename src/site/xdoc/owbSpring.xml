@@ -37,16 +37,16 @@
             <subsection name="Introduction">
                 As of Version 1.0.4 Ext-Scripting has introduced basic openwebbeans support.
                 This support is considered to be experimental so use it with care.
-                <p/>
+                <p></p>
                 This means you can define CDI Beans within the supported scripting languages
                 and you can provide dynamic reloading (in a more simplified manner)
                 to OWB.
-                <p/>
+                <p></p>
                 The reloading is different to standard JSF due to CDI limitations, in case
                 of a changed bean the entire container is reloaded instead of the bean
                 and its dependencies. This has to be taken into consideration if you use
                 the OWB support module.
-                <p/>
+                <p></p>
                 Also Ext-Scripting OWB is an extension module, it is not part of the core distribution you get
                 if you include the<b>extscript-myfaces20-bundle</b>.
                 So a separate include of the OWB support
@@ -87,10 +87,10 @@
             <subsection name="Introduction">
                 As of version 1.0.5 basic spring support has been provided to Ext-Scripting.
                 This support is considered to be experimental so use it with care.
-                <p/>
+                <p></p>
                 Spring support means you can define Spring Beans within the supported scripting languages
                 and you can provide dynamic reloading to Spring.
-                <p/>
+                <p></p>
                 Also Spring support is an extension module, it is not part of the core distribution you get
                 if you include the<b>extscript-myfaces20-bundle</b>.
                 So a separate include of the Spring support
@@ -113,7 +113,7 @@
 
                 And of course Spring must be properly present, either via the app server
                 or simply by a Maven include.
-                <p/>
+                <p></p>
                 Also following parameter must be added to your web.xml:
                 <source><![CDATA[
 <listener>

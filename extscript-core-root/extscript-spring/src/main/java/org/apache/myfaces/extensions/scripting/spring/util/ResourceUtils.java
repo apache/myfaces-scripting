@@ -46,7 +46,7 @@ public class ResourceUtils {
      * to the given timestamp, i.e. it compares the given timestamp to the last
      * modified timestamp of the given resource and returns <code>true</code>
      * if the given timestamp is less than the timestamp of the given resource.</p>
-     * <p/>
+     * <p></p>
      * <p>Note that this methods assumes that the given resource exists, otherwise
      * an exception will be thrown.</p>
      *

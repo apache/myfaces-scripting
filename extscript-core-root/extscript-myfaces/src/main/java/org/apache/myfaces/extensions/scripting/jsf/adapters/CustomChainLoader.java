@@ -34,7 +34,7 @@ import java.security.PrivilegedExceptionAction;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          The chainloader docks onto the forName handler
  *          in the myfaces classutils which load the
  *          artifacting classes, we dock onto this extension point

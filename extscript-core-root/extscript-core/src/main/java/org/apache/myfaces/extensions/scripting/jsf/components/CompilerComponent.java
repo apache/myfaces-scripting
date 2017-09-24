@@ -30,7 +30,7 @@ import java.util.Locale;
 /**
  * Compiler component which currently
  * just shows the last compile output in the system
- * <p/>
+ * <p></p>
  * Not to keep backwards compatibility to JSF 1.2
  * we do not use the StateHelper but go the old route
  * instead

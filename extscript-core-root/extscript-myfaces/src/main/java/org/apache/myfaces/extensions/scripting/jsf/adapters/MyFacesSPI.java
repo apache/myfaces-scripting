@@ -27,7 +27,7 @@ import javax.servlet.ServletContext;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          SPI for various myfaces related tasks
  */
 public class MyFacesSPI implements ImplementationService

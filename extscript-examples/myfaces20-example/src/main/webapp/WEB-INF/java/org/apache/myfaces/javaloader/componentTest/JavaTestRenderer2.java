@@ -30,7 +30,7 @@ import java.io.IOException;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          This renderer can act as a drag and drop target for the annotation
  *          set in JavaTestRenderer1
  */

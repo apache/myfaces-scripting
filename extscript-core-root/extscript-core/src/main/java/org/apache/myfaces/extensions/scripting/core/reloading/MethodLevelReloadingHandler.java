@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
  * all interfaceable artifacts which
  * only have reloading logic
  * and can cope with reloading on method level
- * <p/>
+ * <p></p>
  * Note this works only for a minority of the artifacts
  * the reason, most artifacts do not rely on interfaces but
  * on base classes

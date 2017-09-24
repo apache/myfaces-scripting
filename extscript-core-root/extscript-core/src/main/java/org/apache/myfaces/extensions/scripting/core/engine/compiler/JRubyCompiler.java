@@ -40,7 +40,7 @@ import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerCo
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          A compiler for jruby which uses ruby and the standard JSR 223
  *          for compiling classes into java classes
  */

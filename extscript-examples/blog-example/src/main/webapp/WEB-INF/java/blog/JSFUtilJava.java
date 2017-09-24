@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author werpu2
  * @date: 01.09.2009
- * <p/>
+ * <p></p>
  * A helper for JSF and introspection related tasks
  */
 public class JSFUtilJava {

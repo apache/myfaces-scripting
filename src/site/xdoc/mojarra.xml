@@ -37,11 +37,11 @@
 
         <section name="Setup Steps">
             The setup is fairly straight forward.
-            <p/>
+            <p></p>
             Add the support jars (extscript-mojarra-bundle.jar) and setup your loader paths
             just like you would do it for MyFaces.
             The main difference is setting up the loader paths for Mojarra is <b>mandatory</b>.
-            <p/>
+            <p></p>
             The mandatory loader paths are needed to avoid conflicts with Mojarras internal Groovy
             support which utilizes the same paths. (This was a design decision to keep Mojarra compatibility
             at a time Mojarra support was not really under discussion)

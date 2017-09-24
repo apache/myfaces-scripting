@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          holds references to the scripting engines
  *          initializes the engins dynamically
  */

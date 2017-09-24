@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          serves the startup process
  *          the chainloader hooks itself into the myfaces init process
  *          and is responsible for startup of the daemon the

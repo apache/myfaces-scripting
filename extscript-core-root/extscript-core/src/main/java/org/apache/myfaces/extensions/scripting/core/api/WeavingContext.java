@@ -56,7 +56,7 @@ import java.util.logging.Logger;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          Central weaving context
  */
 
@@ -393,7 +393,7 @@ public class WeavingContext
      * we create a proxy to an existing object
      * which does reloading of the internal class
      * on method level
-     * <p/>
+     * <p></p>
      * this works only on classes which implement contractual interfaces
      * it cannot work on things like the navigation handler
      * which rely on base classes

@@ -24,10 +24,10 @@ import org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api.De
 /**
  * General contractual interface for a dependency registry with external filters
  * being settable
- * <p/>
+ * <p></p>
  * The dependency registry is a class which stores dependencies
  * according to an internal whitelisting system.
- * <p/>
+ * <p></p>
  * Only classes which pass the whitelisting check will be processed
  */
 public interface ExternalFilterDependencyRegistry extends DependencyRegistry
@@ -60,7 +60,7 @@ public interface ExternalFilterDependencyRegistry extends DependencyRegistry
     /**
      * Flush operation to batch sync
      * the current dependencies against a storage
-     * <p/>
+     * <p></p>
      * (will be removed later once we have all the code transitioned
      * to the registry system)
      */

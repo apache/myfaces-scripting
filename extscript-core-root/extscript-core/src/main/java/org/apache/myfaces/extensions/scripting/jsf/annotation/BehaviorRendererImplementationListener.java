@@ -33,7 +33,7 @@ import java.util.logging.Level;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          Implementation listener for the FacesBehaviorRenderer annotation
  */
 

@@ -23,7 +23,7 @@ import java.lang.annotation.Annotation;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          We use a source code artifact observer here to register the
  *          meta data in the correct registry entries
  */

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          Java file strategy pattern to filter out all java files which are possible sources
  *          so that we can recompile them
  */

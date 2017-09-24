@@ -33,7 +33,7 @@ import java.security.PrivilegedExceptionAction;
  * (naming and reflection) of java classes
  *
  * @author werpu
- *         <p/>
+ *         <p></p>
  */
 public class ClassUtils
 {

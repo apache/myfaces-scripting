@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p/>
+ *          <p></p>
  *          Renderer Example with dynamic annotations,
  *          you can move the annotation from one
  *          renderer artifact to the other

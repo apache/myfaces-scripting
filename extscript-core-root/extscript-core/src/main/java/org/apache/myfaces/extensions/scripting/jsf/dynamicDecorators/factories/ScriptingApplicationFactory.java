@@ -28,13 +28,13 @@ import javax.faces.application.ApplicationFactory;
 /**
  * Application factory which introduces
  * scripting proxies for their artefacts
- * <p/>
+ * <p></p>
  * We use a mix of AOP and helper constructs
  * to reach the goal to be dynamic.
  * For most artefacts we just need to
  * check if the object is a Groovy object
  * and then reload at their connection interfaces
- * <p/>
+ * <p></p>
  * Some artefacts have a longer lifespan and/or are stateless
  * for those we have to work with reloading AOP
  *

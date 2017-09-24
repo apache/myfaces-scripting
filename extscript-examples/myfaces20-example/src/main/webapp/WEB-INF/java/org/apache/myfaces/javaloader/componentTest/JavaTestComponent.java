@@ -90,7 +90,7 @@ public class JavaTestComponent extends UIInput implements Markable {
     /**
      * Ok guys, lets add a new attribute to the component
      * which is displayed in our browser page
-     * <p/>
+     * <p></p>
      * Note we are on jsf 2 level
      */
 

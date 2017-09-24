@@ -23,7 +23,7 @@ package org.apache.myfaces.extensions.scripting.core.engine.api;
  * set of source files. However, note that it doesn't mean that the source files
  * themselves contained errors but rather that the system couldn't managed to
  * find an appropriate compiler implementation, etc.</p>
- * <p/>
+ * <p></p>
  * <p>In order to determine whether the compiler successfully compiled a certain
  * source file you have to look for the compilation result instead.</p>
  */
