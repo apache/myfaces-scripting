@@ -53,14 +53,14 @@ public class Configuration
     /**  kk
      * the package whitelist used by our system
      * to determine which packages are under control.
-     * <p></p>
+     * <p>&nbsp;</p>
      * Note an empty whitelist means, all packages with sourcedirs attached to.
      */
     Set<String> _packageWhiteList = new ConcurrentSkipListSet<String>();
     /**
      * we keep track of separate resource dirs
      * for systems which can use resource loaders
-     * <p></p>
+     * <p>&nbsp;</p>
      * so that we can load various resources as well
      * from separate source directories instead
      */

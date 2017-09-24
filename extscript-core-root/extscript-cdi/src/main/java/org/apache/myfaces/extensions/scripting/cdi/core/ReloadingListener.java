@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          Reloading listener which triggers a container reload
  *          the reload can happen at the end of the extscript lifecycle
  *          when all beans have been tainted

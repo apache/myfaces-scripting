@@ -33,11 +33,11 @@ import javax.enterprise.inject.spi.Extension;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          An extension for cdi which does the initial lifecycle
  *          trigger from CDI instead of JSF since CDI is enabled
  *          before JSF we have to do it that way
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          Stage 1 of our startup cycle
  */
 

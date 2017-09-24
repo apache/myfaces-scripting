@@ -23,7 +23,7 @@ import org.junit.Ignore;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          testprobe for our reflectutils
  */
 

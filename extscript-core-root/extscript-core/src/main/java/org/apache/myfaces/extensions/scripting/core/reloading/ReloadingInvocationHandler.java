@@ -25,7 +25,7 @@ import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 import java.lang.reflect.InvocationHandler;
 
 /**
- * <p></p>
+ * <p>&nbsp;</p>
  * We set our own invocation handler
  * here to allow reflection utils directly targeting our
  * _delegate.

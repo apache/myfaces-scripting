@@ -46,7 +46,7 @@ import static org.apache.myfaces.extensions.scripting.core.engine.api.CompilerCo
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          a JSR 199 based compiler which implements
  *          our simplified compiler interface
  */
@@ -64,7 +64,7 @@ public class JSR199Compiler implements org.apache.myfaces.extensions.scripting.c
 
     /**
      * compile all files starting from a given root
-     * <p></p>
+     * <p>&nbsp;</p>
      * note, the java compiler interface does not allow per se
      * wildcards due to its file object indirection
      * we deal with that problem by determine all files manually and then

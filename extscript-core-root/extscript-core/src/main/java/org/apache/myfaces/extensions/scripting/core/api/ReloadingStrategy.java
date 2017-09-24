@@ -20,7 +20,7 @@ package org.apache.myfaces.extensions.scripting.core.api;
 
 
 /**
- * <p></p>
+ * <p>&nbsp;</p>
  * Generic strategy for reloading
  * this should encapsulate various
  * reloading strategies

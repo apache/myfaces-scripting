@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  * A dependency scanner for
  * our classes. This class is thread save on object level
  * and can be used as a singleton
- * <p></p>
+ * <p>&nbsp;</p>
  *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -109,7 +109,7 @@ public class StandardDependencyScanner implements DependencyScanner
      * We have to go through the entire hierarchy except for standard
      * namespaces due to the fact that we have to cover source <->binary<->source
      * dependencies with binary being binary classes never to be refreshed
-     * <p></p>
+     * <p>&nbsp;</p>
      * Note we can optionally do some interface checks here
      * for now annotations are only processed by the class scanner itself
      * so we do not process any annotation inheritance on this level

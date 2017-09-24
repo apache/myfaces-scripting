@@ -21,21 +21,21 @@ package org.apache.myfaces.extensions.scripting.core.reloading;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
- *          <p></p>
+ *          <p>&nbsp;</p>
+ *          <p>&nbsp;</p>
  *          The renderer is a stateless flyweight pattern the reloading strategy is
  *          to do nothing, this should give optimal results
- *          <p></p>
- *          <p></p>
+ *          <p>&nbsp;</p>
+ *          <p>&nbsp;</p>
  *          The components are a similar case they are not flyweight
  *          but the properties usually are preserved by the lifecycle if possible
  *          or assigned by the tag handlers
- *          <p></p>
- *          <p></p>
+ *          <p>&nbsp;</p>
+ *          <p>&nbsp;</p>
  *          The same also applies to other flyweight patterned classes
  *          like converters or validators
- *          <p></p>
- *          <p></p>
+ *          <p>&nbsp;</p>
+ *          <p>&nbsp;</p>
  *          The only ones which need to keep some state are the ones
  *          which keep delegates, like the NavHandler
  */

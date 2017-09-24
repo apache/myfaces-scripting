@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * Class reader for ASM which allows to plug our own loader instead
  * of the default one
- * <p></p>
+ * <p>&nbsp;</p>
  * (ASM makes too many assumptions regarding the loader)
  */
 public class ExtendedClassReader extends ClassReader {

@@ -26,7 +26,7 @@ import javax.faces.validator.ValidatorException;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          Purged validator class to enable validator
  *          purging despite the fact
  *          that the original code does not allow it

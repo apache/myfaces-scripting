@@ -21,7 +21,7 @@ package org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.core;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          Utils which store the shared code
  */
 public class ClassScanUtils {

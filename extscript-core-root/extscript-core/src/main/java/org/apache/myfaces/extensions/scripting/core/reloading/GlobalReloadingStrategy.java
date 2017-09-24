@@ -30,11 +30,11 @@ import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          A reloading strategy chain of responsibility which switches
  *          depending on the artifact type to the correct
  *          strategy
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          TODO make the reloading strategy pluggable from outside (1.1)!
  *          TODO groovy reloading strategy needs to be added at least the properties
  *          mapping for a groovy class

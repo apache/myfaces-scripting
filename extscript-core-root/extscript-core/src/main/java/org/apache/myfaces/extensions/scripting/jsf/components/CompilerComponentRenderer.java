@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 /**
  * Renderer for the compiler component
- * <p></p>
+ * <p>&nbsp;</p>
  * This renderer is responsible for rendering the last compiler output
  * hosted in our weavingContext
  */

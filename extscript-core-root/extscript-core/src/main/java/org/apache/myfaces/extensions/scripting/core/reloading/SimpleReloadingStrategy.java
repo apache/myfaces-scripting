@@ -28,9 +28,9 @@ import java.util.logging.Logger;
  * A simple implementation of our reloading strategy
  * pattern this is the most basic implementation
  * covering our reloading.
- * <p></p>
+ * <p>&nbsp;</p>
  * Applicable for most artifacts except for now managed beans
- * <p></p> *
+ * <p>&nbsp;</p> *
  *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -85,7 +85,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy
 
     /**
      * helper to map the properties wherever possible
-     * <p></p>
+     * <p>&nbsp;</p>
      * This is the simplest solution for now,
      * we apply only a copy properties here, which should be enough
      * for all artifacts except the managed beans and the ones

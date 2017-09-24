@@ -101,7 +101,7 @@ public class ClassLoaderUtils {
      * classpath. This method, however, returns the classpath as a String, where each
      * classpath entry is separated by a ';', i.e. it returns the classpath in a format
      * that Java tools usually expect it to be.</p>
-     * <p></p>
+     * <p>&nbsp;</p>
      * it also adds the additional classpaths issued by our configuration to the list
      *
      * @param classLoader the class loader which you want to resolve the class path for

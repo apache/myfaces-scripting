@@ -43,7 +43,7 @@ public class FileUtils {
      * touch functionality to mark
      * compiles and dependencies as changed
      * to get a clean reloading state
-     * <p></p>
+     * <p>&nbsp;</p>
      * the touch is basically just the same as unix touch
      *
      * @param fileToTouch

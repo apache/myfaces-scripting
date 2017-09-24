@@ -37,8 +37,8 @@ public class ClassDependencies {
      * reverse index which shows which
      * a class name and which classes in the system depend on that
      * classname
-     * <p></p>
-     * <p></p>
+     * <p>&nbsp;</p>
+     * <p>&nbsp;</p>
      * the key is a dependency a class has the _value is a set of classes which depend on the current class
      */
     private Map<String, Set<String>> reverseIndex = new ConcurrentHashMap<String, Set<String>>();

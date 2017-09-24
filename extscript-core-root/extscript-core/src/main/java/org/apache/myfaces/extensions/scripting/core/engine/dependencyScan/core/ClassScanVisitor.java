@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 /**
  * The central visitor for the class scanner. ASM uses a visitor interface for high performance
  * to step through classes.
- * <p></p>
+ * <p>&nbsp;</p>
  * We reuse this pattern to get the best performance possible in this critical part of the application
  * which also is triggered by the startup process.
  *

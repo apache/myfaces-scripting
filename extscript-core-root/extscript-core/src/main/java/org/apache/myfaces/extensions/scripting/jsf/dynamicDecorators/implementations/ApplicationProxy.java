@@ -65,7 +65,7 @@ import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.AR
 
 /**
  * @author Werner Punz
- *         <p></p>
+ *         <p>&nbsp;</p>
  *         our decorating applicstion
  *         which should resolve our bean issues within a central
  *         bean processing interceptor
@@ -152,7 +152,7 @@ public class ApplicationProxy extends Application implements Decorated
      * the same object in a refreshed state from the value
      * part of the set, in our case
      * using hash maps should speed things up
-     * <p></p>
+     * <p>&nbsp;</p>
      * since we only have few write operations but access
      * the map multithreaded we use concurrentHashMap here
      */

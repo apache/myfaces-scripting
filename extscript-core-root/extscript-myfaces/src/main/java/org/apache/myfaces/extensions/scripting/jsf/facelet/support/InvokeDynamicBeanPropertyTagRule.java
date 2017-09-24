@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
  * property tag rule does.
  * By not enforcing a strict per object/class policy on calling
  * the setter we are able to reload the classes on the fly
- * <p></p>
+ * <p>&nbsp;</p>
  * the original approach was to cache the classes, and then
  * call the invoke method on the existing class
  * if we now exchange the classes we have a problem...

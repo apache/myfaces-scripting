@@ -22,7 +22,7 @@ package org.apache.myfaces.extensions.scripting.core.engine.dependencyScan.api;
  * General contractual interface for a dependency registry
  * The dependency registry is a class which stores dependencies
  * according to an internal whitelisting system.
- * <p></p>
+ * <p>&nbsp;</p>
  * Only classes which pass the whitelisting check will be processed
  */
 public interface DependencyRegistry {

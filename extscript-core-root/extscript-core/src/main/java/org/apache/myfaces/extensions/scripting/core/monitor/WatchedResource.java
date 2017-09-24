@@ -24,7 +24,7 @@ import java.io.File;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          An abstraction on our class watcher
  *          we now deal with generic resources to simplify the access
  */

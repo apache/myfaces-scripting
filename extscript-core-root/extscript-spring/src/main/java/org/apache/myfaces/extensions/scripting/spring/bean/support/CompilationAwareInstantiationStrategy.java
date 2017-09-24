@@ -36,11 +36,11 @@ import java.lang.reflect.Method;
  * that Spring internally tries to cache the constructor it used to instantiate a bean. However,
  * if the Class gets reloaded, the instantiation strategy has to resolve the constructor to use
  * again as otherwise it would create an instance of an outdated class.</p>
- * <p></p>
+ * <p>&nbsp;</p>
  * <p>Note that even though this class extends another class that seems to have a dependency on
  * CGLIB, this is not the case actually. Only if you're using method injection CGLIB has to be
  * available on the classpath.</p>
- * <p></p>
+ * <p>&nbsp;</p>
  * <p>TODO: Invalidate argument caches.
  * Spring internally caches the arguments to use for instantiating a new bean, i.e. it caches
  * both the constructor / factory method to use and the according resolved arguments. However,

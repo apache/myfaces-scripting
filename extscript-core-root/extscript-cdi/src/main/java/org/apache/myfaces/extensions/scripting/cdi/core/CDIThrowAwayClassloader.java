@@ -36,7 +36,7 @@ import java.util.Enumeration;
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
- *          <p></p>
+ *          <p>&nbsp;</p>
  *          We use
  */
 
