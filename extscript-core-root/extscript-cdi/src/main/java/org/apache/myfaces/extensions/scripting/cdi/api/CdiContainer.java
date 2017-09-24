@@ -61,6 +61,9 @@ public interface CdiContainer
     BeanManager getBeanManager();
 
     /**
+     * @param context standard servlet context
+     * @param session standard htpp session
+     *
      * @return ContextControl for the started Container. <code>null</code> if the container is not yet started
      */
     ContextControl getContextControl(ServletContext context, HttpSession session);

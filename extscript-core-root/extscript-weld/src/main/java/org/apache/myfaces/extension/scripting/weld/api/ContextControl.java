@@ -26,7 +26,7 @@ import java.lang.annotation.Annotation;
 /**
  * Control native CDI Container Contexts.
  * Just inject this interface and you gain manual access over built-in Contexts.
- * The respective integration code will provide a &064;Dependent scoped instance.
+ * The respective integration code will provide a Dependent scoped instance.
  */
 public interface ContextControl
 {
