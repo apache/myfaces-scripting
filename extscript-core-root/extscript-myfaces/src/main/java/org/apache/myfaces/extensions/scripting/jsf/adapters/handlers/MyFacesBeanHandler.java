@@ -69,9 +69,11 @@ public class MyFacesBeanHandler
      * <p>&nbsp;</p>
      * personal scoped beans are beans which
      * have either
+     * <ul>
      * <li> session scope </li>
      * <li> page scope </li>
      * <li> custom scope </li>
+     * </ul>
      */
     public void refreshAllManagedBeans()
     {

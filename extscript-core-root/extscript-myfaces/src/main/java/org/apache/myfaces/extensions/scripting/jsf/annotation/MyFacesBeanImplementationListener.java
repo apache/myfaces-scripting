@@ -82,8 +82,8 @@ public class MyFacesBeanImplementationListener extends BaseAnnotationScanListene
 
     /**
      * registers a new managed bean into runtime config
-     * @param clazz
-     * @param beanName
+     * @param clazz the class of the managed bean
+     * @param beanName the bean name
      */
     protected void registerManagedBean(Class clazz, String beanName)
     {
