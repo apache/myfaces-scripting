@@ -29,7 +29,7 @@ public class Null extends Cast
 
     /**
      * representation of a null value of a specific class
-     * @param clazz
+     * @param clazz the class for the null representation
      */
     public Null(Class clazz) {
         super(clazz, null);

@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  *          <p>&nbsp;</p>
  *          Source path annotation scanner for java it scans all sources in the specified source paths
  *          recursively for additional information
- *          and then adds the id/name -> class binding information to the correct factory locations,
+ *          and then adds the id/name -&gt; class binding information to the correct factory locations,
  *          wherever possible
  */
 @SuppressWarnings("unused")

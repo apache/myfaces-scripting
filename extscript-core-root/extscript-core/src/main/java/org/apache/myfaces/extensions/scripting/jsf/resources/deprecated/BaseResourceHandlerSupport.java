@@ -143,6 +143,9 @@ public class BaseResourceHandlerSupport extends ResourceHandlerSupport
     /**
      * Read the web.xml file that is in the classpath and parse its internals to
      * figure out how the FacesServlet is mapped for the current webapp.
+     *
+     * @param context standard faces context
+     * @return the servlet mapping
      */
     protected FacesServletMapping getFacesServletMapping(FacesContext context)
     {

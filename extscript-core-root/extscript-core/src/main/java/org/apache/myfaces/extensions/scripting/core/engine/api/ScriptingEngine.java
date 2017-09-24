@@ -49,7 +49,7 @@ public interface ScriptingEngine
 
     /**
      * returns the file ending sufficient for this engine
-     * @return
+     * @return the correct file ending for the engine
      */
     public String getFileEnding();
 
@@ -61,18 +61,22 @@ public interface ScriptingEngine
 
     /**
      * runs the compile cycle for this engine
+     *
+     * @return a compilation result for this compile
      */
     public CompilationResult compile();
 
     /**
      * checks if the current engine has tainted classes
-     * @return
+     *
+     * @return true if a resource is tainted
      */
     public boolean isTainted();
 
     /**
      * checks if the current engine has a need for a recompile of certain classes
-     * @return
+     *
+     * @return true if the engine needs a recompile
      */
     public boolean needsRecompile();
 
@@ -120,7 +124,7 @@ public interface ScriptingEngine
 
     /**
      * detects whether a given object is an artifact of a given object
-     * @return
+     * @return true if this artifact belongs to the engine
      */
     public boolean isArtifactOfEngine(Object artifact);
 

@@ -55,6 +55,7 @@ public class CompilationResult {
      * @param compilerOutput the compiler output, i.e. simply everything that the compiler would
      *                       usually print to the console, if you executed the same process on
      *                       the command line instead
+     *
      */
     public CompilationResult(String compilerOutput) {
         this._compilerOutput = compilerOutput;
@@ -80,7 +81,7 @@ public class CompilationResult {
      * <p>Determines whether any error messages have been registered, i.e. whether compilation
      * was successful.</p>
      *
-     * @return <code>true</code if no error messages have been registered, i.e. if compilation
+     * @return <code>true</code> if no error messages have been registered, i.e. if compilation
      *         was sucessful; <code>false</code> otherwise
      */
     public boolean hasErrors() {
