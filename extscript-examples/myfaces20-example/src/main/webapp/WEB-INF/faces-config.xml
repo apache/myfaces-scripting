@@ -49,13 +49,13 @@
         <managed-bean-class>org.apache.myfaces.javaloader.blog.Blog</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
+   <!--
     <managed-bean>
         <managed-bean-name>javaBlogService</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.javaloader.blog.BlogService</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-
+    -->
     <application>
         <navigation-handler>
             org.apache.myfaces.groovyloader.test.TestNavigationHandler
@@ -110,12 +110,16 @@
     </render-kit>
     <application>
         <!-- disable an Ext-Val warning which is triggered falsely by the latest version -->
+        <!--
         <system-event-listener>
+
             <system-event-listener-class>
                 org.apache.myfaces.extensions.scripting.startup.SuppressExtValWarningStartupListener
             </system-event-listener-class>
+
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
         </system-event-listener>
+        -->
         <system-event-listener>
             <system-event-listener-class>org.apache.myfaces.javaloader.eventTest.TestListener
             </system-event-listener-class>

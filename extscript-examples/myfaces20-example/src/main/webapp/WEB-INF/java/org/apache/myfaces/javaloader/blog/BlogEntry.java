@@ -18,11 +18,16 @@
  */
 package org.apache.myfaces.javaloader.blog;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
 /**
  * Domain object for our mini blogging example
  * Holds the entered blogging data
  */
+
 public class BlogEntry {
+
 
     String firstName = "";
     String lastName = "";

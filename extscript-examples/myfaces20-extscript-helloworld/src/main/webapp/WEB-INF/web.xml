@@ -35,7 +35,7 @@
             Initializes the plugins for our groovy handlers
         </description>
         <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
-        <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader
+        <param-value>org.apache.myfaces.extensions.scripting.jsf.startup.StartupServletContextPluginChainLoader
         </param-value>
     </context-param>
 
@@ -130,18 +130,6 @@
     Note, this servlet filter is vital without it Ext-Scripting will not work,
     if you do not set it you will get an appropriate warning in the command line
     -->
-    <filter>
-        <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>scriptingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
 
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>

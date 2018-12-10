@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<document>
+    <section name="Navigation Top">
+        <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
+        or
+        <a href="exampleconfig_102.html">On to the appendix: Example Configuration&gt;&gt;</a>
+    </section>
+
+    <section name="Appendix: Configuration Entries">
+        <subsection name="General Information">
+            <p>
+                This page is a general quick overview over the possible configuration parameters, if you need further
+                details please visit the<a href="installation.html">setup guide</a>.
+            </p>
+        </subsection>
+        <table>
+            <thead>
+                <tr>
+                    <td>Param</td>
+                    <td>Required</td>
+                    <td>Possible values</td>
+                    <td>Short Description</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>org.apache.myfaces.FACES_INIT_PLUGINS</td>
+                    <td>YES</td>
+                    <td>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</td>
+                    <td>MyFaces Extension Point Setup</td>
+                </tr>
+                <tr>
+                    <td>scriptingFilter</td>
+                    <td>YES</td>
+                    <td></td>
+                    <td>The scripting filter for further information look <a href="#scriptingFilter">below</a></td>
+                </tr>
+
+
+                <tr>
+                    <td>org.apache.myfaces.extensions.scripting.groovy.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of groovy files on the sources
+                        directory instead of editing in the deployment dir /WEB-INF/groovy
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.extensions.scripting.java.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of java files on the sources
+                        directory instead of editing in the deployment dir /WEB-INF/java
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS</td>
+                    <td>NO</td>
+                    <td>comma separate list of paths</td>
+                    <td>Additional comma separated loader paths to allow direct editing of resources on the sources
+                        directory instead of editing in the deployment directory
+                    </td>
+                    <td>Important notice, in most cases this path will point to the root of your web application
+                        directory
+                        (ie: src/main/webapp in a standard Maven2 structure or &lt;project-root&gt;/webapp for a
+                        standard
+                        Eclipse project structure)
+                    </td>
+                </tr>
+                <tr>
+                    <td>facelets.RESOURCE_RESOLVER</td>
+                    <td>NO</td>
+                    <td>org.apache.myfaces.extensions.scripting.facelet.ReroutingResourceResolver</td>
+                    <td>Enables the loading of xhtml facelet pages from your source directory, if
+                        org.apache.myfaces.extensions.scripting.resource.LOADER_PATHS is set properly
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.scripting.PGK_WHITELIST</td>
+                    <td>NO</td>
+                    <td>a comma separate list of whitelisted packages</td>
+                    <td>Enables package whitelisting, a mechanism which allows to compile and reload only from
+                        whitelisted packages
+                    </td>
+                </tr>
+                <tr>
+                    <td>org.apache.myfaces.extensions.scripting.PGK_ADDITIONAL_CLASSPATH</td>
+                    <td>NO</td>
+                    <td>a comma separate list of additional classpaths</td>
+                    <td>enables additional classpaths for the compile time</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+
+    </section>
+
+    <section name="Normal configuration entries">
+        <p>all configuration entries except for the scripting filter follow the context parameter convention</p>
+         <source><![CDATA[
+            <context-param>
+                <description>
+                    Initializes the plugins for our scripting support
+                </description>
+                <param-name>org.apache.myfaces.FACES_INIT_PLUGINS</param-name>
+                <param-value>org.apache.myfaces.extensions.scripting.servlet.StartupServletContextPluginChainLoader</param-value>
+            </context-param>
+         ]]>
+         </source>
+
+    </section>
+
+    <section name="Scripting Filter">
+        <a name="scriptingFilter" />
+        <p>All configuration entries are context parameters, the only exception is the scripting filter which is a servlet filter</p>
+        <p>The scripting filter differs in its configuration by having to provide a servlet filter tag and a pattern:</p>
+
+        <source><![CDATA[
+            <!-- ======================================================================================
+                    Scripting Filter
+                    Second step to enable Ext-Scripting
+                 ====================================================================================== -->
+            <filter>
+                <filter-name>scriptingFilter</filter-name>
+                <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
+            </filter>
+            <filter-mapping>
+                <filter-name>scriptingFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+                <dispatcher>REQUEST</dispatcher>
+                <dispatcher>FORWARD</dispatcher>
+                <dispatcher>INCLUDE</dispatcher>
+                <dispatcher>ERROR</dispatcher>
+            </filter-mapping>
+        ]]>
+        </source>            
+        <p>Note for further examples of the configuration go to the section <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a> </p>
+    </section>
+
+
+    <section name="Navigation Bottom">
+        <a href="setup_steps.html">&lt;&lt;Back to the appendix: Setup steps</a>
+        or
+        <a href="exampleconfig.html">On to the appendix: Example Configuration&gt;&gt;</a>
+    </section>
+
+
+</document>

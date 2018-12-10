@@ -23,13 +23,15 @@
     <artifactId>extscript-root</artifactId>
     <packaging>pom</packaging>
     <name>Myfaces Extension Scripting Project</name>
-    <version>1.0.2-SNAPSHOT</version>
-
+    <version>1.0.3-SNAPSHOT</version>
+    <!-- test -->
     <properties>
         <myfaces12.version>1.2.9</myfaces12.version>
         <myfaces2.version>2.1.6</myfaces2.version>
         <extval.version>2.0.5</extval.version>
         <groovy.version>1.7.2</groovy.version>
+        <maven-scala-plugin.scalaVersion>2.15.2</maven-scala-plugin.scalaVersion>
+        <scala-library.version>2.10.0-M2</scala-library.version>
     </properties>
 
 
@@ -58,8 +60,21 @@
     </scm>
 
 
-
     <dependencies>
+
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala-library.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-compiler</artifactId>
+            <version>${scala-library.version}</version>
+        </dependency>
+
         <!-- compile -->
         <dependency>
             <groupId>javax.el</groupId>
@@ -71,8 +86,8 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.4</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -119,14 +134,64 @@
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <inherited>true</inherited>
+                    <version>2.2</version>
                     <configuration>
                         <outputEncoding>UTF-8</outputEncoding>
                     </configuration>
                 </plugin>
-            </plugins>
+                <plugin>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>maven-scala-plugin</artifactId>
+                    <version>${maven-scala-plugin.scalaVersion}</version>
+                </plugin>
+           </plugins>
+
         </pluginManagement>
 
+
         <plugins>
+            <!-- scala tools plugin -->
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <executions>
+
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                    </execution>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-library</artifactId>
+                        <version>${scala-library.version}</version>
+                    </dependency>
+
+
+                    <dependency>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-compiler</artifactId>
+                        <version>${scala-library.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -211,7 +276,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
-                <version>2.3</version>
+
                 <!--
                 <configuration>
                     <aggregate>true</aggregate>
@@ -222,7 +287,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
-                <version>2.4</version>
+
                 <configuration>
                     <tags>
                         <tag>TODO</tag>
@@ -242,7 +307,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.12</version>
+
                 <configuration>
                     <targetJdk>1.5</targetJdk>
                 </configuration>

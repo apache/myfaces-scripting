@@ -19,8 +19,8 @@
 package org.apache.myfaces.extensions.scripting.core.reloading;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.myfaces.extensions.scripting.api.ReloadingStrategy;
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
+import org.apache.myfaces.extensions.scripting.core.api.WeavingContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -38,13 +38,10 @@ import java.util.logging.Logger;
  * @version $Revision$ $Date$
  */
 
-public class SimpleReloadingStrategy implements ReloadingStrategy {
+public class SimpleReloadingStrategy implements ReloadingStrategy
+{
 
-    protected ScriptingWeaver _weaver;
 
-    public SimpleReloadingStrategy(ScriptingWeaver weaver) {
-        _weaver = weaver;
-    }
 
     public SimpleReloadingStrategy() {
 
@@ -61,11 +58,11 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
      * @param scriptingInstance the instance to be reloaded by the system
      * @return either the same object or a new instance utilizing the changed code
      */
-    public Object reload(Object scriptingInstance, int artefactType) {
+    public Object reload(Object scriptingInstance, int engineType, int artifactType) {
+       //reload the class to get new static content if needed
+        Class aclass = WeavingContext.getInstance().reload(scriptingInstance.getClass());
 
-        //reload the class to get new static content if needed
-        Class aclass = _weaver.reloadScriptingClass(scriptingInstance.getClass());
-        if (aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
+        if (aclass == null || aclass.hashCode() == scriptingInstance.getClass().hashCode()) {
             //class of this object has not changed although
             // reload is enabled we can skip the rest now
             return scriptingInstance;
@@ -78,7 +75,7 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
             Object newObject = aclass.newInstance();
 
             /*now we shuffle the properties between the objects*/
-            mapProperties(newObject, scriptingInstance);
+            mapProperties(newObject, engineType, scriptingInstance);
 
             return newObject;
         } catch (Exception e) {
@@ -99,28 +96,12 @@ public class SimpleReloadingStrategy implements ReloadingStrategy {
      * @param target the target which has to receive the properties
      * @param src    the source which has the original properties
      */
-    protected void mapProperties(Object target, Object src) {
-        try {
-            BeanUtils.copyProperties(target, src);
-        } catch (IllegalAccessException e) {
-            getLog().log(Level.FINEST, e.toString());
-            //this is wanted
-        } catch (InvocationTargetException e) {
-            getLog().log(Level.FINEST, e.toString());
-            //this is wanted
-        }
+    protected void mapProperties(Object target, int engineType, Object src) {
+       WeavingContext.getInstance().getEngine(engineType).copyProperties(target, src);
     }
 
     protected Logger getLog() {
         return Logger.getLogger(this.getClass().getName());
-    }
-
-    public ScriptingWeaver getWeaver() {
-        return _weaver;
-    }
-
-    public void setWeaver(ScriptingWeaver weaver) {
-        _weaver = weaver;
     }
 
 }

@@ -36,7 +36,6 @@ import java.util.logging.Logger;
  *          renderer artifact to the other
  */
 @FacesRenderer(componentFamily = "javax.faces.Input", rendererType = "at.irian.JavaTestRenderer")
-
 public class JavaTestRenderer1 extends HtmlTextRendererBase {
 
     static Logger log = Logger.getLogger(JavaTestRenderer1.class.getName());
@@ -48,14 +47,14 @@ public class JavaTestRenderer1 extends HtmlTextRendererBase {
         JavaTestComponent myComponent = (JavaTestComponent) component;
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.write("<h3>Renderer Demo Java Renderer 1</h3>");
+        writer.write("<h3>Renderer Demo Java Renderer 1 aaa</h3>");
         //uncomment for demo 1
         test(myComponent, writer);
 
         writer.flush();
     }
     
-    
+
     //uncomment for demo 1
    
    private void test(JavaTestComponent myComponent, ResponseWriter writer) throws IOException {

@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.javaloader.blog;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,9 +28,12 @@ import java.util.List;
  * Application scoped bean (defined in the faces-config for testing purposes)
  * which stores the blog entries
  */
+@ManagedBean(name="javaBlogService")
+@ApplicationScoped
 public class BlogService implements BlogServiceInterface {
 
     List<Object> blogEntries = Collections.synchronizedList(new LinkedList<Object>());
+
 
     /**
      * Add an entry to our blogging list
@@ -38,11 +43,9 @@ public class BlogService implements BlogServiceInterface {
      *
      * @param entry the entry to be added
      */
-
     @DependencyTestAnnotation
     public void addEntry(BlogEntry entry) {
        if (entry != null) {
-			entry.setContent("hello world dlskjfgls kdj");
             blogEntries.add(entry);
         }
     }

@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.extensions.scripting.core.reloading;
 
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
-
 /**
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -41,13 +39,16 @@ import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
  *          The only ones which need to keep some state are the ones
  *          which keep delegates, like the NavHandler
  */
-public class NoMappingReloadingStrategy extends SimpleReloadingStrategy {
+public class NoMappingReloadingStrategy extends SimpleReloadingStrategy
+{
 
-    public NoMappingReloadingStrategy(ScriptingWeaver weaver) {
-        super(weaver);
+    public NoMappingReloadingStrategy()
+    {
+        super();
     }
 
     @Override
-    protected void mapProperties(Object target, Object src) {
+    protected void mapProperties(Object target, int engineType, Object src)
+    {
     }
 }

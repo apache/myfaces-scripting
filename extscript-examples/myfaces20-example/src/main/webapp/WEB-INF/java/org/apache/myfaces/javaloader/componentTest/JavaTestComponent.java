@@ -22,6 +22,7 @@ import org.apache.myfaces.javaloader.other.Markable;
 
 import javax.faces.component.UIInput;
 import javax.faces.component.FacesComponent;
+import javax.faces.component.UIOutput;
 
 /**
  * @author Werner Punz (latest modification by $Author$)

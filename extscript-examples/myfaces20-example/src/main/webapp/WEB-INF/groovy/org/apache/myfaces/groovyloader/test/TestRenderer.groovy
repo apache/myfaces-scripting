@@ -36,9 +36,9 @@ public class TestRenderer extends HtmlTextRendererBase {
 
 
     facesContext.responseWriter.write """
-            <h1>Hello from a groovy JSF components renderer </h1>
+            <h1>Hello from a groovy JSF components renderer</h1>
 
-            <p> you can find my sources under WEB-INF/groovy/... </p>
+            <p> you can find my sources under WEB-INF/groovy/...</p>
 
             <p> you can edit the artefacts is running</p>
             <p> I will pick up the changes after you have hit the reload button </p>

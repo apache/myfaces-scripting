@@ -19,16 +19,15 @@
 package org.apache.myfaces.javaloader.test;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "javatestbean4")
 @SessionScoped
-
 public class TestBean4 {
     
     private String hello = "Hello world from test Bean 4";
 
-    
     public String getHello() {
         return hello;
     }

@@ -18,15 +18,14 @@
  */
 package org.apache.myfaces.extensions.scripting.core.reloading;
 
-import org.apache.myfaces.extensions.scripting.api.ReloadingStrategy;
-import org.apache.myfaces.extensions.scripting.api.ScriptingConst;
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
-import org.apache.myfaces.extensions.scripting.core.util.Cast;
-import org.apache.myfaces.extensions.scripting.core.util.ClassUtils;
-import org.apache.myfaces.extensions.scripting.core.util.ReflectUtil;
+import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
+import org.apache.myfaces.extensions.scripting.core.common.util.ClassUtils;
+import org.apache.myfaces.extensions.scripting.core.common.util.ReflectUtil;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.apache.myfaces.extensions.scripting.core.api.ScriptingConst.*;
 
 /**
  * @author Werner Punz (latest modification by $Author$)
@@ -37,13 +36,15 @@ import java.util.logging.Logger;
  *          strategy
  *          <p/>
  *          TODO make the reloading strategy pluggable from outside (1.1)!
+ *          TODO groovy reloading strategy needs to be added at least the properties
+ *          mapping for a groovy class
  */
 
-public class GlobalReloadingStrategy implements ReloadingStrategy {
+public class GlobalReloadingStrategy implements ReloadingStrategy
+{
 
+    private static final String STRATEGY_PKG = "org.apache.myfaces.extensions.scripting.jsf.facelet";
     final Logger _logger = Logger.getLogger(GlobalReloadingStrategy.class.getName());
-
-    protected ScriptingWeaver _weaver = null;
 
     protected ReloadingStrategy _beanStrategy;
     protected ReloadingStrategy _noMappingStrategy;
@@ -55,12 +56,19 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
     protected ReloadingStrategy _converterHandlerStrategy;
     protected ReloadingStrategy _behaviorHandlerStrategy;
 
-    public GlobalReloadingStrategy(ScriptingWeaver weaver) {
-        setWeaver(weaver);
-    }
+    public GlobalReloadingStrategy()
+    {
+        _beanStrategy = new ManagedBeanReloadingStrategy();
+        _noMappingStrategy = new NoMappingReloadingStrategy();
+        _allOthers = new SimpleReloadingStrategy();
 
-    public GlobalReloadingStrategy() {
-
+        /*
+         * external handlers coming from various submodules
+         */
+        _componentHandlerStrategy = dynaload(STRATEGY_PKG +".ComponentHandlerReloadingStrategy");
+        _validatorHandlerStrategy = dynaload(STRATEGY_PKG +".ValidatorHandlerReloadingStrategy");
+        _converterHandlerStrategy = dynaload(STRATEGY_PKG +".ConverterHandlerReloadingStrategy");
+        _behaviorHandlerStrategy = dynaload(STRATEGY_PKG +".BehaviorHandlerReloadingStrategy");
     }
 
     /**
@@ -71,83 +79,73 @@ public class GlobalReloadingStrategy implements ReloadingStrategy {
      * @param artifactType the artifact type for which the reloading strategy has to be applied to
      * @return either the same or a reloading object depending on the current state of the object
      */
-    public Object reload(Object toReload, int artifactType) {
+    public Object reload(Object toReload, int engineType, int artifactType)
+    {
 
-        switch (artifactType) {
-            case ScriptingConst.ARTIFACT_TYPE_MANAGEDBEAN:
-                return _beanStrategy.reload(toReload, artifactType);
+        switch (artifactType)
+        {
+            case ARTIFACT_TYPE_MANAGEDBEAN:
+                return _beanStrategy.reload(toReload, engineType, artifactType);
 
-            case ScriptingConst.ARTIFACT_TYPE_RENDERER:
-                return _noMappingStrategy.reload(toReload, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_BEHAVIOR:
-                return _noMappingStrategy.reload(toReload, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER:
-                return _noMappingStrategy.reload(toReload, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_COMPONENT:
-                return _noMappingStrategy.reload(toReload, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_VALIDATOR:
-                return _noMappingStrategy.reload(toReload, artifactType);
+            case ARTIFACT_TYPE_RENDERER:
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
+            case ARTIFACT_TYPE_BEHAVIOR:
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
+            case ARTIFACT_TYPE_CLIENTBEHAVIORRENDERER:
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
+            case ARTIFACT_TYPE_COMPONENT:
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
+            case ARTIFACT_TYPE_VALIDATOR:
+                return _noMappingStrategy.reload(toReload, engineType, artifactType);
 
-            case ScriptingConst.ARTIFACT_TYPE_COMPONENT_HANDLER:
-                return dynaReload(toReload, _componentHandlerStrategy, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_CONVERTER_HANDLER:
-                return dynaReload(toReload, _converterHandlerStrategy, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_VALIDATOR_HANDLER:
-                return dynaReload(toReload, _validatorHandlerStrategy, artifactType);
-            case ScriptingConst.ARTIFACT_TYPE_BEHAVIOR_HANDLER:
-                return dynaReload(toReload, _behaviorHandlerStrategy, artifactType);
+            case ARTIFACT_TYPE_COMPONENT_HANDLER:
+                return dynaReload(toReload, _componentHandlerStrategy, engineType, artifactType);
+            case ARTIFACT_TYPE_CONVERTER_HANDLER:
+                return dynaReload(toReload, _converterHandlerStrategy, engineType, artifactType);
+            case ARTIFACT_TYPE_VALIDATOR_HANDLER:
+                return dynaReload(toReload, _validatorHandlerStrategy, engineType, artifactType);
+            case ARTIFACT_TYPE_BEHAVIOR_HANDLER:
+                return dynaReload(toReload, _behaviorHandlerStrategy, engineType, artifactType);
 
             default:
-                return _allOthers.reload(toReload, artifactType);
+                return _allOthers.reload(toReload, engineType, artifactType);
         }
     }
 
-    public void setWeaver(ScriptingWeaver weaver) {
-        _weaver = weaver;
-        _beanStrategy = new ManagedBeanReloadingStrategy(weaver);
-        _noMappingStrategy = new NoMappingReloadingStrategy(weaver);
-        _allOthers = new SimpleReloadingStrategy(weaver);
-
-        /*
-         * external handlers coming from various submodules
-         */
-        _componentHandlerStrategy = dynaload(weaver, "org.apache.myfaces.extensions.scripting.facelet.ComponentHandlerReloadingStrategy");
-        _validatorHandlerStrategy = dynaload(weaver, "org.apache.myfaces.extensions.scripting.facelet.ValidatorHandlerReloadingStrategy");
-        _converterHandlerStrategy = dynaload(weaver, "org.apache.myfaces.extensions.scripting.facelet.ConverterHandlerReloadingStrategy");
-        _behaviorHandlerStrategy = dynaload(weaver, "org.apache.myfaces.extensions.scripting.facelet.BehaviorHandlerReloadingStrategy");
-    }
-
-    public Object dynaReload(Object toReload, ReloadingStrategy strategy, int artifactType) {
-        if (strategy == null) {
+    public Object dynaReload(Object toReload, ReloadingStrategy strategy, int engineType, int artifactType)
+    {
+        if (strategy == null)
+        {
             //no strategy no reload
             return toReload;
-        } else {
-            return strategy.reload(toReload, artifactType);
+        } else
+        {
+            return strategy.reload(toReload, engineType, artifactType);
         }
     }
 
     /**
      * load dynamically the given strategy class
      *
-     * @param weaver        the weaver which the new strategy class is applied to
      * @param strategyClass the strategy class which has to be loaded and instantiated
      * @return an instance of the strategy class if found otherwise null
      */
-    private ReloadingStrategy dynaload(ScriptingWeaver weaver, String strategyClass) {
-        try {
-            Class componentStrategyClass = ClassUtils.forName(strategyClass);
-            return (ReloadingStrategy) ReflectUtil.instantiate(componentStrategyClass, new Cast(ScriptingWeaver.class, weaver));
-        } catch (RuntimeException ex) {
+    private ReloadingStrategy dynaload(String strategyClass)
+    {
+        try
+        {
+            Class theClass = ClassUtils.forName(strategyClass);
+            return (ReloadingStrategy) ReflectUtil.instantiate(theClass);
+        }
+        catch (RuntimeException ex)
+        {
             //in this case swallowing the exception is expected
-            if (_logger.isLoggable(Level.FINEST)) {
+            if (_logger.isLoggable(Level.FINEST))
+            {
                 _logger.log(Level.FINEST, "Expected Exception: ", ex);
             }
         }
         return null;
-    }
-
-    public ScriptingWeaver getWeaver() {
-        return _weaver;
     }
 
 }

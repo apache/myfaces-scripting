@@ -122,20 +122,6 @@
         </param-value>
     </context-param>
 
-
-    <filter>
-        <filter-name>scriptingFilter</filter-name>
-        <filter-class>org.apache.myfaces.extensions.scripting.servlet.ScriptingServletFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>scriptingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
-
     <!-- Listener, to allow Jetty serving MyFaces apps -->
     <listener>
         <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>

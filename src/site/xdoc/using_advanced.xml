@@ -100,16 +100,9 @@
                 <p>The following Video shows the compiler output component in action</p>
                 <p>
                     <center>
-                        <object width="640px" height="505px">
-                            <param name="movie"
-                                   value="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1" />
-                            <param name="allowFullScreen" value="true" />
-                            <param name="allowscriptaccess" value="always" />
-                            <embed src="http://www.youtube.com/v/v56ru9ZJyhQ&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
-                                   type="application/x-shockwave-flash" allowscriptaccess="always"
-                                   allowfullscreen="true"
-                                   width="640px" height="505px" />
-                        </object>
+                        <iframe class="youtube-player" type="text/html" width="640" height="505"
+                                                        src="http://www.youtube.com/embed/v56ru9ZJyhQ" frameborder="0">
+                        </iframe>
                     </center>
                     <div class="objectAnnotation">Video: Compiler Component in Action</div>
 
@@ -310,18 +303,11 @@
             </p>
             <p />
             <center>
-
-                <object width="660" height="405">
-                    <param name="movie"
-                           value="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1?&#38;border=1" />
-                    <param name="allowFullScreen" value="true" />
-                    <param name="allowscriptaccess" value="always" />
-                    <embed src="http://www.youtube.com/v/YWlBGE3vyMw&#38;hl=de_DE&#38;fs=1&#38;?&#38;border=1"
-                           type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
-                           width="660" height="405" />
-                </object>
-
-
+                <center>
+                    <iframe class="youtube-player" type="text/html" width="660" height="405"
+                                                    src="http://www.youtube.com/embed/YWlBGE3vyMw" frameborder="0">
+                    </iframe>
+                </center>
             </center>
             <p>
                 This dependency detection works over all dynamic classes, no matter being it classes, interfaces,
@@ -349,15 +335,11 @@
             </p>
 
             <center>
-                <object width="640" height="505">
-                    <param name="movie"
-                           value="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1" />
-                    <param name="allowFullScreen" value="true" />
-                    <param name="allowscriptaccess" value="always" />
-                    <embed src="http://www.youtube.com/v/tikOR0XDnFw&#38;hl=de_DE&#38;fs=1&#38;hd=1&#38;border=1"
-                           type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"
-                           width="640" height="505" />
-                </object>
+                <center>
+                    <iframe class="youtube-player" type="text/html" width="640" height="505"
+                                                    src="http://www.youtube.com/embed/tikOR0XDnFw" frameborder="0">
+                    </iframe>
+                </center>
             </center>
         </section>
 

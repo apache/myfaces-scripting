@@ -69,7 +69,7 @@
                 </h:panelGrid>
             </div>
             <h:panelGrid id="content" columns="1" styleClass="right">
-                <c:forEach items="#{blogService.blogEntries}" var="item">
+                <ui:repeat value="#{blogService.blogEntries}" var="item">
                     <h:panelGrid columns="1" styleClass="messageBox">
                         <h:panelGroup styleClass="topic">
                             <h:outputLabel styleClass="label" value="Topic"/>
@@ -81,7 +81,7 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <br/>
-                </c:forEach>
+                </ui:repeat>
             </h:panelGrid>
         </h:form>
     </ui:define>

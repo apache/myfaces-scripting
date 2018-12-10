@@ -18,8 +18,7 @@
  */
 package org.apache.myfaces.extensions.scripting.core.reloading;
 
-import org.apache.myfaces.extensions.scripting.api.ReloadingStrategy;
-import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
+import org.apache.myfaces.extensions.scripting.core.api.ReloadingStrategy;
 
 /**
  * The managed beans have a different reloading
@@ -36,13 +35,10 @@ import org.apache.myfaces.extensions.scripting.api.ScriptingWeaver;
  * @version $Revision$ $Date$
  */
 
-public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
+public class ManagedBeanReloadingStrategy implements ReloadingStrategy
+{
 
-    ScriptingWeaver _weaver;
 
-    public ManagedBeanReloadingStrategy(ScriptingWeaver weaver) {
-        _weaver = weaver;
-    }
 
     public ManagedBeanReloadingStrategy() {
     }
@@ -56,16 +52,8 @@ public class ManagedBeanReloadingStrategy implements ReloadingStrategy {
      * @return does nothing in this case and returns only the original instance, the reloading is handled
      *         for managed beans on another level
      */
-    public Object reload(Object scriptingInstance, int artifactType) {
+    public Object reload(Object scriptingInstance, int engineType, int artifactType) {
         return scriptingInstance;
-    }
-
-    public ScriptingWeaver getWeaver() {
-        return _weaver;
-    }
-
-    public void setWeaver(ScriptingWeaver weaver) {
-        _weaver = weaver;
     }
 
 }

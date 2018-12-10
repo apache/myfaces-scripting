@@ -49,12 +49,14 @@
     <menu name="Documentation">
       <item name="Introduction" href="index.html" />
       <item name="Latest Version Installation" href="installation.html" />
-      <item name="Installation Beta 1" href="install_beta_1.html" />
+      <item name="Installation of version 1.0.2 or earlier" href="install_102.html" />
 
       <item name="Users Guide" href="usersguide.html"/>
       <item name="Appendix A: Setup Checklist" href="setup_steps.html" />
       <item name="Appendix B: Configuration Entries" href="configentries.html" />
+      <item name="Appendix B1: Configuration Entries for 1.0.2 or earlier" href="configentries_102.html" />
       <item name="Appendix C: Example Configurations" href="exampleconfig.html" />
+      <item name="Appendix C1: Example Configurations 1.0.2 or earlier" href="exampleconfig_102.html" />
     </menu>
 
     <menu name="Foundation">

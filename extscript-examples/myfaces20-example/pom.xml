@@ -4,14 +4,14 @@
     <parent>
         <artifactId>extscript-examples</artifactId>
         <groupId>org.apache.myfaces.extensions.scripting</groupId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.myfaces.extensions.scripting</groupId>
     <artifactId>myfaces20-example</artifactId>
     <packaging>war</packaging>
     <name>A custom project using myfaces 2.0</name>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <url>http://www.apache.org</url>
 
     <scm>
@@ -71,11 +71,18 @@
              meta bundle, which includes the entire
              ext-scripting core+java6 support + myfaces 2 support
          -->
+        <!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.scripting</groupId>
             <artifactId>extscript-myfaces20-bundle</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.3-SNAPSHOT</version>
         </dependency>
+        -->
+       <dependency>
+           <groupId>org.apache.myfaces.extensions.scripting</groupId>
+           <artifactId>extscript-core</artifactId>
+           <version>1.0.3-SNAPSHOT</version>
+       </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
@@ -106,33 +113,31 @@
              and/or MyFaces ext-val
          -->
 
-        
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator</groupId>
             <artifactId>myfaces-extval-core</artifactId>
             <version>${extval.version}</version>
         </dependency>
-
-        <!--
+       <!--
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
             <artifactId>myfaces-extval-property-validation</artifactId>
             <version>${extval.version}</version>
         </dependency>
         -->
-        
         <dependency>
             <groupId>org.apache.myfaces.extensions.validator.validation-modules</groupId>
             <artifactId>myfaces-extval-bean-validation</artifactId>
             <version>${extval.version}</version>
         </dependency>
 
-        
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>4.0.0.GA</version>
         </dependency>
+
         <!-- Hibernate annotations needs sl4j as dependency -->
         <dependency>
             <groupId>org.slf4j</groupId>

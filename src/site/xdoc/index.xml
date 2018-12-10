@@ -42,22 +42,17 @@
 
                 <p>
                     <center>
-                        <object width="800" height="600">
-                            <param name="movie"
-                                   value="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"></param>
-                            <param name="allowFullScreen" value="true"></param>
-                            <param name="allowscriptaccess" value="always"></param>
-                            <embed src="http://www.youtube.com/v/g2YvzOloNyI&#38;hl=de_DE&#38;fs=1&#38;border=1"
-                                   type="application/x-shockwave-flash" allowscriptaccess="always"
-                                   allowfullscreen="true" width="800" height="550"></embed>
-                        </object>
+                        <iframe class="youtube-player" type="text/html" width="800" height="600"
+                                src="http://www.youtube.com/embed/g2YvzOloNyI" frameborder="0">
+                        </iframe>
                     </center>
+
 
                 </p>
                 <p>
                     As the video shows, you can make changes to almost all JSF artifacts on the fly, and at the next
-                    reload the
-                    changes are present. The result is a reduction in server restarts and better turn around times. The
+                    reload the changes are present.
+                    The result is a reduction in server restarts and better turn around times. The
                     same rapid prototyping approach which is normally present in scripting languages and scripting
                     language based frameworks.
 
@@ -88,8 +83,8 @@
         <section name="Short Overview over Ext-Scripting">
             <subsection name="Supported for Scripting Languages">
                 <p>
-                    Ext-Scripting currently only supports Groovy as only scripting language.
-                    Additional scripting languages will be provided in subsequent releases.
+                    Ext-Scripting currently only supports Groovy Java and Scala (1.0.3+) as dynamic languages.
+                    Additional languages will be provided in subsequent releases.
                 </p>
             </subsection>
             <subsection name="Support for JSF2 and JSF2 Artifacts and Annotations">
@@ -104,7 +99,7 @@
                     Extensions scripting supports MyFaces only for now. Following versions are supported.
                 </p>
                 <ul>
-                    <li>1.2.8+</li>
+                    <li>1.2.8+ (note support will be dropped soon post 1.0.2)</li>
                     <li>2.0+</li>
                 </ul>
                 <p>
@@ -113,8 +108,8 @@
                 <p>
                     The JSF RI and Mojarra as time of writing are not supported due to missing framework hooks needed,
                     but Mojarra supports Groovy out of the box within the core engine. So for the time being only
-                    MyFaces can be used. Also Portlets for 1.0 are not supported, this limitation will be eliminated in
-                    future versions. Support for Mojarra will come post 1.0.
+                    MyFaces can be used. Also Portlets for 1.0.x are not supported, this limitation will be eliminated
+                    in future versions. Support for Mojarra maybe will come post 1.0.x.
                 </p>
             </subsection>
 
